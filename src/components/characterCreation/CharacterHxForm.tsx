@@ -218,6 +218,12 @@ const CharacterHxForm: FC = () => {
             );
           })}
         </Box>
+        <RedBox margin="6px" pad="12px" alignSelf="center">
+          <HeadingWS level={4} style={{ marginTop: '6px', marginBottom: '6px' }}>
+            {`${!!character?.name && character.name} the ${!!character?.playbook && decapitalize(character.playbook)}`}
+          </HeadingWS>
+          {!!character?.looks && <TextWS size="small">{character?.looks.map((look) => look.look).join(', ')}</TextWS>}
+        </RedBox>
         <Box pad="6px" style={{ maxWidth: '812px' }}>
           <StyledMarkdown>{hxInstructions}</StyledMarkdown>
         </Box>

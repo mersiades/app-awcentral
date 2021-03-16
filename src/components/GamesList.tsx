@@ -46,7 +46,6 @@ const GamesList: FC<GamesListProps> = ({ gameRoles }) => {
       data={transformGames()}
       onClickItem={async (e: any) => {
         if (e.item.role === RoleType.player && e.item.numberOfCharacters === 0) {
-          console.log(`/character-creation/${e.item.gameId}?step=0`);
           history.push(`/character-creation/${e.item.gameId}?step=0`);
         } else if (e.item.role === RoleType.player) {
           console.log(`/player-game/${e.item.gameId}`);
