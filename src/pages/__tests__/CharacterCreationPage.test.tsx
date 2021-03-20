@@ -196,8 +196,8 @@ describe('Rendering CharacterCreationPage', () => {
       injectedCharacter: startCharacter,
     });
     await screen.findByTestId('character-creation-page');
-    await screen.findByTestId('character-creation-stepper');
-    await screen.findByTestId('angel-kit-form');
+    screen.getByTestId('character-creation-stepper');
+    screen.getByTestId('angel-kit-form');
 
     // Click SET
     userEvent.click(screen.getByRole('button', { name: /SET/i }));

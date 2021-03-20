@@ -94,7 +94,7 @@ describe('Rendering HoldingForm', () => {
     });
 
     let setButton = (await screen.findByRole('button', { name: 'SET' })) as HTMLButtonElement;
-    const strength1 = await screen.findByRole('checkbox', { name: mockHoldingCreator.strengthOptions[0].description });
+    const strength1 = screen.getByRole('checkbox', { name: mockHoldingCreator.strengthOptions[0].description });
     const strength2 = screen.getByRole('checkbox', { name: mockHoldingCreator.strengthOptions[1].description });
     const strength3 = screen.getByRole('checkbox', { name: mockHoldingCreator.strengthOptions[2].description });
     const strength4 = screen.getByRole('checkbox', { name: mockHoldingCreator.strengthOptions[3].description });
