@@ -78,6 +78,7 @@ export interface Character {
   vehicleCount: number;
   battleVehicleCount: number;
   name?: string;
+  // A value of -1 indicates that barter hasn't been initially set yet
   barter?: number;
   playbookUnique?: PlaybookUnique;
   vehicles: Vehicle[];

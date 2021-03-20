@@ -77,7 +77,7 @@ const CharacterGearForm: FC = () => {
   const handleSubmitGear = async (gear: string[], amount: number) => {
     if (!!userGameRole && !!character && !!game) {
       try {
-        setCharacterGear({
+        await setCharacterGear({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, gear },
           optimisticResponse: {
             __typename: 'Mutation',
@@ -88,17 +88,20 @@ const CharacterGearForm: FC = () => {
             },
           },
         });
-        setCharacterBarter({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, amount },
-          optimisticResponse: {
-            __typename: 'Mutation',
-            setCharacterBarter: {
-              ...character,
-              barter: amount,
-              __typename: 'Character',
+        // Only set barter on gear form if barter is not initialised (barter === -1)
+        if (character.barter === -1) {
+          setCharacterBarter({
+            variables: { gameRoleId: userGameRole.id, characterId: character.id, amount },
+            optimisticResponse: {
+              __typename: 'Mutation',
+              setCharacterBarter: {
+                ...character,
+                barter: amount,
+                __typename: 'Character',
+              },
             },
-          },
-        });
+          });
+        }
         // Skip playbookUnique form if Driver
         const nextStep =
           character.playbook === PlaybookType.driver ? CharacterCreationSteps.selectMoves : CharacterCreationSteps.setUnique;
