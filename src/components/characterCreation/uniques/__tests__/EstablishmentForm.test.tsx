@@ -94,9 +94,8 @@ describe('Rendering EstablishmentForm', () => {
       cache,
     });
 
-    const setButton = (await screen.findByRole('button', { name: 'SET' })) as HTMLButtonElement;
-    // const drops = (await screen.findAllByRole('button', { name: 'Open Drop' })) as [HTMLButtonElement];
-    const addButtons = (await screen.findAllByRole('button', { name: 'ADD' })) as [HTMLButtonElement];
+    (await screen.findByRole('button', { name: 'SET' })) as HTMLButtonElement;
+    const addButtons = screen.getAllByRole('button', { name: 'ADD' }) as [HTMLButtonElement];
 
     // Select main attraction
     // FAILING: selectOptions() isn't finding any options. I think because using Grommet's Select wrapped around an HTML select

@@ -52,7 +52,7 @@ describe('Testing MCPage functionality', () => {
 
     userEvent.click(screen.getAllByRole('button', { name: /SET/ })[0]);
 
-    await screen.findByRole('tab', { name: 'Moves' });
+    screen.getByRole('tab', { name: 'Moves' });
 
     // FAILING: the mock mutation is getting found, but it's payload isn't updating the graphQl cache
     // screen.getByRole('heading', { name: 'New Game Name' });
@@ -83,7 +83,7 @@ describe('Testing MCPage functionality', () => {
     // Set Skype as the game app
     userEvent.click(screen.getAllByRole('button', { name: /SET/ })[1]);
 
-    await screen.findByRole('tab', { name: 'Moves' });
+    screen.getByRole('tab', { name: 'Moves' });
     userEvent.click(screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`));
 
     // FAILING: the mock mutation is getting found, but it's payload isn't updating the graphQl cache

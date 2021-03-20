@@ -56,7 +56,7 @@ describe('Testing MCPage functionality', () => {
     // Set Skype as the game app
     userEvent.click(screen.getAllByRole('button', { name: /SET/ })[2]);
 
-    await screen.findByRole('tab', { name: 'Moves' });
+    screen.getByRole('tab', { name: 'Moves' });
     userEvent.click(screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`));
 
     // FAILING: the mock mutation is getting found, but it's payload isn't updating the graphQl cache
@@ -90,7 +90,7 @@ describe('Testing MCPage functionality', () => {
     userEvent.click(screen.getByRole('button', { name: /ADD/ }));
 
     // Check that InvitationForm has transitioned to second part
-    await screen.findByRole('button', { name: /INVITE ANOTHER/ });
+    screen.getByRole('button', { name: /INVITE ANOTHER/ });
 
     // FAILING: the mock mutation is getting found, but it's payload isn't updating the graphQl cache
     // expect(screen.getByTestId('invitations-box').textContent).toContain('new@email.com');
