@@ -17,7 +17,7 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 describe('Testing MCPage functionality', () => {
   const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView;
