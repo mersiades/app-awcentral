@@ -128,6 +128,12 @@ const CharacterGearForm: FC = () => {
     return () => {};
   }, [instructionsBoxRef, pbCreator]);
 
+  useEffect(() => {
+    if (!!character) {
+      console.log(`character.barter`, character.barter);
+    }
+  }, [character]);
+
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
 
   const renderGearIntro = () => {

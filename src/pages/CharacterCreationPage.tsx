@@ -128,6 +128,8 @@ const CharacterCreationPage: FC = () => {
       </Box>
     );
   }
+  console.log(`character`, character);
+  console.log(`game`, game);
 
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
   return (

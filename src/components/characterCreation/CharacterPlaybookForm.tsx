@@ -7,7 +7,6 @@ import WarningDialog from '../dialogs/WarningDialog';
 import { ButtonWS, HeadingWS, ParagraphWS } from '../../config/grommetConfig';
 import { StyledMarkdown } from '../styledComponents';
 import PLAYBOOKS, { PlaybooksData } from '../../queries/playbooks';
-import CREATE_CHARACTER, { CreateCharacterData, CreateCharacterVars } from '../../mutations/createCharacter';
 import SET_CHARACTER_PLAYBOOK, {
   SetCharacterPlaybookData,
   SetCharacterPlaybookVars,
@@ -39,9 +38,6 @@ const CharacterPlaybookForm: FC = () => {
   const { data: playbooksData } = useQuery<PlaybooksData>(PLAYBOOKS);
   const playbooks = playbooksData?.playbooks;
 
-  const [createCharacter, { loading: creatingCharacter }] = useMutation<CreateCharacterData, CreateCharacterVars>(
-    CREATE_CHARACTER
-  );
   const [setCharacterPlaybook, { loading: settingPlaybook }] = useMutation<
     SetCharacterPlaybookData,
     SetCharacterPlaybookVars
@@ -69,34 +65,13 @@ const CharacterPlaybookForm: FC = () => {
   };
 
   const handlePlaybookSelect = async (playbookType: PlaybookType) => {
-    if (!!userGameRole && !!game) {
-      if (userGameRole.characters?.length === 0) {
-        let characterId;
-        try {
-          const { data: characterData } = await createCharacter({ variables: { gameRoleId: userGameRole?.id } });
-          characterId = characterData?.createCharacter.id;
-        } catch (error) {
-          console.error(error);
-        }
-        if (!characterId) {
-          console.warn('No character id, playbook not set');
-          return;
-        }
-        try {
-          await setCharacterPlaybook({
-            variables: { gameRoleId: userGameRole.id, characterId, playbookType },
-          });
-        } catch (error) {
-          console.error(error);
-        }
-      } else if (userGameRole.characters?.length === 1) {
-        try {
-          await setCharacterPlaybook({
-            variables: { gameRoleId: userGameRole.id, characterId: userGameRole.characters[0].id, playbookType },
-          });
-        } catch (error) {
-          console.error(error);
-        }
+    if (!!userGameRole && !!game && userGameRole.characters?.length === 1) {
+      try {
+        await setCharacterPlaybook({
+          variables: { gameRoleId: userGameRole.id, characterId: userGameRole.characters[0].id, playbookType },
+        });
+      } catch (error) {
+        console.error(error);
       }
       setShowResetWarning(undefined);
       history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
@@ -175,7 +150,7 @@ const CharacterPlaybookForm: FC = () => {
               </HeadingWS>
               <ButtonWS
                 label={
-                  settingPlaybook || creatingCharacter ? (
+                  settingPlaybook ? (
                     <Spinner fillColor="#FFF" width="230px" height="36px" />
                   ) : (
                     `SELECT ${decapitalize(selectedPlaybook.playbookType)}`

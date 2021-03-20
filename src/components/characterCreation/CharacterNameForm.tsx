@@ -65,9 +65,16 @@ const CharacterNameForm: FC = () => {
     !!character?.name && setSelectedName(character.name);
   }, [character]);
 
+  useEffect(() => {
+    if (!!character) {
+      console.log(`character.barter`, character.barter);
+    }
+  }, [character]);
+
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
 
   // Force navigation back to playbook selection if somehow the character doesn't have a playbook at this stage
+  console.log(`character`, character);
   if (!!character && !!game && !character.playbook) {
     history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectPlaybook}`);
     return <div />;

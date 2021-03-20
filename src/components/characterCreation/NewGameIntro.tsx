@@ -1,7 +1,10 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
+import { useMutation } from '@apollo/client';
 import { Anchor, Box } from 'grommet';
 
+import Spinner from '../Spinner';
 import { ButtonWS, HeadingWS, ParagraphWS } from '../../config/grommetConfig';
+import CREATE_CHARACTER, { CreateCharacterData, CreateCharacterVars } from '../../mutations/createCharacter';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 
@@ -11,9 +14,24 @@ interface NewGameIntroProps {
 
 const NewGameIntro: FC<NewGameIntroProps> = ({ closeNewGameIntro }) => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
-  const { game } = useGame();
+  const { userGameRole, game } = useGame();
   const { crustReady } = useFonts();
-  // console.log('game', game);
+
+  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  const [createCharacter, { loading: creatingCharacter }] = useMutation<CreateCharacterData, CreateCharacterVars>(
+    CREATE_CHARACTER
+  );
+
+  // ---------------------------------------- Component functions and variables ------------------------------------------ //
+  const handleInitilializeCharacter = async () => {
+    if (!!userGameRole && !!game && userGameRole.characters?.length === 0) {
+      try {
+        await createCharacter({ variables: { gameRoleId: userGameRole?.id } });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
   const renderComms = () => {
@@ -59,7 +77,16 @@ const NewGameIntro: FC<NewGameIntroProps> = ({ closeNewGameIntro }) => {
           <HeadingWS crustReady={crustReady} textAlign="center" level={2} style={{ maxWidth: 'unset' }}>
             NEW GAME
           </HeadingWS>
-          <ButtonWS label="NEXT" primary size="large" onClick={() => closeNewGameIntro()} />
+          <ButtonWS
+            label={creatingCharacter ? <Spinner fillColor="#FFF" width="230px" height="36px" /> : 'NEXT'}
+            primary
+            size="large"
+            disabled={creatingCharacter}
+            onClick={async () => {
+              await handleInitilializeCharacter();
+              closeNewGameIntro();
+            }}
+          />
         </Box>
         <ParagraphWS textAlign="center" size="large">
           Welcome to the jungle, baby.
