@@ -22,6 +22,8 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
+jest.setTimeout(10000);
+
 describe('Rendering EstablishmentForm', () => {
   let cache = new InMemoryCache();
   const mockGame = {

@@ -18,6 +18,8 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
+jest.setTimeout(10000);
+
 describe('Rendering CharacterPlaybookForm', () => {
   // test('should render CharacterPlaybookForm in initial state, with no character', async () => {
   //   renderWithRouter(<CharacterPlaybookForm />, `/character-creation/${mockGame1.id}?step=1`, {
