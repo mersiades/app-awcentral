@@ -1,11 +1,11 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import NewGameIntro from '../NewGameIntro';
 import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
-import { mockGame1, mockKeycloakUserInfo1 } from '../../../tests/mocks';
+import { mockGame1, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
+import { mockCreateCharacter } from '../../../tests/mockQueries';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -21,23 +21,23 @@ describe('Rendering NewGameIntro', () => {
 
     renderWithRouter(
       <NewGameIntro closeNewGameIntro={mockCloseNewGameIntro} />,
-      `/character-creation/${mockGame1.id}?step=0`,
+      `/character-creation/${mockGame5.id}?step=0`,
       {
         isAuthenticated: true,
-        injectedGame: mockGame1,
+        injectedGame: mockGame5,
+        apolloMocks: [mockCreateCharacter],
         injectedUserId: mockKeycloakUserInfo1.sub,
       }
     );
-    screen.getByRole('heading', { name: 'NEW GAME' });
-    const nextButton = screen.getByRole('button', { name: 'NEXT' });
-    const link = screen.getByRole('link', { name: mockGame1.commsApp }) as HTMLAnchorElement;
-    expect(link.href).toEqual(mockGame1.commsUrl);
+    await screen.findByRole('heading', { name: 'NEW GAME' });
+    let nextButton = screen.getByRole('button', { name: 'NEXT' }) as HTMLButtonElement;
+    const link = screen.getByRole('link', { name: mockGame5.commsApp }) as HTMLAnchorElement;
+    expect(link.href).toEqual(mockGame5.commsUrl);
 
     userEvent.click(nextButton);
+    expect(nextButton.disabled).toEqual(true);
+    nextButton = (await screen.findByRole('button', { name: 'NEXT' })) as HTMLButtonElement;
     expect(mockCloseNewGameIntro).toHaveBeenCalled();
-
-    // This is need to prevent: Warning: An update to KeycloakUserProvider inside a test was not wrapped in act(...).
-    await screen.findByRole('heading', { name: 'NEW GAME' });
   });
 
   test('should render NewGameIntro with commsApp only', async () => {
@@ -52,11 +52,8 @@ describe('Rendering NewGameIntro', () => {
         injectedUserId: mockKeycloakUserInfo1.sub,
       }
     );
-    screen.getByRole('heading', { name: 'NEW GAME' });
-    screen.getByRole('button', { name: 'NEXT' });
-
-    // This is need to prevent: Warning: An update to KeycloakUserProvider inside a test was not wrapped in act(...).
     await screen.findByRole('heading', { name: 'NEW GAME' });
+    screen.getByRole('button', { name: 'NEXT' });
   });
 
   test('should render NewGameIntro with commsUrl only', async () => {
@@ -71,12 +68,9 @@ describe('Rendering NewGameIntro', () => {
         injectedUserId: mockKeycloakUserInfo1.sub,
       }
     );
-    screen.getByRole('heading', { name: 'NEW GAME' });
+    await screen.findByRole('heading', { name: 'NEW GAME' });
     screen.getByRole('button', { name: 'NEXT' });
     const link = screen.getByRole('link', { name: 'here' }) as HTMLAnchorElement;
     expect(link.href).toEqual(mockGame1.commsUrl);
-
-    // This is need to prevent: Warning: An update to KeycloakUserProvider inside a test was not wrapped in act(...).
-    await screen.findByRole('heading', { name: 'NEW GAME' });
   });
 });
