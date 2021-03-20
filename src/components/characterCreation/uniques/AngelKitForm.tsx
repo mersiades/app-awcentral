@@ -31,7 +31,7 @@ const AngelKitForm: FC = () => {
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const handleSubmitAngelKit = async (stock: number, hasSupplier: boolean) => {
-    if (!!userGameRole && !!character && !!game && !character.playbookUnique?.angelKit) {
+    if (!!userGameRole && !!character && !!game) {
       try {
         await setAngelKit({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, stock, hasSupplier },
@@ -56,11 +56,13 @@ const AngelKitForm: FC = () => {
         <HeadingWS crustReady={crustReady} level={2} alignSelf="center">{`${
           !!character?.name ? character.name?.toUpperCase() : '...'
         }'S ANGEL KIT`}</HeadingWS>
-        <ButtonWS
-          label={settingAngelKit ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
-          primary
-          onClick={() => !settingAngelKit && !!startingStock && handleSubmitAngelKit(startingStock, false)}
-        />
+        {!character?.playbookUnique?.angelKit && (
+          <ButtonWS
+            label={settingAngelKit ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+            primary
+            onClick={() => !settingAngelKit && !!startingStock && handleSubmitAngelKit(startingStock, false)}
+          />
+        )}
       </Box>
       <Box flex="grow" direction="row" align="start">
         <Box fill="horizontal">{!!angelKitInstructions && <ReactMarkdown>{angelKitInstructions}</ReactMarkdown>}</Box>
@@ -70,7 +72,7 @@ const AngelKitForm: FC = () => {
               Stock
             </HeadingWS>
             <HeadingWS aria-label="stock-value" crustReady={crustReady} level={2} margin={{ vertical: '3px' }}>
-              {startingStock}
+              {character?.playbookUnique?.angelKit ? character?.playbookUnique?.angelKit.stock : startingStock}
             </HeadingWS>
           </RedBox>
         </Box>
