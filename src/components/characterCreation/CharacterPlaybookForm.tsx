@@ -71,12 +71,12 @@ const CharacterPlaybookForm: FC = () => {
         await setCharacterPlaybook({
           variables: { gameRoleId: userGameRole.id, characterId: userGameRole.characters[0].id, playbookType },
         });
+        setShowSwitchWarning(undefined);
+        history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {
         console.error(error);
       }
-      setShowSwitchWarning(undefined);
-      history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
-      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }
   };
 
@@ -104,7 +104,6 @@ const CharacterPlaybookForm: FC = () => {
   }, [character, playbooks]);
 
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
-
   return (
     <Box
       fill

@@ -1,5 +1,6 @@
-import { useQuery } from '@apollo/client';
 import { createContext, FC, useContext, useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
 import { Character, Game, GameRole } from '../@types/dataInterfaces';
 import { RoleType } from '../@types/enums';
 import GAME, { GameData, GameVars } from '../queries/game';
@@ -39,6 +40,7 @@ export const useGame = () => useContext(GameContext);
 export const GameConsumer = GameContext.Consumer;
 
 export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, injectedUserId, injectedCharacter }) => {
+  // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [gameId, setGameId] = useState<string | undefined>('');
   const [userId, setUserId] = useState<string | undefined>(injectedUserId);
   const [game, setGame] = useState<Game | undefined>(injectedGame);
@@ -48,12 +50,18 @@ export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, in
   const [otherPlayerGameRoles, setOtherPlayerGameRoles] = useState<GameRole[] | undefined>(undefined);
   const [character, setCharacter] = useState<Character | undefined>(injectedCharacter);
 
+  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  const history = useHistory();
+
+  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const {
     data,
     loading: fetchingGame,
     stopPolling,
     // @ts-ignore
   } = useQuery<GameData, GameVars>(GAME, { variables: { gameId }, pollInterval: 2500, skip: !gameId });
+
+  // ---------------------------------------- Component functions and variables ------------------------------------------ //
 
   const setGameContext = (gameId: string, userId: string) => {
     setUserId(userId);
@@ -70,6 +78,8 @@ export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, in
     setOtherPlayerGameRoles(undefined);
     setCharacter(undefined);
   };
+
+  // --------------------------------------------------- Effects ----------------------------------------------------- //
 
   useEffect(() => {
     if (!!game) {
@@ -92,8 +102,17 @@ export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, in
   }, [game, userId, setUserGameRole, setMcGameRole, setAllPlayerGameRoles, setOtherPlayerGameRoles]);
 
   useEffect(() => {
-    !!data && setGame(data.game);
+    if (!!data) {
+      if (!data.game) {
+        // If the game query returned without a game because bad game id
+        history.push(`/menu`);
+      } else {
+        setGame(data.game);
+      }
+    }
   }, [data]);
+
+  // -------------------------------------------------- Render component  ---------------------------------------------------- //
   return (
     <GameContext.Provider
       value={{
