@@ -79,7 +79,6 @@ export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, in
       const otherPlayerGameRoles = game.gameRoles.filter(
         (gameRole) => gameRole.role === RoleType.player && gameRole.userId !== userId
       );
-      console.log(`userGameRole.characters`, userGameRole?.characters);
       if (!!userGameRole && userGameRole?.characters.length === 1) {
         setCharacter(userGameRole.characters[0]);
       } else if (!!userGameRole && userGameRole?.characters.length > 1) {

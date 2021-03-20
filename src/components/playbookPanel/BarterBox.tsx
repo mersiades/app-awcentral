@@ -27,7 +27,7 @@ const BarterBox: FC<BarterBoxProps> = ({ barter, instructions, handleSetBarter, 
   };
 
   const decreaseBarter = () => {
-    handleSetBarter(barter - 1);
+    barter > 0 && handleSetBarter(barter - 1);
   };
 
   return (

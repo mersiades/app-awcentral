@@ -78,13 +78,13 @@ const NewGameIntro: FC<NewGameIntroProps> = ({ closeNewGameIntro }) => {
             NEW GAME
           </HeadingWS>
           <ButtonWS
-            label={creatingCharacter ? <Spinner fillColor="#FFF" width="230px" height="36px" /> : 'NEXT'}
+            label={creatingCharacter ? <Spinner fillColor="#FFF" width="52px" height="36px" /> : 'NEXT'}
             primary
             size="large"
             disabled={creatingCharacter}
             onClick={async () => {
               await handleInitilializeCharacter();
-              closeNewGameIntro();
+              !creatingCharacter && closeNewGameIntro();
             }}
           />
         </Box>

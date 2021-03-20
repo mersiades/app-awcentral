@@ -31,7 +31,7 @@ const AngelKitForm: FC = () => {
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const handleSubmitAngelKit = async (stock: number, hasSupplier: boolean) => {
-    if (!!userGameRole && !!character && !!game) {
+    if (!!userGameRole && !!character && !!game && !character.playbookUnique?.angelKit) {
       try {
         await setAngelKit({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, stock, hasSupplier },
