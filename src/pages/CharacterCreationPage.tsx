@@ -49,8 +49,6 @@ const CharacterCreationPage: FC = () => {
   const history = useHistory();
 
   // ---------------------------------------- Component functions and variables ------------------------------------------ //
-  const closeNewGameIntro = () => !!game && history.push(`/character-creation/${game.id}?step=${1}`);
-
   const handleScroll = (e: any) => {
     if (!e.currentTarget) {
       return;
@@ -156,8 +154,8 @@ const CharacterCreationPage: FC = () => {
 
       <CharacterCreationStepper />
       <Box flex="grow">
-        {creationStep === CharacterCreationSteps.intro && !!game && <NewGameIntro closeNewGameIntro={closeNewGameIntro} />}
-        {creationStep === CharacterCreationSteps.selectPlaybook && <CharacterPlaybookForm />}
+        {creationStep === CharacterCreationSteps.intro && !!game && !character && <NewGameIntro />}
+        {creationStep === CharacterCreationSteps.selectPlaybook && !!character && <CharacterPlaybookForm />}
         {creationStep === CharacterCreationSteps.selectName && character && character.playbook && <CharacterNameForm />}
         {creationStep === CharacterCreationSteps.selectLooks && character && character.name && character.playbook && (
           <CharacterLooksForm />

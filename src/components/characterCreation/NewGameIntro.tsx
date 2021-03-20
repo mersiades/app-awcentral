@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useMutation } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
 import { Anchor, Box } from 'grommet';
 
 import Spinner from '../Spinner';
@@ -8,14 +9,13 @@ import CREATE_CHARACTER, { CreateCharacterData, CreateCharacterVars } from '../.
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 
-interface NewGameIntroProps {
-  closeNewGameIntro: () => void;
-}
-
-const NewGameIntro: FC<NewGameIntroProps> = ({ closeNewGameIntro }) => {
+const NewGameIntro: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { userGameRole, game } = useGame();
   const { crustReady } = useFonts();
+
+  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  const history = useHistory();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const [createCharacter, { loading: creatingCharacter }] = useMutation<CreateCharacterData, CreateCharacterVars>(
@@ -27,6 +27,8 @@ const NewGameIntro: FC<NewGameIntroProps> = ({ closeNewGameIntro }) => {
     if (!!userGameRole && !!game && userGameRole.characters?.length === 0) {
       try {
         await createCharacter({ variables: { gameRoleId: userGameRole?.id } });
+        history.push(`/character-creation/${game.id}?step=${1}`);
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {
         console.error(error);
       }
@@ -82,10 +84,7 @@ const NewGameIntro: FC<NewGameIntroProps> = ({ closeNewGameIntro }) => {
             primary
             size="large"
             disabled={creatingCharacter}
-            onClick={async () => {
-              await handleInitilializeCharacter();
-              !creatingCharacter && closeNewGameIntro();
-            }}
+            onClick={() => handleInitilializeCharacter()}
           />
         </Box>
         <ParagraphWS textAlign="center" size="large">
