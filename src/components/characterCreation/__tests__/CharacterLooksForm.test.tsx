@@ -101,21 +101,20 @@ describe('Rendering CharacterLooksForm', () => {
       cache,
     });
     await screen.findByTestId('character-looks-form');
-    let lookPill = await screen.findByTestId(`${mockLookAngel1.look}-pill`);
+    let lookPill = screen.getByTestId(`${mockLookAngel1.look}-pill`);
     userEvent.click(lookPill);
-    await screen.findByRole('textbox', { name: 'clothes-input' });
+    screen.getByRole('textbox', { name: 'clothes-input' });
     lookPill = screen.getByTestId(`${mockLookAngel3.look}-pill`);
     userEvent.click(lookPill);
-    await screen.findByRole('textbox', { name: 'face-input' });
+    screen.getByRole('textbox', { name: 'face-input' });
     lookPill = screen.getByTestId(`${mockLookAngel5.look}-pill`);
     userEvent.click(lookPill);
-    await screen.findByRole('textbox', { name: 'eyes-input' });
+    screen.getByRole('textbox', { name: 'eyes-input' });
     lookPill = screen.getByTestId(`${mockLookAngel7.look}-pill`);
     userEvent.click(lookPill);
-    await screen.findByRole('textbox', { name: 'body-input' });
+    screen.getByRole('textbox', { name: 'body-input' });
     lookPill = screen.getByTestId(`${mockLookAngel9.look}-pill`);
     userEvent.click(lookPill);
-    await act(async () => await wait());
   });
 
   test('should set Look using text input', async () => {
@@ -127,11 +126,11 @@ describe('Rendering CharacterLooksForm', () => {
       cache,
     });
     await screen.findByTestId('character-looks-form');
-    const genderInput = (await screen.findByRole('textbox', { name: 'gender-input' })) as HTMLInputElement;
+    const genderInput = screen.getByRole('textbox', { name: 'gender-input' }) as HTMLInputElement;
     userEvent.type(genderInput, mockLookAngel1.look);
     expect(genderInput.value).toEqual(mockLookAngel1.look);
     const setButton = screen.getByRole('button', { name: 'SET' });
     userEvent.click(setButton);
-    await screen.findByRole('textbox', { name: 'clothes-input' });
+    screen.getByRole('textbox', { name: 'clothes-input' });
   });
 });

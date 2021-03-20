@@ -88,7 +88,7 @@ describe('Rendering BrainerGearForm', () => {
 
     const setButton = (await screen.findByRole('button', { name: 'SET' })) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(true);
-    const item1 = (await screen.findByRole('checkbox', { name: /implant syringe/i })) as HTMLInputElement;
+    const item1 = screen.getByRole('checkbox', { name: /implant syringe/i }) as HTMLInputElement;
     expect(item1.checked).toEqual(false);
     const item2 = screen.getByRole('checkbox', { name: /brain relay/i }) as HTMLInputElement;
     expect(item1.checked).toEqual(false);

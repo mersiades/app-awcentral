@@ -82,7 +82,7 @@ describe('Rendering WeaponsForm', () => {
     });
 
     await screen.findByTestId('weapons-form');
-    await screen.findByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S WEAPONS` });
+    screen.getByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S WEAPONS` });
     const bigGun = screen.getByTestId(`${mockWeaponsCreator.bigFuckOffGuns[0]}-pill`);
     const seriousGun1 = screen.getByTestId(`${mockWeaponsCreator.seriousGuns[0]}-pill`);
     const seriousGun2 = screen.getByTestId(`${mockWeaponsCreator.seriousGuns[1]}-pill`);

@@ -228,7 +228,7 @@ describe('Rendering CustomWeaponsForm', () => {
     });
 
     const weaponInput = (await screen.findByRole('textbox', { name: 'weapon-input' })) as HTMLInputElement;
-    const resetButton = (await screen.findByRole('button', { name: 'RESET' })) as HTMLButtonElement;
+    const resetButton = screen.getByRole('button', { name: 'RESET' }) as HTMLButtonElement;
     const removeButton = screen.getByRole('button', { name: 'REMOVE' }) as HTMLButtonElement;
     const addButton = screen.getByRole('button', { name: 'ADD' }) as HTMLButtonElement;
     const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
