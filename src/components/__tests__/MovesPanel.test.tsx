@@ -1,5 +1,3 @@
-import React from 'react';
-// import wait from 'waait';
 import { screen } from '@testing-library/react';
 
 import { customRenderForComponent } from '../../tests/test-utils';

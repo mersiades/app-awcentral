@@ -1,5 +1,3 @@
-import React from 'react';
-// import wait from 'waait';
 import userEvent from '@testing-library/user-event';
 import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
@@ -18,7 +16,7 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
-describe('Rendering CharacterStatsForm', () => {
+describe('Rendering CharacterGearForm', () => {
   let cache = new InMemoryCache();
   const mockGame = {
     ...mockGame5,
@@ -82,7 +80,7 @@ describe('Rendering CharacterStatsForm', () => {
     });
 
     await screen.findByTestId('character-gear-form');
-    const item = await screen.findByRole('listitem', { name: 'you-get-item-0' });
+    const item = screen.getByRole('listitem', { name: 'you-get-item-0' });
     userEvent.click(item);
 
     // Check the item has been put into the textarea
@@ -128,7 +126,7 @@ describe('Rendering CharacterStatsForm', () => {
     });
 
     await screen.findByTestId('character-gear-form');
-    const item = await screen.findByRole('listitem', { name: 'chooseable-listitem-0' });
+    const item = screen.getByRole('listitem', { name: 'chooseable-listitem-0' });
     const addButton = screen.getByRole('button', { name: /ADD/i }) as HTMLButtonElement;
     expect(addButton.disabled).toEqual(true);
 
