@@ -32,7 +32,7 @@ describe('Rendering CommsForm', () => {
   });
 
   test('should enable SET button after selecting comms app', () => {
-    const dropButton = screen.getByRole('button', { name: 'Open Drop' }) as HTMLButtonElement;
+    screen.getByRole('button', { name: 'Open Drop' }) as HTMLButtonElement;
     // FAILING: selectOptions() isn't finding any options. I think because using Grommet's Select wrapped around an HTML select
     // userEvent.selectOptions(dropButton, 'Discord');
   });

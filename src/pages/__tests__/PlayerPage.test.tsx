@@ -1,6 +1,4 @@
-import React from 'react';
-import wait from 'waait';
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import PlayerPage from '../PlayerPage';
@@ -35,7 +33,6 @@ describe('Rendering PlayerPage', () => {
       injectedGame: mockGame7,
       injectedUserId: mockKeycloakUserInfo1.sub,
     });
-    await act(async () => await wait());
 
     // Check base roles are rendered
     await screen.findByTestId('player-page');
@@ -48,7 +45,7 @@ describe('Rendering PlayerPage', () => {
 
     // Check that PlaybookPanel opens
     userEvent.click(playbookTab);
-    await screen.findByTestId('character-sheet');
+    screen.getByTestId('character-sheet');
     screen.getByRole('tabpanel', { name: 'Playbook Tab Contents' });
 
     // Check that MovesPanel opens

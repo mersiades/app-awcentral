@@ -1,11 +1,8 @@
-import React from 'react';
 import userEvent from '@testing-library/user-event';
-// import wait from 'waait';
 import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
 import SkinnerGearForm from '../SkinnerGearForm';
-import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
   mockCharacter2,
@@ -15,14 +12,6 @@ import {
 } from '../../../../tests/mocks';
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQuerySkinner } from '../../../../tests/mockQueries';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
-  };
-});
 
 describe('Rendering SkinnerGearForm', () => {
   let cache = new InMemoryCache();
@@ -81,7 +70,7 @@ describe('Rendering SkinnerGearForm', () => {
     });
 
     await screen.findByTestId('skinner-gear-form');
-    await screen.findByRole('heading', { name: `WHAT SKINNER GEAR DOES ${mockCharacter2.name?.toUpperCase()} HAVE?` });
+    screen.getByRole('heading', { name: `WHAT SKINNER GEAR DOES ${mockCharacter2.name?.toUpperCase()} HAVE?` });
     const weapon1 = screen.getByRole('checkbox', { name: mockSkinnerGearCreator.graciousWeaponChoices[0].item });
     const luxeItem1 = screen.getByRole('checkbox', {
       name: mockSkinnerGearCreator.luxeGearChoices[0].item + ' ' + mockSkinnerGearCreator.luxeGearChoices[0].note,

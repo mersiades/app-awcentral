@@ -85,7 +85,7 @@ describe('Rendering FollowersForm', () => {
     expect(setButton.disabled).toEqual(true);
 
     // Select characterization
-    const characterization = await screen.findByTestId(`${mockFollowersCreator.characterizationOptions[0]}-pill`);
+    const characterization = screen.getByTestId(`${mockFollowersCreator.characterizationOptions[0]}-pill`);
     userEvent.click(characterization);
     const descriptionBox = screen.getByTestId('description-tags-box');
     expect(descriptionBox.textContent?.toLowerCase()).toContain(mockFollowersCreator.characterizationOptions[0]);
@@ -117,7 +117,7 @@ describe('Rendering FollowersForm', () => {
     expect(surplusBox.textContent).toContain('1');
 
     // Check SET button is enabled
-    setButton = (await screen.findByRole('button', { name: 'SET' })) as HTMLButtonElement;
+    setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(false);
   });
 });

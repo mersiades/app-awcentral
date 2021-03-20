@@ -109,11 +109,10 @@ const CharacterStatsForm: FC = () => {
       animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
     >
       <Box width="85vw" align="start" style={{ maxWidth: '763px' }}>
-        <Box direction="row" fill="horizontal" justify="between" align="center">
+        <Box direction="row" fill="horizontal" justify="between" align="center" wrap={true}>
           <HeadingWS
             level={2}
             crustReady={crustReady}
-            textAlign="center"
             style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
           >{`WHAT ARE ${!!character?.name ? character.name.toUpperCase() : '...'}'S STRENGTHS AND WEAKNESSES?`}</HeadingWS>
           <ButtonWS

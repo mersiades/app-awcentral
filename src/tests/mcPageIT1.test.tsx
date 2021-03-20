@@ -56,8 +56,6 @@ describe('Testing MCPage functionality', () => {
 
     const welcomeHeading = await screen.findByRole('heading');
     expect(welcomeHeading.textContent).toEqual(`Welcome, ${mockKeycloakUserInfo2.preferred_username}`);
-
-    wait(1);
   });
 
   test('should remove invitee', async () => {
@@ -72,7 +70,7 @@ describe('Testing MCPage functionality', () => {
     let invitationsBox = await screen.findByTestId('invitations-box');
     expect(invitationsBox.textContent).toContain('john@email.com');
     userEvent.click(screen.getByTestId('john@email.com-trash-icon'));
-    invitationsBox = await screen.findByTestId('invitations-box');
+    invitationsBox = screen.getByTestId('invitations-box');
     // FAILING: The mock query is getting found, but the graphql cache isn't being updated
     // expect(invitationsBox.textContent).not.toContain('john@email.com');
   });
@@ -90,7 +88,7 @@ describe('Testing MCPage functionality', () => {
     userEvent.click(screen.getByRole('button', { name: 'Open Menu' }));
     userEvent.click(screen.getByRole('button', { name: 'Main menu' }));
 
-    const welcomeHeading = await screen.findByRole('heading');
+    const welcomeHeading = screen.getByRole('heading');
     expect(welcomeHeading.textContent).toEqual(`Welcome, ${mockKeycloakUserInfo2.preferred_username}`);
   });
 

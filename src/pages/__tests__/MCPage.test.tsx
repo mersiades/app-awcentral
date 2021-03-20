@@ -1,22 +1,11 @@
-import React from 'react';
-// import wait from 'waait';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { customRenderForComponent } from '../../tests/test-utils';
-import { mockKeycloakStub } from '../../../__mocks__/@react-keycloak/web';
-import { mockGame7, mockKeycloakUserInfo1, mockKeycloakUserInfo2 } from '../../tests/mocks';
-import { mockAllMoves } from '../../tests/mockQueries';
 import MCPage from '../MCPage';
+import { customRenderForComponent } from '../../tests/test-utils';
+import { mockGame7, mockKeycloakUserInfo1 } from '../../tests/mocks';
+import { mockAllMoves } from '../../tests/mockQueries';
 import { RoleType } from '../../@types/enums';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo2), initialized: true }),
-  };
-});
 
 describe('Rendering MCPage', () => {
   const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView;

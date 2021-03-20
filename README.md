@@ -34,7 +34,7 @@ However, CircleCI is configured to deploy to S3 buckets whenever there is a comm
 
 Therefore, the preferred deployment procedure is:
 
-- Do you work on a wriking branch (not `master`)
+- Do you work on a working branch (not `master`)
 - When finished, issue pull request
 - If good, merge pull request into `master`
 - Check staging environment for problems

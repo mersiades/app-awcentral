@@ -129,11 +129,10 @@ const CharacterHxForm: FC = () => {
       animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
     >
       <Box width="85vw" align="start" style={{ maxWidth: '742px' }} margin={{ bottom: '24px' }}>
-        <Box direction="row" fill="horizontal" justify="between" align="center">
+        <Box direction="row" fill="horizontal" justify="between" align="center" wrap={true}>
           <HeadingWS
             level={2}
             crustReady={crustReady}
-            textAlign="center"
             style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
           >{`WHAT HISTORY DOES ${!!character?.name ? character.name.toUpperCase() : '...'} HAVE?`}</HeadingWS>
           <ButtonWS
@@ -221,6 +220,13 @@ const CharacterHxForm: FC = () => {
         <Box pad="6px" style={{ maxWidth: '812px' }}>
           <StyledMarkdown>{hxInstructions}</StyledMarkdown>
         </Box>
+        <RedBox pad="12px" alignSelf="center">
+          <HeadingWS level={4} style={{ marginTop: '6px', marginBottom: '6px' }}>
+            {`${!!character?.name && character.name} the ${!!character?.playbook && decapitalize(character.playbook)}`}
+          </HeadingWS>
+          {!!character?.looks && <TextWS size="small">{character?.looks.map((look) => look.look).join(', ')}</TextWS>}
+        </RedBox>
+
         {!!character?.statsBlock && (
           <StatsBox
             stats={character.statsBlock.stats}

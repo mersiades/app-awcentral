@@ -1,19 +1,11 @@
-import React from 'react';
 import wait from 'waait';
 import userEvent from '@testing-library/user-event';
 import { InMemoryCache } from '@apollo/client';
-import { act, fireEvent, screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 
 import CharacterHxForm from '../CharacterHxForm';
 import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
-import {
-  blankCharacter,
-  mockCharacter1,
-  mockCharacter2,
-  mockGame5,
-  mockKeycloakUserInfo1,
-  mockPlaybookCreatorAngel,
-} from '../../../tests/mocks';
+import { mockCharacter1, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import { mockAdjustCharacterHx, mockPlaybookCreator, mockToggleStatHighlight } from '../../../tests/mockQueries';
 
@@ -24,6 +16,8 @@ jest.mock('@react-keycloak/web', () => {
     useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
   };
 });
+
+jest.setTimeout(10000);
 
 describe('Rendering CharacterHxForm', () => {
   let cache = new InMemoryCache();
@@ -62,7 +56,6 @@ describe('Rendering CharacterHxForm', () => {
     });
 
     await screen.findByTestId('character-hx-form');
-    await act(async () => await wait());
     screen.getByRole('button', { name: 'GO TO GAME' });
     screen.getByRole('heading', { name: `WHAT HISTORY DOES ${mockCharacter2.name?.toUpperCase()} HAVE?` });
     screen.getByRole('heading', { name: mockCharacter1.name });

@@ -1,17 +1,13 @@
-import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
-import VehicleForm from '../VehicleForm';
 import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
 import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
-import { PlaybookType } from '../../../@types/enums';
 import { mockSetVehicleCount, mockVehicleCreatorQuery } from '../../../tests/mockQueries';
 import { InMemoryCache } from '@apollo/client';
 import { Game } from '../../../@types/dataInterfaces';
 import VehiclesFormContainer from '../VehiclesFormContainer';
 import userEvent from '@testing-library/user-event';
-import wait from 'waait';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -22,8 +18,6 @@ jest.mock('@react-keycloak/web', () => {
 });
 
 describe('Rendering VehicleForm', () => {
-  const mockNavigationOnSet = jest.fn();
-
   let cache = new InMemoryCache();
 
   const mockGame: Game = {

@@ -1,22 +1,13 @@
-import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import wait from 'waait';
 
 import CharacterPlaybookForm from '../CharacterPlaybookForm';
-import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
 import { mockCharacter2, mockGame1, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import { mockPlaybooksQuery } from '../../../tests/mockQueries';
 import { PlaybookType } from '../../../@types/enums';
 
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
-  };
-});
+jest.setTimeout(10000);
 
 describe('Rendering CharacterPlaybookForm', () => {
   // test('should render CharacterPlaybookForm in initial state, with no character', async () => {
@@ -79,7 +70,6 @@ describe('Rendering CharacterPlaybookForm', () => {
     const battleBabeButton = screen.getByTestId(`${PlaybookType.battlebabe.toLowerCase()}-button`);
     userEvent.click(battleBabeButton);
 
-    await act(async () => await wait(0));
     await screen.findByRole('heading', { name: 'Battlebabe' });
     const selectBattleBabe = screen.getByRole('button', { name: 'SELECT Battlebabe' });
     userEvent.click(selectBattleBabe);
