@@ -25,6 +25,7 @@ const CharacterPlaybookForm: FC = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [startFadeOut, setStartFadeOut] = useState(false);
   const [sortedPlaybooks, setSortedPlaybooks] = useState<Playbook[]>([]);
+  const [showSwitchWarning, setShowSwitchWarning] = useState<PlaybookType | undefined>();
   const [showResetWarning, setShowResetWarning] = useState<PlaybookType | undefined>();
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -58,7 +59,7 @@ const CharacterPlaybookForm: FC = () => {
       !!userGameRole.characters[0].playbook &&
       userGameRole.characters[0].playbook !== playbookType
     ) {
-      setShowResetWarning(playbookType);
+      setShowSwitchWarning(playbookType);
     } else {
       handlePlaybookSelect(playbookType);
     }
@@ -73,7 +74,7 @@ const CharacterPlaybookForm: FC = () => {
       } catch (error) {
         console.error(error);
       }
-      setShowResetWarning(undefined);
+      setShowSwitchWarning(undefined);
       history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }
@@ -112,12 +113,21 @@ const CharacterPlaybookForm: FC = () => {
       className={startFadeOut ? 'fadeOut' : ''}
       animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
     >
-      {!!showResetWarning && (
+      {!!showSwitchWarning && (
         <WarningDialog
           title="Switch playbook?"
           buttonTitle="SWITCH"
           text="Changing the playbook will reset the character."
-          handleClose={() => setShowResetWarning(undefined)}
+          handleClose={() => setShowSwitchWarning(undefined)}
+          handleConfirm={() => handlePlaybookSelect(showSwitchWarning)}
+        />
+      )}
+      {!!showResetWarning && (
+        <WarningDialog
+          title={`Reset ${decapitalize(showResetWarning)}?`}
+          buttonTitle="RESET"
+          text={`You'll remain as the ${decapitalize(showResetWarning)} but all other character info will be lost.`}
+          handleClose={() => setShowSwitchWarning(undefined)}
           handleConfirm={() => handlePlaybookSelect(showResetWarning)}
         />
       )}
@@ -148,22 +158,36 @@ const CharacterPlaybookForm: FC = () => {
               <HeadingWS crustReady={crustReady} level={2} alignSelf="center" margin="0px">
                 {decapitalize(selectedPlaybook.playbookType)}
               </HeadingWS>
-              <ButtonWS
-                label={
-                  settingPlaybook ? (
-                    <Spinner fillColor="#FFF" width="230px" height="36px" />
-                  ) : (
-                    `SELECT ${decapitalize(selectedPlaybook.playbookType)}`
-                  )
-                }
-                primary
-                size="large"
-                onClick={() => {
-                  setStartFadeOut(true);
-                  checkPlaybookReset(selectedPlaybook.playbookType);
-                }}
-                style={{ width: '295px' }}
-              />
+              {selectedPlaybook.playbookType !== character?.playbook ? (
+                <ButtonWS
+                  label={
+                    settingPlaybook ? (
+                      <Spinner fillColor="#FFF" width="230px" height="36px" />
+                    ) : (
+                      `SELECT ${decapitalize(selectedPlaybook.playbookType)}`
+                    )
+                  }
+                  primary
+                  size="large"
+                  onClick={() => {
+                    setStartFadeOut(true);
+                    checkPlaybookReset(selectedPlaybook.playbookType);
+                  }}
+                  style={{ width: '295px' }}
+                />
+              ) : (
+                <ButtonWS
+                  label={settingPlaybook ? <Spinner fillColor="#FFF" width="230px" height="36px" /> : 'RESET'}
+                  secondary
+                  size="large"
+                  onClick={() => {
+                    setStartFadeOut(true);
+                    setShowResetWarning(selectedPlaybook.playbookType);
+                    // checkPlaybookReset(selectedPlaybook.playbookType);
+                  }}
+                  style={{ width: '295px' }}
+                />
+              )}
             </Box>
             <Box overflow="auto" style={{ maxWidth: '856px', maxHeight: '30vh' }}>
               <StyledMarkdown>{selectedPlaybook.intro}</StyledMarkdown>

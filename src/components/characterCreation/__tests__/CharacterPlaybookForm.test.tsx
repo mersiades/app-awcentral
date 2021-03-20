@@ -66,7 +66,7 @@ describe('Rendering CharacterPlaybookForm', () => {
     });
 
     await screen.findByRole('heading', { name: 'Angel' });
-    screen.getByRole('button', { name: 'SELECT Angel' });
+    screen.getByRole('button', { name: 'RESET' });
     const battleBabeButton = screen.getByTestId(`${PlaybookType.battlebabe.toLowerCase()}-button`);
     userEvent.click(battleBabeButton);
 
