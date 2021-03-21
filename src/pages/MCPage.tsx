@@ -1,10 +1,11 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Box, Tabs, Tab, ThemeContext, Collapsible } from 'grommet';
 import { useMutation, useQuery } from '@apollo/client';
 
 import GamePanel from '../components/gamePanel/GamePanel';
 import MovesPanel from '../components/MovesPanel';
+import McPanel from '../components/mcPanel/McPanel';
 import ThreatsPanel from '../components/threatsPanel/ThreatsPanel';
 import NpcsPanel from '../components/npcsPanel/NpcsPanel';
 import MessagesPanel from '../components/messagesPanel/MessagesPanel';
@@ -44,7 +45,7 @@ export interface LeftPanelState {
 
 const MCPage: FC = () => {
   const maxSidePanel = 3;
-  const sidePanelWidth = 25;
+  const sidePanelWidth = 33;
 
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   /**
@@ -62,7 +63,7 @@ const MCPage: FC = () => {
    * 2 - MCMovesPanel
    * 3 - None, side panel is closed
    */
-  const [sidePanel, setSidePanel] = useState<number>(0);
+  const [sidePanel, setSidePanel] = useState<number>(2);
   const [leftPanel, setLeftPanel] = useState<LeftPanelState>({ type: 'MESSAGES' });
   const [showDeleteGameDialog, setShowDeleteGameDialog] = useState(false);
 
@@ -158,7 +159,7 @@ const MCPage: FC = () => {
               />
             )}
             {sidePanel === 1 && !!allMoves && <MovesPanel allMoves={allMoves} />}
-            {sidePanel === 2 && <p onClick={() => setSidePanel(3)}>MCMovesPanel</p>}
+            {sidePanel === 2 && <McPanel />}
           </SidePanel>
         </Collapsible>
         <MainContainer fill sidePanel={sidePanel} maxPanels={maxSidePanel} shinkWidth={sidePanelWidth}>
@@ -185,7 +186,7 @@ const MCPage: FC = () => {
           >
             <Tab title="Game" />
             {allMoves && <Tab title="Moves" />}
-            <Tab title="MC Moves" />
+            <Tab title="MC" />
           </Tabs>
           <Tabs activeIndex={rightPanel} onActive={(tab) => (tab === rightPanel ? setRightPanel(2) : setRightPanel(tab))}>
             <Tab title="Threats" />
