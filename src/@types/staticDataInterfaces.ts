@@ -170,6 +170,7 @@ export interface AngelKitCreator {
 export interface BrainerGearCreator {
   id: string;
   gear: string[];
+  __typename?: 'BrainerGearCreator';
 }
 
 export interface CustomWeaponsCreator {
@@ -184,6 +185,7 @@ export interface CustomWeaponsCreator {
   handBaseOptions: TaggedItem[];
   handOptionsInstructions: string;
   handOptionsOptions: ItemCharacteristic[];
+  __typename?: 'CustomWeaponsCreator';
 }
 
 export interface SecurityOption {
@@ -375,12 +377,14 @@ export interface CarCreator {
   looks: string[];
   weaknesses: string[];
   battleOptions: VehicleBattleOption[];
+  __typename?: 'CarCreator';
 }
 
 export interface BattleVehicleCreator {
   id: string;
   vehicleType: VehicleType;
   battleVehicleOptions: VehicleBattleOption[];
+  __typename?: 'BattleVehicleCreator';
 }
 
 export interface BikeCreator {
@@ -392,6 +396,7 @@ export interface BikeCreator {
   looks: string[];
   weaknesses: string[];
   battleOptions: VehicleBattleOption[];
+  __typename?: 'BikeCreator';
 }
 
 export interface VehicleCreator {
@@ -409,6 +414,7 @@ export interface ThreatCreatorContent {
   threatType: ThreatType;
   impulses: string[];
   moves: [];
+  __typename?: 'ThreatCreatorContent';
 }
 
 export interface ThreatCreator {
@@ -417,4 +423,41 @@ export interface ThreatCreator {
   essentialThreatInstructions: string;
   threats: ThreatCreatorContent[];
   threatNames: string[];
+  __typename?: 'ThreatCreator';
+}
+
+// --------------------------------------------- Mc Content interfaces --------------------------------------------- //
+
+export interface ContentItem {
+  id: string;
+  title: string;
+  content: string;
+  __typename?: 'ContentItem';
+}
+
+export interface TickerList {
+  id: string;
+  title: string;
+  items: string[];
+  __typename?: 'TickerList';
+}
+
+export interface FirstSessionContent {
+  id: string;
+  intro: string;
+  duringCharacterCreation: ContentItem;
+  duringFirstSession: TickerList;
+  threatMapInstructions: ContentItem;
+  afterFirstSession: TickerList;
+  __typename?: 'FirstSessionContent';
+}
+
+export interface McContent {
+  id: string;
+  firstSessionContent: FirstSessionContent;
+  decisionMaking: ContentItem;
+  core: TickerList[];
+  harm: ContentItem[];
+  selected: ContentItem[];
+  __typename?: 'McContent';
 }
