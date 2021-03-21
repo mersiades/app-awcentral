@@ -426,7 +426,7 @@ export interface ThreatCreator {
   __typename?: 'ThreatCreator';
 }
 
-// --------------------------------------------- Mc Content interfaces --------------------------------------------- //
+// --------------------------------------------- MC content interfaces --------------------------------------------- //
 
 export interface ContentItem {
   id: string;

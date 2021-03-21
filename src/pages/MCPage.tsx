@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Box, Tabs, Tab, ThemeContext, Collapsible } from 'grommet';
 import { useMutation, useQuery } from '@apollo/client';
