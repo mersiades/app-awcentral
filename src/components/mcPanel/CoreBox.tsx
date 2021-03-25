@@ -3,8 +3,8 @@ import { Box } from 'grommet';
 import TickerListBox from './TickerListBox';
 import ContentItemBox from './ContentItemBox';
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
-import Spinner from '../Spinner';
 import { useMcContent } from '../../contexts/mcContentContext';
+import Spinner from '../Spinner';
 
 const CoreBox = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -17,7 +17,7 @@ const CoreBox = () => {
         {!!core && !!decisionMaking ? (
           <>
             {core.map((ticker) => (
-              <TickerListBox tickerList={ticker} />
+              <TickerListBox key={ticker.id} tickerList={ticker} />
             ))}
             <ContentItemBox contentItem={decisionMaking} />
           </>

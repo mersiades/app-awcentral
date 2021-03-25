@@ -12,7 +12,7 @@ const McHarmBox = () => {
   return (
     <CollapsiblePanelBox title="Harm rules">
       <Box fill="horizontal" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
-        {!!harm && harm.map((item) => <ContentItemBox contentItem={item} />)}
+        {!!harm && harm.map((item) => <ContentItemBox key={item.id} contentItem={item} />)}
       </Box>
     </CollapsiblePanelBox>
   );

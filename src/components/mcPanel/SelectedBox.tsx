@@ -12,7 +12,7 @@ const SelectedBox = () => {
   return (
     <CollapsiblePanelBox title="Selected MC rules">
       <Box fill="horizontal" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
-        {!!selected && selected.map((item) => <ContentItemBox contentItem={item} />)}
+        {!!selected && selected.map((item) => <ContentItemBox key={item.id} contentItem={item} />)}
       </Box>
     </CollapsiblePanelBox>
   );
