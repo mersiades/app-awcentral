@@ -63,7 +63,7 @@ const MCPage: FC = () => {
    * 2 - MCMovesPanel
    * 3 - None, side panel is closed
    */
-  const [sidePanel, setSidePanel] = useState<number>(2);
+  const [sidePanel, setSidePanel] = useState<number>(0);
   const [leftPanel, setLeftPanel] = useState<LeftPanelState>({ type: 'MESSAGES' });
   const [showDeleteGameDialog, setShowDeleteGameDialog] = useState(false);
 

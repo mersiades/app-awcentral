@@ -28,13 +28,13 @@ const ContentItemBox: FC<ContentItemBoxProps> = ({ contentItem }) => {
         <Box direction="row" justify="start" align="center" pad="12px" gap="12px">
           {showDetails.includes(contentItem.id) ? (
             <FormUp
-              data-testid="hide-move-details-icon"
+              data-testid={`${contentItem.title}-up-icon`}
               onClick={() => toggleShowDetails(contentItem.id)}
               style={{ cursor: 'pointer' }}
             />
           ) : (
             <FormDown
-              data-testid="show-move-details-icon"
+              data-testid={`${contentItem.title}-down-icon`}
               onClick={() => toggleShowDetails(contentItem.id)}
               style={{ cursor: 'pointer' }}
             />
