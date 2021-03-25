@@ -3,8 +3,8 @@ import { Box } from 'grommet';
 import TickerListBox from './TickerListBox';
 import ContentItemBox from './ContentItemBox';
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
-import { useMcContent } from '../../contexts/mcContentContext';
 import Spinner from '../Spinner';
+import { useMcContent } from '../../contexts/mcContentContext';
 
 const CoreBox = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
