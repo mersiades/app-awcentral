@@ -28,13 +28,13 @@ const TickerListBox: FC<TickerListBoxProps> = ({ tickerList }) => {
         <Box direction="row" justify="start" align="center" pad="12px" gap="12px">
           {showDetails.includes(tickerList.id) ? (
             <FormUp
-              data-testid="hide-move-details-icon"
+              data-testid={`${tickerList.title}-up-icon`}
               onClick={() => toggleShowDetails(tickerList.id)}
               style={{ cursor: 'pointer' }}
             />
           ) : (
             <FormDown
-              data-testid="show-move-details-icon"
+              data-testid={`${tickerList.title}-down-icon`}
               onClick={() => toggleShowDetails(tickerList.id)}
               style={{ cursor: 'pointer' }}
             />
