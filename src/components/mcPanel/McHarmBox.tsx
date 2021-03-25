@@ -26,6 +26,8 @@ const McHarmBox = () => {
       setShowHarmDetails([...showHarmDetails, tickerId]);
     }
   };
+
+  // ------------------------------------------------- Render component -------------------------------------------------- //
   return (
     <Box
       data-testid="mc-harm-box"

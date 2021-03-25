@@ -1,6 +1,7 @@
 import { Box } from 'grommet';
 
 import CoreBox from './CoreBox';
+import FirstSessionBox from './FirstSessionBox';
 import McHarmBox from './McHarmBox';
 import SelectedBox from './SelectedBox';
 
@@ -10,6 +11,7 @@ const McPanel = () => {
       <CoreBox />
       <McHarmBox />
       <SelectedBox />
+      <FirstSessionBox />
     </Box>
   );
 };
