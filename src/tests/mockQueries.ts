@@ -2563,7 +2563,7 @@ export const mockMcContentQuery: MockedResponse = {
     query: MC_CONTENT,
   },
   result: () => {
-    console.log('mockMcContentQuery');
+    // console.log('mockMcContentQuery');
     return {
       data: {
         __typename: 'Query',
