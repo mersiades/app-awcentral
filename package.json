@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.2.2",
     "@react-keycloak/web": "^3.4.0",
-    "@stomp/stompjs": "^6.0.0",
+    "@testing-library/user-event": "^13.0.16",
     "apollo-link-http": "^1.5.17",
     "dayjs": "^1.10.3",
     "fontfaceobserver": "^2.1.0",
@@ -55,7 +55,6 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.1",
     "@testing-library/react": "^11.2.2",
-    "@testing-library/user-event": "^12.0.11",
     "@types/fontfaceobserver": "^0.0.6",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.168",

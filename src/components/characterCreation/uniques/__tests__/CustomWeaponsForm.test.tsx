@@ -142,6 +142,7 @@ const mockGame: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
     { id: 'mock-keycloak-id-3', displayName: 'mock-user-3' },
