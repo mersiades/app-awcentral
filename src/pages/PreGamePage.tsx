@@ -5,7 +5,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Box, Button } from 'grommet';
 import CloseButton from '../components/CloseButton';
 import { HeadingWS, RedBox, TextWS } from '../config/grommetConfig';
-import FINISH_PRE_GAME, { FinishPreGameData, FinishPreGameVars } from '../mutations/finishPreGame';
+import FINISH_PRE_GAME, { FinishPreGameData, FinishPreGameVars, getFinishPreGameOR } from '../mutations/finishPreGame';
 import { useGame } from '../contexts/gameContext';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { Character } from '../@types/dataInterfaces';
@@ -101,7 +101,10 @@ const PreGamePage = () => {
   const handleStartGame = async () => {
     if (!!game) {
       try {
-        await finishPreGame({ variables: { gameId: game.id } });
+        await finishPreGame({
+          variables: { gameId: game.id },
+          optimisticResponse: getFinishPreGameOR(game.id) as FinishPreGameData,
+        });
         history.push(pathToGame);
       } catch (error) {
         console.error(error);
