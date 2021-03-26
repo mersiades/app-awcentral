@@ -87,7 +87,7 @@ export const RightMainContainer = styled(Box as React.FC<RightMainProps & BoxPro
   }
 );
 
-export const StyledMarkdown = styled(ReactMarkdown)`
+export const StyledMarkdown = styled(ReactMarkdown as React.FC<ReactMarkdown.ReactMarkdownProps>)`
   cursor: default;
   & p {
     margin: unset;

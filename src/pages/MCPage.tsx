@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Box, Tabs, Tab, ThemeContext, Collapsible } from 'grommet';
+import { Box, Tabs, Tab, ThemeContext, Collapsible, Carousel, ResponsiveContext } from 'grommet';
 import { useMutation, useQuery } from '@apollo/client';
 
 import GamePanel from '../components/gamePanel/GamePanel';
@@ -12,17 +12,25 @@ import MessagesPanel from '../components/messagesPanel/MessagesPanel';
 import InvitationForm from '../components/InvitationForm';
 import GameForm from '../components/GameForm';
 import WarningDialog from '../components/dialogs/WarningDialog';
-import { Footer, LeftMainContainer, MainContainer, RightMainContainer, SidePanel } from '../components/styledComponents';
+import {
+  Footer,
+  LeftMainContainer,
+  MainContainer,
+  RightMainContainer,
+  SidePanel,
+  StyledMarkdown,
+} from '../components/styledComponents';
 import ALL_MOVES, { AllMovesData } from '../queries/allMoves';
 import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
 import DELETE_GAME, { DeleteGameData, DeleteGameVars } from '../mutations/deleteGame';
 import REMOVE_INVITEE, { RemoveInviteeData, RemoveInviteeVars } from '../mutations/removeInvitee';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { useGame } from '../contexts/gameContext';
-import { customTabStyles } from '../config/grommetConfig';
+import { customTabStyles, TextWS } from '../config/grommetConfig';
 import '../assets/styles/transitions.css';
 import GameNavbar from '../components/GameNavbar';
 import { gamePageBottomNavbarHeight } from '../config/constants';
+import { useMcContent } from '../contexts/mcContentContext';
 
 export const background = {
   color: 'black',
@@ -71,10 +79,12 @@ const MCPage: FC = () => {
 
   const { gameId } = useParams<{ gameId: string }>();
   const history = useHistory();
+  const size = React.useContext(ResponsiveContext);
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, setGameContext } = useGame();
   const { id: userId } = useKeycloakUser();
+  const { tickerData } = useMcContent();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
@@ -176,7 +186,7 @@ const MCPage: FC = () => {
           </RightMainContainer>
         </MainContainer>
       </div>
-      <Footer direction="row" justify="between" align="center" height={`${gamePageBottomNavbarHeight}px`}>
+      <Footer direction="row" justify="between" align="center" height={`${gamePageBottomNavbarHeight}px`} wrap>
         <ThemeContext.Extend value={customTabStyles}>
           <Tabs
             activeIndex={sidePanel}
@@ -188,6 +198,25 @@ const MCPage: FC = () => {
             {allMoves && <Tab title="Moves" />}
             <Tab title="MC" />
           </Tabs>
+
+          {size !== 'small' && (
+            <Carousel play={60000} controls={false}>
+              <div />
+              {tickerData?.map((tickerItem, index) => (
+                <div
+                  key={tickerItem.category + index}
+                  style={{
+                    width: 'calc(100vw - 625px)',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <StyledMarkdown>{tickerItem.content}</StyledMarkdown>
+                </div>
+              ))}
+            </Carousel>
+          )}
+
           <Tabs activeIndex={rightPanel} onActive={(tab) => (tab === rightPanel ? setRightPanel(2) : setRightPanel(tab))}>
             <Tab title="Threats" />
             <Tab title="NPCs" />

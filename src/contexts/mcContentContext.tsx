@@ -4,12 +4,18 @@ import { ContentItem, FirstSessionContent, McContent, TickerList } from '../@typ
 import MC_CONTENT, { McContentData } from '../queries/mcContent';
 import { useKeycloak } from '@react-keycloak/web';
 
+interface TickerItem {
+  category: string;
+  content: string;
+}
+
 interface IMcContentContext {
   firstSession?: FirstSessionContent;
   decisionMaking?: ContentItem;
   core?: TickerList[];
   harm?: ContentItem[];
   selected?: ContentItem[];
+  tickerData?: TickerItem[];
 }
 
 interface McContentProviderProps {
@@ -35,6 +41,20 @@ export const McContentProvider: FC<McContentProviderProps> = ({ children, inject
   useEffect(() => {
     if (!!mcContentData) {
       const content = mcContentData.mcContent;
+
+      const tickerData = content.core
+        .map((tickerList: TickerList) => {
+          let array: TickerItem[] = [];
+
+          tickerList.items.forEach((item) => {
+            array = [...array, { category: tickerList.title, content: item }];
+          });
+
+          return array;
+        })
+        .flat();
+
+      console.log(`tickerData`, tickerData);
       setMcContent({
         ...mcContent,
         firstSession: content.firstSessionContent,
@@ -42,6 +62,7 @@ export const McContentProvider: FC<McContentProviderProps> = ({ children, inject
         core: content.core,
         harm: content.harm,
         selected: content.selected,
+        tickerData,
       });
     }
   }, [mcContentData]);
