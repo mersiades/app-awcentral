@@ -54,7 +54,6 @@ export const McContentProvider: FC<McContentProviderProps> = ({ children, inject
         })
         .flat();
 
-      console.log(`tickerData`, tickerData);
       setMcContent({
         ...mcContent,
         firstSession: content.firstSessionContent,

@@ -31,6 +31,7 @@ import '../assets/styles/transitions.css';
 import GameNavbar from '../components/GameNavbar';
 import { gamePageBottomNavbarHeight } from '../config/constants';
 import { useMcContent } from '../contexts/mcContentContext';
+import FirstSessionDialog from '../components/dialogs/FirstSessionDialog';
 
 export const background = {
   color: 'black',
@@ -144,11 +145,9 @@ const MCPage: FC = () => {
         return <MessagesPanel />;
     }
   };
-
-  console.log(`game`, game);
-
   return (
     <Box fill background={background}>
+      {game?.showFirstSession && game.hasFinishedPreGame && <FirstSessionDialog />}
       {!!game && showDeleteGameDialog && (
         <WarningDialog
           title="Delete game?"
