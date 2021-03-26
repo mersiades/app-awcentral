@@ -40,8 +40,10 @@ import {
   BrainerGearCreator,
   CarCreator,
   CharacterMove,
+  ContentItem,
   CustomWeaponsCreator,
   EstablishmentCreator,
+  FirstSessionContent,
   FollowersCreator,
   FollowersOption,
   GangCreator,
@@ -51,6 +53,7 @@ import {
   HoldingCreator,
   HoldingOption,
   Look,
+  McContent,
   Move,
   MoveAction,
   Name,
@@ -64,6 +67,7 @@ import {
   SkinnerGearItem,
   StatModifier,
   StatsOption,
+  TickerList,
   VehicleBattleOption,
   VehicleCreator,
   VehicleFrame,
@@ -434,26 +438,6 @@ export const dummyBattleOption: VehicleBattleOption = {
   battleOptionType: BattleOptionType.speed,
   name: '+1speed',
 };
-
-// export const dummyCarCreator: CarCreator = {
-//   id: 'dummy',
-//   introInstructions: 'dummy',
-//   frames: [dummyVehicleFrame],
-//   strengths: [],
-//   looks: [],
-//   weaknesses: [],
-//   battleOptions: [dummyBattleOption],
-// };
-
-// export const dummyBikeCreator: BikeCreator = {
-//   id: 'dummy',
-//   introInstructions: 'dummy',
-//   frame: dummyVehicleFrame,
-//   strengths: [],
-//   looks: [],
-//   weaknesses: [],
-//   battleOptions: [dummyBattleOption],
-// };
 
 // ---------------------------------------------------- Mock Users ---------------------------------------------------- //
 
@@ -895,6 +879,7 @@ export const mockGame1: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1' },
   players: [{ displayName: 'mock-user-2', id: 'mock-keycloak-id-2' }],
   gameRoles: [
@@ -925,6 +910,7 @@ export const mockGame2: Game = {
   commsApp: 'Zoom',
   commsUrl: 'https://zoom.com/urltozoomchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [{ displayName: 'mock-user-1', id: 'mock-keycloak-id-1' }],
   gameRoles: [
@@ -955,6 +941,7 @@ export const mockGame3: Game = {
   commsApp: '',
   commsUrl: '',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1' },
   players: [],
   gameRoles: [
@@ -978,6 +965,7 @@ export const mockGame4: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [{ id: 'mock-keycloak-id-3', displayName: 'mock-user-3' }],
   gameRoles: [
@@ -1010,6 +998,7 @@ export const mockGame5: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   gameMessages: [],
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
@@ -1054,6 +1043,7 @@ export const mockGame6: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
     { id: 'mock-keycloak-id-3', displayName: 'mock-user-3' },
@@ -1068,22 +1058,6 @@ export const mockGame6: Game = {
       threats: [],
       characters: [],
     },
-    // {
-    //   id: 'mock-gameRole-id-7',
-    //   role: RoleType.player,
-    //   userId: 'mock-keycloak-id-3',
-    //   npcs: [],
-    //   threats: [],
-    //   characters: [{ ...mockCharacter1, hasCompletedCharacterCreation: true }],
-    // },
-    // {
-    //   id: 'mock-gameRole-id-8',
-    //   role: RoleType.player,
-    //   userId: 'mock-keycloak-id-1',
-    //   npcs: [],
-    //   threats: [],
-    //   characters: [{ ...mockCharacter2, hasCompletedCharacterCreation: true, hxBlock: [] }],
-    // },
   ],
   invitees: [],
   gameMessages: [],
@@ -1097,6 +1071,7 @@ export const mockGame7: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   gameMessages: [],
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
@@ -2142,6 +2117,52 @@ export const mockPlaybookCreatorSavvyhead: PlaybookCreator = {
   playbookType: PlaybookType.savvyhead,
   movesInstructions: 'You get all the basic moves. Choose 3 savvyhead moves. ',
   playbookUniqueCreator: mockUniqueCreatorSavvyhead,
+};
+
+// ------------------------------------------------------- Mock MC Content --------------------------------------------------- //
+
+const generateContentItem = (identifier: string): ContentItem => ({
+  id: `content-item-${identifier}-id`,
+  title: `content-item-${identifier}-title`,
+  content: `content-item-${identifier}-content`,
+  __typename: 'ContentItem',
+});
+
+export const mockContentItem1 = generateContentItem('1');
+export const mockContentItem2 = generateContentItem('2');
+export const mockContentItem3 = generateContentItem('3');
+export const mockContentItem4 = generateContentItem('4');
+
+const generateTickerList = (identifier: string): TickerList => ({
+  id: `ticker-list-${identifier}-id`,
+  title: `ticker-list-${identifier}-title`,
+  items: [`ticker-list-${identifier}-item-1`, `ticker-list-${identifier}-item-2`],
+  __typename: 'TickerList',
+});
+
+export const mockTickerList1 = generateTickerList('1');
+export const mockTickerList2 = generateTickerList('2');
+export const mockTickerList3 = generateTickerList('3');
+export const mockTickerList4 = generateTickerList('4');
+
+export const mockFirstSession: FirstSessionContent = {
+  id: 'mock-first-session-id',
+  intro: 'mock-first-session-intro',
+  duringCharacterCreation: generateContentItem('during-char-creation'),
+  duringFirstSession: generateTickerList('during-1st-session'),
+  threatMapInstructions: generateContentItem('threat-map-instr'),
+  afterFirstSession: generateTickerList('after-1st-session'),
+  __typename: 'FirstSessionContent',
+};
+
+export const mockMcContent: McContent = {
+  id: 'mock-content-item-id',
+  firstSessionContent: mockFirstSession,
+  decisionMaking: generateContentItem('decision-making'),
+  core: [mockTickerList1, mockTickerList2, mockTickerList3, mockTickerList4],
+  harm: [mockContentItem1, mockContentItem2],
+  selected: [mockContentItem3, mockContentItem4],
+  __typename: 'McContent',
 };
 
 // ------------------------------------------------------- Mock Playbooks --------------------------------------------------- //

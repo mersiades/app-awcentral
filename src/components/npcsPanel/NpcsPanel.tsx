@@ -1,5 +1,5 @@
+import { useState } from 'react';
 import { Box } from 'grommet';
-import React, { useState } from 'react';
 import { Npc } from '../../@types/dataInterfaces';
 import { ButtonWS, HeadingWS } from '../../config/grommetConfig';
 import { useFonts } from '../../contexts/fontContext';

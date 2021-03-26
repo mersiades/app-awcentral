@@ -1,27 +1,37 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Box, Tabs, Tab, ThemeContext, Collapsible } from 'grommet';
+import { Box, Tabs, Tab, ThemeContext, Collapsible, Carousel, ResponsiveContext } from 'grommet';
 import { useMutation, useQuery } from '@apollo/client';
 
 import GamePanel from '../components/gamePanel/GamePanel';
 import MovesPanel from '../components/MovesPanel';
+import McPanel from '../components/mcPanel/McPanel';
 import ThreatsPanel from '../components/threatsPanel/ThreatsPanel';
 import NpcsPanel from '../components/npcsPanel/NpcsPanel';
 import MessagesPanel from '../components/messagesPanel/MessagesPanel';
 import InvitationForm from '../components/InvitationForm';
 import GameForm from '../components/GameForm';
 import WarningDialog from '../components/dialogs/WarningDialog';
-import { Footer, LeftMainContainer, MainContainer, RightMainContainer, SidePanel } from '../components/styledComponents';
+import {
+  Footer,
+  LeftMainContainer,
+  MainContainer,
+  RightMainContainer,
+  SidePanel,
+  StyledMarkdown,
+} from '../components/styledComponents';
 import ALL_MOVES, { AllMovesData } from '../queries/allMoves';
 import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
 import DELETE_GAME, { DeleteGameData, DeleteGameVars } from '../mutations/deleteGame';
 import REMOVE_INVITEE, { RemoveInviteeData, RemoveInviteeVars } from '../mutations/removeInvitee';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { useGame } from '../contexts/gameContext';
-import { customTabStyles } from '../config/grommetConfig';
+import { customTabStyles, TextWS } from '../config/grommetConfig';
 import '../assets/styles/transitions.css';
 import GameNavbar from '../components/GameNavbar';
 import { gamePageBottomNavbarHeight } from '../config/constants';
+import { useMcContent } from '../contexts/mcContentContext';
+import FirstSessionDialog from '../components/dialogs/FirstSessionDialog';
 
 export const background = {
   color: 'black',
@@ -44,7 +54,7 @@ export interface LeftPanelState {
 
 const MCPage: FC = () => {
   const maxSidePanel = 3;
-  const sidePanelWidth = 25;
+  const sidePanelWidth = 33;
 
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   /**
@@ -70,10 +80,12 @@ const MCPage: FC = () => {
 
   const { gameId } = useParams<{ gameId: string }>();
   const history = useHistory();
+  const size = React.useContext(ResponsiveContext);
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, setGameContext } = useGame();
   const { id: userId } = useKeycloakUser();
+  const { tickerData } = useMcContent();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
@@ -133,9 +145,9 @@ const MCPage: FC = () => {
         return <MessagesPanel />;
     }
   };
-
   return (
     <Box fill background={background}>
+      {game?.showFirstSession && game.hasFinishedPreGame && <FirstSessionDialog />}
       {!!game && showDeleteGameDialog && (
         <WarningDialog
           title="Delete game?"
@@ -158,7 +170,7 @@ const MCPage: FC = () => {
               />
             )}
             {sidePanel === 1 && !!allMoves && <MovesPanel allMoves={allMoves} />}
-            {sidePanel === 2 && <p onClick={() => setSidePanel(3)}>MCMovesPanel</p>}
+            {sidePanel === 2 && <McPanel />}
           </SidePanel>
         </Collapsible>
         <MainContainer fill sidePanel={sidePanel} maxPanels={maxSidePanel} shinkWidth={sidePanelWidth}>
@@ -175,7 +187,7 @@ const MCPage: FC = () => {
           </RightMainContainer>
         </MainContainer>
       </div>
-      <Footer direction="row" justify="between" align="center" height={`${gamePageBottomNavbarHeight}px`}>
+      <Footer direction="row" justify="between" align="center" height={`${gamePageBottomNavbarHeight}px`} wrap>
         <ThemeContext.Extend value={customTabStyles}>
           <Tabs
             activeIndex={sidePanel}
@@ -185,8 +197,28 @@ const MCPage: FC = () => {
           >
             <Tab title="Game" />
             {allMoves && <Tab title="Moves" />}
-            <Tab title="MC Moves" />
+            <Tab title="MC" />
           </Tabs>
+
+          {size !== 'small' && (
+            <Carousel play={60000} controls={false}>
+              <div />
+              {tickerData?.map((tickerItem, index) => (
+                <div
+                  key={tickerItem.category + index}
+                  style={{
+                    width: 'calc(100vw - 625px)',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textAlign: 'center',
+                  }}
+                >
+                  <StyledMarkdown>{tickerItem.content}</StyledMarkdown>
+                </div>
+              ))}
+            </Carousel>
+          )}
+
           <Tabs activeIndex={rightPanel} onActive={(tab) => (tab === rightPanel ? setRightPanel(2) : setRightPanel(tab))}>
             <Tab title="Threats" />
             <Tab title="NPCs" />

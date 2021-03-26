@@ -14,6 +14,8 @@ import { mockKeycloakUser1 } from './mocks';
 import { GameProvider } from '../contexts/gameContext';
 import { Character, Game } from '../@types/dataInterfaces';
 import { InMemoryCache } from '@apollo/client';
+import { McContent } from '../@types/staticDataInterfaces';
+import { McContentProvider } from '../contexts/mcContentContext';
 
 interface CustomRenderOptions {
   isAuthenticated?: boolean;
@@ -25,6 +27,7 @@ interface CustomRenderOptions {
   injectedUserId?: string;
   injectedCharacter?: Character;
   cache?: InMemoryCache;
+  injectedMcContent?: McContent;
 }
 
 // All the providers for unit tests
@@ -38,6 +41,7 @@ const ComponentProviders = ({
   injectedGame,
   injectedUserId,
   injectedCharacter,
+  injectedMcContent,
   cache,
 }: any) => {
   return (
@@ -56,7 +60,9 @@ const ComponentProviders = ({
                 injectedUserId={injectedUserId}
                 injectedCharacter={injectedCharacter}
               >
-                <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>{children}</KeycloakUserProvider>
+                <McContentProvider injectedMcContent={injectedMcContent}>
+                  <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>{children}</KeycloakUserProvider>
+                </McContentProvider>
               </GameProvider>
             </ReactKeycloakProvider>
           </Grommet>

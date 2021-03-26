@@ -10,6 +10,7 @@ import { apolloClient } from './config/apolloConfig';
 import keycloak from './config/keycloakConfig';
 import { KeycloakUserProvider } from './contexts/keycloakUserContext';
 import { GameProvider } from './contexts/gameContext';
+import { McContentProvider } from './contexts/mcContentContext';
 
 interface RootProps {
   children: JSX.Element;
@@ -35,7 +36,9 @@ const Root: FC<RootProps> = ({ children }) => {
                     }}
                   >
                     <GameProvider>
-                      <KeycloakUserProvider>{children}</KeycloakUserProvider>
+                      <McContentProvider>
+                        <KeycloakUserProvider>{children}</KeycloakUserProvider>
+                      </McContentProvider>
                     </GameProvider>
                   </ReactKeycloakProvider>
                 </Grommet>

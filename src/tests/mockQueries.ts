@@ -29,6 +29,7 @@ import ALL_MOVES from '../queries/allMoves';
 import GAME from '../queries/game';
 import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
 import GAMES_FOR_INVITEE from '../queries/gamesForInvitee';
+import MC_CONTENT from '../queries/mcContent';
 import PLAYBOOK from '../queries/playbook';
 import PLAYBOOK_CREATOR from '../queries/playbookCreator';
 import PLAYBOOKS from '../queries/playbooks';
@@ -85,6 +86,7 @@ import {
   mockPlaybookCreatorSkinner,
   mockPlaybookCreatorGunlugger,
   mockPlaybookCreatorSavvyhead,
+  mockMcContent,
 } from './mocks';
 
 export const mockGameRolesByUserId: MockedResponse = {
@@ -2551,6 +2553,21 @@ export const mockPlayBookCreatorQuerySavvyhead: MockedResponse = {
       data: {
         __typename: 'Mutation',
         playbookCreator: mockPlaybookCreatorSavvyhead,
+      },
+    };
+  },
+};
+
+export const mockMcContentQuery: MockedResponse = {
+  request: {
+    query: MC_CONTENT,
+  },
+  result: () => {
+    // console.log('mockMcContentQuery');
+    return {
+      data: {
+        __typename: 'Query',
+        mcContent: mockMcContent,
       },
     };
   },

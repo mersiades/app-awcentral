@@ -520,6 +520,7 @@ const GAME = gql`
       commsApp
       commsUrl
       hasFinishedPreGame
+      showFirstSession
       ...GameMessages
       ...MC
       ...Players

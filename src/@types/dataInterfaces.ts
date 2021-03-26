@@ -43,6 +43,7 @@ export interface Game {
   commsApp: string;
   commsUrl: string;
   hasFinishedPreGame: boolean;
+  showFirstSession: boolean;
   mc: { displayName: string; id: string };
   players: { displayName: string; id: string }[];
   gameRoles: GameRole[];
