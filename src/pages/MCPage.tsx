@@ -145,6 +145,8 @@ const MCPage: FC = () => {
     }
   };
 
+  console.log(`game`, game);
+
   return (
     <Box fill background={background}>
       {!!game && showDeleteGameDialog && (
@@ -209,6 +211,7 @@ const MCPage: FC = () => {
                     width: 'calc(100vw - 625px)',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
+                    textAlign: 'center',
                   }}
                 >
                   <StyledMarkdown>{tickerItem.content}</StyledMarkdown>

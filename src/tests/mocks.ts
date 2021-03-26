@@ -879,6 +879,7 @@ export const mockGame1: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1' },
   players: [{ displayName: 'mock-user-2', id: 'mock-keycloak-id-2' }],
   gameRoles: [
@@ -909,6 +910,7 @@ export const mockGame2: Game = {
   commsApp: 'Zoom',
   commsUrl: 'https://zoom.com/urltozoomchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [{ displayName: 'mock-user-1', id: 'mock-keycloak-id-1' }],
   gameRoles: [
@@ -939,6 +941,7 @@ export const mockGame3: Game = {
   commsApp: '',
   commsUrl: '',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1' },
   players: [],
   gameRoles: [
@@ -962,6 +965,7 @@ export const mockGame4: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [{ id: 'mock-keycloak-id-3', displayName: 'mock-user-3' }],
   gameRoles: [
@@ -994,6 +998,7 @@ export const mockGame5: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   gameMessages: [],
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
@@ -1038,6 +1043,7 @@ export const mockGame6: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
     { id: 'mock-keycloak-id-3', displayName: 'mock-user-3' },
@@ -1065,6 +1071,7 @@ export const mockGame7: Game = {
   commsApp: 'Discord',
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
+  showFirstSession: false,
   gameMessages: [],
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
