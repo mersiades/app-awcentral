@@ -13,6 +13,8 @@ const FINISH_PRE_GAME = gql`
   mutation FinishPreGame($gameId: String!) {
     finishPreGame(gameId: $gameId) {
       id
+      hasFinishedPreGame
+      showFirstSession
     }
   }
 `;
