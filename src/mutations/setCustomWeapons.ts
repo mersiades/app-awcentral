@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client';
-import { WSAEOPNOTSUPP } from 'constants';
 import { Character, PlaybookUnique } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 

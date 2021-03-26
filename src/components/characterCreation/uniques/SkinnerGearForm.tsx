@@ -12,7 +12,7 @@ import SET_SKINNER_GEAR, {
   SetSkinnerGearData,
   SetSkinnerGearVars,
 } from '../../../mutations/setSkinnerGear';
-import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../../@types/enums';
+import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { SkinnerGearInput } from '../../../@types';
 import { SkinnerGearItem } from '../../../@types/staticDataInterfaces';
 import { useFonts } from '../../../contexts/fontContext';

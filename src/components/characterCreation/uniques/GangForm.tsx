@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Box, CheckBox } from 'grommet';
 
 import Spinner from '../../Spinner';
-import { ButtonWS, HeadingWS, ParagraphWS, RedBox, TextWS } from '../../../config/grommetConfig';
+import { ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
