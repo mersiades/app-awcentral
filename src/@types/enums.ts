@@ -101,6 +101,7 @@ export enum RollType {
   stock = 'STOCK',
   fortune = 'FORTUNE',
   choice = 'CHOICE',
+  vHarm = 'V_HARM',
 }
 
 export enum MessageType {
