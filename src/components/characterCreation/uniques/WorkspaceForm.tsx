@@ -6,7 +6,7 @@ import { Box, Text } from 'grommet';
 import { StyledMarkdown } from '../../styledComponents';
 import { ButtonWS, HeadingWS } from '../../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
-import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../../@types/enums';
+import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import SET_WORKSPACE, { getSetWorkspaceOR, SetWorkspaceData, SetWorkspaceVars } from '../../../mutations/setWorkspace';

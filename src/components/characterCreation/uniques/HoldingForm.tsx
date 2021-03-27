@@ -59,11 +59,6 @@ const holdingFormReducer = (state: HoldingFormState, action: Action) => {
         ...action.payload,
         souls: getSouls(action.payload.holdingSize),
       };
-    case 'SET_EXISTING_HOLDING':
-      return {
-        ...state,
-        ...action.payload,
-      };
     case 'UPDATE_HOLDING':
       return {
         ...state,

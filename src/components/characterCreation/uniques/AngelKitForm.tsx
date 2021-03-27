@@ -10,7 +10,7 @@ import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../.
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { useHistory } from 'react-router-dom';
-import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../../@types/enums';
+import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 
 const AngelKitForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //

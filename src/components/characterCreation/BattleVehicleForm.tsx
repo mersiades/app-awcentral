@@ -6,7 +6,7 @@ import { omit } from 'lodash';
 import DoubleRedBox from '../DoubleRedBox';
 import SingleRedBox from '../SingleRedBox';
 import Spinner from '../Spinner';
-import { accentColors, ButtonWS, HeadingWS, neutralColors, TextWS } from '../../config/grommetConfig';
+import { accentColors, ButtonWS, neutralColors, TextWS } from '../../config/grommetConfig';
 import VEHICLE_CREATOR, { VehicleCreatorData, VehicleCreatorVars } from '../../queries/vehicleCreator';
 import SET_BATTLE_VEHICLE, { SetBattleVehicleData, SetBattleVehicleVars } from '../../mutations/setBattleVehicle';
 import { BattleOptionType, VehicleFrameType, VehicleType } from '../../@types/enums';
@@ -182,7 +182,7 @@ const BattleVehicleForm: FC<BattleVehicleFormProps> = ({ navigateOnSet, existing
         newUpdate = { ...newUpdate, armor: armor - 1 };
         break;
       case BattleOptionType.weapon:
-        newUpdate = { ...newUpdate, weapons: weapons.filter((weapon: string) => weapon != option.name) };
+        newUpdate = { ...newUpdate, weapons: weapons.filter((weapon: string) => weapon !== option.name) };
         break;
       default:
     }

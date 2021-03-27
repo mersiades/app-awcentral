@@ -13,7 +13,6 @@ import { BattleOptionType, PlaybookType, VehicleFrameType, VehicleType } from '.
 import { VehicleInput } from '../../@types';
 import { Vehicle } from '../../@types/dataInterfaces';
 import { VehicleBattleOption, VehicleFrame } from '../../@types/staticDataInterfaces';
-import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 
 interface VehicleTagsBoxProps {
@@ -117,7 +116,6 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
   ] = useReducer(vehicleFormReducer, initialState);
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { character, userGameRole } = useGame();
-  const { crustReady } = useFonts();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const { data: vehicleCreatorData, loading } = useQuery<VehicleCreatorData, VehicleCreatorVars>(VEHICLE_CREATOR);

@@ -6,8 +6,16 @@ import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './test-utils';
 import { mockKeycloakStub } from '../../__mocks__/@react-keycloak/web';
 import { mockGame7, mockKeycloakUser2, mockKeycloakUserInfo2 } from './mocks';
-import { mockAllMoves, mockDeleteGame, mockGameRolesByUserId2, mockRemoveInvitee } from './mockQueries';
+import {
+  mockAllMoves,
+  mockDeleteGame,
+  mockGameForMcPage1,
+  mockGameForMcPage2,
+  mockGameRolesByUserId2,
+  mockRemoveInvitee,
+} from './mockQueries';
 import App from '../components/App';
+import { InMemoryCache } from '@apollo/client';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -20,9 +28,11 @@ jest.mock('@react-keycloak/web', () => {
 jest.setTimeout(10000);
 
 describe('Testing MCPage functionality', () => {
+  let cache = new InMemoryCache();
   const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView;
   const mockScrollIntoView = jest.fn();
   beforeEach(() => {
+    cache = new InMemoryCache();
     window.HTMLElement.prototype.scrollIntoView = mockScrollIntoView;
   });
 
@@ -33,10 +43,10 @@ describe('Testing MCPage functionality', () => {
   test('should delete game and navigate to /menu', async () => {
     renderWithRouter(<App />, `/mc-game/${mockGame7.id}`, {
       isAuthenticated: true,
-      apolloMocks: [mockAllMoves, mockDeleteGame, mockGameRolesByUserId2],
-      injectedGame: { ...mockGame7, invitees: ['john@email.com', 'sara@email.com'] },
+      apolloMocks: [mockGameForMcPage1, mockAllMoves, mockDeleteGame, mockGameRolesByUserId2],
       keycloakUser: mockKeycloakUser2,
       injectedUserId: mockKeycloakUser2.id,
+      cache,
     });
 
     await screen.findByRole('tab', { name: 'Moves' });
@@ -61,8 +71,7 @@ describe('Testing MCPage functionality', () => {
   test('should remove invitee', async () => {
     renderWithRouter(<App />, `/mc-game/${mockGame7.id}`, {
       isAuthenticated: true,
-      apolloMocks: [mockAllMoves, mockRemoveInvitee],
-      injectedGame: { ...mockGame7, invitees: ['john@email.com', 'sara@email.com'] },
+      apolloMocks: [mockGameForMcPage2, mockAllMoves, mockRemoveInvitee],
       keycloakUser: mockKeycloakUser2,
       injectedUserId: mockKeycloakUser2.id,
     });
@@ -78,8 +87,7 @@ describe('Testing MCPage functionality', () => {
   test('should navigate to /menu from navbar', async () => {
     renderWithRouter(<App />, `/mc-game/${mockGame7.id}`, {
       isAuthenticated: true,
-      apolloMocks: [mockAllMoves, mockGameRolesByUserId2],
-      injectedGame: { ...mockGame7, invitees: ['john@email.com', 'sara@email.com'] },
+      apolloMocks: [mockGameForMcPage1, mockAllMoves, mockGameRolesByUserId2],
       keycloakUser: mockKeycloakUser2,
       injectedUserId: mockKeycloakUser2.id,
     });
@@ -95,8 +103,7 @@ describe('Testing MCPage functionality', () => {
   test('should logout from navbar', async () => {
     renderWithRouter(<App />, `/mc-game/${mockGame7.id}`, {
       isAuthenticated: true,
-      apolloMocks: [mockAllMoves, mockGameRolesByUserId2],
-      injectedGame: { ...mockGame7, invitees: ['john@email.com', 'sara@email.com'] },
+      apolloMocks: [mockGameForMcPage1, mockAllMoves, mockGameRolesByUserId2],
       keycloakUser: mockKeycloakUser2,
       injectedUserId: mockKeycloakUser2.id,
     });

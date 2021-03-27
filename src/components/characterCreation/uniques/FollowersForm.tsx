@@ -49,11 +49,6 @@ const followersFormReducer = (state: FollowersFormState, action: Action) => {
       return {
         ...omit(action.payload, 'id'),
       };
-    case 'SET_EXISTING_FOLLOWERS':
-      return {
-        ...state,
-        ...action.payload,
-      };
     case 'UPDATE_FOLLOWERS':
       return {
         ...state,

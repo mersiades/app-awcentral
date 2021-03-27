@@ -8,6 +8,7 @@ import { useGame } from '../../contexts/gameContext';
 
 const PlayersBox: FC = () => {
   const { game, allPlayerGameRoles } = useGame();
+
   const renderPlayers = () => {
     if (allPlayerGameRoles?.length === 0 || !allPlayerGameRoles) {
       return (

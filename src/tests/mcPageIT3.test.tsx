@@ -6,8 +6,9 @@ import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './test-utils';
 import { mockKeycloakStub } from '../../__mocks__/@react-keycloak/web';
 import { mockGame7, mockKeycloakUser2, mockKeycloakUserInfo2 } from './mocks';
-import { mockAddInvitee3, mockAllMoves, mockAppCommsApp, mockAppCommsUrl, mockSetGameName } from './mockQueries';
+import { mockAddInvitee3, mockAllMoves, mockAppCommsUrl, mockGameForMcPage1 } from './mockQueries';
 import App from '../components/App';
+import { InMemoryCache } from '@apollo/client';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -20,9 +21,11 @@ jest.mock('@react-keycloak/web', () => {
 jest.setTimeout(10000);
 
 describe('Testing MCPage functionality', () => {
+  let cache = new InMemoryCache();
   const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView;
   const mockScrollIntoView = jest.fn();
   beforeEach(() => {
+    cache = new InMemoryCache();
     window.HTMLElement.prototype.scrollIntoView = mockScrollIntoView;
   });
 
@@ -33,10 +36,10 @@ describe('Testing MCPage functionality', () => {
   test('should change game comms url', async () => {
     renderWithRouter(<App />, `/mc-game/${mockGame7.id}`, {
       isAuthenticated: true,
-      apolloMocks: [mockAllMoves, mockAppCommsUrl],
-      injectedGame: { ...mockGame7, invitees: ['john@email.com', 'sara@email.com'] },
+      apolloMocks: [mockGameForMcPage1, mockAllMoves, mockAppCommsUrl],
       keycloakUser: mockKeycloakUser2,
       injectedUserId: mockKeycloakUser2.id,
+      cache,
     });
 
     await screen.findByRole('tab', { name: 'Moves' });
@@ -69,10 +72,11 @@ describe('Testing MCPage functionality', () => {
     document.execCommand = jest.fn();
     renderWithRouter(<App />, `/mc-game/${mockGame7.id}`, {
       isAuthenticated: true,
-      apolloMocks: [mockAllMoves, mockAddInvitee3],
+      apolloMocks: [mockGameForMcPage1, mockAllMoves, mockAddInvitee3],
       injectedGame: mockGame7,
       keycloakUser: mockKeycloakUser2,
       injectedUserId: mockKeycloakUser2.id,
+      cache,
     });
 
     await screen.findByRole('tab', { name: 'Moves' });

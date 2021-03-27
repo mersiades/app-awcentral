@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useEffect, useState } from 'react';
+import { createContext, FC, useCallback, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { Character, Game, GameRole } from '../@types/dataInterfaces';
@@ -57,6 +57,7 @@ export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, in
   const {
     data,
     loading: fetchingGame,
+    error,
     stopPolling,
     // @ts-ignore
   } = useQuery<GameData, GameVars>(GAME, { variables: { gameId }, pollInterval: 2500, skip: !gameId });
@@ -68,7 +69,7 @@ export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, in
     setGameId(gameId);
   };
 
-  const clearGameContext = () => {
+  const clearGameContext = useCallback(() => {
     stopPolling();
     setGameId(undefined);
     setGame(undefined);
@@ -77,7 +78,7 @@ export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, in
     setAllPlayerGameRoles(undefined);
     setOtherPlayerGameRoles(undefined);
     setCharacter(undefined);
-  };
+  }, [stopPolling]);
 
   // --------------------------------------------------- Effects ----------------------------------------------------- //
 
@@ -102,15 +103,25 @@ export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, in
   }, [game, userId, setUserGameRole, setMcGameRole, setAllPlayerGameRoles, setOtherPlayerGameRoles]);
 
   useEffect(() => {
-    if (!!data) {
-      if (!data.game) {
-        // If the game query returned without a game because bad game id
-        history.push(`/menu`);
-      } else {
-        setGame(data.game);
+    if (!fetchingGame && !!gameId) {
+      if (!!data) {
+        if (!data.game) {
+          // If the game query returned without a game because bad game id
+          history.push(`/menu`);
+          clearGameContext();
+        } else {
+          setGame(data.game);
+        }
       }
     }
-  }, [data]);
+  }, [data, fetchingGame, gameId, history, clearGameContext]);
+
+  useEffect(() => {
+    if (!fetchingGame && !!error) {
+      clearGameContext();
+      history.push(`/menu`);
+    }
+  }, [error, fetchingGame, clearGameContext, history]);
 
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
   return (

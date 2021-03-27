@@ -5,6 +5,7 @@ import {
   BrainerGear,
   CharacterHarm,
   CustomWeapons,
+  Establishment,
   Followers,
   Game,
   GameRole,
@@ -13,10 +14,12 @@ import {
   Holding,
   HxStat,
   PlaybookUnique,
+  Project,
   SkinnerGear,
   StatsBlock,
   Vehicle,
   Weapons,
+  Workspace,
 } from '../@types/dataInterfaces';
 import {
   BattleOptionType,
@@ -410,6 +413,30 @@ export const dummyAngelKit: AngelKit = {
   angelKitMoves: [dummyAngelKitMove],
 };
 
+export const dummySecurityOption: SecurityOption = {
+  id: '',
+  description: '',
+  value: 0,
+  __typename: 'SecurityOption',
+};
+
+export const dummyEstablishment: Establishment = {
+  id: 'dummy',
+  mainAttraction: 'dummy',
+  bestRegular: 'dummy',
+  worstRegular: 'dummy',
+  wantsInOnIt: 'dummy',
+  oweForIt: 'dummy',
+  wantsItGone: 'dummy',
+  sideAttractions: ['dummy'],
+  atmospheres: ['dummy'],
+  regulars: ['dummy'],
+  interestedParties: ['dummy'],
+  securityOptions: [],
+  castAndCrew: [],
+  __typename: 'Establishment',
+};
+
 export const dummyFollowers: Followers = {
   id: 'dummy',
   description: 'dummy',
@@ -423,6 +450,22 @@ export const dummyFollowers: Followers = {
   wants: ['dummy'],
   selectedStrengths: [dummyFollowersOption],
   selectedWeaknesses: [dummyFollowersOption],
+};
+
+export const dummyProject: Project = {
+  id: 'dummy',
+  name: 'dummy',
+  notes: 'dummy',
+  __typename: 'Project',
+};
+
+export const dummyWorkspace: Workspace = {
+  id: 'dummy',
+  workspaceInstructions: 'dummy',
+  projectInstructions: 'dummy',
+  workspaceItems: ['dummy'],
+  projects: [dummyProject],
+  __typename: 'Workspace',
 };
 
 export const dummyVehicleFrame: VehicleFrame = {
@@ -772,14 +815,16 @@ export const mockVehicles: Vehicle[] = [mockVehicle1];
 export const mockPlaybookUniqueBattlebabe: PlaybookUnique = {
   id: 'mock-battlebabe-unique-id',
   type: UniqueTypes.customWeapons,
-  customWeapons: mockCustomWeapons,
-  brainerGear: dummyBrainerGear,
   angelKit: dummyAngelKit,
-  gang: dummyGang,
-  weapons: dummyWeapons,
-  holding: dummyHolding,
+  brainerGear: dummyBrainerGear,
+  customWeapons: mockCustomWeapons,
+  establishment: dummyEstablishment,
   followers: dummyFollowers,
+  gang: dummyGang,
+  holding: dummyHolding,
   skinnerGear: dummySkinnerGear,
+  weapons: dummyWeapons,
+  workspace: dummyWorkspace,
 };
 
 export const mockAngelKit: AngelKit = {
@@ -794,14 +839,16 @@ export const mockAngelKit: AngelKit = {
 export const mockPlaybookUniqueAngel: PlaybookUnique = {
   id: 'mock-angle-unique-id',
   type: UniqueTypes.angelKit,
-  customWeapons: dummyCustomWeapons,
-  brainerGear: dummyBrainerGear,
   angelKit: mockAngelKit,
-  gang: dummyGang,
-  weapons: dummyWeapons,
-  holding: dummyHolding,
+  brainerGear: dummyBrainerGear,
+  customWeapons: dummyCustomWeapons,
+  establishment: dummyEstablishment,
   followers: dummyFollowers,
+  gang: dummyGang,
+  holding: dummyHolding,
   skinnerGear: dummySkinnerGear,
+  weapons: dummyWeapons,
+  workspace: dummyWorkspace,
 };
 
 export const mockCharacterHarm: CharacterHarm = {

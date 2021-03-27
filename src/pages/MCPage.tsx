@@ -26,7 +26,7 @@ import DELETE_GAME, { DeleteGameData, DeleteGameVars } from '../mutations/delete
 import REMOVE_INVITEE, { RemoveInviteeData, RemoveInviteeVars } from '../mutations/removeInvitee';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { useGame } from '../contexts/gameContext';
-import { customTabStyles, TextWS } from '../config/grommetConfig';
+import { customTabStyles } from '../config/grommetConfig';
 import '../assets/styles/transitions.css';
 import GameNavbar from '../components/GameNavbar';
 import { gamePageBottomNavbarHeight } from '../config/constants';
@@ -112,7 +112,7 @@ const MCPage: FC = () => {
   // Kick the User off the page if they are not a mc of the game
   useEffect(() => {
     if (!!game && !!userId) {
-      if (game.mc.id !== userId) {
+      if (game.mc?.id !== userId) {
         history.push('/menu');
       }
     }

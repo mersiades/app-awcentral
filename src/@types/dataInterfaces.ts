@@ -184,6 +184,7 @@ export interface Establishment {
   interestedParties: string[];
   securityOptions: SecurityOption[];
   castAndCrew: CastCrew[];
+  __typename?: 'Establishment';
 }
 
 export interface Followers {
@@ -246,6 +247,7 @@ export interface Project {
   id: string;
   name: string;
   notes?: string;
+  __typename?: 'Project';
 }
 
 export interface Workspace {

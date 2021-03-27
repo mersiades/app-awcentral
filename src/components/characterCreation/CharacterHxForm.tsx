@@ -188,7 +188,7 @@ const CharacterHxForm: FC = () => {
                           const match = e.target.value.match(/^-?[1-3]$/gm);
                           if (!!match) {
                             setErrorIds(errorIds.filter((id) => id !== char.id));
-                            match.length == 1 && !adjustingHx && handleAdjustHx({ ...hxStat, hxValue: parseInt(match[0]) });
+                            match.length === 1 && !adjustingHx && handleAdjustHx({ ...hxStat, hxValue: parseInt(match[0]) });
                           } else {
                             e.preventDefault();
                             if (!['', '-'].includes(e.target.value)) {
