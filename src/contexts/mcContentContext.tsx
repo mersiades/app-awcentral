@@ -55,7 +55,6 @@ export const McContentProvider: FC<McContentProviderProps> = ({ children, inject
         .flat();
 
       setMcContent({
-        ...mcContent,
         firstSession: content.firstSessionContent,
         decisionMaking: content.decisionMaking,
         core: content.core,
