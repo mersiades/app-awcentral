@@ -782,3 +782,9 @@ export const justGiveMotiveDialogBackground = {
   size: 'contain',
   image: 'url(/images/background-image-30.jpg)',
 };
+
+export const sufferVHarmDialogBackground = {
+  ...backgroundBase,
+  size: 'contain',
+  image: 'url(/images/background-image-31.jpg)',
+};

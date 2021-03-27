@@ -54,6 +54,7 @@ import {
   SKINNER_SPECIAL_NAME,
   SPEED_RECOVERY_NAME,
   STABILIZE_AND_HEAL_NAME,
+  SUFFER_V_HARM,
   TREAT_NPC_NAME,
 } from '../config/constants';
 import GameNavbar from '../components/GameNavbar';
@@ -66,6 +67,7 @@ import Holds from '../components/Holds';
 import HocusSpecialDialog from '../components/dialogs/HocusSpecialDialog';
 import SkinnerSpecialDialog from '../components/dialogs/SkinnerSpecialDialog';
 import JustGiveMotiveDialog from '../components/dialogs/JustGiveMotiveDialog';
+import VHarmDialog from '../components/dialogs/VHarmDialog';
 
 interface AllMovesData {
   allMoves: Move[];
@@ -254,6 +256,7 @@ const PlayerPage: FC = () => {
       {dialog?.name === JUST_GIVE_MOTIVE_NAME && (
         <JustGiveMotiveDialog move={dialog} handleClose={() => setDialog(undefined)} />
       )}
+      {dialog?.name === SUFFER_V_HARM && <VHarmDialog move={dialog} handleClose={() => setDialog(undefined)} />}
       <div
         data-testid="player-page"
         style={{ height: `calc(100vh - ${gamePageBottomNavbarHeight + gamePageTopNavbarHeight}px)` }}
