@@ -114,6 +114,7 @@ export enum MessageType {
   adjustHxMove = 'ADJUST_HX_MOVE',
   rollStockMove = 'ROLL_STOCK_MOVE',
   stockMove = 'STOCK_MOVE',
+  sufferVHarmMove = 'SUFFER_V_HARM_MOVE',
 }
 
 export enum VehicleFrameType {

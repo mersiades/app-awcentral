@@ -14,6 +14,7 @@ import SufferHarmMessage from './SufferHarmMessage';
 import AdjustHxMessage from './AdjustsHxMessage';
 import StabilizeMessage from './StabilizeMessage';
 import StockMessage from './StockMessage';
+import SufferVHarmMessage from './SufferVHarmMessage';
 
 const MessagesPanel: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -68,6 +69,10 @@ const MessagesPanel: FC = () => {
         return <BarterRollMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />;
       case MessageType.sufferHarmMove:
         return <SufferHarmMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />;
+      case MessageType.sufferVHarmMove:
+        return (
+          <SufferVHarmMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />
+        );
       case MessageType.adjustHxMove:
         return <AdjustHxMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />;
       case MessageType.rollStockMove:
