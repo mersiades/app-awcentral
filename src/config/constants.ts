@@ -29,6 +29,7 @@ export const LEADERSHIP_NAME = 'LEADERSHIPO';
 export const WEALTH_NAME = 'WEALTH';
 export const FORTUNES_NAME = 'FORTUNES';
 export const JUST_GIVE_MOTIVE_NAME = 'JUST GIVE ME A MOTIVE';
+export const SUFFER_V_HARM = 'SUFFER V-HARM';
 
 export const gamePageTopNavbarHeight = 30;
 export const gamePageBottomNavbarHeight = 80;

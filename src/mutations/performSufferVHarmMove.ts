@@ -9,12 +9,12 @@ export interface PerformSufferVHarmMoveVars {
   gameId: string;
   gameRoleId: string;
   characterId: string;
-  harm: number;
+  vHarm: number;
 }
 
 const PERFORM_SUFFER_V_HARM_MOVE = gql`
-  mutation PerformSufferVHarmMove($gameId: String!, $gameRoleId: String!, $characterId: String!, $harm: Int!) {
-    performSufferVHarmMove(gameId: $gameId, gameRoleId: $gameRoleId, characterId: $characterId, harm: $harm) {
+  mutation PerformSufferVHarmMove($gameId: String!, $gameRoleId: String!, $characterId: String!, $vHarm: Int!) {
+    performSufferVHarmMove(gameId: $gameId, gameRoleId: $gameRoleId, characterId: $characterId, vHarm: $vHarm) {
       id
       gameMessages {
         id
