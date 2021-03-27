@@ -2572,3 +2572,33 @@ export const mockMcContentQuery: MockedResponse = {
     };
   },
 };
+
+export const mockGameForMcPage1: MockedResponse = {
+  request: {
+    query: GAME,
+    variables: { gameId: mockGame7.id },
+  },
+  result: () => {
+    // console.log('mockGameForMcPage1');
+    return {
+      data: {
+        game: mockGame7,
+      },
+    };
+  },
+};
+
+export const mockGameForMcPage2: MockedResponse = {
+  request: {
+    query: GAME,
+    variables: { gameId: mockGame7.id },
+  },
+  result: () => {
+    // console.log('mockGameForMcPage2');
+    return {
+      data: {
+        game: { ...mockGame7, invitees: ['john@email.com', 'sara@email.com'] },
+      },
+    };
+  },
+};

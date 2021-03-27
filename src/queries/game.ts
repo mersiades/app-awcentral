@@ -521,16 +521,349 @@ const GAME = gql`
       commsUrl
       hasFinishedPreGame
       showFirstSession
-      ...GameMessages
-      ...MC
-      ...Players
-      ...GameRoles
+      mc {
+        id
+        displayName
+      }
+      players {
+        id
+        displayName
+      }
+      gameMessages {
+        id
+        gameId
+        gameRoleId
+        messageType
+        title
+        content
+        sentOn
+        roll1
+        roll2
+        rollModifier
+        usedPlusOneForward
+        rollResult
+        modifierStatName
+        additionalModifierValue
+        additionalModifierName
+        barterSpent
+        currentBarter
+        harmSuffered
+        currentHarm
+        stockSpent
+        currentStock
+      }
+      gameRoles {
+        id
+        role
+        userId
+        npcs {
+          id
+          name
+          description
+        }
+        threats {
+          id
+          name
+          threatKind
+          impulse
+          description
+          stakes
+        }
+        characters {
+          id
+          name
+          playbook
+          hasCompletedCharacterCreation
+          hasPlusOneForward
+          gear
+          barter
+          vehicleCount
+          battleVehicleCount
+          holds {
+            id
+            moveName
+            moveDescription
+            rollResult
+          }
+          harm {
+            id
+            value
+            isStabilized
+            hasComeBackHard
+            hasComeBackWeird
+            hasChangedPlaybook
+            hasDied
+          }
+          statsBlock {
+            id
+            statsOptionId
+            stats {
+              id
+              stat
+              value
+              isHighlighted
+            }
+          }
+          hxBlock {
+            id
+            characterId
+            characterName
+            hxValue
+          }
+          looks {
+            id
+            look
+            category
+            playbookType
+          }
+          characterMoves {
+            id
+            isSelected
+            name
+            kind
+            description
+            playbook
+            stat
+            moveAction {
+              id
+              actionType
+              rollType
+              statToRollWith
+            }
+          }
+          vehicles {
+            id
+            name
+            vehicleType
+            vehicleFrame {
+              id
+              frameType
+              massive
+              examples
+              battleOptionCount
+            }
+            speed
+            handling
+            armor
+            massive
+            strengths
+            weaknesses
+            looks
+            battleOptions {
+              id
+              battleOptionType
+              name
+            }
+          }
+          battleVehicles {
+            id
+            name
+            vehicleType
+            vehicleFrame {
+              id
+              frameType
+              massive
+              examples
+              battleOptionCount
+            }
+            speed
+            handling
+            armor
+            massive
+            strengths
+            weaknesses
+            looks
+            weapons
+            battleOptions {
+              id
+              battleOptionType
+              name
+            }
+            battleVehicleOptions {
+              id
+              battleOptionType
+              name
+            }
+          }
+          playbookUnique {
+            id
+            type
+            angelKit {
+              id
+              description
+              stock
+              angelKitMoves {
+                id
+                name
+                kind
+                description
+                playbook
+                stat
+                moveAction {
+                  id
+                  actionType
+                  rollType
+                  statToRollWith
+                }
+              }
+              hasSupplier
+              supplierText
+            }
+            brainerGear {
+              id
+              brainerGear
+            }
+            customWeapons {
+              id
+              weapons
+            }
+            followers {
+              id
+              description
+              travelOption
+              characterization
+              followers
+              fortune
+              barter
+              surplusBarter
+              surplus
+              wants
+              selectedStrengths {
+                id
+                description
+                newNumberOfFollowers
+                surplusBarterChange
+                fortuneChange
+                surplusChange
+                wantChange
+              }
+              selectedWeaknesses {
+                id
+                description
+                newNumberOfFollowers
+                surplusBarterChange
+                fortuneChange
+                surplusChange
+                wantChange
+              }
+            }
+            gang {
+              id
+              size
+              harm
+              armor
+              strengths {
+                id
+                description
+                modifier
+                tag
+              }
+              weaknesses {
+                id
+                description
+                modifier
+                tag
+              }
+              tags
+            }
+            holding {
+              id
+              holdingSize
+              gangSize
+              souls
+              surplus
+              barter
+              gangHarm
+              gangArmor
+              gangDefenseArmorBonus
+              wants
+              gigs
+              gangTags
+              selectedStrengths {
+                id
+                description
+                surplusChange
+                wantChange
+                newHoldingSize
+                gigChange
+                newGangSize
+                gangTagChange
+                gangHarmChange
+                newVehicleCount
+                newBattleVehicleCount
+                newArmorBonus
+              }
+              selectedWeaknesses {
+                id
+                description
+                surplusChange
+                wantChange
+                newHoldingSize
+                gigChange
+                newGangSize
+                gangTagChange
+                gangHarmChange
+                newVehicleCount
+                newBattleVehicleCount
+                newArmorBonus
+              }
+            }
+            skinnerGear {
+              id
+              graciousWeapon {
+                id
+                item
+                note
+              }
+              luxeGear {
+                id
+                item
+                note
+              }
+            }
+            weapons {
+              id
+              weapons
+            }
+            workspace {
+              id
+              workspaceInstructions
+              projectInstructions
+              workspaceItems
+              projects {
+                id
+                name
+                notes
+              }
+            }
+            establishment {
+              id
+              mainAttraction
+              bestRegular
+              worstRegular
+              wantsInOnIt
+              oweForIt
+              wantsItGone
+              sideAttractions
+              atmospheres
+              regulars
+              interestedParties
+              securityOptions {
+                id
+                description
+                value
+              }
+              castAndCrew {
+                id
+                name
+                description
+              }
+            }
+          }
+        }
+      }
     }
   }
-  ${gameFragments.gameMessages}
-  ${gameFragments.mc}
-  ${gameFragments.players}
-  ${gameFragments.gameRoles}
 `;
 
 export default GAME;

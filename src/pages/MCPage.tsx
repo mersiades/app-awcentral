@@ -112,7 +112,7 @@ const MCPage: FC = () => {
   // Kick the User off the page if they are not a mc of the game
   useEffect(() => {
     if (!!game && !!userId) {
-      if (game.mc.id !== userId) {
+      if (game.mc?.id !== userId) {
         history.push('/menu');
       }
     }

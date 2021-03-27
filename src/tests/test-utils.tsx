@@ -83,6 +83,7 @@ const AppProviders = ({
   injectedGame,
   injectedUserId,
   injectedCharacter,
+  injectedMcContent,
 }: any) => {
   return (
     <BrowserRouter>
@@ -100,7 +101,9 @@ const AppProviders = ({
                 injectedUserId={injectedUserId}
                 injectedCharacter={injectedCharacter}
               >
-                <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>{children}</KeycloakUserProvider>
+                <McContentProvider injectedMcContent={injectedMcContent}>
+                  <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>{children}</KeycloakUserProvider>
+                </McContentProvider>
               </GameProvider>
             </ReactKeycloakProvider>
           </Grommet>
