@@ -59,7 +59,8 @@ export interface GameRole {
   characters: Character[];
   npcs: Npc[];
   threats: Threat[];
-  game?: Game;
+  gameId: string;
+  gameName: string;
   __typename?: 'GameRole';
 }
 // ------------------------------------------------- Player interfaces ------------------------------------------------- //

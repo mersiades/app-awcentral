@@ -1,4 +1,5 @@
 import { MockedResponse } from '@apollo/client/testing';
+import { GameRole } from '../@types/dataInterfaces';
 import { PlaybookType, RoleType, StatType } from '../@types/enums';
 import ADD_COMMS_APP from '../mutations/addCommsApp';
 import ADD_COMMS_URL from '../mutations/addCommsUrl';
@@ -27,7 +28,7 @@ import SET_VEHICLE_COUNT from '../mutations/setVehicleCount';
 import TOGGLE_STAT_HIGHLIGHT from '../mutations/toggleStatHighlight';
 import ALL_MOVES from '../queries/allMoves';
 import GAME from '../queries/game';
-import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
+import GAMEROLES_BY_USER_ID, { GameRolesByUserIdData } from '../queries/gameRolesByUserId';
 import GAMES_FOR_INVITEE from '../queries/gamesForInvitee';
 import MC_CONTENT from '../queries/mcContent';
 import PLAYBOOK from '../queries/playbook';
@@ -89,7 +90,7 @@ import {
   mockMcContent,
 } from './mocks';
 
-export const mockGameRolesByUserId: MockedResponse = {
+export const mockGameRolesByUserId: MockedResponse<GameRolesByUserIdData> = {
   request: {
     query: GAMEROLES_BY_USER_ID,
     variables: { id: mockKeycloakUser1.id },
@@ -100,19 +101,15 @@ export const mockGameRolesByUserId: MockedResponse = {
         {
           id: mockGameRole1.id,
           role: mockGameRole1.role,
-          game: {
-            id: mockGame1.id,
-            name: mockGame1.name,
-          },
+          gameId: mockGame1.id,
+          gameName: mockGame1.name,
           characters: [],
         },
         {
           id: mockGameRole2.id,
           role: mockGameRole2.role,
-          game: {
-            id: mockGame2.id,
-            name: mockGame2.name,
-          },
+          gameId: mockGame1.id,
+          gameName: mockGame1.name,
           characters: [],
         },
       ],
