@@ -53,6 +53,8 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
+jest.setTimeout(10000);
+
 const dummyBattlebabeGearInstructions: GearInstructions = {
   id: 'dummy',
   gearIntro: 'dummy',
