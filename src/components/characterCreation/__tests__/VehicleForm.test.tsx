@@ -10,6 +10,7 @@ import { renderWithRouter } from '../../../tests/test-utils';
 import { VehicleFrameType } from '../../../@types/enums';
 import { mockVehicleCreatorQuery } from '../../../tests/mockQueries';
 import { DEFAULT_VEHICLE_NAME } from '../../../config/constants';
+import { Game } from '../../../@types/dataInterfaces';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -24,7 +25,7 @@ describe('Rendering VehicleForm', () => {
 
   const mockNavigationOnSet = jest.fn();
 
-  const mockGame = {
+  const mockGame: Game = {
     ...mockGame5,
     gameRoles: [
       mockGame5.gameRoles[0],
@@ -34,6 +35,8 @@ describe('Rendering VehicleForm', () => {
         role: mockGame5.gameRoles[2].role,
         userId: mockGame5.gameRoles[2].userId,
         npcs: mockGame5.gameRoles[2].npcs,
+        gameName: mockGame5.gameRoles[2].gameName,
+        gameId: mockGame5.gameRoles[2].gameId,
         threats: mockGame5.gameRoles[2].threats,
         characters: [
           {

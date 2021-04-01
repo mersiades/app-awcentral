@@ -13,6 +13,7 @@ import { InMemoryCache } from '@apollo/client';
 import userEvent from '@testing-library/user-event';
 import EstablishmentForm from '../EstablishmentForm';
 import { mockPlayBookCreatorQueryMaestroD } from '../../../../tests/mockQueries';
+import { Game } from '../../../../@types/dataInterfaces';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -26,7 +27,7 @@ jest.setTimeout(10000);
 
 describe('Rendering EstablishmentForm', () => {
   let cache = new InMemoryCache();
-  const mockGame = {
+  const mockGame: Game = {
     ...mockGame5,
     gameRoles: [
       mockGame5.gameRoles[0],
@@ -35,6 +36,8 @@ describe('Rendering EstablishmentForm', () => {
         id: mockGame5.gameRoles[2].id,
         role: mockGame5.gameRoles[2].role,
         userId: mockGame5.gameRoles[2].userId,
+        gameName: mockGame5.gameRoles[2].gameName,
+        gameId: mockGame5.gameRoles[2].gameId,
         npcs: mockGame5.gameRoles[2].npcs,
         threats: mockGame5.gameRoles[2].threats,
         characters: [

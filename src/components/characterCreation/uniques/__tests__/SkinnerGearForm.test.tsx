@@ -12,10 +12,11 @@ import {
 } from '../../../../tests/mocks';
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQuerySkinner } from '../../../../tests/mockQueries';
+import { Game } from '../../../../@types/dataInterfaces';
 
 describe('Rendering SkinnerGearForm', () => {
   let cache = new InMemoryCache();
-  const mockGame = {
+  const mockGame: Game = {
     ...mockGame5,
     gameRoles: [
       mockGame5.gameRoles[0],
@@ -24,6 +25,8 @@ describe('Rendering SkinnerGearForm', () => {
         id: mockGame5.gameRoles[2].id,
         role: mockGame5.gameRoles[2].role,
         userId: mockGame5.gameRoles[2].userId,
+        gameName: mockGame5.gameRoles[2].gameName,
+        gameId: mockGame5.gameRoles[2].gameId,
         npcs: mockGame5.gameRoles[2].npcs,
         threats: mockGame5.gameRoles[2].threats,
         characters: [
