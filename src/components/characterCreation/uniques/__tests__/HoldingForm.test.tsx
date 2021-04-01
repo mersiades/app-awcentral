@@ -26,8 +26,6 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
-jest.setTimeout(10000);
-
 describe('Rendering HoldingForm', () => {
   let cache = new InMemoryCache();
   const mockGame: Game = {

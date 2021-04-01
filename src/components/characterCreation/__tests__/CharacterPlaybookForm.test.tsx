@@ -7,8 +7,6 @@ import { renderWithRouter } from '../../../tests/test-utils';
 import { mockPlaybooksQuery } from '../../../tests/mockQueries';
 import { PlaybookType } from '../../../@types/enums';
 
-jest.setTimeout(10000);
-
 describe('Rendering CharacterPlaybookForm', () => {
   // test('should render CharacterPlaybookForm in initial state, with no character', async () => {
   //   renderWithRouter(<CharacterPlaybookForm />, `/character-creation/${mockGame1.id}?step=1`, {
