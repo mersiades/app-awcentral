@@ -8,6 +8,7 @@ import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
 import { mockCharacter1, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import { mockAdjustCharacterHx, mockPlaybookCreator, mockToggleStatHighlight } from '../../../tests/mockQueries';
+import { Game } from '../../../@types/dataInterfaces';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -17,11 +18,9 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
-jest.setTimeout(10000);
-
 describe('Rendering CharacterHxForm', () => {
   let cache = new InMemoryCache();
-  const mockGame = {
+  const mockGame: Game = {
     ...mockGame5,
     gameRoles: [
       mockGame5.gameRoles[0],
@@ -30,6 +29,8 @@ describe('Rendering CharacterHxForm', () => {
         id: mockGame5.gameRoles[2].id,
         role: mockGame5.gameRoles[2].role,
         userId: mockGame5.gameRoles[2].userId,
+        gameName: mockGame5.gameRoles[2].gameName,
+        gameId: mockGame5.gameRoles[2].gameId,
         npcs: mockGame5.gameRoles[2].npcs,
         threats: mockGame5.gameRoles[2].threats,
         characters: [

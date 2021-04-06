@@ -20,6 +20,8 @@ import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { useGame } from '../contexts/gameContext';
 import VehiclesFormContainer from '../components/characterCreation/VehiclesFormContainer';
 import BattleVehiclesFormContainer from '../components/characterCreation/BattleVehiclesFormContainer';
+import { useQuery } from '@apollo/client';
+import PLAYBOOKS, { PlaybooksData } from '../queries/playbooks';
 
 export const background = {
   color: 'black',
@@ -47,6 +49,10 @@ const CharacterCreationPage: FC = () => {
   // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
   const history = useHistory();
+
+  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // Fetch playbooks now, to speed things up later
+  useQuery<PlaybooksData>(PLAYBOOKS);
 
   // ---------------------------------------- Component functions and variables ------------------------------------------ //
   const handleScroll = (e: any) => {

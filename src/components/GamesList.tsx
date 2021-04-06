@@ -5,7 +5,7 @@ import { GameRole } from '../@types/dataInterfaces';
 import { RoleType } from '../@types/enums';
 
 interface GamesListProps {
-  gameRoles: GameRole[];
+  gameRoles: Partial<GameRole>[];
 }
 
 interface GameInList {
@@ -24,11 +24,11 @@ const GamesList: FC<GamesListProps> = ({ gameRoles }) => {
   const transformGames = () => {
     const games: GameInList[] = [];
     gameRoles.forEach((gameRole) => {
-      if (!!gameRole.game) {
+      if (!!gameRole.gameName && !!gameRole.role && gameRole.gameId) {
         const datum = {
-          name: gameRole.game.name,
+          name: gameRole.gameName,
           role: gameRole.role,
-          gameId: gameRole.game.id,
+          gameId: gameRole.gameId,
           numberOfCharacters: gameRole.characters ? gameRole.characters.length : 0,
         };
         games.push(datum);
@@ -48,10 +48,8 @@ const GamesList: FC<GamesListProps> = ({ gameRoles }) => {
         if (e.item.role === RoleType.player && e.item.numberOfCharacters === 0) {
           history.push(`/character-creation/${e.item.gameId}?step=0`);
         } else if (e.item.role === RoleType.player) {
-          console.log(`/player-game/${e.item.gameId}`);
           history.push(`/player-game/${e.item.gameId}`);
         } else {
-          console.log(`/mc-game/${e.item.gameId}`);
           history.push(`/mc-game/${e.item.gameId}`);
         }
       }}

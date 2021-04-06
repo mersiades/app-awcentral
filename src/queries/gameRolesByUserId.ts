@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { GameRole } from '../@types/dataInterfaces';
 
 export interface GameRolesByUserIdData {
-  gameRolesByUserId: GameRole[];
+  gameRolesByUserId: Partial<GameRole>[];
 }
 
 export interface GameRolesByUserIdVars {
@@ -14,10 +14,8 @@ const GAMEROLES_BY_USER_ID = gql`
     gameRolesByUserId(id: $id) {
       id
       role
-      game {
-        id
-        name
-      }
+      gameId
+      gameName
       characters {
         id
       }

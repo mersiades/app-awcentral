@@ -14,6 +14,7 @@ import {
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryAngel } from '../../../../tests/mockQueries';
 import { InMemoryCache } from '@apollo/client';
+import { Game } from '../../../../@types/dataInterfaces';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -26,7 +27,7 @@ jest.mock('@react-keycloak/web', () => {
 describe('Rendering AngelKitForm', () => {
   test('should load AngelKitForm in initial state', async () => {
     let cache = new InMemoryCache();
-    const mockGame = {
+    const mockGame: Game = {
       ...mockGame5,
       gameRoles: [
         mockGame5.gameRoles[0],
@@ -35,6 +36,8 @@ describe('Rendering AngelKitForm', () => {
           id: mockGame5.gameRoles[2].id,
           role: mockGame5.gameRoles[2].role,
           userId: mockGame5.gameRoles[2].userId,
+          gameName: mockGame5.gameRoles[2].gameName,
+          gameId: mockGame5.gameRoles[2].gameId,
           npcs: mockGame5.gameRoles[2].npcs,
           threats: mockGame5.gameRoles[2].threats,
           characters: [

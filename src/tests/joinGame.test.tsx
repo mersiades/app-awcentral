@@ -15,8 +15,6 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
-jest.setTimeout(10000);
-
 describe('Testing flow for joining a game', () => {
   test('should join a game (happy path)', async () => {
     renderWithRouter(<App />, '/menu', {

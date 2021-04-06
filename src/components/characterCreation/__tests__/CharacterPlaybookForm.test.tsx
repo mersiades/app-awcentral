@@ -7,8 +7,6 @@ import { renderWithRouter } from '../../../tests/test-utils';
 import { mockPlaybooksQuery } from '../../../tests/mockQueries';
 import { PlaybookType } from '../../../@types/enums';
 
-jest.setTimeout(10000);
-
 describe('Rendering CharacterPlaybookForm', () => {
   // test('should render CharacterPlaybookForm in initial state, with no character', async () => {
   //   renderWithRouter(<CharacterPlaybookForm />, `/character-creation/${mockGame1.id}?step=1`, {
@@ -54,6 +52,8 @@ describe('Rendering CharacterPlaybookForm', () => {
             id: mockGame5.gameRoles[2].id,
             role: mockGame5.gameRoles[2].role,
             userId: mockGame5.gameRoles[2].userId,
+            gameName: mockGame5.gameRoles[2].gameName,
+            gameId: mockGame5.gameRoles[2].gameId,
             npcs: mockGame5.gameRoles[2].npcs,
             threats: mockGame5.gameRoles[2].threats,
             characters: [mockCharacter2],
