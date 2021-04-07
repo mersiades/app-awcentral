@@ -22,10 +22,9 @@ import ADJUST_CHARACTER_HX, {
   AdjustCharacterHxVars,
   getAdjustCharacterHxOR,
 } from '../mutations/adjustCharacterHx';
-import SET_CHARACTER_HARM, { SetCharacterHarmData, SetCharacterHarmVars } from '../mutations/setCharacterHarm';
 import TOGGLE_STAT_HIGHLIGHT, { ToggleStatHighlightData, ToggleStatHighlightVars } from '../mutations/toggleStatHighlight';
 import { MoveActionType, RollType, StatType } from '../@types/enums';
-import { HarmInput, HxInput } from '../@types';
+import { HxInput } from '../@types';
 import { CharacterMove, Move } from '../@types/staticDataInterfaces';
 import { Character } from '../@types/dataInterfaces';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
@@ -113,9 +112,7 @@ const PlayerPage: FC = () => {
   const [adjustCharacterHx, { loading: adjustingHx }] = useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(
     ADJUST_CHARACTER_HX
   );
-  const [setCharacterHarm, { loading: settingHarm }] = useMutation<SetCharacterHarmData, SetCharacterHarmVars>(
-    SET_CHARACTER_HARM
-  );
+
   const [toggleStatHighlight, { loading: togglingHighlight }] = useMutation<
     ToggleStatHighlightData,
     ToggleStatHighlightVars
@@ -140,18 +137,6 @@ const PlayerPage: FC = () => {
           variables: { gameRoleId: userGameRole.id, characterId: character.id, hxStat: hxInput },
           optimisticResponse: getAdjustCharacterHxOR(character, hxInput) as AdjustCharacterHxData,
         });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  const handleSetHarm = async (harm: HarmInput) => {
-    if (!!userGameRole && !!character) {
-      try {
-        // @ts-ignore
-        delete harm.__typename;
-        await setCharacterHarm({ variables: { gameRoleId: userGameRole.id, characterId: character.id, harm } });
       } catch (error) {
         console.error(error);
       }
@@ -268,11 +253,9 @@ const PlayerPage: FC = () => {
                 character={character}
                 settingBarter={settingBarter}
                 adjustingHx={adjustingHx}
-                settingHarm={settingHarm}
                 togglingHighlight={togglingHighlight}
                 handleSetBarter={handleSetBarter}
                 handleAdjustHx={handleAdjustHx}
-                handleSetHarm={handleSetHarm}
                 handleToggleHighlight={handleToggleHighlight}
                 navigateToCharacterCreation={navigateToCharacterCreation}
                 openDialog={setDialog}

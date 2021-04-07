@@ -16,7 +16,7 @@ import UniqueItemsBox from './UniqueItemsBox';
 import HoldingBox from './HoldingBox';
 import PLAYBOOK, { PlaybookData, PlaybookVars } from '../../queries/playbook';
 import { MoveType, StatType } from '../../@types/enums';
-import { HarmInput, HxInput } from '../../@types';
+import { HxInput } from '../../@types';
 import { Character } from '../../@types/dataInterfaces';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { decapitalize } from '../../helpers/decapitalize';
@@ -30,11 +30,9 @@ interface PlaybookPanelProps {
   character: Character;
   settingBarter: boolean;
   adjustingHx: boolean;
-  settingHarm: boolean;
   togglingHighlight: boolean;
   handleSetBarter: (amount: number) => void;
   handleAdjustHx: (hxStat: HxInput) => void;
-  handleSetHarm: (harm: HarmInput) => void;
   handleToggleHighlight: (stat: StatType) => void;
   navigateToCharacterCreation: (step: string) => void;
   openDialog: (move: Move | CharacterMove) => void;
@@ -44,11 +42,9 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({
   character,
   adjustingHx,
   settingBarter,
-  settingHarm,
   togglingHighlight,
   handleSetBarter,
   handleAdjustHx,
-  handleSetHarm,
   handleToggleHighlight,
   navigateToCharacterCreation,
   openDialog,
@@ -84,7 +80,7 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({
         />
       )}
 
-      <HarmBox harm={character.harm} settingHarm={settingHarm} handleSetHarm={handleSetHarm} />
+      <HarmBox />
 
       {character.hxBlock.length > 0 && (
         <HxBox

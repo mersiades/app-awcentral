@@ -2,29 +2,50 @@ import React, { FC } from 'react';
 import { Box, CheckBox } from 'grommet';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
+import Spinner from '../Spinner';
 import { getCircle, getSector, oclock12, oclock3, oclock6, oclock9 } from '../HarmClock';
 import { TextWS } from '../../config/grommetConfig';
 import { HarmInput } from '../../@types';
-import { CharacterHarm } from '../../@types/dataInterfaces';
+import { useGame } from '../../contexts/gameContext';
+import { useMutation } from '@apollo/client';
+import SET_CHARACTER_HARM, { SetCharacterHarmData, SetCharacterHarmVars } from '../../mutations/setCharacterHarm';
 
-interface HarmBoxProps {
-  harm: CharacterHarm;
-  settingHarm: boolean;
-  handleSetHarm: (harm: HarmInput) => void;
-}
+const HarmBox: FC = () => {
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { userGameRole, character } = useGame();
+  const harm = character?.harm;
 
-const HarmBox: FC<HarmBoxProps> = ({ harm, settingHarm, handleSetHarm }) => {
+  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  const [setCharacterHarm, { loading: settingHarm }] = useMutation<SetCharacterHarmData, SetCharacterHarmVars>(
+    SET_CHARACTER_HARM
+  );
+
+  // ------------------------------------------------- Component functions -------------------------------------------------- //
   const circle = getCircle(200);
 
-  const setHarmValue = (sector: number) => {
-    let newValue = harm.value;
-    if (harm.value > sector) {
-      newValue = sector;
-    } else {
-      newValue = sector + 1;
+  const handleSetHarm = async (harmInput: HarmInput) => {
+    if (!!userGameRole && !!character) {
+      try {
+        // @ts-ignore
+        delete harmInput.__typename;
+        await setCharacterHarm({ variables: { gameRoleId: userGameRole.id, characterId: character.id, harm: harmInput } });
+      } catch (error) {
+        console.error(error);
+      }
     }
+  };
 
-    handleSetHarm({ ...harm, value: newValue });
+  const setHarmValue = (sector: number) => {
+    if (!!harm) {
+      let newValue = harm.value;
+      if (harm.value > sector) {
+        newValue = sector;
+      } else {
+        newValue = sector + 1;
+      }
+
+      handleSetHarm({ ...harm, value: newValue });
+    }
   };
 
   return (
@@ -54,66 +75,76 @@ const HarmBox: FC<HarmBoxProps> = ({ harm, settingHarm, handleSetHarm }) => {
             <TextWS>9</TextWS>
           </Box>
 
-          <div style={circle}>
-            <div
-              data-testid="harm-sector-0"
-              style={getSector(harm.value, 0, 0, 0, harm.isStabilized)}
-              onClick={() => !settingHarm && setHarmValue(0)}
-            />
-            <div
-              data-testid="harm-sector-1"
-              style={getSector(harm.value, 1, 90, 0, harm.isStabilized)}
-              onClick={() => !settingHarm && setHarmValue(1)}
-            />
-            <div
-              data-testid="harm-sector-2"
-              style={getSector(harm.value, 2, 180, 0, harm.isStabilized)}
-              onClick={() => !settingHarm && setHarmValue(2)}
-            />
-            <div
-              data-testid="harm-sector-3"
-              style={getSector(harm.value, 3, 270, -60, harm.isStabilized)}
-              onClick={() => !settingHarm && setHarmValue(3)}
-            />
-            <div
-              data-testid="harm-sector-4"
-              style={getSector(harm.value, 4, 300, -60, harm.isStabilized)}
-              onClick={() => !settingHarm && setHarmValue(4)}
-            />
-            <div
-              data-testid="harm-sector-5"
-              style={getSector(harm.value, 5, 330, -60, harm.isStabilized)}
-              onClick={() => !settingHarm && setHarmValue(5)}
-            />
-          </div>
+          {!!harm ? (
+            <div style={circle}>
+              <div
+                data-testid="harm-sector-0"
+                style={getSector(harm.value, 0, 0, 0, harm.isStabilized)}
+                onClick={() => !settingHarm && setHarmValue(0)}
+              />
+              <div
+                data-testid="harm-sector-1"
+                style={getSector(harm.value, 1, 90, 0, harm.isStabilized)}
+                onClick={() => !settingHarm && setHarmValue(1)}
+              />
+              <div
+                data-testid="harm-sector-2"
+                style={getSector(harm.value, 2, 180, 0, harm.isStabilized)}
+                onClick={() => !settingHarm && setHarmValue(2)}
+              />
+              <div
+                data-testid="harm-sector-3"
+                style={getSector(harm.value, 3, 270, -60, harm.isStabilized)}
+                onClick={() => !settingHarm && setHarmValue(3)}
+              />
+              <div
+                data-testid="harm-sector-4"
+                style={getSector(harm.value, 4, 300, -60, harm.isStabilized)}
+                onClick={() => !settingHarm && setHarmValue(4)}
+              />
+              <div
+                data-testid="harm-sector-5"
+                style={getSector(harm.value, 5, 330, -60, harm.isStabilized)}
+                onClick={() => !settingHarm && setHarmValue(5)}
+              />
+            </div>
+          ) : (
+            <Spinner />
+          )}
         </Box>
         <Box flex="grow" pad="12px" gap="12px" justify="center">
-          <CheckBox
-            label="Stabilized"
-            checked={harm.isStabilized}
-            onClick={() => !settingHarm && handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })}
-          />
-          <TextWS>When life becomes untenable:</TextWS>
-          <CheckBox
-            label="Come back with -1hard"
-            checked={harm.hasComeBackHard}
-            onClick={() => !settingHarm && handleSetHarm({ ...harm, hasComeBackHard: !harm.hasComeBackHard })}
-          />
-          <CheckBox
-            label="Come back with +1weird (max+3)"
-            checked={harm.hasComeBackWeird}
-            onClick={() => !settingHarm && handleSetHarm({ ...harm, hasComeBackWeird: !harm.hasComeBackWeird })}
-          />
-          <CheckBox
-            label="Change to a new playbook"
-            checked={harm.hasChangedPlaybook}
-            onClick={() => !settingHarm && handleSetHarm({ ...harm, hasChangedPlaybook: !harm.hasChangedPlaybook })}
-          />
-          <CheckBox
-            label="Die"
-            checked={harm.hasDied}
-            onClick={() => !settingHarm && handleSetHarm({ ...harm, hasDied: !harm.hasDied })}
-          />
+          {!!harm ? (
+            <>
+              <CheckBox
+                label="Stabilized"
+                checked={harm.isStabilized}
+                onClick={() => !settingHarm && handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })}
+              />
+              <TextWS>When life becomes untenable:</TextWS>
+              <CheckBox
+                label="Come back with -1hard"
+                checked={harm.hasComeBackHard}
+                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasComeBackHard: !harm.hasComeBackHard })}
+              />
+              <CheckBox
+                label="Come back with +1weird (max+3)"
+                checked={harm.hasComeBackWeird}
+                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasComeBackWeird: !harm.hasComeBackWeird })}
+              />
+              <CheckBox
+                label="Change to a new playbook"
+                checked={harm.hasChangedPlaybook}
+                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasChangedPlaybook: !harm.hasChangedPlaybook })}
+              />
+              <CheckBox
+                label="Die"
+                checked={harm.hasDied}
+                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasDied: !harm.hasDied })}
+              />
+            </>
+          ) : (
+            <Spinner width="200px" />
+          )}
         </Box>
       </Box>
     </CollapsiblePanelBox>
