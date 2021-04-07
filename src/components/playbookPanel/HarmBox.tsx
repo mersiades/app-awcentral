@@ -8,7 +8,11 @@ import { TextWS } from '../../config/grommetConfig';
 import { HarmInput } from '../../@types';
 import { useGame } from '../../contexts/gameContext';
 import { useMutation } from '@apollo/client';
-import SET_CHARACTER_HARM, { SetCharacterHarmData, SetCharacterHarmVars } from '../../mutations/setCharacterHarm';
+import SET_CHARACTER_HARM, {
+  getSetCharacterHarmOR,
+  SetCharacterHarmData,
+  SetCharacterHarmVars,
+} from '../../mutations/setCharacterHarm';
 
 const HarmBox: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -28,7 +32,12 @@ const HarmBox: FC = () => {
       try {
         // @ts-ignore
         delete harmInput.__typename;
-        await setCharacterHarm({ variables: { gameRoleId: userGameRole.id, characterId: character.id, harm: harmInput } });
+
+        console.log(`getSetCharacterHarmOR(character, harmInput)`, getSetCharacterHarmOR(character, harmInput));
+        await setCharacterHarm({
+          variables: { gameRoleId: userGameRole.id, characterId: character.id, harm: harmInput },
+          optimisticResponse: getSetCharacterHarmOR(character, harmInput) as SetCharacterHarmData,
+        });
       } catch (error) {
         console.error(error);
       }

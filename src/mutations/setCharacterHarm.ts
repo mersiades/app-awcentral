@@ -3,7 +3,8 @@ import { HarmInput } from '../@types';
 import { Character } from '../@types/dataInterfaces';
 
 export interface SetCharacterHarmData {
-  setCharacterHarm: Character;
+  setCharacterHarm: Partial<Character>;
+  __typename?: 'CharacterHarm';
 }
 
 export interface SetCharacterHarmVars {
@@ -11,6 +12,19 @@ export interface SetCharacterHarmVars {
   characterId: string;
   harm: HarmInput;
 }
+
+export const getSetCharacterHarmOR = (character: Character, harmInput: HarmInput) => {
+  return {
+    // __typename: 'Mutation',
+    setCharacterHarm: {
+      id: character.id,
+      name: character.name,
+      playbook: character.playbook,
+      harm: { ...harmInput, __typename: 'CharacterHarm' },
+      __typename: 'Character',
+    },
+  };
+};
 
 const SET_CHARACTER_HARM = gql`
   mutation SetCharacterHarm($gameRoleId: String!, $characterId: String!, $harm: HarmInput!) {
