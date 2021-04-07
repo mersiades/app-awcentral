@@ -376,14 +376,21 @@ export const theme = (vtksReady: boolean) => {
       content: {
         // any Box props
         background: {
-          color: neutralColors[1],
-          dark: false,
+          color: 'black',
+          dark: true,
         },
         elevation: 'small',
         margin: 'xsmall',
         pad: { vertical: 'xsmall', horizontal: 'small' },
-        round: 'small',
-        style: { boxShadow: '0 0 1px 1px #000, 0 0 5px 3px #000' },
+        border: {
+          color: brandColor,
+          size: 'medium',
+        },
+        round: 'none',
+        style: {
+          boxShadow: '0 0 1px 1px #000, 0 0 5px 2px #000',
+          fontFamily: "'chaparral pro', sans-serif",
+        },
       },
       drop: {
         // any props for the drop
@@ -427,6 +434,27 @@ export const theme = (vtksReady: boolean) => {
     },
   });
 };
+
+export const greenTipStyles = deepMerge(grommet, {
+  tip: {
+    content: {
+      // any Box props
+      background: {
+        color: neutralColors[1],
+        dark: false,
+      },
+      elevation: 'small',
+      margin: 'xsmall',
+      pad: { vertical: 'xsmall', horizontal: 'small' },
+      round: 'small',
+      style: { boxShadow: '0 0 1px 1px #000, 0 0 5px 3px #000' },
+    },
+    drop: {
+      // any props for the drop
+      align: { top: 'bottom' }, // most common use case is Header with Buttons
+    },
+  },
+});
 
 export const customDefaultButtonStyles = deepMerge(grommet, {
   button: {

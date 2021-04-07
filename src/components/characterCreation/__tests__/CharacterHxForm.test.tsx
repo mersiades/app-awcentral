@@ -96,10 +96,10 @@ describe('Rendering CharacterHxForm', () => {
     // expect(hxBox.textContent).toEqual('1');
 
     // Highlight two stats
-    const coolBox = screen.getByTestId('COOL');
+    const coolBox = screen.getByTestId('COOL-stat-box');
     userEvent.click(coolBox);
     // Mutation result is not updating graphql cache
-    const hardBox = await screen.findByTestId('HARD');
+    const hardBox = await screen.findByTestId('HARD-stat-box');
     userEvent.click(hardBox);
 
     // Check SET button is enabled
