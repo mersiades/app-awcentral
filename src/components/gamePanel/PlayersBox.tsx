@@ -5,9 +5,31 @@ import { Trash } from 'grommet-icons';
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { TextWS } from '../../config/grommetConfig';
 import { useGame } from '../../contexts/gameContext';
+import { useMutation } from '@apollo/client';
+import REMOVE_PLAYER, { getRemovePlayerOR, RemovePlayerData, RemovePlayerVars } from '../../mutations/removePlayer';
+import Spinner from '../Spinner';
 
 const PlayersBox: FC = () => {
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, allPlayerGameRoles } = useGame();
+
+  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  const [removePlayer, { loading: removingPlayer }] = useMutation<RemovePlayerData, RemovePlayerVars>(REMOVE_PLAYER);
+
+  // ------------------------------------------------- Component functions -------------------------------------------------- //
+
+  const handleRemovePlayer = async (playerId: string) => {
+    if (!!game) {
+      try {
+        await removePlayer({
+          variables: { gameId: game.id, playerId },
+          optimisticResponse: getRemovePlayerOR(game, playerId),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   const renderPlayers = () => {
     if (allPlayerGameRoles?.length === 0 || !allPlayerGameRoles) {
@@ -33,7 +55,11 @@ const PlayersBox: FC = () => {
               <TextWS>{player.displayName}</TextWS>
             </Box>
             <Box align="end" fill>
-              <Trash color="accent-1" onClick={() => console.log('clicked')} cursor="grab" />
+              {!removingPlayer ? (
+                <Trash color="accent-1" onClick={() => handleRemovePlayer(player.id)} cursor="grab" />
+              ) : (
+                <Spinner />
+              )}
             </Box>
           </Box>
         );
