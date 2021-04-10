@@ -1179,6 +1179,7 @@ export const mockGame7: Game = {
       characters: [{ ...mockCharacter2, hasCompletedCharacterCreation: true }],
     },
   ],
+  __typename: 'Game',
 };
 
 export const mockGameRole1: GameRole = {

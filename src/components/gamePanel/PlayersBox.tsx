@@ -10,12 +10,14 @@ import REMOVE_PLAYER, { getRemovePlayerOR, RemovePlayerData, RemovePlayerVars } 
 import Spinner from '../Spinner';
 import WarningDialog from '../dialogs/WarningDialog';
 
+export const noPlayerText = 'No players yet';
+export const warningDialogTitle = 'Remove player?';
+
 const PlayersBox: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [showRemovePlayerDialog, setShowRemovePlayerDialog] = useState('');
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, allPlayerGameRoles } = useGame();
-
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const [removePlayer, { loading: removingPlayer }] = useMutation<RemovePlayerData, RemovePlayerVars>(REMOVE_PLAYER);
 
@@ -41,7 +43,7 @@ const PlayersBox: FC = () => {
       return (
         <Box direction="row" align="center" alignContent="end" fill margin={{ vertical: 'small' }}>
           <Box align="start" fill>
-            <TextWS>No players yet</TextWS>
+            <TextWS>{noPlayerText}</TextWS>
           </Box>
         </Box>
       );
@@ -61,7 +63,12 @@ const PlayersBox: FC = () => {
             </Box>
             <Box align="end" fill>
               {!removingPlayer ? (
-                <Trash color="accent-1" onClick={() => setShowRemovePlayerDialog(player.id)} cursor="pointer" />
+                <Trash
+                  data-testid={`${player.displayName}-remove-button`}
+                  color="accent-1"
+                  onClick={() => setShowRemovePlayerDialog(player.id)}
+                  cursor="pointer"
+                />
               ) : (
                 <Spinner />
               )}
@@ -76,7 +83,7 @@ const PlayersBox: FC = () => {
     <>
       {!!showRemovePlayerDialog && (
         <WarningDialog
-          title="Remove player?"
+          title={warningDialogTitle}
           text="This cannot be undone."
           buttonTitle="REMOVE"
           handleClose={() => setShowRemovePlayerDialog('')}
