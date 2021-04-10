@@ -97,4 +97,8 @@ export const StyledMarkdown = styled(ReactMarkdown as React.FC<ReactMarkdown.Rea
   & li {
     text-shadow: 0 0 1px #000, 0 0 3px #000;
   }
+  & a {
+    color: ${accentColors[0]};
+    text-decoration: none;
+  }
 `;

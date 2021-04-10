@@ -59,6 +59,7 @@ import HocusSpecialDialog from '../components/dialogs/HocusSpecialDialog';
 import SkinnerSpecialDialog from '../components/dialogs/SkinnerSpecialDialog';
 import JustGiveMotiveDialog from '../components/dialogs/JustGiveMotiveDialog';
 import VHarmDialog from '../components/dialogs/VHarmDialog';
+import XCard from '../components/XCard';
 
 interface AllMovesData {
   allMoves: Move[];
@@ -231,8 +232,11 @@ const PlayerPage: FC = () => {
             {allMoves && <Tab title="Moves" />}
           </Tabs>
         </ThemeContext.Extend>
-        {character?.hasPlusOneForward && <Plus1ForwardPill />}
-        {!!character && character.holds.length > 0 && <Holds holds={character.holds} />}
+        <Box direction="row" gap="12px" align="center">
+          {character?.hasPlusOneForward && <Plus1ForwardPill />}
+          {!!character && character.holds.length > 0 && <Holds holds={character.holds} />}
+          <XCard isMC={false} />
+        </Box>
       </Footer>
     </Box>
   );
