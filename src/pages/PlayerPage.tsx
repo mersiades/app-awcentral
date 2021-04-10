@@ -16,7 +16,6 @@ import TreatNpcDialog from '../components/dialogs/TreatNpcDialog';
 import ChopperSpecialDialog from '../components/dialogs/ChopperSpecialDialog';
 import { Footer, MainContainer, SidePanel } from '../components/styledComponents';
 import ALL_MOVES from '../queries/allMoves';
-import SET_CHARACTER_BARTER, { SetCharacterBarterData, SetCharacterBarterVars } from '../mutations/setCharacterBarter';
 import ADJUST_CHARACTER_HX, {
   AdjustCharacterHxData,
   AdjustCharacterHxVars,
@@ -105,24 +104,12 @@ const PlayerPage: FC = () => {
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
   const allMoves = allMovesData?.allMoves;
-  const [setCharacterBarter, { loading: settingBarter }] = useMutation<SetCharacterBarterData, SetCharacterBarterVars>(
-    SET_CHARACTER_BARTER
-  );
+
   const [adjustCharacterHx, { loading: adjustingHx }] = useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(
     ADJUST_CHARACTER_HX
   );
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-
-  const handleSetBarter = async (amount: number) => {
-    if (!!userGameRole && !!character) {
-      try {
-        await setCharacterBarter({ variables: { gameRoleId: userGameRole.id, characterId: character.id, amount } });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
 
   const handleAdjustHx = async (hxInput: HxInput) => {
     if (!!userGameRole && !!character) {
@@ -235,9 +222,7 @@ const PlayerPage: FC = () => {
             {sidePanel === 0 && !!character && (
               <PlaybookPanel
                 character={character}
-                settingBarter={settingBarter}
                 adjustingHx={adjustingHx}
-                handleSetBarter={handleSetBarter}
                 handleAdjustHx={handleAdjustHx}
                 navigateToCharacterCreation={navigateToCharacterCreation}
                 openDialog={setDialog}

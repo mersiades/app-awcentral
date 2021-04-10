@@ -14,23 +14,21 @@ import VehiclesBox from './VehiclesBox';
 import GangBox from './GangBox';
 import UniqueItemsBox from './UniqueItemsBox';
 import HoldingBox from './HoldingBox';
+import FollowersBox from './FollowersBox';
+import SkinnerGearBox from './SkinnerGearBox';
+import BattleVehiclesBox from './BattleVehiclesBox';
+import EstablishmentBox from './EstablishmentBox';
+import WorkshopBox from './WorkshopBox';
 import PLAYBOOK, { PlaybookData, PlaybookVars } from '../../queries/playbook';
 import { MoveType } from '../../@types/enums';
 import { HxInput } from '../../@types';
 import { Character } from '../../@types/dataInterfaces';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { decapitalize } from '../../helpers/decapitalize';
-import FollowersBox from './FollowersBox';
-import SkinnerGearBox from './SkinnerGearBox';
-import BattleVehiclesBox from './BattleVehiclesBox';
-import EstablishmentBox from './EstablishmentBox';
-import WorkshopBox from './WorkshopBox';
 
 interface PlaybookPanelProps {
   character: Character;
-  settingBarter: boolean;
   adjustingHx: boolean;
-  handleSetBarter: (amount: number) => void;
   handleAdjustHx: (hxStat: HxInput) => void;
   navigateToCharacterCreation: (step: string) => void;
   openDialog: (move: Move | CharacterMove) => void;
@@ -39,8 +37,6 @@ interface PlaybookPanelProps {
 const PlaybookPanel: FC<PlaybookPanelProps> = ({
   character,
   adjustingHx,
-  settingBarter,
-  handleSetBarter,
   handleAdjustHx,
   navigateToCharacterCreation,
   openDialog,
@@ -84,14 +80,7 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({
 
       <GearBox gear={character.gear} navigateToCharacterCreation={navigateToCharacterCreation} />
 
-      {data?.playbook.barterInstructions && (
-        <BarterBox
-          barter={character.barter || 0}
-          instructions={data?.playbook.barterInstructions}
-          settingBarter={settingBarter}
-          handleSetBarter={handleSetBarter}
-        />
-      )}
+      {data?.playbook.barterInstructions && <BarterBox />}
       {!!character.playbookUnique?.angelKit && (
         <AngelKitBox
           angelKit={character.playbookUnique.angelKit}

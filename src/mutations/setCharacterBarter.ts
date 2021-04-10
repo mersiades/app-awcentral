@@ -1,9 +1,11 @@
 import { gql } from '@apollo/client';
-import { Character } from '../@types/dataInterfaces';
 
 export interface SetCharacterBarterData {
-  setCharacterBarter: Character;
-  __typename?: 'Mutation';
+  setCharacterBarter: {
+    id: string;
+    barter: number;
+    __typename?: 'Character';
+  };
 }
 
 export interface SetCharacterBarterVars {
@@ -12,12 +14,20 @@ export interface SetCharacterBarterVars {
   amount: number;
 }
 
+export const getSetCharacterBarterOR = (id: string, barter: number): SetCharacterBarterData => {
+  return {
+    setCharacterBarter: {
+      id,
+      barter,
+      __typename: 'Character',
+    },
+  };
+};
+
 const SET_CHARACTER_BARTER = gql`
   mutation SetCharacterBarter($gameRoleId: String!, $characterId: String!, $amount: Int!) {
     setCharacterBarter(gameRoleId: $gameRoleId, characterId: $characterId, amount: $amount) {
       id
-      name
-      playbook
       barter
     }
   }
