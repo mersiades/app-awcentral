@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 import { Box, Collapsible, Tab, Tabs, ThemeContext } from 'grommet';
 
@@ -16,13 +16,7 @@ import TreatNpcDialog from '../components/dialogs/TreatNpcDialog';
 import ChopperSpecialDialog from '../components/dialogs/ChopperSpecialDialog';
 import { Footer, MainContainer, SidePanel } from '../components/styledComponents';
 import ALL_MOVES from '../queries/allMoves';
-import ADJUST_CHARACTER_HX, {
-  AdjustCharacterHxData,
-  AdjustCharacterHxVars,
-  getAdjustCharacterHxOR,
-} from '../mutations/adjustCharacterHx';
 import { MoveActionType, RollType } from '../@types/enums';
-import { HxInput } from '../@types';
 import { CharacterMove, Move } from '../@types/staticDataInterfaces';
 import { Character } from '../@types/dataInterfaces';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
@@ -105,25 +99,7 @@ const PlayerPage: FC = () => {
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
   const allMoves = allMovesData?.allMoves;
 
-  const [adjustCharacterHx, { loading: adjustingHx }] = useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(
-    ADJUST_CHARACTER_HX
-  );
-
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-
-  const handleAdjustHx = async (hxInput: HxInput) => {
-    if (!!userGameRole && !!character) {
-      try {
-        await adjustCharacterHx({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, hxStat: hxInput },
-          optimisticResponse: getAdjustCharacterHxOR(character, hxInput) as AdjustCharacterHxData,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
   const navigateToCharacterCreation = useCallback(
     (step: string) => {
       history.push(`/character-creation/${gameId}?step=${step}`);
@@ -222,8 +198,6 @@ const PlayerPage: FC = () => {
             {sidePanel === 0 && !!character && (
               <PlaybookPanel
                 character={character}
-                adjustingHx={adjustingHx}
-                handleAdjustHx={handleAdjustHx}
                 navigateToCharacterCreation={navigateToCharacterCreation}
                 openDialog={setDialog}
               />

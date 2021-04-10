@@ -3,8 +3,11 @@ import { HxInput } from '../@types';
 import { Character, HxStat } from '../@types/dataInterfaces';
 
 export interface AdjustCharacterHxData {
-  adjustCharacterHx: Character;
-  __typename?: 'Mutation';
+  adjustCharacterHx: {
+    id: string;
+    hxBlock: HxStat[];
+    __typename?: 'Character';
+  };
 }
 
 export interface AdjustCharacterHxVars {
@@ -13,19 +16,18 @@ export interface AdjustCharacterHxVars {
   hxStat: HxInput;
 }
 
-export const getAdjustCharacterHxOR = (character: Character, hxInput: HxInput) => {
+export const getAdjustCharacterHxOR = (character: Character, hxInput: HxInput): AdjustCharacterHxData => {
   const index = character.hxBlock.findIndex((hxStat) => hxStat.id === hxInput.id);
   let optimisticHxBlock = [...character.hxBlock];
   if (index > -1) {
-    optimisticHxBlock[index] = hxInput as HxStat;
+    optimisticHxBlock[index] = { ...hxInput, __typename: 'HxStat' } as HxStat;
   } else {
-    optimisticHxBlock = [...optimisticHxBlock, hxInput as HxStat];
+    optimisticHxBlock = [...optimisticHxBlock, { ...hxInput, __typename: 'HxStat' } as HxStat];
   }
   optimisticHxBlock.forEach((hxStat1) => ({ ...hxStat1, __typename: 'HxStat' }));
   return {
-    __typename: 'Mutation',
     adjustCharacterHx: {
-      ...character,
+      id: character.id,
       hxBlock: optimisticHxBlock,
       __typename: 'Character',
     },
@@ -36,8 +38,6 @@ const ADJUST_CHARACTER_HX = gql`
   mutation AdjustCharacterHx($gameRoleId: String!, $characterId: String!, $hxStat: HxInput!) {
     adjustCharacterHx(gameRoleId: $gameRoleId, characterId: $characterId, hxStat: $hxStat) {
       id
-      name
-      playbook
       hxBlock {
         id
         characterId

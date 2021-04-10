@@ -1,20 +1,48 @@
 import React, { FC } from 'react';
+import { useMutation } from '@apollo/client';
+import { omit } from 'lodash';
 import { Box } from 'grommet';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import SingleRedBox from '../SingleRedBox';
-import { HxStat } from '../../@types/dataInterfaces';
+import Spinner from '../Spinner';
+import ADJUST_CHARACTER_HX, {
+  AdjustCharacterHxData,
+  AdjustCharacterHxVars,
+  getAdjustCharacterHxOR,
+} from '../../mutations/adjustCharacterHx';
+import { useGame } from '../../contexts/gameContext';
 import { HxInput } from '../../@types';
-import { omit } from 'lodash';
 
 interface HxBoxProps {
-  hxStats: HxStat[];
-  adjustingHx: boolean;
-  handleAdjustHx: (hxStat: HxInput) => void;
-  navigateToCharacterCreation: (step: string) => void;
+  navigateToCharacterCreation?: (step: string) => void;
 }
 
-const HxBox: FC<HxBoxProps> = ({ hxStats, adjustingHx, handleAdjustHx, navigateToCharacterCreation }) => {
+const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { userGameRole, character } = useGame();
+  const hxStats = character?.hxBlock;
+
+  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  const [adjustCharacterHx, { loading: adjustingHx }] = useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(
+    ADJUST_CHARACTER_HX
+  );
+
+  // ------------------------------------------------- Component functions -------------------------------------------------- //
+
+  const handleAdjustHx = async (hxInput: HxInput) => {
+    if (!!userGameRole && !!character) {
+      try {
+        await adjustCharacterHx({
+          variables: { gameRoleId: userGameRole.id, characterId: character.id, hxStat: hxInput },
+          optimisticResponse: getAdjustCharacterHxOR(character, hxInput),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   const increaseHx = (hxStat: HxInput) => {
     handleAdjustHx({ ...hxStat, hxValue: hxStat.hxValue + 1 });
   };
@@ -32,16 +60,20 @@ const HxBox: FC<HxBoxProps> = ({ hxStats, adjustingHx, handleAdjustHx, navigateT
         justify="around"
         animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
       >
-        {hxStats.map((stat) => (
-          <SingleRedBox
-            key={stat.characterId}
-            value={stat.hxValue.toString()}
-            label={stat.characterName}
-            loading={adjustingHx}
-            onIncrease={() => increaseHx(omit(stat, ['__typename']) as HxInput)}
-            onDecrease={() => decreaseHx(omit(stat, ['__typename']) as HxInput)}
-          />
-        ))}
+        {!!hxStats && hxStats.length > 0 ? (
+          hxStats.map((stat) => (
+            <SingleRedBox
+              key={stat.characterId}
+              value={stat.hxValue.toString()}
+              label={stat.characterName}
+              loading={adjustingHx}
+              onIncrease={() => increaseHx(omit(stat, ['__typename']) as HxInput)}
+              onDecrease={() => decreaseHx(omit(stat, ['__typename']) as HxInput)}
+            />
+          ))
+        ) : (
+          <Spinner />
+        )}
       </Box>
     </CollapsiblePanelBox>
   );

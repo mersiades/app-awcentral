@@ -119,6 +119,7 @@ export interface HxStat {
   characterId: string;
   characterName: string;
   hxValue: number;
+  __typename?: 'HxStat';
 }
 
 export interface Hold {
