@@ -28,5 +28,18 @@ const apolloLink = from([authLink, httpLink]);
 export const apolloClient = new ApolloClient({
   // @ts-ignore
   link: apolloLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Game: {
+        fields: {
+          players: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
+        },
+      },
+    },
+  }),
 });

@@ -29,6 +29,7 @@ interface IGameContext {
 interface GameProviderProps {
   children: JSX.Element;
   injectedGame?: Game; // Only used for mocking context in tests
+  injectedGameId?: string; // Only used for mocking context in tests
   injectedUserId?: string; // Only used for mocking context in tests
   injectedCharacter?: Character;
 }
@@ -39,9 +40,15 @@ export const useGame = () => useContext(GameContext);
 
 export const GameConsumer = GameContext.Consumer;
 
-export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, injectedUserId, injectedCharacter }) => {
+export const GameProvider: FC<GameProviderProps> = ({
+  children,
+  injectedGame,
+  injectedGameId,
+  injectedUserId,
+  injectedCharacter,
+}) => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [gameId, setGameId] = useState<string | undefined>('');
+  const [gameId, setGameId] = useState<string | undefined>(injectedGameId);
   const [userId, setUserId] = useState<string | undefined>(injectedUserId);
   const [game, setGame] = useState<Game | undefined>(injectedGame);
   const [userGameRole, setUserGameRole] = useState<GameRole | undefined>(undefined);
@@ -61,7 +68,6 @@ export const GameProvider: FC<GameProviderProps> = ({ children, injectedGame, in
     stopPolling,
     // @ts-ignore
   } = useQuery<GameData, GameVars>(GAME, { variables: { gameId }, pollInterval: 2500, skip: !gameId });
-
   // ---------------------------------------- Component functions and variables ------------------------------------------ //
 
   const setGameContext = (gameId: string, userId: string) => {

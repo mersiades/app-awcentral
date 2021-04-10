@@ -24,6 +24,7 @@ interface CustomRenderOptions {
   apolloMocks?: MockedResponse[];
   keycloakUser?: KeycloakUser;
   injectedGame?: Game;
+  injectedGameId?: string;
   injectedUserId?: string;
   injectedCharacter?: Character;
   cache?: InMemoryCache;
@@ -39,6 +40,7 @@ const ComponentProviders = ({
   apolloMocks = [],
   keycloakUser = mockKeycloakUser1,
   injectedGame,
+  injectedGameId,
   injectedUserId,
   injectedCharacter,
   injectedMcContent,
@@ -57,6 +59,7 @@ const ComponentProviders = ({
             >
               <GameProvider
                 injectedGame={injectedGame}
+                injectedGameId={injectedGameId}
                 injectedUserId={injectedUserId}
                 injectedCharacter={injectedCharacter}
               >

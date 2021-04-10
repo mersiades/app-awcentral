@@ -1,20 +1,49 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Box } from 'grommet';
 import { Trash } from 'grommet-icons';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { TextWS } from '../../config/grommetConfig';
 import { useGame } from '../../contexts/gameContext';
+import { useMutation } from '@apollo/client';
+import REMOVE_PLAYER, { getRemovePlayerOR, RemovePlayerData, RemovePlayerVars } from '../../mutations/removePlayer';
+import Spinner from '../Spinner';
+import WarningDialog from '../dialogs/WarningDialog';
+
+export const noPlayerText = 'No players yet';
+export const warningDialogTitle = 'Remove player?';
 
 const PlayersBox: FC = () => {
+  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  const [showRemovePlayerDialog, setShowRemovePlayerDialog] = useState('');
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, allPlayerGameRoles } = useGame();
+  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  const [removePlayer, { loading: removingPlayer }] = useMutation<RemovePlayerData, RemovePlayerVars>(REMOVE_PLAYER);
+
+  // ------------------------------------------------- Component functions -------------------------------------------------- //
+
+  const handleRemovePlayer = async (playerId: string) => {
+    if (!!game) {
+      try {
+        await removePlayer({
+          variables: { gameId: game.id, playerId },
+          optimisticResponse: getRemovePlayerOR(game, playerId),
+        });
+        setShowRemovePlayerDialog('');
+      } catch (error) {
+        console.error(error);
+        setShowRemovePlayerDialog('');
+      }
+    }
+  };
 
   const renderPlayers = () => {
     if (allPlayerGameRoles?.length === 0 || !allPlayerGameRoles) {
       return (
         <Box direction="row" align="center" alignContent="end" fill margin={{ vertical: 'small' }}>
           <Box align="start" fill>
-            <TextWS>No players yet</TextWS>
+            <TextWS>{noPlayerText}</TextWS>
           </Box>
         </Box>
       );
@@ -33,7 +62,16 @@ const PlayersBox: FC = () => {
               <TextWS>{player.displayName}</TextWS>
             </Box>
             <Box align="end" fill>
-              <Trash color="accent-1" onClick={() => console.log('clicked')} cursor="grab" />
+              {!removingPlayer ? (
+                <Trash
+                  data-testid={`${player.displayName}-remove-button`}
+                  color="accent-1"
+                  onClick={() => setShowRemovePlayerDialog(player.id)}
+                  cursor="pointer"
+                />
+              ) : (
+                <Spinner />
+              )}
             </Box>
           </Box>
         );
@@ -42,17 +80,28 @@ const PlayersBox: FC = () => {
   };
 
   return (
-    <CollapsiblePanelBox open title="Players">
-      <Box
-        fill="horizontal"
-        justify="between"
-        align="start"
-        gap="12px"
-        animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
-      >
-        {renderPlayers()}
-      </Box>
-    </CollapsiblePanelBox>
+    <>
+      {!!showRemovePlayerDialog && (
+        <WarningDialog
+          title={warningDialogTitle}
+          text="This cannot be undone."
+          buttonTitle="REMOVE"
+          handleClose={() => setShowRemovePlayerDialog('')}
+          handleConfirm={() => handleRemovePlayer(showRemovePlayerDialog)}
+        />
+      )}
+      <CollapsiblePanelBox open title="Players">
+        <Box
+          fill="horizontal"
+          justify="between"
+          align="start"
+          gap="12px"
+          animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+        >
+          {renderPlayers()}
+        </Box>
+      </CollapsiblePanelBox>
+    </>
   );
 };
 

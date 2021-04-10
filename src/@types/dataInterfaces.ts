@@ -45,7 +45,7 @@ export interface Game {
   hasFinishedPreGame: boolean;
   showFirstSession: boolean;
   mc: { displayName: string; id: string };
-  players: { displayName: string; id: string }[];
+  players: { displayName: string; id: string; __typename?: 'User' }[];
   gameRoles: GameRole[];
   invitees: string[];
   gameMessages: GameMessage[];
