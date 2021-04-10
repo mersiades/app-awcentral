@@ -81,13 +81,11 @@ const MessagesPanel: FC = () => {
       case MessageType.stockMove:
         return <StockMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />;
       case MessageType.xCard:
-        return <XCardMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />;
+        return <XCardMessage messagesLength={limitMessages().length} index={index} message={message} />;
       default:
         return;
     }
   };
-
-  // console.log('limitMessages()', limitMessages());
 
   return (
     <Box fill pad="12px" overflow="auto" gap="12px" style={{ maxWidth: '812px' }}>

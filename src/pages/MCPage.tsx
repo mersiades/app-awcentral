@@ -32,6 +32,7 @@ import GameNavbar from '../components/GameNavbar';
 import { gamePageBottomNavbarHeight } from '../config/constants';
 import { useMcContent } from '../contexts/mcContentContext';
 import FirstSessionDialog from '../components/dialogs/FirstSessionDialog';
+import XCard from '../components/XCard';
 
 export const background = {
   color: 'black',
@@ -207,7 +208,7 @@ const MCPage: FC = () => {
                 <div
                   key={tickerItem.category + index}
                   style={{
-                    width: 'calc(100vw - 625px)',
+                    width: 'calc(100vw - 700px)',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textAlign: 'center',
@@ -218,11 +219,13 @@ const MCPage: FC = () => {
               ))}
             </Carousel>
           )}
-
-          <Tabs activeIndex={rightPanel} onActive={(tab) => (tab === rightPanel ? setRightPanel(2) : setRightPanel(tab))}>
-            <Tab title="Threats" />
-            <Tab title="NPCs" />
-          </Tabs>
+          <Box direction="row" align="center" gap="12px">
+            <Tabs activeIndex={rightPanel} onActive={(tab) => (tab === rightPanel ? setRightPanel(2) : setRightPanel(tab))}>
+              <Tab title="Threats" />
+              <Tab title="NPCs" />
+            </Tabs>
+            <XCard isMC />
+          </Box>
         </ThemeContext.Extend>
       </Footer>
     </Box>
