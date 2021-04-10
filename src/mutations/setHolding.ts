@@ -1,10 +1,19 @@
 import { gql } from '@apollo/client';
 import { HoldingInput } from '../@types';
-import { Character, PlaybookUnique } from '../@types/dataInterfaces';
+import { Character, Holding, PlaybookUnique } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetHoldingData {
-  setHolding: Character;
+  setHolding: {
+    id: string;
+    playbookUnique: {
+      id: string;
+      type: UniqueTypes;
+      holding?: Holding;
+    };
+    __typename?: 'Character';
+  };
+  __typename?: 'Mutation';
 }
 
 export interface SetHoldingVars {
@@ -15,7 +24,7 @@ export interface SetHoldingVars {
   battleVehicleCount: number;
 }
 
-export const getSetHoldingOR = (character: Character, holdingInput: HoldingInput) => {
+export const getSetHoldingOR = (character: Character, holdingInput: HoldingInput): SetHoldingData => {
   let optimisticPlaybookUnique: PlaybookUnique;
   if (!!character.playbookUnique?.holding) {
     optimisticPlaybookUnique = {
@@ -69,8 +78,6 @@ const SET_HOLDING = gql`
       battleVehicleCount: $battleVehicleCount
     ) {
       id
-      name
-      playbook
       playbookUnique {
         id
         type

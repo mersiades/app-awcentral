@@ -60,7 +60,7 @@ const SkinnerGearForm: FC = () => {
       try {
         setSkinnerGear({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, skinnerGear },
-          optimisticResponse: getSetSkinnerGearOR(character, skinnerGear) as SetSkinnerGearData,
+          optimisticResponse: getSetSkinnerGearOR(character, skinnerGear),
         });
         if (!character.hasCompletedCharacterCreation) {
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);

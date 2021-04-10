@@ -151,7 +151,7 @@ const FollowersForm: FC = () => {
       try {
         setFollowers({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, followers: followersInput },
-          optimisticResponse: getSetFollowerOR(character, followersInput) as SetFollowersData,
+          optimisticResponse: getSetFollowerOR(character, followersInput),
         });
         if (!character.hasCompletedCharacterCreation) {
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);

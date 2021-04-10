@@ -205,7 +205,7 @@ const CustomWeaponsForm: FC = () => {
       try {
         setCustomWeapons({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, weapons },
-          optimisticResponse: getSetCustomWeaponsOR(character, weapons) as SetCustomWeaponsData,
+          optimisticResponse: getSetCustomWeaponsOR(character, weapons),
         });
         history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

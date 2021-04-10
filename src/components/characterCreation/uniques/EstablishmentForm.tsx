@@ -365,7 +365,7 @@ const EstablishmentForm: FC = () => {
       try {
         setEstablishment({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, establishment: establishmentInput },
-          optimisticResponse: getSetEstablishmentOR(character, establishmentInput) as SetEstablishmentData,
+          optimisticResponse: getSetEstablishmentOR(character, establishmentInput),
         });
         if (!character.hasCompletedCharacterCreation) {
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);

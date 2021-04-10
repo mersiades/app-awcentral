@@ -33,10 +33,9 @@ const HarmBox: FC = () => {
         // @ts-ignore
         delete harmInput.__typename;
 
-        console.log(`getSetCharacterHarmOR(character, harmInput)`, getSetCharacterHarmOR(character, harmInput));
         await setCharacterHarm({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, harm: harmInput },
-          optimisticResponse: getSetCharacterHarmOR(character, harmInput) as SetCharacterHarmData,
+          optimisticResponse: getSetCharacterHarmOR(character, harmInput),
         });
       } catch (error) {
         console.error(error);

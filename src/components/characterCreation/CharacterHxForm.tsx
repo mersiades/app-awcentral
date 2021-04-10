@@ -83,7 +83,7 @@ const CharacterHxForm: FC = () => {
       try {
         await toggleStatHighlight({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, stat },
-          optimisticResponse: getToggleStatHighlightOR(character, stat) as ToggleStatHighlightData,
+          optimisticResponse: getToggleStatHighlightOR(character, stat),
         });
       } catch (error) {
         console.error(error);

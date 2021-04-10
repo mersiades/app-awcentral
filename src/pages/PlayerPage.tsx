@@ -22,7 +22,11 @@ import ADJUST_CHARACTER_HX, {
   AdjustCharacterHxVars,
   getAdjustCharacterHxOR,
 } from '../mutations/adjustCharacterHx';
-import TOGGLE_STAT_HIGHLIGHT, { ToggleStatHighlightData, ToggleStatHighlightVars } from '../mutations/toggleStatHighlight';
+import TOGGLE_STAT_HIGHLIGHT, {
+  getToggleStatHighlightOR,
+  ToggleStatHighlightData,
+  ToggleStatHighlightVars,
+} from '../mutations/toggleStatHighlight';
 import { MoveActionType, RollType, StatType } from '../@types/enums';
 import { HxInput } from '../@types';
 import { CharacterMove, Move } from '../@types/staticDataInterfaces';
@@ -146,7 +150,10 @@ const PlayerPage: FC = () => {
   const handleToggleHighlight = async (stat: StatType) => {
     if (!!userGameRole && !!character) {
       try {
-        await toggleStatHighlight({ variables: { gameRoleId: userGameRole.id, characterId: character.id, stat } });
+        await toggleStatHighlight({
+          variables: { gameRoleId: userGameRole.id, characterId: character.id, stat },
+          optimisticResponse: getToggleStatHighlightOR(character, stat),
+        });
       } catch (error) {
         console.error(error);
       }
