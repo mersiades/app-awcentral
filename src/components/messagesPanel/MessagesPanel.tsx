@@ -15,6 +15,7 @@ import AdjustHxMessage from './AdjustsHxMessage';
 import StabilizeMessage from './StabilizeMessage';
 import StockMessage from './StockMessage';
 import SufferVHarmMessage from './SufferVHarmMessage';
+import XCardMessage from './XCardMessage';
 
 const MessagesPanel: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -79,6 +80,8 @@ const MessagesPanel: FC = () => {
         return <StabilizeMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />;
       case MessageType.stockMove:
         return <StockMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />;
+      case MessageType.xCard:
+        return <XCardMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />;
       default:
         return;
     }
