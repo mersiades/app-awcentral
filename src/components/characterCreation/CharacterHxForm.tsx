@@ -10,11 +10,6 @@ import Spinner from '../Spinner';
 import StatsBox from '../playbookPanel/StatsBox';
 import { ButtonWS, HeadingWS, RedBox, TextWS } from '../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
-import TOGGLE_STAT_HIGHLIGHT, {
-  getToggleStatHighlightOR,
-  ToggleStatHighlightData,
-  ToggleStatHighlightVars,
-} from '../../mutations/toggleStatHighlight';
 import FINISH_CHARACTER_CREATION, {
   FinishCharacterCreationData,
   FinishCharacterCreationVars,
@@ -25,7 +20,6 @@ import ADJUST_CHARACTER_HX, {
   AdjustCharacterHxVars,
   getAdjustCharacterHxOR,
 } from '../../mutations/adjustCharacterHx';
-import { StatType } from '../../@types/enums';
 import { HxInput } from '../../@types';
 import { Character } from '../../@types/dataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
@@ -58,10 +52,6 @@ const CharacterHxForm: FC = () => {
     { variables: { playbookType: character?.playbook }, skip: !character?.playbook }
   );
   const hxInstructions = pbCreatorData?.playbookCreator.hxInstructions;
-  const [toggleStatHighlight, { loading: togglingHighlight }] = useMutation<
-    ToggleStatHighlightData,
-    ToggleStatHighlightVars
-  >(TOGGLE_STAT_HIGHLIGHT);
   const [adjustCharacterHx, { loading: adjustingHx }] = useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(
     ADJUST_CHARACTER_HX
   );
@@ -77,19 +67,6 @@ const CharacterHxForm: FC = () => {
       characters = [...characters, gameRole.characters[0]];
     }
   });
-
-  const handleToggleHighlight = async (stat: StatType) => {
-    if (!!userGameRole && !!character) {
-      try {
-        await toggleStatHighlight({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, stat },
-          optimisticResponse: getToggleStatHighlightOR(character, stat),
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
 
   const handleAdjustHx = async (hxInput: HxInput) => {
     if (!!userGameRole && !!character) {
@@ -227,13 +204,7 @@ const CharacterHxForm: FC = () => {
           {!!character?.looks && <TextWS size="small">{character?.looks.map((look) => look.look).join(', ')}</TextWS>}
         </RedBox>
 
-        {!!character?.statsBlock && (
-          <StatsBox
-            stats={character.statsBlock.stats}
-            togglingHighlight={togglingHighlight}
-            handleToggleHighlight={handleToggleHighlight}
-          />
-        )}
+        {!!character?.statsBlock && !character.hasCompletedCharacterCreation && <StatsBox />}
       </Box>
     </Box>
   );

@@ -15,7 +15,7 @@ import GangBox from './GangBox';
 import UniqueItemsBox from './UniqueItemsBox';
 import HoldingBox from './HoldingBox';
 import PLAYBOOK, { PlaybookData, PlaybookVars } from '../../queries/playbook';
-import { MoveType, StatType } from '../../@types/enums';
+import { MoveType } from '../../@types/enums';
 import { HxInput } from '../../@types';
 import { Character } from '../../@types/dataInterfaces';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
@@ -30,10 +30,8 @@ interface PlaybookPanelProps {
   character: Character;
   settingBarter: boolean;
   adjustingHx: boolean;
-  togglingHighlight: boolean;
   handleSetBarter: (amount: number) => void;
   handleAdjustHx: (hxStat: HxInput) => void;
-  handleToggleHighlight: (stat: StatType) => void;
   navigateToCharacterCreation: (step: string) => void;
   openDialog: (move: Move | CharacterMove) => void;
 }
@@ -42,10 +40,8 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({
   character,
   adjustingHx,
   settingBarter,
-  togglingHighlight,
   handleSetBarter,
   handleAdjustHx,
-  handleToggleHighlight,
   navigateToCharacterCreation,
   openDialog,
 }) => {
@@ -62,12 +58,7 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({
       />
 
       {!!character.statsBlock && character.statsBlock.stats.length > 0 && (
-        <StatsBox
-          stats={character.statsBlock.stats}
-          togglingHighlight={togglingHighlight}
-          navigateToCharacterCreation={navigateToCharacterCreation}
-          handleToggleHighlight={handleToggleHighlight}
-        />
+        <StatsBox navigateToCharacterCreation={navigateToCharacterCreation} />
       )}
 
       {character.characterMoves.length > 0 && (

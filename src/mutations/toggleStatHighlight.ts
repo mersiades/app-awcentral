@@ -30,7 +30,7 @@ export const getToggleStatHighlightOR = (character: Character, stat: StatType): 
     optimisticStats.forEach((stat2) => ({ ...stat2, __typename: 'CharacterStat' }));
     return {
       toggleStatHighlight: {
-        ...character,
+        id: character.id,
         statsBlock: {
           ...character.statsBlock,
           stats: optimisticStats,
@@ -45,7 +45,7 @@ export const getToggleStatHighlightOR = (character: Character, stat: StatType): 
     ];
     return {
       toggleStatHighlight: {
-        ...character,
+        id: character.id,
         statsBlock: {
           id: 'temp-id',
           statsOptionId: 'temp-id-2',

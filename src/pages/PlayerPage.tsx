@@ -22,12 +22,7 @@ import ADJUST_CHARACTER_HX, {
   AdjustCharacterHxVars,
   getAdjustCharacterHxOR,
 } from '../mutations/adjustCharacterHx';
-import TOGGLE_STAT_HIGHLIGHT, {
-  getToggleStatHighlightOR,
-  ToggleStatHighlightData,
-  ToggleStatHighlightVars,
-} from '../mutations/toggleStatHighlight';
-import { MoveActionType, RollType, StatType } from '../@types/enums';
+import { MoveActionType, RollType } from '../@types/enums';
 import { HxInput } from '../@types';
 import { CharacterMove, Move } from '../@types/staticDataInterfaces';
 import { Character } from '../@types/dataInterfaces';
@@ -117,11 +112,6 @@ const PlayerPage: FC = () => {
     ADJUST_CHARACTER_HX
   );
 
-  const [toggleStatHighlight, { loading: togglingHighlight }] = useMutation<
-    ToggleStatHighlightData,
-    ToggleStatHighlightVars
-  >(TOGGLE_STAT_HIGHLIGHT);
-
   // ------------------------------------------------- Component functions -------------------------------------------------- //
 
   const handleSetBarter = async (amount: number) => {
@@ -140,19 +130,6 @@ const PlayerPage: FC = () => {
         await adjustCharacterHx({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, hxStat: hxInput },
           optimisticResponse: getAdjustCharacterHxOR(character, hxInput) as AdjustCharacterHxData,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  const handleToggleHighlight = async (stat: StatType) => {
-    if (!!userGameRole && !!character) {
-      try {
-        await toggleStatHighlight({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, stat },
-          optimisticResponse: getToggleStatHighlightOR(character, stat),
         });
       } catch (error) {
         console.error(error);
@@ -260,10 +237,8 @@ const PlayerPage: FC = () => {
                 character={character}
                 settingBarter={settingBarter}
                 adjustingHx={adjustingHx}
-                togglingHighlight={togglingHighlight}
                 handleSetBarter={handleSetBarter}
                 handleAdjustHx={handleAdjustHx}
-                handleToggleHighlight={handleToggleHighlight}
                 navigateToCharacterCreation={navigateToCharacterCreation}
                 openDialog={setDialog}
               />
