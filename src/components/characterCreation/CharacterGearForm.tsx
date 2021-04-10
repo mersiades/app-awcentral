@@ -7,7 +7,11 @@ import { Box, TextArea } from 'grommet';
 import Spinner from '../Spinner';
 import { accentColors, ButtonWS, HeadingWS, ParagraphWS, TextWS } from '../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
-import SET_CHARACTER_BARTER, { SetCharacterBarterData, SetCharacterBarterVars } from '../../mutations/setCharacterBarter';
+import SET_CHARACTER_BARTER, {
+  getSetCharacterBarterOR,
+  SetCharacterBarterData,
+  SetCharacterBarterVars,
+} from '../../mutations/setCharacterBarter';
 import SET_CHARACTER_GEAR, { SetCharacterGearData, SetCharacterGearVars } from '../../mutations/setCharacterGear';
 import { CharacterCreationSteps, PlaybookType } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
@@ -92,14 +96,7 @@ const CharacterGearForm: FC = () => {
         if (character.barter === -1) {
           setCharacterBarter({
             variables: { gameRoleId: userGameRole.id, characterId: character.id, amount },
-            optimisticResponse: {
-              __typename: 'Mutation',
-              setCharacterBarter: {
-                ...character,
-                barter: amount,
-                __typename: 'Character',
-              },
-            },
+            optimisticResponse: getSetCharacterBarterOR(character.id, amount),
           });
         }
         // Skip playbookUnique form if Driver

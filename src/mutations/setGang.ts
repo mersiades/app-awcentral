@@ -1,11 +1,19 @@
 import { gql } from '@apollo/client';
 import { GangInput } from '../@types';
-import { Character, PlaybookUnique } from '../@types/dataInterfaces';
+import { Character, Gang, PlaybookUnique } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetGangData {
-  setGang: Character;
-  __typename?: 'Character';
+  setGang: {
+    id: string;
+    playbookUnique: {
+      id: string;
+      type: UniqueTypes;
+      gang?: Gang;
+    };
+    __typename?: 'Character';
+  };
+  __typename?: 'Mutation';
 }
 
 export interface SetGangVars {
@@ -14,7 +22,7 @@ export interface SetGangVars {
   gang: GangInput;
 }
 
-export const getSetGangOR = (character: Character, gangInput: GangInput) => {
+export const getSetGangOR = (character: Character, gangInput: GangInput): SetGangData => {
   let optimisticPlaybookUnique: PlaybookUnique;
   if (!!character.playbookUnique?.gang) {
     optimisticPlaybookUnique = {

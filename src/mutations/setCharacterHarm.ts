@@ -1,9 +1,13 @@
 import { gql } from '@apollo/client';
 import { HarmInput } from '../@types';
-import { Character } from '../@types/dataInterfaces';
+import { Character, CharacterHarm } from '../@types/dataInterfaces';
 
 export interface SetCharacterHarmData {
-  setCharacterHarm: Character;
+  setCharacterHarm: {
+    id: string;
+    harm: CharacterHarm;
+    __typename?: 'Character';
+  };
 }
 
 export interface SetCharacterHarmVars {
@@ -12,12 +16,20 @@ export interface SetCharacterHarmVars {
   harm: HarmInput;
 }
 
+export const getSetCharacterHarmOR = (character: Character, harmInput: HarmInput): SetCharacterHarmData => {
+  return {
+    setCharacterHarm: {
+      id: character.id,
+      harm: { ...harmInput, __typename: 'CharacterHarm' },
+      __typename: 'Character',
+    },
+  };
+};
+
 const SET_CHARACTER_HARM = gql`
   mutation SetCharacterHarm($gameRoleId: String!, $characterId: String!, $harm: HarmInput!) {
     setCharacterHarm(gameRoleId: $gameRoleId, characterId: $characterId, harm: $harm) {
       id
-      name
-      playbook
       harm {
         id
         value

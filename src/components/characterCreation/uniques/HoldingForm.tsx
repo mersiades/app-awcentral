@@ -154,7 +154,7 @@ const HoldingForm: FC = () => {
             vehicleCount,
             battleVehicleCount,
           },
-          optimisticResponse: getSetHoldingOR(character, holdingInput) as SetHoldingData,
+          optimisticResponse: getSetHoldingOR(character, holdingInput),
         });
 
         if (!character.hasCompletedCharacterCreation) {

@@ -1,10 +1,18 @@
 import { gql } from '@apollo/client';
 import { FollowersInput } from '../@types';
-import { Character, PlaybookUnique } from '../@types/dataInterfaces';
+import { Character, Followers, PlaybookUnique } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetFollowersData {
-  setFollowers: Character;
+  setFollowers: {
+    id: string;
+    playbookUnique: {
+      id: string;
+      type: UniqueTypes;
+      followers?: Followers;
+    };
+    __typename?: 'Character';
+  };
   __typename?: 'Mutation';
 }
 
@@ -14,7 +22,7 @@ export interface SetFollowersVars {
   followers: FollowersInput;
 }
 
-export const getSetFollowerOR = (character: Character, followersInput: FollowersInput) => {
+export const getSetFollowerOR = (character: Character, followersInput: FollowersInput): SetFollowersData => {
   const optimisticPlaybookUnique: PlaybookUnique = {
     id: character.playbookUnique?.id ? character.playbookUnique.id : 'temp-id-1',
     type: UniqueTypes.followers,
@@ -42,8 +50,6 @@ const SET_FOLLOWERS = gql`
   mutation SetFollowers($gameRoleId: String!, $characterId: String!, $followers: FollowersInput!) {
     setFollowers(gameRoleId: $gameRoleId, characterId: $characterId, followers: $followers) {
       id
-      name
-      playbook
       playbookUnique {
         id
         type

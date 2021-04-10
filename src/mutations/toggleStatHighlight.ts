@@ -1,10 +1,13 @@
 import { gql } from '@apollo/client';
-import { Character, CharacterStat } from '../@types/dataInterfaces';
+import { Character, CharacterStat, StatsBlock } from '../@types/dataInterfaces';
 import { StatType } from '../@types/enums';
 
 export interface ToggleStatHighlightData {
-  toggleStatHighlight: Character;
-  __typename?: 'Mutation';
+  toggleStatHighlight: {
+    id: string;
+    statsBlock: StatsBlock;
+    __typename?: 'Character';
+  };
 }
 
 export interface ToggleStatHighlightVars {
@@ -13,7 +16,7 @@ export interface ToggleStatHighlightVars {
   stat: StatType;
 }
 
-export const getToggleStatHighlightOR = (character: Character, stat: StatType) => {
+export const getToggleStatHighlightOR = (character: Character, stat: StatType): ToggleStatHighlightData => {
   let optimisticStats: CharacterStat[] = [];
   if (!!character.statsBlock) {
     const index = character.statsBlock.stats.findIndex((stat1) => stat1.stat === stat);
@@ -26,9 +29,8 @@ export const getToggleStatHighlightOR = (character: Character, stat: StatType) =
     }
     optimisticStats.forEach((stat2) => ({ ...stat2, __typename: 'CharacterStat' }));
     return {
-      __typename: 'Mutation',
       toggleStatHighlight: {
-        ...character,
+        id: character.id,
         statsBlock: {
           ...character.statsBlock,
           stats: optimisticStats,
@@ -42,11 +44,11 @@ export const getToggleStatHighlightOR = (character: Character, stat: StatType) =
       { id: 'temp-id', stat, value: 0, isHighlighted: true, __typename: 'CharacterStat' },
     ];
     return {
-      __typename: 'Mutation',
       toggleStatHighlight: {
-        ...character,
+        id: character.id,
         statsBlock: {
           id: 'temp-id',
+          statsOptionId: 'temp-id-2',
           stats: optimisticStats,
         },
         __typename: 'Character',
@@ -59,10 +61,9 @@ const TOGGLE_STAT_HIGHLIGHT = gql`
   mutation ToggleStatHighlight($gameRoleId: String!, $characterId: String!, $stat: StatType!) {
     toggleStatHighlight(gameRoleId: $gameRoleId, characterId: $characterId, stat: $stat) {
       id
-      name
-      playbook
       statsBlock {
         id
+        statsOptionId
         stats {
           id
           stat

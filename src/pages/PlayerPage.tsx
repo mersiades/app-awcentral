@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 import { Box, Collapsible, Tab, Tabs, ThemeContext } from 'grommet';
 
@@ -16,16 +16,7 @@ import TreatNpcDialog from '../components/dialogs/TreatNpcDialog';
 import ChopperSpecialDialog from '../components/dialogs/ChopperSpecialDialog';
 import { Footer, MainContainer, SidePanel } from '../components/styledComponents';
 import ALL_MOVES from '../queries/allMoves';
-import SET_CHARACTER_BARTER, { SetCharacterBarterData, SetCharacterBarterVars } from '../mutations/setCharacterBarter';
-import ADJUST_CHARACTER_HX, {
-  AdjustCharacterHxData,
-  AdjustCharacterHxVars,
-  getAdjustCharacterHxOR,
-} from '../mutations/adjustCharacterHx';
-import SET_CHARACTER_HARM, { SetCharacterHarmData, SetCharacterHarmVars } from '../mutations/setCharacterHarm';
-import TOGGLE_STAT_HIGHLIGHT, { ToggleStatHighlightData, ToggleStatHighlightVars } from '../mutations/toggleStatHighlight';
-import { MoveActionType, RollType, StatType } from '../@types/enums';
-import { HarmInput, HxInput } from '../@types';
+import { MoveActionType, RollType } from '../@types/enums';
 import { CharacterMove, Move } from '../@types/staticDataInterfaces';
 import { Character } from '../@types/dataInterfaces';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
@@ -107,67 +98,8 @@ const PlayerPage: FC = () => {
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
   const allMoves = allMovesData?.allMoves;
-  const [setCharacterBarter, { loading: settingBarter }] = useMutation<SetCharacterBarterData, SetCharacterBarterVars>(
-    SET_CHARACTER_BARTER
-  );
-  const [adjustCharacterHx, { loading: adjustingHx }] = useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(
-    ADJUST_CHARACTER_HX
-  );
-  const [setCharacterHarm, { loading: settingHarm }] = useMutation<SetCharacterHarmData, SetCharacterHarmVars>(
-    SET_CHARACTER_HARM
-  );
-  const [toggleStatHighlight, { loading: togglingHighlight }] = useMutation<
-    ToggleStatHighlightData,
-    ToggleStatHighlightVars
-  >(TOGGLE_STAT_HIGHLIGHT);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-
-  const handleSetBarter = async (amount: number) => {
-    if (!!userGameRole && !!character) {
-      try {
-        await setCharacterBarter({ variables: { gameRoleId: userGameRole.id, characterId: character.id, amount } });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  const handleAdjustHx = async (hxInput: HxInput) => {
-    if (!!userGameRole && !!character) {
-      try {
-        await adjustCharacterHx({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, hxStat: hxInput },
-          optimisticResponse: getAdjustCharacterHxOR(character, hxInput) as AdjustCharacterHxData,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  const handleSetHarm = async (harm: HarmInput) => {
-    if (!!userGameRole && !!character) {
-      try {
-        // @ts-ignore
-        delete harm.__typename;
-        await setCharacterHarm({ variables: { gameRoleId: userGameRole.id, characterId: character.id, harm } });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  const handleToggleHighlight = async (stat: StatType) => {
-    if (!!userGameRole && !!character) {
-      try {
-        await toggleStatHighlight({ variables: { gameRoleId: userGameRole.id, characterId: character.id, stat } });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
   const navigateToCharacterCreation = useCallback(
     (step: string) => {
       history.push(`/character-creation/${gameId}?step=${step}`);
@@ -266,14 +198,6 @@ const PlayerPage: FC = () => {
             {sidePanel === 0 && !!character && (
               <PlaybookPanel
                 character={character}
-                settingBarter={settingBarter}
-                adjustingHx={adjustingHx}
-                settingHarm={settingHarm}
-                togglingHighlight={togglingHighlight}
-                handleSetBarter={handleSetBarter}
-                handleAdjustHx={handleAdjustHx}
-                handleSetHarm={handleSetHarm}
-                handleToggleHighlight={handleToggleHighlight}
                 navigateToCharacterCreation={navigateToCharacterCreation}
                 openDialog={setDialog}
               />

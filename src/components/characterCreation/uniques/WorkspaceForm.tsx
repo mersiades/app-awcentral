@@ -49,7 +49,7 @@ const WorkspaceForm: FC = () => {
       try {
         setWorkspace({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, workspace: workspaceInput },
-          optimisticResponse: getSetWorkspaceOR(character, workspaceInput) as SetWorkspaceData,
+          optimisticResponse: getSetWorkspaceOR(character, workspaceInput),
         });
         if (!character.hasCompletedCharacterCreation) {
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);

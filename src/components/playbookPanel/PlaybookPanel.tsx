@@ -14,45 +14,24 @@ import VehiclesBox from './VehiclesBox';
 import GangBox from './GangBox';
 import UniqueItemsBox from './UniqueItemsBox';
 import HoldingBox from './HoldingBox';
-import PLAYBOOK, { PlaybookData, PlaybookVars } from '../../queries/playbook';
-import { MoveType, StatType } from '../../@types/enums';
-import { HarmInput, HxInput } from '../../@types';
-import { Character } from '../../@types/dataInterfaces';
-import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
-import { decapitalize } from '../../helpers/decapitalize';
 import FollowersBox from './FollowersBox';
 import SkinnerGearBox from './SkinnerGearBox';
 import BattleVehiclesBox from './BattleVehiclesBox';
 import EstablishmentBox from './EstablishmentBox';
 import WorkshopBox from './WorkshopBox';
+import PLAYBOOK, { PlaybookData, PlaybookVars } from '../../queries/playbook';
+import { MoveType } from '../../@types/enums';
+import { Character } from '../../@types/dataInterfaces';
+import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
+import { decapitalize } from '../../helpers/decapitalize';
 
 interface PlaybookPanelProps {
   character: Character;
-  settingBarter: boolean;
-  adjustingHx: boolean;
-  settingHarm: boolean;
-  togglingHighlight: boolean;
-  handleSetBarter: (amount: number) => void;
-  handleAdjustHx: (hxStat: HxInput) => void;
-  handleSetHarm: (harm: HarmInput) => void;
-  handleToggleHighlight: (stat: StatType) => void;
   navigateToCharacterCreation: (step: string) => void;
   openDialog: (move: Move | CharacterMove) => void;
 }
 
-const PlaybookPanel: FC<PlaybookPanelProps> = ({
-  character,
-  adjustingHx,
-  settingBarter,
-  settingHarm,
-  togglingHighlight,
-  handleSetBarter,
-  handleAdjustHx,
-  handleSetHarm,
-  handleToggleHighlight,
-  navigateToCharacterCreation,
-  openDialog,
-}) => {
+const PlaybookPanel: FC<PlaybookPanelProps> = ({ character, navigateToCharacterCreation, openDialog }) => {
   const { data } = useQuery<PlaybookData, PlaybookVars>(PLAYBOOK, { variables: { playbookType: character.playbook } });
 
   return (
@@ -65,14 +44,7 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({
         navigateToCharacterCreation={navigateToCharacterCreation}
       />
 
-      {!!character.statsBlock && character.statsBlock.stats.length > 0 && (
-        <StatsBox
-          stats={character.statsBlock.stats}
-          togglingHighlight={togglingHighlight}
-          navigateToCharacterCreation={navigateToCharacterCreation}
-          handleToggleHighlight={handleToggleHighlight}
-        />
-      )}
+      <StatsBox navigateToCharacterCreation={navigateToCharacterCreation} />
 
       {character.characterMoves.length > 0 && (
         <MovesBox
@@ -84,27 +56,13 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({
         />
       )}
 
-      <HarmBox harm={character.harm} settingHarm={settingHarm} handleSetHarm={handleSetHarm} />
+      <HarmBox />
 
-      {character.hxBlock.length > 0 && (
-        <HxBox
-          hxStats={character.hxBlock}
-          adjustingHx={adjustingHx}
-          handleAdjustHx={handleAdjustHx}
-          navigateToCharacterCreation={navigateToCharacterCreation}
-        />
-      )}
+      <HxBox navigateToCharacterCreation={navigateToCharacterCreation} />
 
       <GearBox gear={character.gear} navigateToCharacterCreation={navigateToCharacterCreation} />
 
-      {data?.playbook.barterInstructions && (
-        <BarterBox
-          barter={character.barter || 0}
-          instructions={data?.playbook.barterInstructions}
-          settingBarter={settingBarter}
-          handleSetBarter={handleSetBarter}
-        />
-      )}
+      {data?.playbook.barterInstructions && <BarterBox />}
       {!!character.playbookUnique?.angelKit && (
         <AngelKitBox
           angelKit={character.playbookUnique.angelKit}

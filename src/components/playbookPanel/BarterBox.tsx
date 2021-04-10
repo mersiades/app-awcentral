@@ -1,33 +1,62 @@
 import React, { FC, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import { Box } from 'grommet';
 import { FormUp, FormDown } from 'grommet-icons';
 
+import IncreaseDecreaseButtons from '../IncreaseDecreaseButtons';
 import { HeadingWS, RedBox } from '../../config/grommetConfig';
 import { StyledMarkdown } from '../styledComponents';
+import PLAYBOOK, { PlaybookData, PlaybookVars } from '../../queries/playbook';
+import SET_CHARACTER_BARTER, {
+  getSetCharacterBarterOR,
+  SetCharacterBarterData,
+  SetCharacterBarterVars,
+} from '../../mutations/setCharacterBarter';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { PlaybookType } from '../../@types/enums';
-import IncreaseDecreaseButtons from '../IncreaseDecreaseButtons';
 
-interface BarterBoxProps {
-  barter: number;
-  instructions: string;
-  settingBarter: boolean;
-  handleSetBarter: (amount: number) => void;
-}
-
-const BarterBox: FC<BarterBoxProps> = ({ barter, instructions, handleSetBarter, settingBarter }) => {
+const BarterBox: FC = () => {
+  // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [showInstructions, setShowInstructions] = useState(false);
 
-  const { character } = useGame();
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { userGameRole, character } = useGame();
+  const barter = character?.barter;
   const { crustReady } = useFonts();
 
+  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  const { data: playbook } = useQuery<PlaybookData, PlaybookVars>(PLAYBOOK, {
+    // @ts-ignore
+    variables: { playbookType: character.playbook },
+    skip: !character,
+  });
+  const instructions = playbook?.playbook.barterInstructions;
+  const [setCharacterBarter, { loading: settingBarter }] = useMutation<SetCharacterBarterData, SetCharacterBarterVars>(
+    SET_CHARACTER_BARTER
+  );
+
+  // ------------------------------------------------- Component functions -------------------------------------------------- //
+
+  const handleSetBarter = async (amount: number) => {
+    if (!!userGameRole && !!character) {
+      try {
+        await setCharacterBarter({
+          variables: { gameRoleId: userGameRole.id, characterId: character.id, amount },
+          optimisticResponse: getSetCharacterBarterOR(character.id, amount),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   const increaseBarter = () => {
-    handleSetBarter(barter + 1);
+    !!barter && handleSetBarter(barter + 1);
   };
 
   const decreaseBarter = () => {
-    barter > 0 && handleSetBarter(barter - 1);
+    !!barter && barter > 0 && handleSetBarter(barter - 1);
   };
 
   return (
@@ -60,7 +89,7 @@ const BarterBox: FC<BarterBoxProps> = ({ barter, instructions, handleSetBarter, 
           )}
         </Box>
       </Box>
-      {showInstructions && (
+      {showInstructions && !!instructions && (
         <Box fill="horizontal" pad="12px" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
           <StyledMarkdown>{instructions}</StyledMarkdown>
         </Box>

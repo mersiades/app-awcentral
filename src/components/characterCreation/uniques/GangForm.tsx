@@ -194,7 +194,7 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
       try {
         setGang({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, gang: gangInput },
-          optimisticResponse: getSetGangOR(character, gangInput) as SetGangData,
+          optimisticResponse: getSetGangOR(character, gangInput),
         });
 
         if (!character.hasCompletedCharacterCreation) {

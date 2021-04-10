@@ -1,11 +1,18 @@
 import { gql } from '@apollo/client';
 import { SkinnerGearInput } from '../@types';
-import { Character, PlaybookUnique } from '../@types/dataInterfaces';
+import { Character, PlaybookUnique, SkinnerGear } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetSkinnerGearData {
-  setSkinnerGear: Character;
-  __typename: 'Mutation';
+  setSkinnerGear: {
+    id: string;
+    playbookUnique: {
+      id: string;
+      type: UniqueTypes;
+      skinnerGear?: SkinnerGear;
+    };
+    __typename?: 'Character';
+  };
 }
 
 export interface SetSkinnerGearVars {
@@ -14,7 +21,7 @@ export interface SetSkinnerGearVars {
   skinnerGear: SkinnerGearInput;
 }
 
-export const getSetSkinnerGearOR = (character: Character, skinnerGearInput: SkinnerGearInput) => {
+export const getSetSkinnerGearOR = (character: Character, skinnerGearInput: SkinnerGearInput): SetSkinnerGearData => {
   const optimisticPlaybookUnique: PlaybookUnique = {
     id: character.playbookUnique ? character.playbookUnique.id : 'temp-id-1',
     type: UniqueTypes.skinnerGear,
@@ -34,7 +41,6 @@ export const getSetSkinnerGearOR = (character: Character, skinnerGearInput: Skin
       playbookUnique: optimisticPlaybookUnique,
       __typename: 'Character',
     },
-    __typename: 'Mutation',
   };
 };
 
@@ -42,8 +48,6 @@ const SET_SKINNER_GEAR = gql`
   mutation SetSkinnerGear($gameRoleId: String!, $characterId: String!, $skinnerGear: SkinnerGearInput!) {
     setSkinnerGear(gameRoleId: $gameRoleId, characterId: $characterId, skinnerGear: $skinnerGear) {
       id
-      name
-      playbook
       playbookUnique {
         id
         type

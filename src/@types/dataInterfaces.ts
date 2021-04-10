@@ -96,6 +96,7 @@ export interface CharacterHarm {
   hasComeBackWeird: boolean;
   hasChangedPlaybook: boolean;
   hasDied: boolean;
+  __typename?: 'CharacterHarm';
 }
 
 export interface StatsBlock {
@@ -118,6 +119,7 @@ export interface HxStat {
   characterId: string;
   characterName: string;
   hxValue: number;
+  __typename?: 'HxStat';
 }
 
 export interface Hold {
@@ -230,6 +232,7 @@ export interface Holding {
   gangTags: string[];
   selectedStrengths: HoldingOption[];
   selectedWeaknesses: HoldingOption[];
+  __typename?: 'Holding';
 }
 
 export interface SkinnerGear {
