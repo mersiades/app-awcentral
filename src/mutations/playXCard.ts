@@ -11,7 +11,8 @@ export interface PlayXCardData {
       title: string;
       content: string;
       sentOn: string;
-    };
+      __typename: 'GameMessage';
+    }[];
     __typename?: 'Game';
   };
 }

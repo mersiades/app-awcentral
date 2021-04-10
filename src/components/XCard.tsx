@@ -8,7 +8,7 @@ import { useGame } from '../contexts/gameContext';
 import xCard from '../assets/x-card.png';
 import Spinner from './Spinner';
 
-const X_CARD_CONTENT =
+export const X_CARD_CONTENT =
   '_“I’d like your help. Your help to make this game fun for everyone. If anything makes anyone uncomfortable in any way, click on this X-Card icon. You don’t have to explain why. It doesn\'t matter why. When we see that the X-Card has been played, we simply edit out anything X-Carded. And if there is ever an issue, anyone can call for a break and we can talk privately. I know it sounds funny but it will help us play amazing games together and usually I’m the one who uses the X-Card to help take care of myself. Please help make this game fun for everyone. Thank you!"_\n' +
   '\n' +
   'The X-Card was created by **John Stavropoulos** and you can by right-clicking the icon.';
