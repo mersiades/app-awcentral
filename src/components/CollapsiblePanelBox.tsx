@@ -2,22 +2,24 @@ import React, { FC, useState } from 'react';
 import { Box } from 'grommet';
 import { FormUp, FormDown, Edit } from 'grommet-icons';
 
-import { HeadingWS } from '../config/grommetConfig';
+import { accentColors, HeadingWS, TextWS } from '../config/grommetConfig';
 import { useFonts } from '../contexts/fontContext';
 import { Threat } from '../@types/dataInterfaces';
 
 interface CollapsiblePanelBoxProps {
   title: string;
   children: JSX.Element;
+  message?: string;
   open?: boolean;
+  targetCreationStep?: string;
   navigateToCharacterCreation?: (step: string) => void;
   onEdit?: (threat?: Threat) => void;
-  targetCreationStep?: string;
 }
 
 const CollapsiblePanelBox: FC<CollapsiblePanelBoxProps> = ({
   title,
   children,
+  message,
   open,
   navigateToCharacterCreation,
   onEdit,
@@ -27,6 +29,7 @@ const CollapsiblePanelBox: FC<CollapsiblePanelBoxProps> = ({
   const { crustReady } = useFonts();
 
   const toggleShow = () => setShow(!show);
+
   return (
     <Box
       fill="horizontal"
@@ -46,6 +49,11 @@ const CollapsiblePanelBox: FC<CollapsiblePanelBoxProps> = ({
         >
           {title}
         </HeadingWS>
+        {!!message && (
+          <Box animation={{ type: 'fadeIn', delay: 0, duration: 250, size: 'xsmall' }}>
+            <TextWS color={accentColors[0]}>{message}</TextWS>
+          </Box>
+        )}
         <Box direction="row" align="center" gap="12px">
           {show ? (
             <FormUp data-testid={`${title.toLowerCase()}-up-chevron`} onClick={toggleShow} style={{ cursor: 'pointer' }} />

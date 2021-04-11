@@ -85,6 +85,7 @@ export interface Character {
   playbookUnique?: PlaybookUnique;
   vehicles: Vehicle[];
   battleVehicles: BattleVehicle[];
+  experience: number;
   __typename?: 'Character';
 }
 

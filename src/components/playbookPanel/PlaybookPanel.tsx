@@ -24,6 +24,7 @@ import { MoveType } from '../../@types/enums';
 import { Character } from '../../@types/dataInterfaces';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { decapitalize } from '../../helpers/decapitalize';
+import ImprovementBox from './ImprovementBox';
 
 interface PlaybookPanelProps {
   character: Character;
@@ -108,6 +109,7 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({ character, navigateToCharacterC
 
       <VehiclesBox vehicles={character.vehicles} navigateToCharacterCreation={navigateToCharacterCreation} />
       <BattleVehiclesBox vehicles={character.battleVehicles} navigateToCharacterCreation={navigateToCharacterCreation} />
+      <ImprovementBox />
     </Box>
   );
 };

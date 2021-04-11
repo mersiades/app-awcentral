@@ -96,6 +96,7 @@ describe('Rendering CharacterNameForm', () => {
               hasCompletedCharacterCreation: false,
               characterMoves: [],
               barter: 0,
+              experience: 0,
               harm: mockCharacter2.harm,
               hasPlusOneForward: false,
               holds: [],

@@ -14,8 +14,8 @@ const UniqueItemsBox: FC<UniqueItemsBoxProps> = ({ items, title, navigateToChara
     <CollapsiblePanelBox open title={title} navigateToCharacterCreation={navigateToCharacterCreation} targetCreationStep="6">
       <Box fill="horizontal" align="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
         <ul style={{ margin: 0, paddingInlineStart: '28px' }}>
-          {items.map((item) => (
-            <li key={item}>{item}</li>
+          {items.map((item, index) => (
+            <li key={item + index}>{item}</li>
           ))}
         </ul>
       </Box>
