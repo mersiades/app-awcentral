@@ -1,7 +1,7 @@
 import { MockedResponse } from '@apollo/client/testing';
 import { GameRole } from '../@types/dataInterfaces';
 import { PlaybookType, RoleType, StatType } from '../@types/enums';
-import ADD_COMMS_APP from '../mutations/addCommsApp';
+import ADD_COMMS_APP, { AddCommsAppData } from '../mutations/addCommsApp';
 import ADD_COMMS_URL from '../mutations/addCommsUrl';
 import ADD_INVITEE from '../mutations/addInvitee';
 import ADD_USER_TO_GAME from '../mutations/addUserToGame';
@@ -174,14 +174,14 @@ export const mockGameForNewGame: MockedResponse = {
   },
 };
 
-export const mockAddCommsApp: MockedResponse = {
+export const mockAddCommsApp: MockedResponse<AddCommsAppData> = {
   request: {
     query: ADD_COMMS_APP,
     variables: { gameId: mockGame3.id, app: 'Discord' },
   },
   result: {
     data: {
-      game: {
+      addCommsApp: {
         id: mockGame3.id,
         name: mockGame3.name,
         invitees: mockGame3.invitees,

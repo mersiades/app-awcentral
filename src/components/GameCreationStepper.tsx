@@ -1,17 +1,20 @@
 import React, { FC } from 'react';
 import { Box, Grid, Text } from 'grommet';
 
-import { Game } from '../@types/dataInterfaces';
 import { CustomUL } from '../config/grommetConfig';
+import { useGame } from '../contexts/gameContext';
 
 interface GameCreationStepperProps {
   currentStep: number;
   setCreationStep: (step: number) => void;
   setHasSkippedComms: (skipped: boolean) => void;
-  game?: Game;
 }
 
-const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCreationStep, setHasSkippedComms, game }) => {
+const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCreationStep, setHasSkippedComms }) => {
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { game } = useGame();
+
+  // -------------------------------------------------- Render component ---------------------------------------------------- //
   const renderComms = () => {
     if (!!game && !!game.commsApp) {
       if (!!game.commsUrl) {

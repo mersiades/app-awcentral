@@ -2,13 +2,41 @@ import { gql } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface AddCommsAppData {
-  game: Game
+  addCommsApp: {
+    id: string;
+    name: string;
+    invitees: string[];
+    commsApp: string;
+    commsUrl: string;
+    mc: {
+      id: string;
+      displayName: string;
+      __typename?: 'User';
+    };
+    __typename?: 'Game';
+  };
 }
 
 export interface AddCommsAppVars {
-  gameId: string,
-  app: string
+  gameId: string;
+  app: string;
 }
+
+export const getAddCommsAppOR = (game: Game, app: string): AddCommsAppData => ({
+  addCommsApp: {
+    id: game.id,
+    name: game.name,
+    invitees: game.invitees,
+    commsApp: app,
+    commsUrl: game.commsUrl,
+    mc: {
+      id: game.mc.id,
+      displayName: game.mc.displayName,
+      __typename: 'User',
+    },
+    __typename: 'Game',
+  },
+});
 
 const ADD_COMMS_APP = gql`
   mutation AddCommsApp($gameId: String!, $app: String!) {
@@ -19,23 +47,11 @@ const ADD_COMMS_APP = gql`
       commsApp
       commsUrl
       mc {
+        id
         displayName
-      }
-      gameRoles {
-        role
-        npcs {
-          id
-        }
-        threats {
-          id
-        }
-        characters {
-          id
-          name
-        }
       }
     }
   }
-`
+`;
 
-export default ADD_COMMS_APP
+export default ADD_COMMS_APP;

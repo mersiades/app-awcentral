@@ -6,7 +6,7 @@ import { Box, Select, TextArea, TextInput } from 'grommet';
 import CloseButton from './CloseButton';
 import Spinner from './Spinner';
 import { ButtonWS } from '../config/grommetConfig';
-import ADD_COMMS_APP, { AddCommsAppData, AddCommsAppVars } from '../mutations/addCommsApp';
+import ADD_COMMS_APP, { AddCommsAppData, AddCommsAppVars, getAddCommsAppOR } from '../mutations/addCommsApp';
 import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars } from '../mutations/addCommsUrl';
 import SET_GAME_NAME, { SetGameNameData, SetGameNameVars } from '../mutations/setGameName';
 import { useGame } from '../contexts/gameContext';
@@ -41,10 +41,11 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
   // ------------------------------------------------ Component functions -------------------------------------------------- //
   const appOptions = ['Discord', 'Zoom', 'Skype', 'FaceTime', 'WhatsApp', 'Google Hangouts', 'Talky', 'ooVoo', 'other'];
 
-  const handleSetApp = () => {
+  const handleSetApp = async () => {
     if (!!app && !!game) {
       try {
-        addCommsApp({ variables: { gameId, app } });
+        // TODO: Figure out why optomistic response isn't working here
+        await addCommsApp({ variables: { gameId, app }, optimisticResponse: getAddCommsAppOR(game, app) });
       } catch (e) {
         console.warn(e);
       }
