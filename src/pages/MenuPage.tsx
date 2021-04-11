@@ -32,6 +32,8 @@ const MenuPage: FC = () => {
     // @ts-ignore
     variables: { id: keycloakId },
     skip: !keycloakId,
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 1000 * 60 * 60, // Once an hour
   });
   const gameRoles = data?.gameRolesByUserId;
 

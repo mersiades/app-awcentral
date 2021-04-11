@@ -84,7 +84,7 @@ const PlayersBox: FC = () => {
       {!!showRemovePlayerDialog && (
         <WarningDialog
           title={warningDialogTitle}
-          text="This cannot be undone."
+          text="This cannot be undone. Their character will be deleted."
           buttonTitle="REMOVE"
           handleClose={() => setShowRemovePlayerDialog('')}
           handleConfirm={() => handleRemovePlayer(showRemovePlayerDialog)}
