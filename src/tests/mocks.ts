@@ -99,6 +99,7 @@ interface MockCharacter {
   characterMoves: CharacterMove[];
   vehicles: Vehicle[];
   battleVehicles: BattleVehicle[];
+  experience: number;
   __typename?: 'Character';
 }
 
@@ -871,6 +872,7 @@ export const mockCharacter1: MockCharacter = {
   holds: [],
   gear: ['leather jacket', 'Timberland boots'],
   barter: 2,
+  experience: 0,
   vehicleCount: 0,
   battleVehicleCount: 0,
   harm: mockCharacterHarm,
@@ -898,6 +900,7 @@ export const mockCharacter2: MockCharacter = {
   gear: ['Grimey green raincoat', '9mm (2-harm close loud)'],
   statsBlock: mockStatsBlock1,
   barter: 2,
+  experience: 0,
   hxBlock: [
     {
       id: 'hx-stat-id-1',
@@ -2279,6 +2282,7 @@ export const blankCharacter: MockCharacter = {
   harm: mockCharacterHarm,
   vehicleCount: 0,
   battleVehicleCount: 0,
+  experience: 0,
   hasCompletedCharacterCreation: false,
   hasPlusOneForward: false,
   holds: [],

@@ -577,6 +577,7 @@ const GAME = gql`
           hasPlusOneForward
           gear
           barter
+          experience
           vehicleCount
           battleVehicleCount
           holds {
