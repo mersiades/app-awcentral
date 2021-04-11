@@ -118,6 +118,7 @@ const mockBattleBabe: Character = {
   gear: ['leather jacket', 'Timberland boots'],
   statsBlock: mockStatsBlock1,
   barter: 2,
+  experience: 0,
   hxBlock: [],
   harm: mockCharacterHarm,
   looks: [mockBattlebabeLook, mockLookBattlebabe2],

@@ -40,6 +40,22 @@ export const apolloClient = new ApolloClient({
           },
         },
       },
+      Character: {
+        fields: {
+          looks: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
+          characterMoves: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
+        },
+      },
     },
   }),
 });

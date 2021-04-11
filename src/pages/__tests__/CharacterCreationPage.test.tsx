@@ -166,6 +166,7 @@ describe('Rendering CharacterCreationPage', () => {
       statsBlock: mockCharacter2.statsBlock,
       gear: mockCharacter2.gear,
       barter: mockCharacter2.barter,
+      experience: mockCharacter2.experience,
       vehicleCount: 0,
       playbookUnique: undefined,
       characterMoves: [],

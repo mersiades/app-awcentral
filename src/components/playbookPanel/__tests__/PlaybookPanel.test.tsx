@@ -195,19 +195,7 @@ describe('Rendering PlaybookPanel', () => {
 
   test('should render MovesBox properly', async () => {
     customRenderForComponent(
-      <PlaybookPanel
-        character={mockCharacter2}
-        settingBarter={false}
-        adjustingHx={false}
-        settingHarm={false}
-        togglingHighlight={false}
-        handleSetBarter={jest.fn()}
-        handleAdjustHx={jest.fn()}
-        handleSetHarm={jest.fn()}
-        handleToggleHighlight={jest.fn()}
-        navigateToCharacterCreation={jest.fn()}
-        openDialog={jest.fn()}
-      />,
+      <PlaybookPanel character={mockCharacter2} navigateToCharacterCreation={jest.fn()} openDialog={jest.fn()} />,
       {
         isAuthenticated: true,
         apolloMocks: [mockPlaybook],
