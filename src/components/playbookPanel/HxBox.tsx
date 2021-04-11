@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { omit } from 'lodash';
 import { Box } from 'grommet';
@@ -19,6 +19,7 @@ interface HxBoxProps {
 }
 
 const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
+  const [hxMessage, setHxMessage] = useState('');
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { userGameRole, character } = useGame();
   const hxStats = character?.hxBlock;
@@ -37,6 +38,9 @@ const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
           variables: { gameRoleId: userGameRole.id, characterId: character.id, hxStat: hxInput },
           optimisticResponse: getAdjustCharacterHxOR(character, hxInput),
         });
+        if (hxInput.hxValue >= 4 || hxInput.hxValue <= -3) {
+          setHxMessage('Hx reset, experience added');
+        }
       } catch (error) {
         console.error(error);
       }
@@ -51,8 +55,19 @@ const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
     handleAdjustHx({ ...hxStat, hxValue: hxStat.hxValue - 1 });
   };
 
+  // Remove hxMessage after 10 seconds
+  useEffect(() => {
+    !!hxMessage && setTimeout(() => setHxMessage(''), 10000);
+  }, [hxMessage]);
+
   return (
-    <CollapsiblePanelBox open title="Hx" navigateToCharacterCreation={navigateToCharacterCreation} targetCreationStep="10">
+    <CollapsiblePanelBox
+      open
+      title="Hx"
+      navigateToCharacterCreation={navigateToCharacterCreation}
+      targetCreationStep="10"
+      message={hxMessage}
+    >
       <Box
         data-testid="hx-box"
         fill="horizontal"
