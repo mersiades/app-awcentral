@@ -38,7 +38,7 @@ describe('Rendering CommsForm', () => {
 
   test('should render CommsForm in initial state', () => {
     screen.getByRole('heading', { name: 'COMMS' });
-    screen.getAllByRole('button', { name: 'SET' });
+    screen.getAllByRole('button', { name: /SET/i }); // aria role was showing up as 'Set' in CircleCI
     screen.getByRole('button', { name: 'Open Drop' });
     screen.getByRole('button', { name: 'LATER' });
     screen.getByRole('textbox', { name: 'comms-url-input' });
@@ -57,7 +57,7 @@ describe('Rendering CommsForm', () => {
 
     userEvent.type(urlInput, mockUrl);
     expect(urlInput.value).toEqual(mockUrl);
-    const setButton = screen.getAllByRole('button', { name: 'SET' })[1] as HTMLButtonElement;
+    const setButton = screen.getAllByRole('button', { name: /SET/i })[1] as HTMLButtonElement;
     expect(setButton.disabled).toEqual(false);
   });
 
