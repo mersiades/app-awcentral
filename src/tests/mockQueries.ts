@@ -2,8 +2,8 @@ import { MockedResponse } from '@apollo/client/testing';
 import { GameRole } from '../@types/dataInterfaces';
 import { PlaybookType, RoleType, StatType } from '../@types/enums';
 import ADD_COMMS_APP, { AddCommsAppData } from '../mutations/addCommsApp';
-import ADD_COMMS_URL from '../mutations/addCommsUrl';
-import ADD_INVITEE from '../mutations/addInvitee';
+import ADD_COMMS_URL, { AddCommsUrlData } from '../mutations/addCommsUrl';
+import ADD_INVITEE, { AddInviteeData } from '../mutations/addInvitee';
 import ADD_USER_TO_GAME from '../mutations/addUserToGame';
 import ADJUST_CHARACTER_HX, { getAdjustCharacterHxOR } from '../mutations/adjustCharacterHx';
 import CREATE_CHARACTER from '../mutations/createCharacter';
@@ -230,20 +230,19 @@ export const mockGameAfterAddCommsApp: MockedResponse = {
   },
 };
 
-export const mockAddCommsUrl: MockedResponse = {
+export const mockAddCommsUrl: MockedResponse<AddCommsUrlData> = {
   request: {
     query: ADD_COMMS_URL,
     variables: { gameId: mockGame3.id, url: 'https://discord.com/urltodiscordchannel' },
   },
   result: {
     data: {
-      game: {
+      addCommsUrl: {
         id: mockGame3.id,
         name: mockGame3.name,
         invitees: mockGame3.invitees,
         commsApp: 'Discord',
         commsUrl: 'https://discord.com/urltodiscordchannel',
-        hasFinishedPreGame: false,
         mc: {
           id: mockGame3.mc.id,
           displayName: mockGame3.mc.displayName,
@@ -287,34 +286,21 @@ export const mockGameAfterAddCommsUrl: MockedResponse = {
   },
 };
 
-export const mockAddInvitee1: MockedResponse = {
+export const mockAddInvitee1: MockedResponse<AddInviteeData> = {
   request: {
     query: ADD_INVITEE,
     variables: { gameId: mockGame3.id, email: 'mockUser2@email.com' },
   },
   result: {
     data: {
-      game: {
+      addInvitee: {
         id: mockGame3.id,
         name: mockGame3.name,
         invitees: ['mockUser2@email.com'],
-        commsApp: 'Discord',
-        commsUrl: 'https://discord.com/urltodiscordchannel',
         mc: {
           id: mockGame3.mc.id,
           displayName: mockGame3.mc.displayName,
         },
-        players: [],
-        gameRoles: [
-          {
-            id: mockGame3.gameRoles[0].id,
-            role: mockGame3.gameRoles[0].role,
-            userId: mockGame3.gameRoles[0].userId,
-            npcs: [],
-            threats: [],
-            characters: [],
-          },
-        ],
       },
     },
   },

@@ -5,7 +5,7 @@ import { Form, Box, FormField, TextInput, TextArea } from 'grommet';
 
 import Spinner from './Spinner';
 import { ButtonWS, HeadingWS, ParagraphWS } from '../config/grommetConfig';
-import ADD_INVITEE, { AddInviteeData, AddInviteeVars } from '../mutations/addInvitee';
+import ADD_INVITEE, { AddInviteeData, AddInviteeVars, getAddInviteeOR } from '../mutations/addInvitee';
 import GAME from '../queries/game';
 import { useFonts } from '../contexts/fontContext';
 import { useGame } from '../contexts/gameContext';
@@ -48,7 +48,7 @@ const InviteesForm: FC = () => {
     if (!!game && !game?.invitees.includes(email)) {
       addInvitee({
         variables: { gameId: game.id, email },
-        refetchQueries: [{ query: GAME, variables: { gameId: game.id } }],
+        optimisticResponse: getAddInviteeOR(game, email),
       });
     }
   };
