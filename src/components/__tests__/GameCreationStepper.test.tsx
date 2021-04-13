@@ -44,7 +44,7 @@ describe('Rendering GameCreationStepper', () => {
     const nameBox = screen.getByTestId('name-box');
     expect(nameBox.textContent).toContain(mockGame1.name);
     const channelBox = screen.getByTestId('channel-box');
-    expect(channelBox.textContent).toContain('...');
+    expect(channelBox.textContent).toContain('Channel');
     const invitationsBox = screen.getByTestId('invitations-box');
     expect(invitationsBox.textContent).toContain('...');
   });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, RenderOptions } from '@testing-library/react';
+import { act, render, RenderOptions } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
@@ -16,6 +16,7 @@ import { Character, Game } from '../@types/dataInterfaces';
 import { InMemoryCache } from '@apollo/client';
 import { McContent } from '../@types/staticDataInterfaces';
 import { McContentProvider } from '../contexts/mcContentContext';
+import wait from 'waait';
 
 interface CustomRenderOptions {
   isAuthenticated?: boolean;
@@ -163,3 +164,5 @@ export const renderWithRouter = (
   window.history.pushState({}, 'Menu Page', route);
   return customRenderForApp(ui, options);
 };
+
+export const waitOneTick = async () => await act(async () => await wait());

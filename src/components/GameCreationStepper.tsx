@@ -15,17 +15,17 @@ const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCre
   const { game } = useGame();
 
   // -------------------------------------------------- Render component ---------------------------------------------------- //
-  const renderComms = () => {
-    if (!!game && !!game.commsApp) {
-      if (!!game.commsUrl) {
-        return <Text truncate>{`${game.commsApp} @ ${game.commsUrl}`}</Text>;
+  const renderComms = (app?: string, url?: string) => {
+    if (!!app) {
+      if (!!url) {
+        return <Text truncate>{`${app} @ ${url}`}</Text>;
       } else {
-        return <Text truncate>{game.commsApp}</Text>;
+        return <Text truncate>{app}</Text>;
       }
-    } else if (!!game && !!game.commsUrl) {
-      return <Text truncate>{game.commsUrl}</Text>;
+    } else if (!!url) {
+      return <Text truncate>{url}</Text>;
     } else {
-      return <Text alignSelf="center">...</Text>;
+      return null;
     }
   };
 
@@ -75,7 +75,7 @@ const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCre
           <Text color="white" weight="bold">
             Channel
           </Text>
-          <Box width="100%">{renderComms()}</Box>
+          <Box width="100%">{!!game && renderComms(game.commsApp, game.commsUrl)}</Box>
         </Box>
         <Box
           data-testid="invitations-box"

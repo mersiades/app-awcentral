@@ -1000,7 +1000,7 @@ export const mockGame3: Game = {
   commsUrl: '',
   hasFinishedPreGame: false,
   showFirstSession: false,
-  mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1' },
+  mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1', __typename: 'User' },
   players: [],
   gameRoles: [
     {
@@ -1012,10 +1012,12 @@ export const mockGame3: Game = {
       characters: [],
       npcs: [],
       threats: [],
+      __typename: 'GameRole',
     },
   ],
   invitees: [],
   gameMessages: [],
+  __typename: 'Game',
 };
 
 // mockgame4 is used to test joining a game

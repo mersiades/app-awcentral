@@ -112,6 +112,7 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
                 {!!game ? (
                   <ButtonWS
                     aria-label="set-app"
+                    data-testid="set-app-button"
                     label={loadingCommsApp ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
                     secondary={!!game.commsApp}
                     primary={!game.commsApp}
@@ -142,6 +143,7 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
                 {!!game ? (
                   <ButtonWS
                     aria-label="set-url"
+                    data-testid="set-url-button"
                     label={loadingCommsUrl ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
                     secondary={!!game.commsUrl}
                     primary={!game.commsUrl}

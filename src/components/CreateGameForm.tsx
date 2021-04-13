@@ -6,7 +6,7 @@ import { FormField, TextInput, Box, Form } from 'grommet';
 import Spinner from './Spinner';
 import { ButtonWS, TextWS } from '../config/grommetConfig';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
-import CREATE_GAME, { CreateGameData, CreateGameVars } from '../mutations/createGame';
+import CREATE_GAME, { CreateGameData, CreateGameVars, getCreateGameOR } from '../mutations/createGame';
 import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
 
 const CreateGameForm: FC = () => {
@@ -16,18 +16,21 @@ const CreateGameForm: FC = () => {
   const history = useHistory();
 
   const sendNewGameRequest = async (userId: string, name: string) => {
-    // Tell awcentral-api to create a new game
-    const { data: newGame } = await createGame({
-      // @ts-ignore
-      variables: { userId, name, displayName, email },
-      skip: !displayName || !email,
-      refetchQueries: [{ query: GAMEROLES_BY_USER_ID, variables: { id: userId } }],
-    });
+    if (!!userId && !!displayName) {
+      // Tell awcentral-api to create a new game
+      const { data: newGame } = await createGame({
+        // @ts-ignore
+        variables: { userId, name, displayName, email },
+        skip: !displayName || !email,
+        optimisticResponse: getCreateGameOR(name, userId, displayName),
+        refetchQueries: [{ query: GAMEROLES_BY_USER_ID, variables: { id: userId } }],
+      });
 
-    const gameId = newGame?.createGame.id;
+      const gameId = newGame?.createGame.id;
 
-    if (!!gameId) {
-      history.push(`/create-game/${gameId}`);
+      if (!!gameId) {
+        history.push(`/create-game/${gameId}`);
+      }
     }
   };
 
