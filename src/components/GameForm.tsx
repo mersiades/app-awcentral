@@ -7,7 +7,7 @@ import CloseButton from './CloseButton';
 import Spinner from './Spinner';
 import { ButtonWS } from '../config/grommetConfig';
 import ADD_COMMS_APP, { AddCommsAppData, AddCommsAppVars, getAddCommsAppOR } from '../mutations/addCommsApp';
-import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars } from '../mutations/addCommsUrl';
+import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars, getAddCommsUrlOR } from '../mutations/addCommsUrl';
 import SET_GAME_NAME, { SetGameNameData, SetGameNameVars } from '../mutations/setGameName';
 import { useGame } from '../contexts/gameContext';
 
@@ -52,10 +52,10 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
     }
   };
 
-  const handleSetUrl = () => {
+  const handleSetUrl = async () => {
     if (!!url && !!game) {
       try {
-        addCommsUrl({ variables: { gameId, url } });
+        await addCommsUrl({ variables: { gameId, url }, optimisticResponse: getAddCommsUrlOR(game, url) });
       } catch (e) {
         console.warn(e);
       }

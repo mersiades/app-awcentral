@@ -4,9 +4,8 @@ import { Box, Button, Select, Heading, Text, TextArea } from 'grommet';
 
 import Spinner from './Spinner';
 import { ButtonWS, ParagraphWS } from '../config/grommetConfig';
-import GAME from '../queries/game';
 import ADD_COMMS_APP, { AddCommsAppData, AddCommsAppVars, getAddCommsAppOR } from '../mutations/addCommsApp';
-import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars } from '../mutations/addCommsUrl';
+import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars, getAddCommsUrlOR } from '../mutations/addCommsUrl';
 import { useGame } from '../contexts/gameContext';
 
 interface CommsFormProps {
@@ -48,7 +47,7 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
       try {
         addCommsUrl({
           variables: { gameId: game.id, url },
-          refetchQueries: [{ query: GAME, variables: { gameId: game.id } }],
+          optimisticResponse: getAddCommsUrlOR(game, url),
         });
       } catch (e) {
         console.warn(e);

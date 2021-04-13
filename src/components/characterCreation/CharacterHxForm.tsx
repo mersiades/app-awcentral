@@ -185,7 +185,7 @@ const CharacterHxForm: FC = () => {
                     {!!looks && <TextWS size="small">{looks.join(', ')}</TextWS>}
                     {errorIds.includes(char.id) && (
                       <TextWS color="accent-3" size="small">
-                        Enter digits from -3 to 3
+                        Enter digits from -2 to 3
                       </TextWS>
                     )}
                   </Box>
