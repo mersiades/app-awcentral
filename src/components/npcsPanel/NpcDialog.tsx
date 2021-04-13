@@ -7,7 +7,7 @@ import DialogWrapper from '../DialogWrapper';
 import Spinner from '../Spinner';
 import { ButtonWS, HeadingWS, npcDialogBackground, TextInputWS } from '../../config/grommetConfig';
 import THREAT_CREATOR, { ThreatCreatorData, ThreatCreatorVars } from '../../queries/threatCreator';
-import ADD_NPC, { AddNpcData, AddNpcVars } from '../../mutations/addNpc';
+import ADD_NPC, { AddNpcData, AddNpcVars, getAddNpcOR } from '../../mutations/addNpc';
 import { NpcInput } from '../../@types';
 import { Npc } from '../../@types/dataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
@@ -75,6 +75,7 @@ const NpcDialog: FC<NpcDialogProps> = ({ handleClose, existingNpc }) => {
       try {
         await addNpc({
           variables: { gameRoleId: mcGameRole.id, npc },
+          optimisticResponse: getAddNpcOR(mcGameRole, npc),
         });
         handleClose();
       } catch (error) {

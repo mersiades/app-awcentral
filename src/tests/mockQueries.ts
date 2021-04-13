@@ -340,34 +340,21 @@ export const mockGameAfterAddInvitee1: MockedResponse = {
   },
 };
 
-export const mockAddInvitee2: MockedResponse = {
+export const mockAddInvitee2: MockedResponse<AddInviteeData> = {
   request: {
     query: ADD_INVITEE,
     variables: { gameId: mockGame3.id, email: 'mockUser3@email.com' },
   },
   result: {
     data: {
-      game: {
+      addInvitee: {
         id: mockGame3.id,
         name: mockGame3.name,
         invitees: ['mockUser2@email.com', 'mockUser3@email.com'],
-        commsApp: 'Discord',
-        commsUrl: 'https://discord.com/urltodiscordchannel',
         mc: {
           id: mockGame3.mc.id,
           displayName: mockGame3.mc.displayName,
         },
-        players: [],
-        gameRoles: [
-          {
-            id: mockGame3.gameRoles[0].id,
-            role: mockGame3.gameRoles[0].role,
-            userId: mockGame3.gameRoles[0].userId,
-            npcs: [],
-            threats: [],
-            characters: [],
-          },
-        ],
       },
     },
   },

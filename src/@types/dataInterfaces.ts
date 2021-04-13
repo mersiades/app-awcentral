@@ -304,6 +304,7 @@ export interface Npc {
   id: string;
   name: string;
   description?: string;
+  __typename?: 'Npc';
 }
 
 export interface Threat {
