@@ -135,7 +135,7 @@ const FollowersForm: FC = () => {
       // @ts-ignore
       const weaknessesNoTypename = selectedWeaknesses.map((wk: FollowersOption) => omit(wk, ['__typename']));
       const followersInput: FollowersInput = {
-        id: character?.playbookUnique?.followers ? character.playbookUnique.followers.id : undefined,
+        id: character?.playbookUniques?.followers ? character.playbookUniques.followers.id : undefined,
         selectedStrengths: strengthsNoTypename,
         selectedWeaknesses: weaknessesNoTypename,
         description,
@@ -263,8 +263,8 @@ const FollowersForm: FC = () => {
 
   // ------------------------------------------------------- Effects -------------------------------------------------------- //
   useEffect(() => {
-    if (!!character?.playbookUnique?.followers) {
-      dispatch({ type: 'SET_EXISTING_FOLLOWERS', payload: character.playbookUnique.followers });
+    if (!!character?.playbookUniques?.followers) {
+      dispatch({ type: 'SET_EXISTING_FOLLOWERS', payload: character.playbookUniques.followers });
     } else if (!!followersCreator) {
       const defaultState: FollowersFormState = {
         description: '',

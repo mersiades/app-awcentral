@@ -32,7 +32,7 @@ const SpeedRecoveryDialog: FC<SpeedRecoveryDialogProps> = ({ move, handleClose }
   );
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const currentStock = userGameRole?.characters[0].playbookUnique?.angelKit?.stock || 0;
+  const currentStock = userGameRole?.characters[0].playbookUniques?.angelKit?.stock || 0;
 
   const handleStockMove = () => {
     const stockSpent = option === 'Yes' ? 1 : 0;

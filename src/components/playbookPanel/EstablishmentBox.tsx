@@ -22,7 +22,7 @@ const EstablishmentBox: FC<EstablishmentBoxProps> = ({ navigateToCharacterCreati
   const { character } = useGame();
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const establishment = character?.playbookUnique?.establishment;
+  const establishment = character?.playbookUniques?.establishment;
 
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
   return (

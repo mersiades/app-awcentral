@@ -64,9 +64,9 @@ const WeaponsForm: FC = () => {
   // ------------------------------------------------------ Effects -------------------------------------------------------- //
 
   useEffect(() => {
-    if (!!character?.playbookUnique?.weapons && !!bigFuckOffGuns && !!seriousGuns && !!backupWeapons) {
+    if (!!character?.playbookUniques?.weapons && !!bigFuckOffGuns && !!seriousGuns && !!backupWeapons) {
       let existingSeriousWeapons: string[] = [];
-      character.playbookUnique.weapons.weapons.forEach((weapon) => {
+      character.playbookUniques.weapons.weapons.forEach((weapon) => {
         if (bigFuckOffGuns.includes(weapon)) {
           setFobGun(weapon);
         }
@@ -81,7 +81,7 @@ const WeaponsForm: FC = () => {
       });
       setSeriousWeapons(existingSeriousWeapons);
     }
-  }, [character?.playbookUnique?.weapons, bigFuckOffGuns, seriousGuns, backupWeapons]);
+  }, [character?.playbookUniques?.weapons, bigFuckOffGuns, seriousGuns, backupWeapons]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 

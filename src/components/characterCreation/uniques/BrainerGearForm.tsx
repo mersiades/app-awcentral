@@ -19,7 +19,7 @@ const BrainerGearForm: FC = () => {
 
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [selectedGear, setSelectedGear] = useState(
-    !!character?.playbookUnique?.brainerGear ? character.playbookUnique.brainerGear.brainerGear : []
+    !!character?.playbookUniques?.brainerGear ? character.playbookUniques.brainerGear.brainerGear : []
   );
 
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //

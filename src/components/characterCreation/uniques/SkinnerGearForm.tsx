@@ -53,7 +53,7 @@ const SkinnerGearForm: FC = () => {
   const handleSubmitSkinnerGear = async () => {
     if (!!userGameRole && !!character && !!game && !!selectedWeapon && selectedGear.length === 2) {
       const skinnerGear: SkinnerGearInput = {
-        id: character.playbookUnique?.skinnerGear ? character.playbookUnique.skinnerGear.id : undefined,
+        id: character.playbookUniques?.skinnerGear ? character.playbookUniques.skinnerGear.id : undefined,
         graciousWeapon: omit(selectedWeapon, ['__typename']) as SkinnerGearItem,
         luxeGear: selectedGear.map((item) => omit(item, ['__typename']) as SkinnerGearItem),
       };
@@ -75,9 +75,9 @@ const SkinnerGearForm: FC = () => {
 
   // Load the Character's existing SkinnerGear into component state
   useEffect(() => {
-    if (!!character?.playbookUnique?.skinnerGear) {
-      setSelectedWeapon(character.playbookUnique.skinnerGear.graciousWeapon);
-      setSelectedGear(character.playbookUnique.skinnerGear.luxeGear);
+    if (!!character?.playbookUniques?.skinnerGear) {
+      setSelectedWeapon(character.playbookUniques.skinnerGear.graciousWeapon);
+      setSelectedGear(character.playbookUniques.skinnerGear.luxeGear);
     }
   }, [character]);
 

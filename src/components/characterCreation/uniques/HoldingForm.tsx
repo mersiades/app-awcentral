@@ -129,7 +129,7 @@ const HoldingForm: FC = () => {
       const weaknessesNoTypename = selectedWeaknesses.map((wk: GangOption) => omit(wk, ['__typename']));
 
       const holdingInput: HoldingInput = {
-        id: character?.playbookUnique?.holding ? character.playbookUnique.holding.id : undefined,
+        id: character?.playbookUniques?.holding ? character.playbookUniques.holding.id : undefined,
         selectedStrengths: strengthsNoTypename,
         selectedWeaknesses: weaknessesNoTypename,
         holdingSize,
@@ -291,8 +291,8 @@ const HoldingForm: FC = () => {
 
   // ------------------------------------------------------- Effects -------------------------------------------------------- //
   useEffect(() => {
-    if (!!character?.playbookUnique?.holding) {
-      dispatch({ type: 'SET_EXISTING_HOLDING', payload: character.playbookUnique.holding });
+    if (!!character?.playbookUniques?.holding) {
+      dispatch({ type: 'SET_EXISTING_HOLDING', payload: character.playbookUniques.holding });
       setVehicleCount(character.vehicleCount);
       // TODO add battleVehicleCount
     } else if (!!holdingCreator) {

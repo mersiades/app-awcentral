@@ -30,7 +30,7 @@ const ReviveDialog: FC<ReviveDialogProps> = ({ move, handleClose }) => {
   );
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const currentStock = userGameRole?.characters[0].playbookUnique?.angelKit?.stock || 0;
+  const currentStock = userGameRole?.characters[0].playbookUniques?.angelKit?.stock || 0;
 
   const handleStockMove = () => {
     const stockSpent = 2;

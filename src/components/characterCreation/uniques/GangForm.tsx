@@ -229,8 +229,8 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
 
   // ------------------------------------------------------- Effects -------------------------------------------------------- //
   useEffect(() => {
-    if (!!character?.playbookUnique?.gang) {
-      dispatch({ type: 'SET_EXISTING_GANG', payload: character.playbookUnique.gang });
+    if (!!character?.playbookUniques?.gang) {
+      dispatch({ type: 'SET_EXISTING_GANG', payload: character.playbookUniques.gang });
     }
   }, [character]);
 

@@ -25,10 +25,10 @@ const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) =>
   );
   // ------------------------------------------------- Component functions -------------------------------------------------- //
 
-  const followers = character?.playbookUnique?.followers;
+  const followers = character?.playbookUniques?.followers;
 
   const adjustBarter = (type: 'increase' | 'decrease') => {
-    if (!!userGameRole && !!character && !!character.playbookUnique && !!followers) {
+    if (!!userGameRole && !!character && !!character.playbookUniques && !!followers) {
       const barter = type === 'increase' ? followers.barter + 1 : followers.barter - 1;
       try {
         updateFollowers({
@@ -44,8 +44,8 @@ const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) =>
             updateFollowers: {
               __typename: 'Character',
               ...character,
-              playbookUnique: {
-                ...character.playbookUnique,
+              playbookUniques: {
+                ...character.playbookUniques,
                 followers: {
                   ...followers,
                   barter,
@@ -61,7 +61,7 @@ const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) =>
   };
 
   const adjustFollowers = (type: 'increase' | 'decrease') => {
-    if (!!userGameRole && !!character && !!character.playbookUnique && !!followers) {
+    if (!!userGameRole && !!character && !!character.playbookUniques && !!followers) {
       const newFollowers = type === 'increase' ? followers.followers + 1 : followers.followers - 1;
       const description = getFollowersDescription(followers.characterization, newFollowers, followers.travelOption) || '';
       try {
@@ -78,8 +78,8 @@ const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) =>
             updateFollowers: {
               __typename: 'Character',
               ...character,
-              playbookUnique: {
-                ...character.playbookUnique,
+              playbookUniques: {
+                ...character.playbookUniques,
                 followers: {
                   ...followers,
                   followers: newFollowers,
