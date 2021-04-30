@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Box } from 'grommet';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
@@ -6,6 +6,13 @@ import { useGame } from '../../contexts/gameContext';
 import { brandColor, ButtonWS, HeadingWS } from '../../config/grommetConfig';
 import { useFonts } from '../../contexts/fontContext';
 import styled from 'styled-components';
+import CharacterImprovementDialog from '../dialogs/CharacterImprovementDialog';
+import { useMutation } from '@apollo/client';
+import SPEND_EXPERIENCE, {
+  SpendExperienceData,
+  spendExperienceOR,
+  SpendExperienceVars,
+} from '../../mutations/spendExperience';
 
 interface ImprovementBoxProps {}
 
@@ -50,15 +57,24 @@ const OverflowPill = styled.div`
 `;
 
 const ImprovementBox: FC<ImprovementBoxProps> = () => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
-  const { character } = useGame();
-  const experience = character?.experience;
-  // console.log(`character`, character);
+  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  const [showDialog, setShowDialog] = useState(false);
 
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { character, userGameRole } = useGame();
+  const experience = character?.experience;
+  const allowedImprovements = character?.allowedImprovements;
   const { crustReady } = useFonts();
 
+  // ------------------------------------------------------ GraphQL -------------------------------------------------------- //
+  const [spendExperience, { loading: spendingExperience }] = useMutation<SpendExperienceData, SpendExperienceVars>(
+    SPEND_EXPERIENCE
+  );
+
+  // ------------------------------------------------ Component functions -------------------------------------------------- //
   let experiences: { filled: boolean }[] = [];
   let overflow: number | undefined;
+
   if (experience !== undefined) {
     if (experience > 5) {
       overflow = experience - 5;
@@ -71,9 +87,36 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
     }
   }
 
+  let unAllocatedImprovements: number | undefined;
+  if (allowedImprovements !== undefined && !!character) {
+    unAllocatedImprovements =
+      allowedImprovements - (character.improvementMoves.length + character.futureImprovementMoves.length);
+  }
+
+  const handleClickImprove = async () => {
+    // open dialog
+    setShowDialog(true);
+
+    // spend experience if necessary
+    if (!!userGameRole && !!character && experience !== undefined && experience >= 5) {
+      try {
+        await spendExperience({
+          variables: { gameRoleId: userGameRole.id, characterId: character.id },
+          optimisticResponse: spendExperienceOR(character),
+        });
+        setShowDialog(true);
+      } catch (error) {
+        console.log(`error`, error);
+      }
+    } else {
+      setShowDialog(true);
+    }
+  };
+
   return (
     <CollapsiblePanelBox open title="Improvement">
       <Box fill="horizontal" align="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+        {showDialog && <CharacterImprovementDialog handleClose={() => setShowDialog(false)} />}
         <Box fill="horizontal" pad="12px">
           {experience !== undefined && (
             <Box fill="horizontal" direction="row" align="center" justify="between">
@@ -90,7 +133,12 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
                 )}
                 {!!overflow && <OverflowPill>{`+ ${overflow}`}</OverflowPill>}
               </Box>
-              <ButtonWS label="IMPROVE" primary disabled={experience < 5} />
+              <ButtonWS
+                label="IMPROVE"
+                primary
+                disabled={experience < 5 && unAllocatedImprovements === 0}
+                onClick={() => !spendingExperience && handleClickImprove()}
+              />
             </Box>
           )}
         </Box>

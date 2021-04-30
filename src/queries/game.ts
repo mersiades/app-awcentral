@@ -578,6 +578,9 @@ const GAME = gql`
           gear
           barter
           experience
+          allowedImprovements
+          allowedPlaybookMoves
+          allowedOtherPlaybookMoves
           vehicleCount
           battleVehicleCount
           holds {
@@ -618,6 +621,36 @@ const GAME = gql`
             playbookType
           }
           characterMoves {
+            id
+            isSelected
+            name
+            kind
+            description
+            playbook
+            stat
+            moveAction {
+              id
+              actionType
+              rollType
+              statToRollWith
+            }
+          }
+          improvementMoves {
+            id
+            isSelected
+            name
+            kind
+            description
+            playbook
+            stat
+            moveAction {
+              id
+              actionType
+              rollType
+              statToRollWith
+            }
+          }
+          futureImprovementMoves {
             id
             isSelected
             name
