@@ -1,30 +1,44 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-// import wait from 'waait';
-import { screen } from '@testing-library/react';
+import wait from 'waait';
+import { MockedResponse } from '@apollo/client/testing';
+import { act, screen } from '@testing-library/react';
 
 import CommsForm from '../CommsForm';
 import { mockGame1 } from '../../tests/mocks';
-import { renderWithRouter } from '../../tests/test-utils';
+import { customRenderForComponent } from '../../tests/test-utils';
+import GAME, { GameData } from '../../queries/game';
 
+const mockGameQuery: MockedResponse<GameData> = {
+  request: {
+    query: GAME,
+    variables: { gameId: mockGame1.id },
+  },
+  result: {
+    data: {
+      game: { ...mockGame1, commsApp: '', commsUrl: '' },
+    },
+  },
+};
 describe('Rendering CommsForm', () => {
   const mockSetCreationStep = jest.fn();
   const mockSetHasSkippedComms = jest.fn();
 
   beforeEach(async () => {
-    renderWithRouter(
-      <CommsForm
-        game={{ ...mockGame1, commsApp: '', commsUrl: '' }}
-        setCreationStep={mockSetCreationStep}
-        setHasSkippedComms={mockSetHasSkippedComms}
-      />,
-      `/create-game/${mockGame1.id}`
+    customRenderForComponent(
+      <CommsForm setCreationStep={mockSetCreationStep} setHasSkippedComms={mockSetHasSkippedComms} />,
+      {
+        isAuthenticated: true,
+        apolloMocks: [mockGameQuery],
+        injectedGameId: mockGame1.id,
+      }
     );
+    await act(async () => await wait());
   });
 
   test('should render CommsForm in initial state', () => {
     screen.getByRole('heading', { name: 'COMMS' });
-    screen.getAllByRole('button', { name: 'SET' });
+    screen.getAllByRole('button', { name: /SET/i }); // aria role was showing up as 'Set' in CircleCI
     screen.getByRole('button', { name: 'Open Drop' });
     screen.getByRole('button', { name: 'LATER' });
     screen.getByRole('textbox', { name: 'comms-url-input' });
@@ -43,7 +57,7 @@ describe('Rendering CommsForm', () => {
 
     userEvent.type(urlInput, mockUrl);
     expect(urlInput.value).toEqual(mockUrl);
-    const setButton = screen.getAllByRole('button', { name: 'SET' })[1] as HTMLButtonElement;
+    const setButton = screen.getAllByRole('button', { name: /SET/i })[1] as HTMLButtonElement;
     expect(setButton.disabled).toEqual(false);
   });
 

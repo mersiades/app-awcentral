@@ -6,7 +6,7 @@ import { Box, Form, FormField, TextInput, TextArea } from 'grommet';
 
 import CloseButton from './CloseButton';
 import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../config/grommetConfig';
-import ADD_INVITEE, { AddInviteeData, AddInviteeVars } from '../mutations/addInvitee';
+import ADD_INVITEE, { AddInviteeData, AddInviteeVars, getAddInviteeOR } from '../mutations/addInvitee';
 import { useGame } from '../contexts/gameContext';
 import { useFonts } from '../contexts/fontContext';
 import { copyToClipboard } from '../helpers/copyToClipboard';
@@ -33,9 +33,9 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const [addInvitee] = useMutation<AddInviteeData, AddInviteeVars>(ADD_INVITEE);
   // ------------------------------------------------ Component functions -------------------------------------------------- //
-  const handleAddInvitee = (email: string) => {
-    if (validateEmail(email) && !game?.invitees.includes(email)) {
-      addInvitee({ variables: { gameId, email } });
+  const handleAddInvitee = async (email: string) => {
+    if (validateEmail(email) && !!game && !game?.invitees.includes(email)) {
+      await addInvitee({ variables: { gameId, email }, optimisticResponse: getAddInviteeOR(game, email) });
     }
   };
 

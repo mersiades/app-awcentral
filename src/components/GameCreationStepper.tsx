@@ -1,28 +1,31 @@
 import React, { FC } from 'react';
 import { Box, Grid, Text } from 'grommet';
 
-import { Game } from '../@types/dataInterfaces';
 import { CustomUL } from '../config/grommetConfig';
+import { useGame } from '../contexts/gameContext';
 
 interface GameCreationStepperProps {
   currentStep: number;
   setCreationStep: (step: number) => void;
   setHasSkippedComms: (skipped: boolean) => void;
-  game?: Game;
 }
 
-const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCreationStep, setHasSkippedComms, game }) => {
-  const renderComms = () => {
-    if (!!game && !!game.commsApp) {
-      if (!!game.commsUrl) {
-        return <Text truncate>{`${game.commsApp} @ ${game.commsUrl}`}</Text>;
+const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCreationStep, setHasSkippedComms }) => {
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { game } = useGame();
+
+  // -------------------------------------------------- Render component ---------------------------------------------------- //
+  const renderComms = (app?: string, url?: string) => {
+    if (!!app) {
+      if (!!url) {
+        return <Text truncate>{`${app} @ ${url}`}</Text>;
       } else {
-        return <Text truncate>{game.commsApp}</Text>;
+        return <Text truncate>{app}</Text>;
       }
-    } else if (!!game && !!game.commsUrl) {
-      return <Text truncate>{game.commsUrl}</Text>;
+    } else if (!!url) {
+      return <Text truncate>{url}</Text>;
     } else {
-      return <Text alignSelf="center">...</Text>;
+      return null;
     }
   };
 
@@ -72,7 +75,7 @@ const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCre
           <Text color="white" weight="bold">
             Channel
           </Text>
-          <Box width="100%">{renderComms()}</Box>
+          <Box width="100%">{!!game && renderComms(game.commsApp, game.commsUrl)}</Box>
         </Box>
         <Box
           data-testid="invitations-box"

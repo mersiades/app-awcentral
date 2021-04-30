@@ -5,26 +5,25 @@ import { Form, Box, FormField, TextInput, TextArea } from 'grommet';
 
 import Spinner from './Spinner';
 import { ButtonWS, HeadingWS, ParagraphWS } from '../config/grommetConfig';
-import ADD_INVITEE, { AddInviteeData, AddInviteeVars } from '../mutations/addInvitee';
-import GAME from '../queries/game';
-import { Game } from '../@types/dataInterfaces';
+import ADD_INVITEE, { AddInviteeData, AddInviteeVars, getAddInviteeOR } from '../mutations/addInvitee';
+import { useFonts } from '../contexts/fontContext';
+import { useGame } from '../contexts/gameContext';
 import { copyToClipboard } from '../helpers/copyToClipboard';
 import { validateEmail } from '../helpers/validateEmail';
-import { useFonts } from '../contexts/fontContext';
-
-interface InviteesFormProps {
-  game?: Game;
-}
 
 const baseUrl = process.env.REACT_APP_ROOT_URL;
 
-const InviteesForm: FC<InviteesFormProps> = ({ game }) => {
+const InviteesForm: FC = () => {
   // ------------------------------------------------- Component state --------------------------------------------------- //
   const [formValues, setFormValues] = useState<{ email: string }>({ email: '' });
   const [message, setMessage] = useState('');
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
+  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
   const history = useHistory();
+
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { game } = useGame();
   const { vtksReady } = useFonts();
 
   // -------------------------------------------------- Graphql hooks ---------------------------------------------------- //
@@ -48,7 +47,7 @@ const InviteesForm: FC<InviteesFormProps> = ({ game }) => {
     if (!!game && !game?.invitees.includes(email)) {
       addInvitee({
         variables: { gameId: game.id, email },
-        refetchQueries: [{ query: GAME, variables: { gameId: game.id } }],
+        optimisticResponse: getAddInviteeOR(game, email),
       });
     }
   };

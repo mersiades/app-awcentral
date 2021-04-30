@@ -1,13 +1,13 @@
 import { MockedResponse } from '@apollo/client/testing';
 import { GameRole } from '../@types/dataInterfaces';
 import { PlaybookType, RoleType, StatType } from '../@types/enums';
-import ADD_COMMS_APP from '../mutations/addCommsApp';
-import ADD_COMMS_URL from '../mutations/addCommsUrl';
-import ADD_INVITEE from '../mutations/addInvitee';
+import ADD_COMMS_APP, { AddCommsAppData } from '../mutations/addCommsApp';
+import ADD_COMMS_URL, { AddCommsUrlData } from '../mutations/addCommsUrl';
+import ADD_INVITEE, { AddInviteeData } from '../mutations/addInvitee';
 import ADD_USER_TO_GAME from '../mutations/addUserToGame';
 import ADJUST_CHARACTER_HX, { getAdjustCharacterHxOR } from '../mutations/adjustCharacterHx';
 import CREATE_CHARACTER from '../mutations/createCharacter';
-import CREATE_GAME from '../mutations/createGame';
+import CREATE_GAME, { CreateGameData } from '../mutations/createGame';
 import DELETE_GAME from '../mutations/deleteGame';
 import FINISH_CHARACTER_CREATION from '../mutations/finishCharacterCreation';
 import FINISH_PRE_GAME from '../mutations/finishPreGame';
@@ -27,7 +27,7 @@ import SET_VEHICLE from '../mutations/setVehicle';
 import SET_VEHICLE_COUNT from '../mutations/setVehicleCount';
 import TOGGLE_STAT_HIGHLIGHT from '../mutations/toggleStatHighlight';
 import ALL_MOVES from '../queries/allMoves';
-import GAME from '../queries/game';
+import GAME, { GameData } from '../queries/game';
 import GAMEROLES_BY_USER_ID, { GameRolesByUserIdData } from '../queries/gameRolesByUserId';
 import GAMES_FOR_INVITEE from '../queries/gamesForInvitee';
 import MC_CONTENT from '../queries/mcContent';
@@ -117,7 +117,7 @@ export const mockGameRolesByUserId: MockedResponse<GameRolesByUserIdData> = {
   },
 };
 
-export const mockCreateGame: MockedResponse = {
+export const mockCreateGame: MockedResponse<CreateGameData> = {
   request: {
     query: CREATE_GAME,
     variables: {
@@ -134,13 +134,14 @@ export const mockCreateGame: MockedResponse = {
         name: mockGame3.name,
         mc: mockGame3.mc,
         players: mockGame3.players,
-        gameRoles: mockGame3.gameRoles,
+        gameRoles: [{ id: mockGame3.gameRoles[0].id, role: mockGame3.gameRoles[0].role, __typename: 'GameRole' }],
+        __typename: 'Game',
       },
     },
   },
 };
 
-export const mockGameForNewGame: MockedResponse = {
+export const mockGameForNewGame: MockedResponse<GameData> = {
   request: {
     query: GAME,
     variables: { gameId: mockGame3.id },
@@ -164,24 +165,30 @@ export const mockGameForNewGame: MockedResponse = {
             id: mockGame3.gameRoles[0].id,
             role: mockGame3.gameRoles[0].role,
             userId: mockGame3.gameRoles[0].userId,
+            gameId: mockGame3.id,
+            gameName: mockGame3.name,
             npcs: [],
             threats: [],
             characters: [],
+            __typename: 'GameRole',
           },
         ],
+        showFirstSession: true,
+        gameMessages: [],
+        __typename: 'Game',
       },
     },
   },
 };
 
-export const mockAddCommsApp: MockedResponse = {
+export const mockAddCommsApp: MockedResponse<AddCommsAppData> = {
   request: {
     query: ADD_COMMS_APP,
     variables: { gameId: mockGame3.id, app: 'Discord' },
   },
   result: {
     data: {
-      game: {
+      addCommsApp: {
         id: mockGame3.id,
         name: mockGame3.name,
         invitees: mockGame3.invitees,
@@ -196,54 +203,53 @@ export const mockAddCommsApp: MockedResponse = {
   },
 };
 
-export const mockGameAfterAddCommsApp: MockedResponse = {
-  request: {
-    query: GAME,
-    variables: { gameId: mockGame3.id },
-  },
-  result: {
-    data: {
-      game: {
-        id: mockGame3.id,
-        name: mockGame3.name,
-        invitees: mockGame3.invitees,
-        commsApp: 'Discord',
-        commsUrl: mockGame3.commsUrl,
-        hasFinishedPreGame: false,
-        mc: {
-          id: mockGame3.mc.id,
-          displayName: mockGame3.mc.displayName,
-        },
-        players: [],
-        gameRoles: [
-          {
-            id: mockGame3.gameRoles[0].id,
-            role: mockGame3.gameRoles[0].role,
-            userId: mockGame3.gameRoles[0].userId,
-            npcs: [],
-            threats: [],
-            characters: [],
-          },
-        ],
-      },
-    },
-  },
-};
+// export const mockGameAfterAddCommsApp: MockedResponse = {
+//   request: {
+//     query: GAME,
+//     variables: { gameId: mockGame3.id },
+//   },
+//   result: {
+//     data: {
+//       game: {
+//         id: mockGame3.id,
+//         name: mockGame3.name,
+//         invitees: mockGame3.invitees,
+//         commsApp: 'Discord',
+//         commsUrl: mockGame3.commsUrl,
+//         hasFinishedPreGame: false,
+//         mc: {
+//           id: mockGame3.mc.id,
+//           displayName: mockGame3.mc.displayName,
+//         },
+//         players: [],
+//         gameRoles: [
+//           {
+//             id: mockGame3.gameRoles[0].id,
+//             role: mockGame3.gameRoles[0].role,
+//             userId: mockGame3.gameRoles[0].userId,
+//             npcs: [],
+//             threats: [],
+//             characters: [],
+//           },
+//         ],
+//       },
+//     },
+//   },
+// };
 
-export const mockAddCommsUrl: MockedResponse = {
+export const mockAddCommsUrl: MockedResponse<AddCommsUrlData> = {
   request: {
     query: ADD_COMMS_URL,
     variables: { gameId: mockGame3.id, url: 'https://discord.com/urltodiscordchannel' },
   },
   result: {
     data: {
-      game: {
+      addCommsUrl: {
         id: mockGame3.id,
         name: mockGame3.name,
         invitees: mockGame3.invitees,
         commsApp: 'Discord',
         commsUrl: 'https://discord.com/urltodiscordchannel',
-        hasFinishedPreGame: false,
         mc: {
           id: mockGame3.mc.id,
           displayName: mockGame3.mc.displayName,
@@ -258,63 +264,53 @@ export const mockGameAfterAddCommsUrl: MockedResponse = {
     query: GAME,
     variables: { gameId: mockGame3.id },
   },
-  result: {
-    data: {
-      game: {
-        id: mockGame3.id,
-        name: mockGame3.name,
-        invitees: mockGame3.invitees,
-        commsApp: 'Discord',
-        commsUrl: 'https://discord.com/urltodiscordchannel',
-        hasFinishedPreGame: false,
-        mc: {
-          id: mockGame3.mc.id,
-          displayName: mockGame3.mc.displayName,
-        },
-        players: [],
-        gameRoles: [
-          {
-            id: mockGame3.gameRoles[0].id,
-            role: mockGame3.gameRoles[0].role,
-            userId: mockGame3.gameRoles[0].userId,
-            npcs: [],
-            threats: [],
-            characters: [],
+  result: () => {
+    console.log('mockGameAfterAddCommsUrl');
+    return {
+      data: {
+        game: {
+          id: mockGame3.id,
+          name: mockGame3.name,
+          invitees: mockGame3.invitees,
+          commsApp: 'Discord',
+          commsUrl: 'https://discord.com/urltodiscordchannel',
+          hasFinishedPreGame: false,
+          mc: {
+            id: mockGame3.mc.id,
+            displayName: mockGame3.mc.displayName,
           },
-        ],
+          players: [],
+          gameRoles: [
+            {
+              id: mockGame3.gameRoles[0].id,
+              role: mockGame3.gameRoles[0].role,
+              userId: mockGame3.gameRoles[0].userId,
+              npcs: [],
+              threats: [],
+              characters: [],
+            },
+          ],
+        },
       },
-    },
+    };
   },
 };
 
-export const mockAddInvitee1: MockedResponse = {
+export const mockAddInvitee1: MockedResponse<AddInviteeData> = {
   request: {
     query: ADD_INVITEE,
     variables: { gameId: mockGame3.id, email: 'mockUser2@email.com' },
   },
   result: {
     data: {
-      game: {
+      addInvitee: {
         id: mockGame3.id,
         name: mockGame3.name,
         invitees: ['mockUser2@email.com'],
-        commsApp: 'Discord',
-        commsUrl: 'https://discord.com/urltodiscordchannel',
         mc: {
           id: mockGame3.mc.id,
           displayName: mockGame3.mc.displayName,
         },
-        players: [],
-        gameRoles: [
-          {
-            id: mockGame3.gameRoles[0].id,
-            role: mockGame3.gameRoles[0].role,
-            userId: mockGame3.gameRoles[0].userId,
-            npcs: [],
-            threats: [],
-            characters: [],
-          },
-        ],
       },
     },
   },
@@ -354,34 +350,21 @@ export const mockGameAfterAddInvitee1: MockedResponse = {
   },
 };
 
-export const mockAddInvitee2: MockedResponse = {
+export const mockAddInvitee2: MockedResponse<AddInviteeData> = {
   request: {
     query: ADD_INVITEE,
     variables: { gameId: mockGame3.id, email: 'mockUser3@email.com' },
   },
   result: {
     data: {
-      game: {
+      addInvitee: {
         id: mockGame3.id,
         name: mockGame3.name,
         invitees: ['mockUser2@email.com', 'mockUser3@email.com'],
-        commsApp: 'Discord',
-        commsUrl: 'https://discord.com/urltodiscordchannel',
         mc: {
           id: mockGame3.mc.id,
           displayName: mockGame3.mc.displayName,
         },
-        players: [],
-        gameRoles: [
-          {
-            id: mockGame3.gameRoles[0].id,
-            role: mockGame3.gameRoles[0].role,
-            userId: mockGame3.gameRoles[0].userId,
-            npcs: [],
-            threats: [],
-            characters: [],
-          },
-        ],
       },
     },
   },

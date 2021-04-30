@@ -3,7 +3,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithRouter } from './test-utils';
+import { renderWithRouter, waitOneTick } from './test-utils';
 import { mockKeycloakStub } from '../../__mocks__/@react-keycloak/web';
 import { mockGame7, mockKeycloakUser2, mockKeycloakUserInfo2 } from './mocks';
 import { mockAddInvitee3, mockAllMoves, mockAppCommsUrl, mockGameForMcPage1 } from './mockQueries';
@@ -45,17 +45,16 @@ describe('Testing MCPage functionality', () => {
     screen.getByTestId('game-form');
 
     // "Select all" on the old name in the text box, in order to replace it
-    let input = screen.getByRole('textbox', { name: 'url-input' });
-    // @ts-ignore
+    let input = screen.getByRole('textbox', { name: 'url-input' }) as HTMLInputElement;
     input.setSelectionRange(0, input.value.length);
 
     // Open the select's list of options
     userEvent.type(screen.getByRole('textbox', { name: 'url-input' }), 'https://new.url.com');
-    // @ts-ignore
-    expect((input = screen.getByRole('textbox', { name: 'url-input' }).value)).toEqual('https://new.url.com');
+    expect(input.value).toEqual('https://new.url.com');
 
     // Set Skype as the game app
     userEvent.click(screen.getAllByRole('button', { name: /SET/ })[2]);
+    await waitOneTick(); // Wait for setCommsApp
 
     screen.getByRole('tab', { name: 'Moves' });
     userEvent.click(screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`));
@@ -84,12 +83,13 @@ describe('Testing MCPage functionality', () => {
     screen.getByRole('heading', { name: `Invite a player to ${mockGame7.name}` });
 
     // Enter invitee's email address
-    userEvent.type(screen.getByRole('textbox', { name: 'Email input' }), 'new@email.com');
-    // @ts-ignore
-    expect(screen.getByRole('textbox', { name: 'Email input' }).value).toEqual('new@email.com');
+    const input = screen.getByRole('textbox', { name: 'Email input' }) as HTMLInputElement;
+    userEvent.type(input, 'new@email.com');
+    expect(input.value).toEqual('new@email.com');
 
     // Add invitee
     userEvent.click(screen.getByRole('button', { name: /ADD/ }));
+    await waitOneTick(); // Wait for addInvitee
 
     // Check that InvitationForm has transitioned to second part
     screen.getByRole('button', { name: /INVITE ANOTHER/ });
@@ -98,12 +98,9 @@ describe('Testing MCPage functionality', () => {
     // expect(screen.getByTestId('invitations-box').textContent).toContain('new@email.com');
 
     // Check that the textarea contains the correct invitation message
-    const textArea = screen.getByRole('textbox');
-    // @ts-ignore
+    const textArea = screen.getByRole('textbox') as HTMLInputElement;
     expect(textArea.value).toContain(`${process.env.REACT_APP_ROOT_URL}/join-game`);
-    // @ts-ignore
     expect(textArea.value).toContain('new@email.com');
-    // @ts-ignore
     expect(textArea.value).toContain(mockGame7.name);
 
     // Copy message to clipboard

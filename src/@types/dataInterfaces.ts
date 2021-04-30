@@ -44,7 +44,7 @@ export interface Game {
   commsUrl: string;
   hasFinishedPreGame: boolean;
   showFirstSession: boolean;
-  mc: { displayName: string; id: string };
+  mc: { displayName: string; id: string; __typename?: 'User' };
   players: { displayName: string; id: string; __typename?: 'User' }[];
   gameRoles: GameRole[];
   invitees: string[];
@@ -304,6 +304,7 @@ export interface Npc {
   id: string;
   name: string;
   description?: string;
+  __typename?: 'Npc';
 }
 
 export interface Threat {

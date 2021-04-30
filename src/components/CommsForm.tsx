@@ -1,24 +1,25 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { Box, Button, Select, Heading, Text, TextArea } from 'grommet';
 
 import Spinner from './Spinner';
 import { ButtonWS, ParagraphWS } from '../config/grommetConfig';
-import ADD_COMMS_APP, { AddCommsAppData, AddCommsAppVars } from '../mutations/addCommsApp';
-import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars } from '../mutations/addCommsUrl';
-import { Game } from '../@types/dataInterfaces';
-import GAME from '../queries/game';
+import ADD_COMMS_APP, { AddCommsAppData, AddCommsAppVars, getAddCommsAppOR } from '../mutations/addCommsApp';
+import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars, getAddCommsUrlOR } from '../mutations/addCommsUrl';
+import { useGame } from '../contexts/gameContext';
 
 interface CommsFormProps {
-  game?: Game;
   setCreationStep: (step: number) => void;
   setHasSkippedComms: (skipped: boolean) => void;
 }
 
-const CommsForm: FC<CommsFormProps> = ({ game, setCreationStep, setHasSkippedComms }) => {
+const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) => {
   // ------------------------------------------------- Component state --------------------------------------------------- //
-  const [app, setApp] = useState(game?.commsApp || '');
-  const [url, setUrl] = useState(game?.commsUrl || '');
+  const [app, setApp] = useState('');
+  const [url, setUrl] = useState('');
+
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { game } = useGame();
 
   // -------------------------------------------------- Graphql hooks ---------------------------------------------------- //
 
@@ -33,7 +34,7 @@ const CommsForm: FC<CommsFormProps> = ({ game, setCreationStep, setHasSkippedCom
       try {
         await addCommsApp({
           variables: { gameId: game.id, app },
-          refetchQueries: [{ query: GAME, variables: { gameId: game.id } }],
+          optimisticResponse: getAddCommsAppOR(game, app),
         });
       } catch (e) {
         console.warn(e);
@@ -46,13 +47,21 @@ const CommsForm: FC<CommsFormProps> = ({ game, setCreationStep, setHasSkippedCom
       try {
         addCommsUrl({
           variables: { gameId: game.id, url },
-          refetchQueries: [{ query: GAME, variables: { gameId: game.id } }],
+          optimisticResponse: getAddCommsUrlOR(game, url),
         });
       } catch (e) {
         console.warn(e);
       }
     }
   };
+
+  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  useEffect(() => {
+    if (!!game) {
+      !!game.commsApp && setApp(game.commsApp);
+      !!game.commsUrl && setUrl(game.commsUrl);
+    }
+  }, [game]);
 
   // ------------------------------------------------ Render component ------------------------------------------------- //
 
@@ -103,6 +112,7 @@ const CommsForm: FC<CommsFormProps> = ({ game, setCreationStep, setHasSkippedCom
                 {!!game ? (
                   <ButtonWS
                     aria-label="set-app"
+                    data-testid="set-app-button"
                     label={loadingCommsApp ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
                     secondary={!!game.commsApp}
                     primary={!game.commsApp}
@@ -133,6 +143,7 @@ const CommsForm: FC<CommsFormProps> = ({ game, setCreationStep, setHasSkippedCom
                 {!!game ? (
                   <ButtonWS
                     aria-label="set-url"
+                    data-testid="set-url-button"
                     label={loadingCommsUrl ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
                     secondary={!!game.commsUrl}
                     primary={!game.commsUrl}
