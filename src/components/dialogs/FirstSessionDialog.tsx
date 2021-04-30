@@ -53,7 +53,7 @@ const FirstSessionDialog = () => {
               The first session
             </HeadingWS>
             <Box>
-              <StyledMarkdown>{firstSession?.intro}</StyledMarkdown>
+              <StyledMarkdown>{!!firstSession?.intro ? firstSession.intro : '...'}</StyledMarkdown>
             </Box>
           </Box>
           <Box style={{ maxWidth: '590px' }}>
@@ -68,7 +68,9 @@ const FirstSessionDialog = () => {
             <HeadingWS crustReady={crustReady} level={3} alignSelf="start">
               {firstSession?.threatMapInstructions.title}
             </HeadingWS>
-            <StyledMarkdown>{firstSession?.threatMapInstructions.content}</StyledMarkdown>
+            <StyledMarkdown>
+              {!!firstSession?.threatMapInstructions.content ? firstSession.threatMapInstructions.content : '...'}
+            </StyledMarkdown>
           </Box>
           <Box>
             <HeadingWS crustReady={crustReady} level={3} alignSelf="start">

@@ -195,7 +195,7 @@ const CharacterHxForm: FC = () => {
           })}
         </Box>
         <Box pad="6px" style={{ maxWidth: '812px' }}>
-          <StyledMarkdown>{hxInstructions}</StyledMarkdown>
+          <StyledMarkdown>{!!hxInstructions ? hxInstructions : '...'}</StyledMarkdown>
         </Box>
         <RedBox pad="12px" alignSelf="center">
           <HeadingWS level={4} style={{ marginTop: '6px', marginBottom: '6px' }}>

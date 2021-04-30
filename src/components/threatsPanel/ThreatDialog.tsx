@@ -123,9 +123,13 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
   const renderInstructions = () => (
     <>
-      <StyledMarkdown>{threatCreator?.createThreatInstructions}</StyledMarkdown>
+      <StyledMarkdown>
+        {!!threatCreator?.createThreatInstructions ? threatCreator.createThreatInstructions : '...'}
+      </StyledMarkdown>
       <TextWS alignSelf="start">Essential threats:</TextWS>
-      <StyledMarkdown>{threatCreator?.essentialThreatInstructions}</StyledMarkdown>
+      <StyledMarkdown>
+        {!!threatCreator?.essentialThreatInstructions ? threatCreator.essentialThreatInstructions : '...'}
+      </StyledMarkdown>
     </>
   );
 
