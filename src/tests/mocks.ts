@@ -55,6 +55,7 @@ import {
   HoldConditions,
   HoldingCreator,
   HoldingOption,
+  ImprovementBlock,
   Look,
   McContent,
   Move,
@@ -1478,6 +1479,15 @@ export const mockgearInstructionsAngel: GearInstructions = {
   startingBarter: 2,
 };
 
+export const mockImprovementBlockAngel: ImprovementBlock = {
+  id: 'mock-angel-improvement-block-id',
+  playbookType: PlaybookType.angel,
+  improvementInstructions: 'When you...',
+  improvementMoves: [],
+  futureImprovementMoves: [],
+  __typename: 'ImprovementBlock',
+};
+
 export const mockAngelKitCreator: AngelKitCreator = {
   id: 'angel-kit-creator-id',
   angelKitInstructions: 'Your angel kit has all kinds of crap in it...',
@@ -1508,6 +1518,7 @@ export const mockPlaybookCreatorAngel: PlaybookCreator = {
   improvementInstructions: 'Whenever you roll a highlighted stat...',
   movesInstructions: 'You get all the basic moves. Choose 2 angel moves.',
   hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  improvementBlock: mockImprovementBlockAngel,
   names: [mockNameAngel1, mockNameAngel2],
   looks: [
     mockLookAngel1,
@@ -1712,6 +1723,7 @@ export const mockPlaybookCreatorDefault: PlaybookCreator = {
   defaultMoveCount: 1,
   moveChoiceCount: 2,
   defaultVehicleCount: 0,
+  improvementBlock: mockImprovementBlockAngel,
   __typename: 'PlaybookCreator',
 };
 

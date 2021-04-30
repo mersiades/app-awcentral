@@ -547,6 +547,25 @@ const PLAYBOOK_CREATOR = gql`
         category
         playbookType
       }
+      improvementBlock {
+        id
+        playbookType
+        improvementInstructions
+        improvementMoves {
+          id
+          name
+          kind
+          description
+          playbook
+        }
+        futureImprovementMoves {
+          id
+          name
+          kind
+          description
+          playbook
+        }
+      }
       statsOptions {
         id
         COOL

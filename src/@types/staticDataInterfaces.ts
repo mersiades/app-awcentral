@@ -46,6 +46,7 @@ export interface PlaybookCreator {
   optionalMoves: Move[];
   defaultMoves: Move[];
   gearInstructions: GearInstructions;
+  improvementBlock: ImprovementBlock;
   playbookUniqueCreator?: PlaybookUniqueCreator; // Driver does not have a PlaybookUnique
   __typename?: 'PlaybookCreator';
 }
@@ -84,6 +85,15 @@ export interface StatsOption {
   SHARP: number;
   WEIRD: number;
   __typename?: 'StatsOption';
+}
+
+export interface ImprovementBlock {
+  id: string;
+  playbookType: PlaybookType;
+  improvementInstructions: string;
+  improvementMoves: Move[];
+  futureImprovementMoves: Move[];
+  __typename: 'ImprovementBlock';
 }
 
 // -------------------------------------------------- Move interfaces -------------------------------------------------- //
