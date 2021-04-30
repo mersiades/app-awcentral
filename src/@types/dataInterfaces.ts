@@ -82,7 +82,7 @@ export interface Character {
   name?: string;
   // A value of -1 indicates that barter hasn't been initially set yet
   barter?: number;
-  playbookUnique?: PlaybookUnique;
+  playbookUniques?: PlaybookUniques;
   vehicles: Vehicle[];
   battleVehicles: BattleVehicle[];
   experience: number;
@@ -132,7 +132,7 @@ export interface Hold {
 
 // ------------------------------------------------- Playbook Unique interfaces ------------------------------------------------- //
 
-export interface PlaybookUnique {
+export interface PlaybookUniques {
   id: string;
   type: UniqueTypes;
   brainerGear?: BrainerGear;
@@ -145,7 +145,7 @@ export interface PlaybookUnique {
   skinnerGear?: SkinnerGear;
   establishment?: Establishment;
   workspace?: Workspace;
-  __typename?: 'PlaybookUnique';
+  __typename?: 'PlaybookUniques';
 }
 
 export interface AngelKit {

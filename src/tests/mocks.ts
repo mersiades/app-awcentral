@@ -13,7 +13,7 @@ import {
   Hold,
   Holding,
   HxStat,
-  PlaybookUnique,
+  PlaybookUniques,
   Project,
   SkinnerGear,
   StatsBlock,
@@ -95,7 +95,7 @@ interface MockCharacter {
   hasCompletedCharacterCreation: boolean;
   hasPlusOneForward: boolean;
   holds: Hold[];
-  playbookUnique?: PlaybookUnique;
+  playbookUniques?: PlaybookUniques;
   characterMoves: CharacterMove[];
   vehicles: Vehicle[];
   battleVehicles: BattleVehicle[];
@@ -813,7 +813,7 @@ export const mockVehicle1: Vehicle = {
 
 export const mockVehicles: Vehicle[] = [mockVehicle1];
 
-export const mockPlaybookUniqueBattlebabe: PlaybookUnique = {
+export const mockPlaybookUniqueBattlebabe: PlaybookUniques = {
   id: 'mock-battlebabe-unique-id',
   type: UniqueTypes.customWeapons,
   angelKit: dummyAngelKit,
@@ -837,7 +837,7 @@ export const mockAngelKit: AngelKit = {
   angelKitMoves: [dummyAngelKitMove],
 };
 
-export const mockPlaybookUniqueAngel: PlaybookUnique = {
+export const mockPlaybookUniqueAngel: PlaybookUniques = {
   id: 'mock-angle-unique-id',
   type: UniqueTypes.angelKit,
   angelKit: mockAngelKit,
@@ -884,7 +884,7 @@ export const mockCharacter1: MockCharacter = {
     { ...mockCharacterMoveAngel2, isSelected: true },
     { ...mockCharacterMoveAngel3, isSelected: true },
   ], // TODO: change to battlebabe moves
-  playbookUnique: mockPlaybookUniqueBattlebabe,
+  playbookUniques: mockPlaybookUniqueBattlebabe,
   vehicles: [],
   battleVehicles: [],
 };
@@ -916,7 +916,7 @@ export const mockCharacter2: MockCharacter = {
     { ...mockCharacterMoveAngel2, isSelected: true },
     { ...mockCharacterMoveAngel3, isSelected: true },
   ],
-  playbookUnique: mockPlaybookUniqueAngel,
+  playbookUniques: mockPlaybookUniqueAngel,
   vehicleCount: 0,
   battleVehicleCount: 0,
   vehicles: [],

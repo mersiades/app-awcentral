@@ -19,9 +19,9 @@ const SkinnerGearBox: FC<SkinnerGearBoxProps> = ({ navigateToCharacterCreation }
     >
       <Box fill="horizontal" align="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
         <ul style={{ margin: 0, paddingInlineStart: '28px' }}>
-          {!!character?.playbookUnique?.skinnerGear && <li>{character.playbookUnique.skinnerGear.graciousWeapon.item}</li>}
-          {!!character?.playbookUnique?.skinnerGear &&
-            character.playbookUnique.skinnerGear.luxeGear.map((item) => (
+          {!!character?.playbookUniques?.skinnerGear && <li>{character.playbookUniques.skinnerGear.graciousWeapon.item}</li>}
+          {!!character?.playbookUniques?.skinnerGear &&
+            character.playbookUniques.skinnerGear.luxeGear.map((item) => (
               <li key={item.id}>
                 {item.item}
                 {!!item.note && (

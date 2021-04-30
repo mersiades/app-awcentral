@@ -61,10 +61,10 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
       color: brandColor,
     },
   };
-  const holding = character?.playbookUnique?.holding;
+  const holding = character?.playbookUniques?.holding;
 
   const adjustBarter = (type: 'increase' | 'decrease') => {
-    if (!!userGameRole && !!character && !!character.playbookUnique && !!holding) {
+    if (!!userGameRole && !!character && !!character.playbookUniques && !!holding) {
       const amount = type === 'increase' ? holding.barter + 1 : holding.barter - 1;
       try {
         setHoldingBarter({
@@ -74,8 +74,8 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
             setHoldingBarter: {
               __typename: 'Character',
               ...character,
-              playbookUnique: {
-                ...character.playbookUnique,
+              playbookUniques: {
+                ...character.playbookUniques,
                 holding: {
                   ...holding,
                   barter: amount,

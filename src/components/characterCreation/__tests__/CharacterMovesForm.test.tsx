@@ -49,7 +49,7 @@ describe('Rendering CharacterMovesForm', () => {
             looks: mockCharacter2.looks,
             statsBlock: mockCharacter2.statsBlock,
             gear: mockCharacter2.gear,
-            playbookUnique: mockCharacter2.playbookUnique,
+            playbookUniques: mockCharacter2.playbookUniques,
           },
         ],
       },

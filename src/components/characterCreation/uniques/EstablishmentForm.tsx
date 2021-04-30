@@ -347,7 +347,7 @@ const EstablishmentForm: FC = () => {
       const crewNoTypename = castAndCrew.map((cc: CastCrew) => omit(cc, ['__typename']));
 
       const establishmentInput: EstablishmentInput = {
-        id: character.playbookUnique?.establishment ? character.playbookUnique.establishment.id : undefined,
+        id: character.playbookUniques?.establishment ? character.playbookUniques.establishment.id : undefined,
         mainAttraction,
         bestRegular,
         worstRegular,
@@ -440,10 +440,10 @@ const EstablishmentForm: FC = () => {
 
   // Set workingAttractions when component mounts
   useEffect(() => {
-    if (!!establishmentCreator && !character?.playbookUnique?.establishment) {
+    if (!!establishmentCreator && !character?.playbookUniques?.establishment) {
       setWorkingAttractions(establishmentCreator.attractions);
-    } else if (!!establishmentCreator && !!character?.playbookUnique?.establishment) {
-      const { mainAttraction } = character.playbookUnique.establishment;
+    } else if (!!establishmentCreator && !!character?.playbookUniques?.establishment) {
+      const { mainAttraction } = character.playbookUniques.establishment;
       const filteredAttractions = establishmentCreator.attractions.filter((attr) => attr !== mainAttraction);
       setWorkingAttractions(filteredAttractions);
     }
@@ -451,8 +451,8 @@ const EstablishmentForm: FC = () => {
 
   // Set existing or blank Establishment when component mounts
   useEffect(() => {
-    if (!!character?.playbookUnique?.establishment) {
-      dispatch({ type: 'SET_EXISTING_ESTABLISHMENT', payload: character.playbookUnique.establishment });
+    if (!!character?.playbookUniques?.establishment) {
+      dispatch({ type: 'SET_EXISTING_ESTABLISHMENT', payload: character.playbookUniques.establishment });
     } else if (!!establishmentCreator) {
       dispatch({
         type: 'SET_DEFAULT_ESTABLISHMENT',

@@ -127,7 +127,7 @@ const mockBattleBabe: Character = {
     { ...mockCharacterMoveAngel2, isSelected: true },
     { ...mockCharacterMoveAngel3, isSelected: true },
   ], // TODO: change to battlebabe moves
-  playbookUnique: mockPlaybookUniqueBattlebabe,
+  playbookUniques: mockPlaybookUniqueBattlebabe,
   vehicleCount: 0,
   battleVehicleCount: 0,
   battleVehicles: [],
@@ -168,7 +168,7 @@ const mockGame: Game = {
       gameId: 'mock-game-id-5',
       npcs: [],
       threats: [],
-      characters: [{ ...mockBattleBabe, playbookUnique: undefined }],
+      characters: [{ ...mockBattleBabe, playbookUniques: undefined }],
     },
   ],
   invitees: [],

@@ -365,7 +365,7 @@ export const characterFragments = {
   `,
   playbookUnique: gql`
     fragment PlaybookUnique on Character {
-      playbookUnique {
+      playbookUniques {
         id
         type
         ...AngelKit
@@ -686,7 +686,7 @@ const GAME = gql`
               name
             }
           }
-          playbookUnique {
+          playbookUniques {
             id
             type
             angelKit {

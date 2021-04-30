@@ -56,7 +56,7 @@ const AngelKitForm: FC = () => {
         <HeadingWS crustReady={crustReady} level={2} alignSelf="center">{`${
           !!character?.name ? character.name?.toUpperCase() : '...'
         }'S ANGEL KIT`}</HeadingWS>
-        {!character?.playbookUnique?.angelKit && (
+        {!character?.playbookUniques?.angelKit && (
           <ButtonWS
             label={settingAngelKit ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
             primary
@@ -72,7 +72,7 @@ const AngelKitForm: FC = () => {
               Stock
             </HeadingWS>
             <HeadingWS aria-label="stock-value" crustReady={crustReady} level={2} margin={{ vertical: '3px' }}>
-              {character?.playbookUnique?.angelKit ? character?.playbookUnique?.angelKit.stock : startingStock}
+              {character?.playbookUniques?.angelKit ? character?.playbookUniques?.angelKit.stock : startingStock}
             </HeadingWS>
           </RedBox>
         </Box>

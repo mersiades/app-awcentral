@@ -2,22 +2,22 @@ import { gql } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 
 export interface SetBrainerGearData {
-  setBrainerGear: Character
+  setBrainerGear: Character;
 }
 
 export interface SetBrainerGearVars {
-  gameRoleId: string
-  characterId: string
-  brainerGear: string[]
+  gameRoleId: string;
+  characterId: string;
+  brainerGear: string[];
 }
 
 const SET_BRAINER_GEAR = gql`
-  mutation SetBrainerGear($gameRoleId: String!,$characterId: String!, $brainerGear: [String]!) {
+  mutation SetBrainerGear($gameRoleId: String!, $characterId: String!, $brainerGear: [String]!) {
     setBrainerGear(gameRoleId: $gameRoleId, characterId: $characterId, brainerGear: $brainerGear) {
       id
       name
       playbook
-      playbookUnique {
+      playbookUniques {
         id
         type
         brainerGear {
@@ -27,6 +27,6 @@ const SET_BRAINER_GEAR = gql`
       }
     }
   }
-`
+`;
 
-export default SET_BRAINER_GEAR
+export default SET_BRAINER_GEAR;

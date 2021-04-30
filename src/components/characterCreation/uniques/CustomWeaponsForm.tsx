@@ -41,7 +41,7 @@ const CustomWeaponsForm: FC = () => {
   const [characteristics, setCharacteristics] = useState<ItemCharacteristic[]>([]);
   const [value, setValue] = useState('');
   const [weapons, setWeapons] = useState<string[]>(
-    !!character?.playbookUnique?.customWeapons ? [...character.playbookUnique.customWeapons.weapons] : []
+    !!character?.playbookUniques?.customWeapons ? [...character.playbookUniques.customWeapons.weapons] : []
   );
 
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //

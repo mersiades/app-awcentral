@@ -39,11 +39,11 @@ const WorkspaceForm: FC = () => {
   const handleSubmitWorkspace = async () => {
     if (!!userGameRole && !!character && !!game && !!workspaceCreator) {
       const workspaceInput: WorkspaceInput = {
-        id: character.playbookUnique?.workspace ? character.playbookUnique.workspace.id : undefined,
+        id: character.playbookUniques?.workspace ? character.playbookUniques.workspace.id : undefined,
         workspaceItems: items,
         workspaceInstructions: workspaceCreator.workspaceInstructions,
         projectInstructions: workspaceCreator.projectInstructions,
-        projects: character.playbookUnique?.workspace ? character.playbookUnique.workspace.projects : [],
+        projects: character.playbookUniques?.workspace ? character.playbookUniques.workspace.projects : [],
       };
 
       try {
@@ -76,8 +76,8 @@ const WorkspaceForm: FC = () => {
 
   // Set existing Workspace when component mounts
   useEffect(() => {
-    if (!!character?.playbookUnique?.workspace) {
-      setItems(character.playbookUnique.workspace.workspaceItems);
+    if (!!character?.playbookUniques?.workspace) {
+      setItems(character.playbookUniques.workspace.workspaceItems);
     }
   }, [character]);
 

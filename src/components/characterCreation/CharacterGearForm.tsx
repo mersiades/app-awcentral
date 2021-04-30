@@ -99,7 +99,7 @@ const CharacterGearForm: FC = () => {
             optimisticResponse: getSetCharacterBarterOR(character.id, amount),
           });
         }
-        // Skip playbookUnique form if Driver
+        // Skip playbookUniques form if Driver
         const nextStep =
           character.playbook === PlaybookType.driver ? CharacterCreationSteps.selectMoves : CharacterCreationSteps.setUnique;
 

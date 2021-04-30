@@ -104,7 +104,7 @@ describe('Rendering CharacterNameForm', () => {
               battleVehicleCount: 0,
               vehicles: [],
               battleVehicles: [],
-              playbookUnique: {
+              playbookUniques: {
                 id: 'dummy',
                 type: UniqueTypes.angelKit,
                 brainerGear: {

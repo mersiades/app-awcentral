@@ -19,7 +19,7 @@ const ADD_PROJECT = gql`
       id
       name
       playbook
-      playbookUnique {
+      playbookUniques {
         id
         type
         workspace {
