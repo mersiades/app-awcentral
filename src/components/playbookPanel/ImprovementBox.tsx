@@ -3,7 +3,7 @@ import { Box } from 'grommet';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { useGame } from '../../contexts/gameContext';
-import { brandColor, ButtonWS, HeadingWS } from '../../config/grommetConfig';
+import { brandColor, ButtonWS, HeadingWS, TextWS } from '../../config/grommetConfig';
 import { useFonts } from '../../contexts/fontContext';
 import styled from 'styled-components';
 import CharacterImprovementDialog from '../dialogs/CharacterImprovementDialog';
@@ -55,6 +55,9 @@ const OverflowPill = styled.div`
   box-shadow: 0 0 5px 1px #000;
   cursor: default;
 `;
+
+export const IMPROVEMENT_INSTRUCTIONS =
+  'Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, an experience circle will be marked. When the 5th is marked, you can make an improvement.';
 
 const ImprovementBox: FC<ImprovementBoxProps> = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -118,6 +121,7 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
       <Box fill="horizontal" align="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
         {showDialog && <CharacterImprovementDialog handleClose={() => setShowDialog(false)} />}
         <Box fill="horizontal" pad="12px">
+          <TextWS>{IMPROVEMENT_INSTRUCTIONS}</TextWS>
           {experience !== undefined && (
             <Box fill="horizontal" direction="row" align="center" justify="between">
               <HeadingWS level={4} crustReady={crustReady}>
