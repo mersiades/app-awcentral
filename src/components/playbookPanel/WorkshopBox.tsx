@@ -150,7 +150,7 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
             </RedBox>
             <TextWS weight={600}>Workshop items</TextWS>
           </Box>
-          <StyledMarkdown>{workspace?.workspaceInstructions}</StyledMarkdown>
+          <StyledMarkdown>{!!workspace?.workspaceInstructions ? workspace.workspaceInstructions : '...'}</StyledMarkdown>
         </div>
         <Box direction="row">
           <HeadingWS crustReady={crustReady} level={3}>

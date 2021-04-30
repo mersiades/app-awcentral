@@ -131,11 +131,13 @@ const WorkspaceForm: FC = () => {
           </Box>
         </Box>
       </Box>
-      <StyledMarkdown>{workspaceCreator?.workspaceInstructions}</StyledMarkdown>
+      <StyledMarkdown>
+        {workspaceCreator?.workspaceInstructions ? workspaceCreator.workspaceInstructions : '...'}
+      </StyledMarkdown>
       <HeadingWS crustReady={crustReady} level={3}>
         Projects
       </HeadingWS>
-      <StyledMarkdown>{workspaceCreator?.projectInstructions}</StyledMarkdown>
+      <StyledMarkdown>{workspaceCreator?.projectInstructions ? workspaceCreator.projectInstructions : '...'}</StyledMarkdown>
     </Box>
   );
 };

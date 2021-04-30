@@ -97,7 +97,9 @@ const CharacterMovesForm: FC = () => {
           />
         </Box>
 
-        <StyledMarkdown>{pbCreatorData?.playbookCreator.movesInstructions}</StyledMarkdown>
+        <StyledMarkdown>
+          {pbCreatorData?.playbookCreator.movesInstructions ? pbCreatorData.playbookCreator.movesInstructions : '...'}
+        </StyledMarkdown>
 
         <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
           Default moves
