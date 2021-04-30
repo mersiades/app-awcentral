@@ -82,24 +82,30 @@ import { ANGEL_SPECIAL_NAME, UNDER_FIRE_NAME } from '../config/constants';
 // Same as Character, but with no nullable fields
 interface MockCharacter {
   id: string;
-  statsBlock?: StatsBlock;
-  hxBlock: HxStat[];
-  gear: string[];
-  looks: Look[]; // Does graphql return an empty array or undefined? // May need an id-less version of Look "EmbeddedLook"
   name?: string;
-  barter?: number;
   playbook: PlaybookType;
+  playbookUniques?: PlaybookUniques;
+  hasCompletedCharacterCreation: boolean;
+  hasPlusOneForward: boolean;
+  // A value of -1 indicates that barter hasn't been initially set yet
+  barter?: number;
+  statsBlock?: StatsBlock;
   harm: CharacterHarm;
   vehicleCount: number;
   battleVehicleCount: number;
-  hasCompletedCharacterCreation: boolean;
-  hasPlusOneForward: boolean;
-  holds: Hold[];
-  playbookUniques?: PlaybookUniques;
-  characterMoves: CharacterMove[];
-  vehicles: Vehicle[];
-  battleVehicles: BattleVehicle[];
   experience: number;
+  allowedImprovements: number;
+  allowedPlaybookMoves: number;
+  allowedOtherPlaybookMoves: number;
+  battleVehicles: BattleVehicle[];
+  vehicles: Vehicle[];
+  hxBlock: HxStat[];
+  gear: string[];
+  looks: Look[];
+  characterMoves: CharacterMove[];
+  improvementMoves: CharacterMove[];
+  futureImprovementMoves: CharacterMove[];
+  holds: Hold[];
   __typename?: 'Character';
 }
 
@@ -875,6 +881,9 @@ export const mockCharacter1: MockCharacter = {
   experience: 0,
   vehicleCount: 0,
   battleVehicleCount: 0,
+  allowedImprovements: 0,
+  allowedPlaybookMoves: 2,
+  allowedOtherPlaybookMoves: 0,
   harm: mockCharacterHarm,
   statsBlock: mockStatsBlock1,
   hxBlock: [],
@@ -887,6 +896,8 @@ export const mockCharacter1: MockCharacter = {
   playbookUniques: mockPlaybookUniqueBattlebabe,
   vehicles: [],
   battleVehicles: [],
+  improvementMoves: [],
+  futureImprovementMoves: [],
 };
 
 export const mockCharacter2: MockCharacter = {
@@ -901,6 +912,9 @@ export const mockCharacter2: MockCharacter = {
   statsBlock: mockStatsBlock1,
   barter: 2,
   experience: 0,
+  allowedImprovements: 0,
+  allowedPlaybookMoves: 2,
+  allowedOtherPlaybookMoves: 0,
   hxBlock: [
     {
       id: 'hx-stat-id-1',
@@ -921,6 +935,8 @@ export const mockCharacter2: MockCharacter = {
   battleVehicleCount: 0,
   vehicles: [],
   battleVehicles: [],
+  improvementMoves: [],
+  futureImprovementMoves: [],
 };
 
 export const mockGame1: Game = {
@@ -2285,12 +2301,17 @@ export const blankCharacter: MockCharacter = {
   vehicleCount: 0,
   battleVehicleCount: 0,
   experience: 0,
+  allowedImprovements: 0,
+  allowedPlaybookMoves: 0,
+  allowedOtherPlaybookMoves: 0,
   hasCompletedCharacterCreation: false,
   hasPlusOneForward: false,
   holds: [],
   characterMoves: [],
   vehicles: [],
   battleVehicles: [],
+  improvementMoves: [],
+  futureImprovementMoves: [],
   __typename: 'Character',
 };
 

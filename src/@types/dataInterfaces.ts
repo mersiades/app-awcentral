@@ -67,25 +67,30 @@ export interface GameRole {
 
 export interface Character {
   id: string;
+  name?: string;
   playbook: PlaybookType;
+  playbookUniques?: PlaybookUniques;
   hasCompletedCharacterCreation: boolean;
   hasPlusOneForward: boolean;
-  holds: Hold[];
+  // A value of -1 indicates that barter hasn't been initially set yet
+  barter?: number;
   statsBlock?: StatsBlock;
+  harm: CharacterHarm;
+  vehicleCount: number;
+  battleVehicleCount: number;
+  experience: number;
+  allowedImprovements: number;
+  allowedPlaybookMoves: number;
+  allowedOtherPlaybookMoves: number;
+  battleVehicles: BattleVehicle[];
+  vehicles: Vehicle[];
   hxBlock: HxStat[];
   gear: string[];
   looks: Look[];
   characterMoves: CharacterMove[];
-  harm: CharacterHarm;
-  vehicleCount: number;
-  battleVehicleCount: number;
-  name?: string;
-  // A value of -1 indicates that barter hasn't been initially set yet
-  barter?: number;
-  playbookUniques?: PlaybookUniques;
-  vehicles: Vehicle[];
-  battleVehicles: BattleVehicle[];
-  experience: number;
+  improvementMoves: CharacterMove[];
+  futureImprovementMoves: CharacterMove[];
+  holds: Hold[];
   __typename?: 'Character';
 }
 

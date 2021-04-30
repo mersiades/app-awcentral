@@ -119,6 +119,9 @@ const mockBattleBabe: Character = {
   statsBlock: mockStatsBlock1,
   barter: 2,
   experience: 0,
+  allowedImprovements: 0,
+  allowedPlaybookMoves: 2,
+  allowedOtherPlaybookMoves: 0,
   hxBlock: [],
   harm: mockCharacterHarm,
   looks: [mockBattlebabeLook, mockLookBattlebabe2],
@@ -134,6 +137,8 @@ const mockBattleBabe: Character = {
   hasPlusOneForward: false,
   holds: [],
   vehicles: [],
+  improvementMoves: [],
+  futureImprovementMoves: [],
   __typename: 'Character',
 };
 
