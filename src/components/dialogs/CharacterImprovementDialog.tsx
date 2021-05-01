@@ -33,7 +33,6 @@ const getNavDestinationForNewImprovement = (
 
   // If it's an IMPROVE_STAT improvement, navigate nowhere
   if (IMPROVE_STAT_IMPROVEMENT_NAMES.includes(newImprovement)) {
-    console.log(`match`, newImprovement);
     return undefined;
   }
 
@@ -42,13 +41,11 @@ const getNavDestinationForNewImprovement = (
     ADD_PLAYBOOK_MOVE_IMPROVEMENT_NAMES.includes(newImprovement) ||
     ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES.includes(newImprovement)
   ) {
-    console.log(`match`, newImprovement);
     return `/character-creation/${gameId}?step=7`;
   }
 
   // If it's ADJUST_UNIQUE improvement, navigate to the character's Unique page
   if (ADJUST_UNIQUE_IMPROVEMENT_NAMES.includes(newImprovement)) {
-    console.log(`match`, newImprovement);
     return `/character-creation/${gameId}?step=6`;
   }
 
