@@ -97,9 +97,6 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
   }
 
   const handleClickImprove = async () => {
-    // open dialog
-    setShowDialog(true);
-
     // spend experience if necessary
     if (!!userGameRole && !!character && experience !== undefined && experience >= 5) {
       try {

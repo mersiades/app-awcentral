@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { Box, CheckBox } from 'grommet';
@@ -36,6 +36,12 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
   const { crustReady } = useFonts();
 
   // --------------------------------------------------- Graphql hooks ----------------------------------------------------- //
+  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
+    // @ts-ignore
+    variables: { playbookType: character?.playbook },
+    skip: !character,
+  });
+  const improvementBlock = pbCreatorData?.playbookCreator.improvementBlock;
   const [adjustImprovements, { loading: adjustingImprovements }] = useMutation<
     AdjustImprovementsData,
     AdjustImprovementsVars
@@ -83,18 +89,6 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
     }
   };
 
-  const getIsDuplicate = useCallback((move: Move) => selectedImprovements.some((item) => item.name === move.name), [
-    selectedImprovements,
-  ]);
-
-  // ------------------------------------------------------ GraphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
-    // @ts-ignore
-    variables: { playbookType: character?.playbook },
-    skip: !character,
-  });
-  const improvementBlock = pbCreatorData?.playbookCreator.improvementBlock;
-
   // ------------------------------------------------------ Effects -------------------------------------------------------- //
   // load in existing improvement moves, but prevent duplicates
   useEffect(() => {
@@ -107,7 +101,7 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
       });
       hasInitialised.current = true;
     }
-  }, [character, getIsDuplicate]);
+  }, [character]);
 
   if (!improvementBlock) {
     return null;

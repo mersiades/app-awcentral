@@ -1,7 +1,10 @@
 import { MockedResponse } from '@apollo/client/testing';
+import userEvent from '@testing-library/user-event';
 import wait from 'waait';
+import SPEND_EXPERIENCE, { SpendExperienceData } from '../../../mutations/spendExperience';
 import GAME, { GameData } from '../../../queries/game';
-import { mockGame7 } from '../../../tests/mocks';
+import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../../../queries/playbookCreator';
+import { mockGame7, mockPlaybookCreatorAngel } from '../../../tests/mocks';
 import { act, customRenderForComponent, RenderResult } from '../../../tests/test-utils';
 import ImprovementBox from '../ImprovementBox';
 
@@ -50,23 +53,65 @@ const mockGameQuery3: MockedResponse<GameData> = {
     query: GAME,
     variables: { gameId: mockGame7.id },
   },
-  result: {
-    data: {
-      game: {
-        ...mockGame7,
-        gameRoles: [
-          {
-            ...mockGame7.gameRoles[1],
-            characters: [
-              {
-                ...mockGame7.gameRoles[1].characters[0],
-                experience: 8,
-              },
-            ],
-          },
-        ],
+  result: () => {
+    // console.log('mockGameQuery3');
+    return {
+      data: {
+        game: {
+          ...mockGame7,
+          gameRoles: [
+            {
+              ...mockGame7.gameRoles[1],
+              characters: [
+                {
+                  ...mockGame7.gameRoles[1].characters[0],
+                  experience: 8,
+                },
+              ],
+            },
+          ],
+        },
       },
-    },
+    };
+  },
+};
+
+const mockSendExperienceMutation: MockedResponse<SpendExperienceData> = {
+  request: {
+    query: SPEND_EXPERIENCE,
+    variables: { gameRoleId: mockGame7.gameRoles[1].id, characterId: mockGame7.gameRoles[1].characters[0].id },
+  },
+  result: () => {
+    // console.log('mockSendExperienceMutation');
+    return {
+      data: {
+        spendExperience: {
+          id: mockGame7.gameRoles[1].characters[0].id,
+          name: mockGame7.gameRoles[1].characters[0].name as string,
+          playbook: mockGame7.gameRoles[1].characters[0].playbook,
+          experience: 3,
+          allowedImprovements: 1,
+          allowedPlaybookMoves: mockGame7.gameRoles[1].characters[0].allowedPlaybookMoves,
+          allowedOtherPlaybookMoves: mockGame7.gameRoles[1].characters[0].allowedOtherPlaybookMoves,
+          __typename: 'Character',
+        },
+      },
+    };
+  },
+};
+
+const mockPlaybookCreatorQuery: MockedResponse<PlaybookCreatorData> = {
+  request: {
+    query: PLAYBOOK_CREATOR,
+    variables: { playbookType: mockGame7.gameRoles[1].characters[0].playbook },
+  },
+  result: () => {
+    // console.log('mockPlaybookCreatorQuery');
+    return {
+      data: {
+        playbookCreator: mockPlaybookCreatorAngel,
+      },
+    };
   },
 };
 
@@ -131,6 +176,35 @@ describe('Rendering ImprovementBox', () => {
       expect(screen.getAllByTestId('filled-circle')).toHaveLength(5);
       expect(screen.queryAllByTestId('unfilled-circle')).toHaveLength(0);
       expect(screen.getByText('+ 3')).toBeInTheDocument(); // Overflow pill with value of 3
+    });
+  });
+
+  describe('when clicking IMPROVE button with experience at 8', () => {
+    beforeEach(async () => {
+      screen = customRenderForComponent(<ImprovementBox />, {
+        isAuthenticated: true,
+        apolloMocks: [mockGameQuery3, mockSendExperienceMutation, mockPlaybookCreatorQuery],
+        injectedGameId: mockGame7.id,
+        injectedUserId: mockGame7.gameRoles[1].userId,
+      });
+
+      await act(async () => await wait());
+    });
+
+    test('should show experience reduced by 5 and open CharacterImprovementDialog', async () => {
+      const improveButton = screen.getByRole('button', { name: 'IMPROVE' }) as HTMLButtonElement;
+      userEvent.click(improveButton);
+      await act(async () => await wait()); // wait for spendExperience mutation
+      // Check button still enabled because there is now an unspent improvement point
+      expect(improveButton.disabled).toBeFalsy();
+
+      // Check rendered experience is now 3
+      expect(screen.getAllByTestId('filled-circle')).toHaveLength(3);
+
+      await act(async () => await wait()); // wait for playbookCreator query
+
+      // Check dialog is open
+      expect(screen.getByRole('heading', { name: 'Improvements' })).toBeInTheDocument();
     });
   });
 });
