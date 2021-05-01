@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import ReactMarkdown from 'react-markdown';
 import { useHistory } from 'react-router-dom';
@@ -6,12 +6,13 @@ import styled from 'styled-components';
 import { Box, CheckBox, Text } from 'grommet';
 
 import Spinner from '../Spinner';
-import { ButtonWS, HeadingWS } from '../../config/grommetConfig';
+import { accentColors, ButtonWS, HeadingWS, TextWS } from '../../config/grommetConfig';
 import SET_CHARACTER_MOVES, { SetCharacterMovesData, SetCharacterMovesVars } from '../../mutations/setCharacterMoves';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
 import { CharacterCreationSteps } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 
 const StyledMarkdown = styled(ReactMarkdown)`
   & p {
@@ -22,10 +23,14 @@ const StyledMarkdown = styled(ReactMarkdown)`
 
 const CharacterMovesForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [selectedMoveIds, setSelectedMoveIds] = useState<string[]>([]);
+  const [selectedMoves, setSelectedMoves] = useState<{ id: string; name: string }[]>([]);
+  let hasInitialised = useRef(false);
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
+
+  const allowedPlaybookMoves = character?.allowedPlaybookMoves;
+  // const allowedOtherPlaybookMoves = character?.allowedOtherPlaybookMoves;
 
   // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
   const history = useHistory();
@@ -46,12 +51,13 @@ const CharacterMovesForm: FC = () => {
   );
 
   // ------------------------------------------ Component functions and variables ------------------------------------------ //
-  const handleSelectMove = (moveId: string) => {
-    if (selectedMoveIds.includes(moveId)) {
-      setSelectedMoveIds(selectedMoveIds.filter((id) => id !== moveId));
+  const handleSelectMove = (move: Move) => {
+    if (selectedMoves.some((item) => item.name === move.name)) {
+      setSelectedMoves(selectedMoves.filter((item) => item.name !== move.name));
     } else {
-      if (!!moveChoiceCount) {
-        selectedMoveIds.length < moveChoiceCount && setSelectedMoveIds([...selectedMoveIds, moveId]);
+      if (!!allowedPlaybookMoves && !!defaultMoves) {
+        selectedMoves.length < allowedPlaybookMoves + defaultMoves.length &&
+          setSelectedMoves([...selectedMoves, { id: move.id, name: move.name }]);
       }
     }
   };
@@ -71,6 +77,25 @@ const CharacterMovesForm: FC = () => {
       }
     }
   };
+
+  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+
+  // load in existing moves, but prevent duplicates
+  useEffect(() => {
+    if (!!character && !hasInitialised.current && !!optionalMoves && !!defaultMoves) {
+      character.characterMoves.forEach((characterMove: CharacterMove) => {
+        // The CharacterMoves have a different id, so need the original Move equivalent to the CharacterMove
+        const originalMoves: Move[] = optionalMoves.concat(defaultMoves);
+        const matchingMove: Move | undefined = originalMoves.find((om) => om.name === characterMove.name);
+        !!matchingMove && setSelectedMoves((prevState) => [...prevState, { id: matchingMove.id, name: matchingMove.name }]);
+      });
+      hasInitialised.current = true;
+    }
+  }, [character, optionalMoves, defaultMoves]);
+
+  if (!allowedPlaybookMoves || !defaultMoves) {
+    return <Spinner />;
+  }
 
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
   return (
@@ -92,8 +117,10 @@ const CharacterMovesForm: FC = () => {
           <ButtonWS
             primary
             label={settingMoves ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
-            disabled={selectedMoveIds.length !== moveChoiceCount}
-            onClick={() => !settingMoves && handleSubmitCharacterMoves([...selectedMoveIds, ...defaultMoveIds])}
+            disabled={selectedMoves.length !== allowedPlaybookMoves + defaultMoves.length}
+            onClick={() =>
+              !settingMoves && handleSubmitCharacterMoves([...selectedMoves.map((mv) => mv.id), ...defaultMoveIds])
+            }
           />
         </Box>
 
@@ -108,10 +135,13 @@ const CharacterMovesForm: FC = () => {
           defaultMoves.map((move) => (
             <CheckBox key={move.id} checked label={<StyledMarkdown>{move.description}</StyledMarkdown>} />
           ))}
-        {!!moveChoiceCount && moveChoiceCount > 0 && (
-          <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
-            Select {moveChoiceCount}
-          </Text>
+        {!!moveChoiceCount && !!allowedPlaybookMoves && moveChoiceCount > 0 && (
+          <Box direction="row" align="center" gap="12px">
+            <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
+              {`Select ${moveChoiceCount < allowedPlaybookMoves ? allowedPlaybookMoves : moveChoiceCount}`}
+            </Text>
+            {moveChoiceCount < allowedPlaybookMoves && <TextWS color={accentColors[0]}>(increased by improvement)</TextWS>}
+          </Box>
         )}
         <Box align="start" gap="12px">
           {!!optionalMoves &&
@@ -124,8 +154,8 @@ const CharacterMovesForm: FC = () => {
                       <StyledMarkdown>{move.description}</StyledMarkdown>
                     </div>
                   }
-                  checked={selectedMoveIds.includes(move.id)}
-                  onChange={() => handleSelectMove(move.id)}
+                  checked={selectedMoves.some((mv) => mv.name === move.name)}
+                  onChange={() => handleSelectMove(move)}
                 />
               );
             })}
