@@ -5,7 +5,7 @@ import SPEND_EXPERIENCE, { SpendExperienceData } from '../../../mutations/spendE
 import GAME, { GameData } from '../../../queries/game';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../../../queries/playbookCreator';
 import { mockGame7, mockPlaybookCreatorAngel } from '../../../tests/mocks';
-import { act, customRenderForComponent, RenderResult } from '../../../tests/test-utils';
+import { act, customRenderForComponent, RenderResult, waitOneTick } from '../../../tests/test-utils';
 import ImprovementBox from '../ImprovementBox';
 
 // With experience = 0 (on gameRole[1]'s character)
@@ -126,7 +126,7 @@ describe('Rendering ImprovementBox', () => {
         injectedUserId: mockGame7.gameRoles[1].userId,
       });
 
-      await act(async () => await wait());
+      await waitOneTick();
     });
 
     test('should render 5 empty circles', () => {
@@ -147,7 +147,7 @@ describe('Rendering ImprovementBox', () => {
         injectedUserId: mockGame7.gameRoles[1].userId,
       });
 
-      await act(async () => await wait());
+      await waitOneTick();
     });
 
     test('should render 3 filled circles, 2 empty circles', () => {
@@ -167,7 +167,7 @@ describe('Rendering ImprovementBox', () => {
         injectedUserId: mockGame7.gameRoles[1].userId,
       });
 
-      await act(async () => await wait());
+      await waitOneTick();
     });
 
     test('should render 5 filled circles and overflow pill', () => {
@@ -188,20 +188,20 @@ describe('Rendering ImprovementBox', () => {
         injectedUserId: mockGame7.gameRoles[1].userId,
       });
 
-      await act(async () => await wait());
+      await waitOneTick();
     });
 
     test('should show experience reduced by 5 and open CharacterImprovementDialog', async () => {
       const improveButton = screen.getByRole('button', { name: 'IMPROVE' }) as HTMLButtonElement;
       userEvent.click(improveButton);
-      await act(async () => await wait()); // wait for spendExperience mutation
+      await waitOneTick(); // wait for spendExperience mutation
       // Check button still enabled because there is now an unspent improvement point
       expect(improveButton.disabled).toBeFalsy();
 
       // Check rendered experience is now 3
       expect(screen.getAllByTestId('filled-circle')).toHaveLength(3);
 
-      await act(async () => await wait()); // wait for playbookCreator query
+      await waitOneTick(); // wait for playbookCreator query
 
       // Check dialog is open
       expect(screen.getByRole('heading', { name: 'Improvements' })).toBeInTheDocument();

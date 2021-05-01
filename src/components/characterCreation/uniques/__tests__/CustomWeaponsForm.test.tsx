@@ -17,6 +17,7 @@ import {
   dummySkinnerGearCreator,
   dummyWeaponsCreator,
   dummyWorkspaceCreator,
+  mockBattlebabeLook,
   mockBrainerGearCreator,
   mockCharacterHarm,
   mockCharacterMoveAngel1,
@@ -31,6 +32,7 @@ import {
   mockHandOption2,
   mockKeycloakUserInfo1,
   mockLookBattlebabe2,
+  mockPlaybookCreatorBattlebabe,
   mockPlaybookUniqueBattlebabe,
   mockStatsBlock1,
   mockStatsOptionsAngel1,
@@ -39,9 +41,9 @@ import {
 import { LookType, PlaybookType, RoleType, UniqueTypes } from '../../../../@types/enums';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import CustomWeaponsForm from '../CustomWeaponsForm';
-import { renderWithRouter } from '../../../../tests/test-utils';
+import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { MockedResponse } from '@apollo/client/testing';
-import PLAYBOOK_CREATOR from '../../../../queries/playbookCreator';
+import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../../../../queries/playbookCreator';
 import { InMemoryCache } from '@apollo/client';
 import userEvent from '@testing-library/user-event';
 
@@ -52,63 +54,6 @@ jest.mock('@react-keycloak/web', () => {
     useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
   };
 });
-
-const dummyBattlebabeGearInstructions: GearInstructions = {
-  id: 'dummy',
-  gearIntro: 'dummy',
-  youGetItems: ['dummy'],
-  introduceChoice: 'dummy',
-  numberCanChoose: 0,
-  chooseableGear: ['dummy'],
-  withMC: 'dummy',
-  startingBarter: 0,
-};
-
-const mockBattlebabeName: Name = {
-  id: 'mock-battlebabe-name-id-1',
-  name: 'Scarlet',
-};
-
-const mockBattlebabeLook: Look = {
-  id: 'mock-battlebabe-look-id-2',
-  look: 'woman',
-  category: LookType.gender,
-  playbookType: PlaybookType.battlebabe,
-};
-
-const mockBattlebabeUniqueCreator: PlaybookUniqueCreator = {
-  id: 'mock-battlebae-unique-creator',
-  type: UniqueTypes.customWeapons,
-  angelKitCreator: dummyAngelKitCreator,
-  brainerGearCreator: mockBrainerGearCreator,
-  customWeaponsCreator: mockCustomWeaponsCreator,
-  establishmentCreator: dummyEstablishmentCreator,
-  followersCreator: dummyFollowerCreator,
-  gangCreator: dummyGangCreator,
-  holdingCreator: dummyHoldingCreator,
-  skinnerGearCreator: dummySkinnerGearCreator,
-  weaponsCreator: dummyWeaponsCreator,
-  workspaceCreator: dummyWorkspaceCreator,
-  __typename: 'PlaybookUniqueCreator',
-};
-
-const mockBattlebabeCreator: PlaybookCreator = {
-  id: 'mock-battlebabe-playbook-creator',
-  playbookType: PlaybookType.battlebabe,
-  gearInstructions: dummyBattlebabeGearInstructions,
-  improvementInstructions: 'Whenever you roll a highlighted stat...',
-  movesInstructions: 'You get all the basic moves. Choose 2 battlebabe moves.',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
-  names: [mockBattlebabeName],
-  looks: [mockBattlebabeLook],
-  statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2],
-  defaultMoves: [mockCharacterMoveAngel1],
-  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3],
-  defaultMoveCount: 1,
-  moveChoiceCount: 2,
-  playbookUniqueCreator: mockBattlebabeUniqueCreator,
-  defaultVehicleCount: 0,
-};
 
 const mockBattleBabe: Character = {
   id: 'mock-character-id-1',
@@ -180,7 +125,7 @@ const mockGame: Game = {
   gameMessages: [],
 };
 
-export const mockPlayBookCreatorQueryBattlebabe: MockedResponse = {
+export const mockPlayBookCreatorQueryBattlebabe: MockedResponse<PlaybookCreatorData> = {
   request: {
     query: PLAYBOOK_CREATOR,
     variables: { playbookType: PlaybookType.battlebabe },
@@ -189,7 +134,7 @@ export const mockPlayBookCreatorQueryBattlebabe: MockedResponse = {
     // console.log('mockPlayBookCreatorQueryBattlebabe');
     return {
       data: {
-        playbookCreator: mockBattlebabeCreator,
+        playbookCreator: mockPlaybookCreatorBattlebabe,
       },
     };
   },
@@ -211,8 +156,9 @@ describe('Rendering CustomWeaponsForm', () => {
       cache,
     });
 
-    await screen.findByTestId('custom-weapons-form');
-    await screen.findByRole('heading', { name: `WHAT ARE ${mockBattleBabe.name?.toUpperCase()}'S TWO CUSTOM WEAPONS?` });
+    screen.getByTestId('custom-weapons-form');
+    screen.getByRole('heading', { name: `WHAT ARE ${mockBattleBabe.name?.toUpperCase()}'S TWO CUSTOM WEAPONS?` });
+    await waitOneTick(); // wait for playbookCreator query
 
     screen.getByRole('heading', { name: 'CUSTOM FIREARMS' });
     screen.getByRole('heading', { name: 'CUSTOM HAND WEAPONS' });
@@ -238,7 +184,9 @@ describe('Rendering CustomWeaponsForm', () => {
       cache,
     });
 
-    const weaponInput = (await screen.findByRole('textbox', { name: 'weapon-input' })) as HTMLInputElement;
+    await waitOneTick(); // wait for playbookCreator query
+
+    const weaponInput = screen.getByRole('textbox', { name: 'weapon-input' }) as HTMLInputElement;
     const resetButton = screen.getByRole('button', { name: 'RESET' }) as HTMLButtonElement;
     const removeButton = screen.getByRole('button', { name: 'REMOVE' }) as HTMLButtonElement;
     const addButton = screen.getByRole('button', { name: 'ADD' }) as HTMLButtonElement;

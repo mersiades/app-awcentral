@@ -8,7 +8,7 @@ import {
   mockKeycloakUserInfo1,
 } from '../../../../tests/mocks';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
-import { renderWithRouter } from '../../../../tests/test-utils';
+import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { InMemoryCache } from '@apollo/client';
 import userEvent from '@testing-library/user-event';
 import EstablishmentForm from '../EstablishmentForm';
@@ -62,8 +62,10 @@ describe('Rendering EstablishmentForm', () => {
       cache,
     });
 
-    await screen.findByTestId('establishment-form');
-    await screen.findByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S ESTABLISHMENT` });
+    await waitOneTick();
+
+    screen.getByTestId('establishment-form');
+    screen.getByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S ESTABLISHMENT` });
     screen.getByRole('button', { name: 'SET' });
     screen.getAllByRole('button', { name: 'ADD' });
     screen.getAllByRole('button', { name: 'Open Drop' });
@@ -95,7 +97,8 @@ describe('Rendering EstablishmentForm', () => {
       cache,
     });
 
-    (await screen.findByRole('button', { name: 'SET' })) as HTMLButtonElement;
+    await waitOneTick();
+
     const addButtons = screen.getAllByRole('button', { name: 'ADD' }) as [HTMLButtonElement];
 
     // Select main attraction

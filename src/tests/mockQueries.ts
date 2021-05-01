@@ -32,7 +32,7 @@ import GAMEROLES_BY_USER_ID, { GameRolesByUserIdData } from '../queries/gameRole
 import GAMES_FOR_INVITEE from '../queries/gamesForInvitee';
 import MC_CONTENT from '../queries/mcContent';
 import PLAYBOOK from '../queries/playbook';
-import PLAYBOOK_CREATOR from '../queries/playbookCreator';
+import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../queries/playbookCreator';
 import PLAYBOOKS from '../queries/playbooks';
 import VEHICLE_CREATOR from '../queries/vehicleCreator';
 import {
@@ -88,6 +88,7 @@ import {
   mockPlaybookCreatorGunlugger,
   mockPlaybookCreatorSavvyhead,
   mockMcContent,
+  mockPlaybookCreatorBrainer,
 } from './mocks';
 
 export const mockGameRolesByUserId: MockedResponse<GameRolesByUserIdData> = {
@@ -603,7 +604,7 @@ export const mockGameForCharacterCreation2: MockedResponse = {
   },
 };
 
-export const mockPlaybookCreator: MockedResponse = {
+export const mockPlaybookCreator: MockedResponse<PlaybookCreatorData> = {
   request: {
     query: PLAYBOOK_CREATOR,
     variables: { playbookType: PlaybookType.angel },
@@ -613,23 +614,7 @@ export const mockPlaybookCreator: MockedResponse = {
     return {
       data: {
         __typename: 'PlaybookCreator',
-        playbookCreator: {
-          id: mockPlaybookCreatorAngel.id,
-          playbookType: mockPlaybookCreatorAngel.playbookType,
-          defaultMoveCount: mockPlaybookCreatorAngel.defaultMoveCount,
-          moveChoiceCount: mockPlaybookCreatorAngel.moveChoiceCount,
-          defaultVehicleCount: 0,
-          improvementInstructions: mockPlaybookCreatorAngel.improvementInstructions,
-          movesInstructions: mockPlaybookCreatorAngel.movesInstructions,
-          hxInstructions: mockPlaybookCreatorAngel.hxInstructions,
-          names: mockPlaybookCreatorAngel.names,
-          looks: mockPlaybookCreatorAngel.looks,
-          statsOptions: mockPlaybookCreatorAngel.statsOptions,
-          optionalMoves: mockPlaybookCreatorAngel.optionalMoves,
-          defaultMoves: mockPlaybookCreatorAngel.defaultMoves,
-          gearInstructions: mockPlaybookCreatorAngel.gearInstructions,
-          playbookUniqueCreator: mockUniqueCreatorAngel,
-        },
+        playbookCreator: mockPlaybookCreatorAngel,
       },
     };
   },
@@ -2265,7 +2250,7 @@ export const mockSetVehicle: MockedResponse = {
   },
 };
 
-export const mockPlayBookCreatorQueryAngel: MockedResponse = {
+export const mockPlayBookCreatorQueryAngel: MockedResponse<PlaybookCreatorData> = {
   request: {
     query: PLAYBOOK_CREATOR,
     variables: { playbookType: PlaybookType.angel },
@@ -2274,40 +2259,13 @@ export const mockPlayBookCreatorQueryAngel: MockedResponse = {
     // console.log('mockPlayBookCreatorQueryAngel');
     return {
       data: {
-        playbookCreator: {
-          id: 'angel-playbook-creator-id',
-          playbookType: PlaybookType.angel,
-          defaultMoveCount: 1,
-          moveChoiceCount: 2,
-          defaultVehicleCount: 0,
-          improvementInstructions: 'Whenever you roll a highlighted stat...',
-          movesInstructions: 'You get all the basic moves. Choose 2 driver moves.',
-          hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
-          names: [mockNameAngel1, mockNameAngel2],
-          looks: [
-            mockLookAngel1,
-            mockLookAngel2,
-            mockLookAngel3,
-            mockLookAngel4,
-            mockLookAngel5,
-            mockLookAngel6,
-            mockLookAngel7,
-            mockLookAngel8,
-            mockLookAngel9,
-            mockLookAngel10,
-          ],
-          statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2, mockStatsOptionsAngel3],
-          optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel1, mockCharacterMoveAngel4],
-          defaultMoves: [mockPlaybookCreatorMoveAngel1],
-          gearInstructions: mockgearInstructionsAngel,
-          playbookUniqueCreator: mockUniqueCreatorAngel,
-        },
+        playbookCreator: mockPlaybookCreatorAngel,
       },
     };
   },
 };
 
-export const mockPlayBookCreatorQueryBrainer: MockedResponse = {
+export const mockPlayBookCreatorQueryBrainer: MockedResponse<PlaybookCreatorData> = {
   request: {
     query: PLAYBOOK_CREATOR,
     variables: { playbookType: PlaybookType.brainer },
@@ -2316,34 +2274,7 @@ export const mockPlayBookCreatorQueryBrainer: MockedResponse = {
     // console.log('mockPlayBookCreatorQueryBrainer');
     return {
       data: {
-        playbookCreator: {
-          id: 'brainer-playbook-creator-id',
-          playbookType: PlaybookType.brainer,
-          defaultMoveCount: 1,
-          moveChoiceCount: 2,
-          defaultVehicleCount: 0,
-          gearInstructions: mockgearInstructionsAngel,
-          improvementInstructions: 'Whenever you roll a highlighted stat...',
-          movesInstructions: 'You get all the basic moves. Choose 2 brainer moves.',
-          hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
-          names: [mockNameAngel1, mockNameAngel2],
-          looks: [
-            mockLookAngel1,
-            mockLookAngel2,
-            mockLookAngel3,
-            mockLookAngel4,
-            mockLookAngel5,
-            mockLookAngel6,
-            mockLookAngel7,
-            mockLookAngel8,
-            mockLookAngel9,
-            mockLookAngel10,
-          ],
-          statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2, mockStatsOptionsAngel3],
-          optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel1, mockCharacterMoveAngel4],
-          defaultMoves: [mockCharacterMoveAngel1],
-          playbookUniqueCreator: mockUniqueCreatorBrainer,
-        },
+        playbookCreator: mockPlaybookCreatorBrainer,
       },
     };
   },
@@ -2428,7 +2359,7 @@ export const mockAdjustCharacterHx: MockedResponse = {
   },
 };
 
-export const mockPlayBookCreatorQueryMaestroD: MockedResponse = {
+export const mockPlayBookCreatorQueryMaestroD: MockedResponse<PlaybookCreatorData> = {
   request: {
     query: PLAYBOOK_CREATOR,
     variables: { playbookType: PlaybookType.maestroD },
