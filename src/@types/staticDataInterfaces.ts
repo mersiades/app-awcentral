@@ -133,11 +133,12 @@ export interface Move {
   statModifier?: StatModifier;
   rollModifier?: RollModifier;
   moveAction?: MoveAction;
-  __typename?: 'Move';
+  __typename?: 'Move' | 'CharacterMove';
 }
 
 export interface CharacterMove extends Move {
   isSelected: boolean;
+  __typename?: 'CharacterMove';
 }
 
 export interface RollModifier {
@@ -150,6 +151,8 @@ export interface StatModifier {
   id: string;
   statToModify: StatType;
   modification: number;
+  maxLimit: number;
+  __typename?: 'StatModifier';
 }
 
 // --------------------------------------------- PlaybookUnique interfaces --------------------------------------------- //

@@ -41,6 +41,7 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
     variables: { playbookType: character?.playbook },
     skip: !character,
   });
+
   const improvementBlock = pbCreatorData?.playbookCreator.improvementBlock;
   const [adjustImprovements, { loading: adjustingImprovements }] = useMutation<
     AdjustImprovementsData,

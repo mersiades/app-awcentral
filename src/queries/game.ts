@@ -642,13 +642,6 @@ const GAME = gql`
             kind
             description
             playbook
-            stat
-            moveAction {
-              id
-              actionType
-              rollType
-              statToRollWith
-            }
           }
           futureImprovementMoves {
             id
@@ -657,13 +650,6 @@ const GAME = gql`
             kind
             description
             playbook
-            stat
-            moveAction {
-              id
-              actionType
-              rollType
-              statToRollWith
-            }
           }
           vehicles {
             id

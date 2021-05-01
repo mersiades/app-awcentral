@@ -1,11 +1,10 @@
 import { MockedResponse } from '@apollo/client/testing';
 import userEvent from '@testing-library/user-event';
-import wait from 'waait';
 import SPEND_EXPERIENCE, { SpendExperienceData } from '../../../mutations/spendExperience';
 import GAME, { GameData } from '../../../queries/game';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../../../queries/playbookCreator';
 import { mockGame7, mockPlaybookCreatorAngel } from '../../../tests/mocks';
-import { act, customRenderForComponent, RenderResult, waitOneTick } from '../../../tests/test-utils';
+import { customRenderForComponent, RenderResult, waitOneTick } from '../../../tests/test-utils';
 import ImprovementBox from '../ImprovementBox';
 
 // With experience = 0 (on gameRole[1]'s character)

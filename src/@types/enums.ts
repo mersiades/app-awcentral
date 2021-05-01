@@ -40,7 +40,7 @@ export enum MoveType {
   addUnique = 'ADD_UNIQUE',
   addVehicle = 'ADD_VEHICLE',
   genereicIncreaseStat = 'GENERIC_INCREASE_STAT',
-  reture = 'RETIRE',
+  retire = 'RETIRE',
   addSecondCharacter = 'ADD_SECOND_CHARACTER',
   changePlaybook = 'CHANGE_PLAYBOOK',
   improveBasicMoves = 'IMPROVE_BASIC_MOVES',

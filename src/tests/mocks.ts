@@ -79,6 +79,7 @@ import {
   WorkspaceCreator,
 } from '../@types/staticDataInterfaces';
 import { ANGEL_SPECIAL_NAME, UNDER_FIRE_NAME } from '../config/constants';
+import { mockImprovementBlockAngel, mockImprovementBlockDefault } from './mockData/mockImprovementBlocks';
 
 // Same as Character, but with no nullable fields
 interface MockCharacter {
@@ -140,6 +141,7 @@ export const dummyRollModifier: RollModifier = {
         id: 'dummy',
         statToModify: StatType.sharp,
         modification: 0,
+        maxLimit: 0,
       },
       // rollModifier: {}, // Can't include RollModifier because recursive
       moveAction: {
@@ -171,6 +173,7 @@ export const dummyStatModifier: StatModifier = {
   id: 'dummy',
   statToModify: StatType.sharp,
   modification: 0,
+  maxLimit: 0,
 };
 
 //// ----------------------------------------------Dummy playbook creators ---------------------------------- ////
@@ -628,7 +631,7 @@ export const mockCharacterMoveAngel1: CharacterMove = {
   rollModifier: dummyRollModifier,
   moveAction: dummyMoveAction,
   isSelected: true,
-  __typename: 'Move',
+  __typename: 'CharacterMove',
 };
 
 export const mockCharacterMoveAngel2: CharacterMove = {
@@ -642,7 +645,7 @@ export const mockCharacterMoveAngel2: CharacterMove = {
   statModifier: dummyStatModifier,
   moveAction: dummyMoveAction,
   isSelected: false,
-  __typename: 'Move',
+  __typename: 'CharacterMove',
 };
 
 export const mockCharacterMoveAngel3: CharacterMove = {
@@ -656,7 +659,7 @@ export const mockCharacterMoveAngel3: CharacterMove = {
   statModifier: dummyStatModifier,
   moveAction: dummyMoveAction,
   isSelected: false,
-  __typename: 'Move',
+  __typename: 'CharacterMove',
 };
 
 export const mockCharacterMoveAngel4: CharacterMove = {
@@ -670,7 +673,7 @@ export const mockCharacterMoveAngel4: CharacterMove = {
   statModifier: dummyStatModifier,
   moveAction: dummyMoveAction,
   isSelected: false,
-  __typename: 'Move',
+  __typename: 'CharacterMove',
 };
 
 export const mockNameAngel1: Name = {
@@ -1490,15 +1493,6 @@ export const mockgearInstructionsDefault: GearInstructions = {
   __typename: 'GearInstructions',
 };
 
-export const mockImprovementBlockDefault: ImprovementBlock = {
-  id: 'mock-default-improvement-block-id',
-  playbookType: PlaybookType.angel,
-  improvementInstructions: 'When you...',
-  improvementMoves: [],
-  futureImprovementMoves: [],
-  __typename: 'ImprovementBlock',
-};
-
 export const mockPlaybookCreatorDefault: PlaybookCreator = {
   id: 'default-playbook-creator-id',
   playbookType: PlaybookType.angel,
@@ -1577,15 +1571,6 @@ export const mockgearInstructionsAngel: GearInstructions = {
   withMC: 'If you’d like to start play with a vehicle or a prosthetic, get with the MC.',
   startingBarter: 2,
   __typename: 'GearInstructions',
-};
-
-export const mockImprovementBlockAngel: ImprovementBlock = {
-  id: 'mock-angel-improvement-block-id',
-  playbookType: PlaybookType.angel,
-  improvementInstructions: 'When you...',
-  improvementMoves: [],
-  futureImprovementMoves: [],
-  __typename: 'ImprovementBlock',
 };
 
 export const mockAngelKitCreator: AngelKitCreator = {
