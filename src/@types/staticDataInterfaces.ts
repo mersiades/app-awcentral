@@ -69,9 +69,9 @@ export interface GearInstructions {
   id: string;
   gearIntro: string;
   youGetItems: string[];
-  introduceChoice: string;
-  numberCanChoose: number;
-  chooseableGear: string[];
+  introduceChoice?: string;
+  numberCanChoose?: number;
+  chooseableGear?: string[];
   withMC: string;
   startingBarter: number;
   __typename?: 'GearInstructions';

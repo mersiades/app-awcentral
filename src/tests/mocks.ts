@@ -1431,6 +1431,105 @@ export const mockAllMovesArray = [
   shoulderAnotherVehicle,
 ];
 
+// ------------------------------------------------------- Default Creators --------------------------------------------------- //
+export const mockStatsOptionsDefault1: StatsOption = {
+  id: 'default-stats-options-1',
+  COOL: 1,
+  HARD: 0,
+  HOT: 1,
+  SHARP: 2,
+  WEIRD: -1,
+  __typename: 'StatsOption',
+};
+
+export const mockStatsOptionsDefault2: StatsOption = {
+  id: 'default-stats-options-2',
+  COOL: 1,
+  HARD: 1,
+  HOT: 0,
+  SHARP: 2,
+  WEIRD: -1,
+  __typename: 'StatsOption',
+};
+
+export const mockStatsOptionsDefault3: StatsOption = {
+  id: 'default-stats-options-3',
+  COOL: -1,
+  HARD: 1,
+  HOT: 0,
+  SHARP: 2,
+  WEIRD: 1,
+  __typename: 'StatsOption',
+};
+
+export const mockUniqueCreatorDefault: PlaybookUniqueCreator = {
+  id: 'default-playbook-unique-creator-id',
+  type: UniqueTypes.brainerGear,
+  angelKitCreator: dummyAngelKitCreator,
+  brainerGearCreator: dummyBrainerGearCreator,
+  customWeaponsCreator: dummyCustomWeaponsCreator,
+  establishmentCreator: dummyEstablishmentCreator,
+  followersCreator: dummyFollowerCreator,
+  gangCreator: dummyGangCreator,
+  holdingCreator: dummyHoldingCreator,
+  skinnerGearCreator: dummySkinnerGearCreator,
+  weaponsCreator: dummyWeaponsCreator,
+  workspaceCreator: dummyWorkspaceCreator,
+  __typename: 'PlaybookUniqueCreator',
+};
+
+export const mockgearInstructionsDefault: GearInstructions = {
+  id: 'default-gear-instructions-id',
+  gearIntro: 'You get:',
+  youGetItems: ['fashion suitable to your look, including at your option a piece worth 1-armor (you detail)'],
+  introduceChoice: '',
+  numberCanChoose: 0,
+  chooseableGear: [],
+  withMC: 'If you’d like to start play with a vehicle or a prosthetic, get with the MC.',
+  startingBarter: 2,
+  __typename: 'GearInstructions',
+};
+
+export const mockImprovementBlockDefault: ImprovementBlock = {
+  id: 'mock-default-improvement-block-id',
+  playbookType: PlaybookType.angel,
+  improvementInstructions: 'When you...',
+  improvementMoves: [],
+  futureImprovementMoves: [],
+  __typename: 'ImprovementBlock',
+};
+
+export const mockPlaybookCreatorDefault: PlaybookCreator = {
+  id: 'default-playbook-creator-id',
+  playbookType: PlaybookType.angel,
+  gearInstructions: mockgearInstructionsDefault,
+  improvementInstructions: 'Whenever you roll a highlighted stat...',
+  movesInstructions: 'You get all the basic moves. Choose 2 angel moves.  ',
+  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  names: [mockNameAngel1, mockNameAngel2],
+  looks: [
+    mockLookAngel1,
+    mockLookAngel2,
+    mockLookAngel3,
+    mockLookAngel4,
+    mockLookAngel5,
+    mockLookAngel6,
+    mockLookAngel7,
+    mockLookAngel8,
+    mockLookAngel9,
+    mockLookAngel10,
+  ],
+  statsOptions: [mockStatsOptionsDefault1, mockStatsOptionsDefault2, mockStatsOptionsDefault3],
+  playbookUniqueCreator: mockUniqueCreatorDefault,
+  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3, mockCharacterMoveAngel4],
+  defaultMoves: [mockCharacterMoveAngel1],
+  defaultMoveCount: 1,
+  moveChoiceCount: 2,
+  defaultVehicleCount: 0,
+  improvementBlock: mockImprovementBlockDefault,
+  __typename: 'PlaybookCreator',
+};
+
 // ------------------------------------------------------- Mock Angel playbook --------------------------------------------------- //
 export const mockStatsOptionsAngel1: StatsOption = {
   id: 'angel-stats-options-1',
@@ -1477,6 +1576,7 @@ export const mockgearInstructionsAngel: GearInstructions = {
   ],
   withMC: 'If you’d like to start play with a vehicle or a prosthetic, get with the MC.',
   startingBarter: 2,
+  __typename: 'GearInstructions',
 };
 
 export const mockImprovementBlockAngel: ImprovementBlock = {
@@ -1549,6 +1649,122 @@ export const mockPlaybookAngel: Playbook = {
   intro: 'When you’re lying in the dust of Apocalypse World guts aspilled...',
   introComment: 'Angels are medics. If you want everybody to love you...',
   playbookImageUrl: 'https://awc-images.s3-ap-southeast-2.amazonaws.com/angel-white-transparent.png',
+};
+
+// ------------------------------------------------------- Mock Battlebabe playbook --------------------------------------------------- //
+export const mockBattlebabeName: Name = {
+  id: 'mock-battlebabe-name-id-1',
+  name: 'Scarlet',
+  __typename: 'Name',
+};
+
+export const mockBattlebabeLook: Look = {
+  id: 'mock-battlebabe-look-id-2',
+  look: 'woman',
+  category: LookType.gender,
+  playbookType: PlaybookType.battlebabe,
+  __typename: 'Look',
+};
+
+export const mockFirearmBaseOption: TaggedItem = {
+  id: 'mock-firearm-base-option-id',
+  description: 'handgun',
+  tags: ['2-harm', 'close', 'reload', 'loud'],
+};
+
+export const mockFirearmOption: ItemCharacteristic = {
+  id: 'mock-firearm-option-id',
+  description: 'antique',
+  tag: '+valuable',
+};
+
+export const mockFirearmOption2: ItemCharacteristic = {
+  id: 'mock-firearm-option-id-2',
+  description: 'semiautomatic',
+  tag: '-reload',
+};
+
+export const mockHandBaseOption: TaggedItem = {
+  id: 'mock-hand-base-option-id',
+  description: 'staff',
+  tags: ['1-harm', 'hand', 'area'],
+};
+
+export const mockHandOption: ItemCharacteristic = {
+  id: 'mock-hand-option-id',
+  description: 'ornate',
+  tag: '+valuable',
+};
+
+export const mockHandOption2: ItemCharacteristic = {
+  id: 'mock-hand-option-id-2',
+  description: 'head',
+  tag: '+1harm',
+};
+
+export const mockCustomWeaponsCreator: CustomWeaponsCreator = {
+  id: 'mock-custom-weapons-creator-id',
+  firearmsTitle: 'CUSTOM FIREARMS',
+  firearmsBaseInstructions: 'Base (choose 1):',
+  firearmsBaseOptions: [mockFirearmBaseOption],
+  firearmsOptionsInstructions: 'Options (choose 2):',
+  firearmsOptionsOptions: [mockFirearmOption, mockFirearmOption2],
+  handTitle: 'CUSTOM HAND WEAPONS',
+  handBaseInstructions: 'Base (choose 1):',
+  handBaseOptions: [mockHandBaseOption],
+  handOptionsInstructions: 'Options (choose 2, * counts as 2 options):',
+  handOptionsOptions: [mockHandOption, mockHandOption2],
+  __typename: 'CustomWeaponsCreator',
+};
+
+export const mockUniqueCreatorBattlebabe: PlaybookUniqueCreator = {
+  ...mockUniqueCreatorDefault,
+  id: 'battlebabe-playbook-unique-creator-id',
+  type: UniqueTypes.customWeapons,
+  customWeaponsCreator: mockCustomWeaponsCreator,
+};
+
+export const mockgearInstructionsBattlebabe: GearInstructions = {
+  id: 'angel-gear-instructions-id',
+  gearIntro: 'You get:',
+  youGetItems: [
+    'fashion suitable to your look, including at your option fashion worth 1-armor or body armor worth 2-armor (you detail)',
+  ],
+  introduceChoice: '',
+  numberCanChoose: 0,
+  chooseableGear: [],
+  withMC: 'If you’d like to start play with a vehicle or a prosthetic, get with the MC.',
+  startingBarter: 4,
+  __typename: 'GearInstructions',
+};
+
+export const mockImprovementBlockBattlebabe: ImprovementBlock = {
+  id: 'mock-battlebabe-improvement-block-id',
+  playbookType: PlaybookType.battlebabe,
+  improvementInstructions: 'When you...',
+  improvementMoves: [],
+  futureImprovementMoves: [],
+  __typename: 'ImprovementBlock',
+};
+
+export const mockPlaybookCreatorBattlebabe: PlaybookCreator = {
+  id: 'battlebabe-playbook-creator-id',
+  playbookType: PlaybookType.battlebabe,
+  gearInstructions: mockgearInstructionsBattlebabe,
+  improvementInstructions: 'Whenever you roll a highlighted stat...',
+  movesInstructions: 'You get all the basic moves. Choose 2 battlebabe moves.',
+  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  improvementBlock: mockImprovementBlockBattlebabe,
+  names: [mockBattlebabeName],
+  looks: [mockBattlebabeLook],
+  statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2],
+  defaultMoves: [mockCharacterMoveAngel1],
+  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3],
+  defaultMoveCount: 1,
+  moveChoiceCount: 2,
+  playbookUniqueCreator: mockUniqueCreatorBattlebabe,
+  defaultVehicleCount: 0,
+  __typename: 'PlaybookCreator',
 };
 
 export const mockPlaybookBattlbabe: Playbook = {
@@ -1672,105 +1888,6 @@ export const mockVehicleCreator: VehicleCreator = {
   battleVehicleCreator: mockBattleVehicleCreator,
 };
 
-export const mockFirearmBaseOption: TaggedItem = {
-  id: 'mock-firearm-base-option-id',
-  description: 'handgun',
-  tags: ['2-harm', 'close', 'reload', 'loud'],
-};
-
-// ------------------------------------------------------- Mock PlaybookCreators --------------------------------------------------- //
-
-export const mockUniqueCreatorDefault: PlaybookUniqueCreator = {
-  id: 'default-playbook-unique-creator-id',
-  type: UniqueTypes.brainerGear,
-  angelKitCreator: dummyAngelKitCreator,
-  brainerGearCreator: dummyBrainerGearCreator,
-  customWeaponsCreator: dummyCustomWeaponsCreator,
-  establishmentCreator: dummyEstablishmentCreator,
-  followersCreator: dummyFollowerCreator,
-  gangCreator: dummyGangCreator,
-  holdingCreator: dummyHoldingCreator,
-  skinnerGearCreator: dummySkinnerGearCreator,
-  weaponsCreator: dummyWeaponsCreator,
-  workspaceCreator: dummyWorkspaceCreator,
-  __typename: 'PlaybookUniqueCreator',
-};
-
-export const mockPlaybookCreatorDefault: PlaybookCreator = {
-  id: 'default-playbook-creator-id',
-  playbookType: PlaybookType.angel,
-  gearInstructions: mockgearInstructionsAngel,
-  improvementInstructions: 'Whenever you roll a highlighted stat...',
-  movesInstructions: 'You get all the basic moves. Choose 2 angel moves.  ',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
-  names: [mockNameAngel1, mockNameAngel2],
-  looks: [
-    mockLookAngel1,
-    mockLookAngel2,
-    mockLookAngel3,
-    mockLookAngel4,
-    mockLookAngel5,
-    mockLookAngel6,
-    mockLookAngel7,
-    mockLookAngel8,
-    mockLookAngel9,
-    mockLookAngel10,
-  ],
-  statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2, mockStatsOptionsAngel3],
-  playbookUniqueCreator: mockUniqueCreatorAngel,
-  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3, mockCharacterMoveAngel4],
-  defaultMoves: [mockCharacterMoveAngel1],
-  defaultMoveCount: 1,
-  moveChoiceCount: 2,
-  defaultVehicleCount: 0,
-  improvementBlock: mockImprovementBlockAngel,
-  __typename: 'PlaybookCreator',
-};
-
-export const mockFirearmOption: ItemCharacteristic = {
-  id: 'mock-firearm-option-id',
-  description: 'antique',
-  tag: '+valuable',
-};
-
-export const mockFirearmOption2: ItemCharacteristic = {
-  id: 'mock-firearm-option-id-2',
-  description: 'semiautomatic',
-  tag: '-reload',
-};
-
-export const mockHandBaseOption: TaggedItem = {
-  id: 'mock-hand-base-option-id',
-  description: 'staff',
-  tags: ['1-harm', 'hand', 'area'],
-};
-
-export const mockHandOption: ItemCharacteristic = {
-  id: 'mock-hand-option-id',
-  description: 'ornate',
-  tag: '+valuable',
-};
-
-export const mockHandOption2: ItemCharacteristic = {
-  id: 'mock-hand-option-id-2',
-  description: 'head',
-  tag: '+1harm',
-};
-
-export const mockCustomWeaponsCreator: CustomWeaponsCreator = {
-  id: 'mock-custom-weapons-creator-id',
-  firearmsTitle: 'CUSTOM FIREARMS',
-  firearmsBaseInstructions: 'Base (choose 1):',
-  firearmsBaseOptions: [mockFirearmBaseOption],
-  firearmsOptionsInstructions: 'Options (choose 2):',
-  firearmsOptionsOptions: [mockFirearmOption, mockFirearmOption2],
-  handTitle: 'CUSTOM HAND WEAPONS',
-  handBaseInstructions: 'Base (choose 1):',
-  handBaseOptions: [mockHandBaseOption],
-  handOptionsInstructions: 'Options (choose 2, * counts as 2 options):',
-  handOptionsOptions: [mockHandOption, mockHandOption2],
-};
-
 export const mockPlaybookCreatorDriver: PlaybookCreator = {
   ...mockPlaybookCreatorDefault,
   id: 'driver-playbook-creator-id',
@@ -1779,6 +1896,8 @@ export const mockPlaybookCreatorDriver: PlaybookCreator = {
   hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
   playbookUniqueCreator: undefined,
 };
+
+// ------------------------------------------------------- Mock PlaybookCreators --------------------------------------------------- //
 
 // ##### -------------------------------------------------- Brainer/Brainer Gear ----------------------------------------------##### //
 
@@ -1795,6 +1914,15 @@ export const mockUniqueCreatorBrainer: PlaybookUniqueCreator = {
   id: 'brainer-playbook-unique-creator-id',
   type: UniqueTypes.brainerGear,
   brainerGearCreator: mockBrainerGearCreator,
+};
+
+export const mockPlaybookCreatorBrainer: PlaybookCreator = {
+  ...mockPlaybookCreatorDefault,
+  id: 'brainer-playbook-creator-id',
+  playbookType: PlaybookType.brainer,
+  movesInstructions: 'You get all the basic moves. Choose 2 driver moves.',
+  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  playbookUniqueCreator: mockUniqueCreatorBrainer,
 };
 
 // ##### -------------------------------------------------- Maestro D/Establishment ----------------------------------------------##### //
