@@ -16,6 +16,50 @@ import ADJUST_IMPROVEMENTS, {
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { Move } from '../../@types/staticDataInterfaces';
+import {
+  ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES,
+  ADD_PLAYBOOK_MOVE_IMPROVEMENT_NAMES,
+  ADJUST_UNIQUE_IMPROVEMENT_NAMES,
+  IMPROVE_STAT_IMPROVEMENT_NAMES,
+} from '../../config/constants';
+
+const getNavDestinationForNewImprovement = (
+  oldImprovementNames: string[],
+  newImprovementNames: string[],
+  gameId: string
+): string | undefined => {
+  // Get the name of the newly-chosen improvement
+  const newImprovement = newImprovementNames.filter((imp) => oldImprovementNames.indexOf(imp) === -1)[0];
+
+  // If it's an IMPROVE_STAT improvement, navigate nowhere
+  if (IMPROVE_STAT_IMPROVEMENT_NAMES.includes(newImprovement)) {
+    console.log(`match`, newImprovement);
+    return undefined;
+  }
+
+  // If it's an ADD_CHARACTER_MOVE or ADD_OTHER_PB_MOVE improvement, navigate to the Moves page
+  if (
+    ADD_PLAYBOOK_MOVE_IMPROVEMENT_NAMES.includes(newImprovement) ||
+    ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES.includes(newImprovement)
+  ) {
+    console.log(`match`, newImprovement);
+    return `/character-creation/${gameId}?step=7`;
+  }
+
+  // If it's ADJUST_UNIQUE improvement, navigate to the character's Unique page
+  if (ADJUST_UNIQUE_IMPROVEMENT_NAMES.includes(newImprovement)) {
+    console.log(`match`, newImprovement);
+    return `/character-creation/${gameId}?step=6`;
+  }
+
+  // TODO: handle ADD_UNIQUE improvements
+  // TODO: handle ADD_VEHICLE improvements
+  // TODO: handle GENERIC_INCREASE_STAT improvements
+  // TODO: handle RETIRE improvements
+  // TODO: handle ADD_SECOND_CHARACTER improvements
+  // TODO: handle CHANGE_PLAYBOOK improvements
+  // TODO: handle IMPROVE_BASIC_MOVES improvements
+};
 
 interface CharacterImprovementDialogProps {
   handleClose: () => void;
@@ -73,6 +117,12 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
 
   const handleSetImprovements = async () => {
     if (!!character && !!userGameRole && !!game) {
+      const to = getNavDestinationForNewImprovement(
+        character?.improvementMoves.map((imp) => imp.name),
+        selectedImprovements.map((imp) => imp.name),
+        game.id
+      );
+
       try {
         await adjustImprovements({
           variables: {
@@ -83,7 +133,11 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
           },
           optimisticResponse: adjustImprovementsOR(character),
         });
-        history.push(`/character-creation/${game.id}?step=6`);
+        if (!!to) {
+          history.push(to);
+        } else {
+          handleClose();
+        }
       } catch (error) {
         console.log(error);
       }
