@@ -154,7 +154,7 @@ const mockAdjustImprovementsMutation2: MockedResponse<AdjustImprovementsData> = 
   },
 };
 
-describe('Testing navigation after selecting character improvement', () => {
+describe.skip('Testing navigation after selecting character improvement', () => {
   let screen: RenderResult<typeof import('@testing-library/dom/types/queries'), HTMLElement>;
   let cache = new InMemoryCache();
   const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView;
