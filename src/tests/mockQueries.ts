@@ -35,13 +35,10 @@ import PLAYBOOK from '../queries/playbook';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../queries/playbookCreator';
 import PLAYBOOKS from '../queries/playbooks';
 import VEHICLE_CREATOR from '../queries/vehicleCreator';
+import { dummyAngelKitMove } from './mockData/dummyData';
 import {
-  dummyAngelKitMove,
   mockAllMovesArray,
   mockCharacter2,
-  mockCharacterMoveAngel1,
-  mockCharacterMoveAngel2,
-  mockCharacterMoveAngel4,
   mockGame1,
   mockGame2,
   mockGame3,

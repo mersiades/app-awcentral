@@ -157,7 +157,7 @@ export const keepEyeOutName = 'KEEP AN EYE OUT';
 export const dangerousAndSexyName = 'DANGEROUS & SEXY';
 export const brainScanName = 'DEEP BRAIN SCAN';
 export const puppetStringsName = 'IN BRAIN PUPPET STRINGS';
-export const bonefeelName = 'BONEFEEL';
+export const BONEFEEL_NAME = 'BONEFEEL';
 
 // CSS
 export const gamePageTopNavbarHeight = 30;
