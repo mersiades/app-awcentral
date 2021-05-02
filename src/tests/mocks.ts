@@ -100,6 +100,12 @@ import {
   mockCharacterMoveAngel4,
 } from './mockData/mockCharacterMoves';
 import { mockImprovementBlockAngel, mockImprovementBlockDefault } from './mockData/mockImprovementBlocks';
+import {
+  mockPlaybookUniqueAngel,
+  mockPlaybookUniqueAngel_withDummyUniques,
+  mockPlaybookUniqueBattlebabe,
+  mockPlaybookUniqueBattlebabe_withDummyUniques,
+} from './mockData/mockPlayBookUniques';
 
 // Same as Character, but with no nullable fields
 interface MockCharacter {
@@ -368,11 +374,6 @@ export const mockLookBattlebabe2: Look = {
   __typename: 'Look',
 };
 
-export const mockCustomWeapons: CustomWeapons = {
-  id: 'mock-custom-weapons-id',
-  weapons: ['custom weapon 1', 'custom weapons 2'],
-};
-
 export const mockVehicle1: Vehicle = {
   id: 'mock-vehicle-id-1',
   vehicleType: VehicleType.car,
@@ -406,45 +407,6 @@ export const mockVehicle1: Vehicle = {
 };
 
 export const mockVehicles: Vehicle[] = [mockVehicle1];
-
-export const mockPlaybookUniqueBattlebabe: PlaybookUniques = {
-  id: 'mock-battlebabe-unique-id',
-  type: UniqueTypes.customWeapons,
-  angelKit: dummyAngelKit,
-  brainerGear: dummyBrainerGear,
-  customWeapons: mockCustomWeapons,
-  establishment: dummyEstablishment,
-  followers: dummyFollowers,
-  gang: dummyGang,
-  holding: dummyHolding,
-  skinnerGear: dummySkinnerGear,
-  weapons: dummyWeapons,
-  workspace: dummyWorkspace,
-};
-
-export const mockAngelKit: AngelKit = {
-  id: 'mock-angel-kit-id',
-  description: 'Your angel kit has all kinds of crap in it...',
-  stock: 6,
-  hasSupplier: false,
-  supplierText: 'mock-supplier-text',
-  angelKitMoves: [dummyAngelKitMove],
-};
-
-export const mockPlaybookUniqueAngel: PlaybookUniques = {
-  id: 'mock-angle-unique-id',
-  type: UniqueTypes.angelKit,
-  angelKit: mockAngelKit,
-  brainerGear: dummyBrainerGear,
-  customWeapons: dummyCustomWeapons,
-  establishment: dummyEstablishment,
-  followers: dummyFollowers,
-  gang: dummyGang,
-  holding: dummyHolding,
-  skinnerGear: dummySkinnerGear,
-  weapons: dummyWeapons,
-  workspace: dummyWorkspace,
-};
 
 export const mockCharacterHarm: CharacterHarm = {
   id: 'mock-character-harm-id-1',
@@ -481,7 +443,7 @@ export const mockCharacter1: MockCharacter = {
     { ...mockCharacterMoveAngel2, isSelected: true },
     { ...mockCharacterMoveAngel3, isSelected: true },
   ], // TODO: change to battlebabe moves
-  playbookUniques: mockPlaybookUniqueBattlebabe,
+  playbookUniques: mockPlaybookUniqueBattlebabe_withDummyUniques,
   vehicles: [],
   battleVehicles: [],
   improvementMoves: [],
@@ -518,7 +480,7 @@ export const mockCharacter2: MockCharacter = {
     { ...mockCharacterMoveAngel2, isSelected: true },
     { ...mockCharacterMoveAngel3, isSelected: true },
   ],
-  playbookUniques: mockPlaybookUniqueAngel,
+  playbookUniques: mockPlaybookUniqueAngel_withDummyUniques,
   vehicleCount: 0,
   battleVehicleCount: 0,
   vehicles: [],

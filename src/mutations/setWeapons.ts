@@ -22,6 +22,7 @@ const SET_WEAPONS = gql`
         type
         weapons {
           id
+          uniqueType
           weapons
         }
       }

@@ -14,6 +14,7 @@ export const playbookUniqueFragments = {
     fragment AngelKit on PlaybookUnique {
       angelKit {
         id
+        uniqueType
         description
         stock
         angelKitMoves {
@@ -39,6 +40,7 @@ export const playbookUniqueFragments = {
     fragment BrainerGear on PlaybookUnique {
       brainerGear {
         id
+        uniqueType
         brainerGear
       }
     }
@@ -48,6 +50,7 @@ export const playbookUniqueFragments = {
     fragment CustomWeapons on PlaybookUnique {
       customWeapons {
         id
+        uniqueType
         weapons
       }
     }
@@ -56,6 +59,7 @@ export const playbookUniqueFragments = {
     fragment Establishment on PlaybookUnique {
       establishment {
         id
+        uniqueType
         mainAttraction
         bestRegular
         worstRegular
@@ -83,6 +87,7 @@ export const playbookUniqueFragments = {
     fragment Followers on PlaybookUnique {
       followers {
         id
+        uniqueType
         description
         travelOption
         characterization
@@ -117,6 +122,7 @@ export const playbookUniqueFragments = {
     fragment Gang on PlaybookUnique {
       gang {
         id
+        uniqueType
         size
         harm
         armor
@@ -140,6 +146,7 @@ export const playbookUniqueFragments = {
     fragment Holding on PlaybookUnique {
       holding {
         id
+        uniqueType
         holdingSize
         gangSize
         souls
@@ -186,6 +193,7 @@ export const playbookUniqueFragments = {
     fragment SkinnerGear on PlaybookUnique {
       skinnerGear {
         id
+        uniqueType
         graciousWeapon {
           id
           item
@@ -203,6 +211,7 @@ export const playbookUniqueFragments = {
     fragment Weapons on PlaybookUnique {
       weapons {
         id
+        uniqueType
         weapons
       }
     }
@@ -211,6 +220,7 @@ export const playbookUniqueFragments = {
     fragment Workspace on PlaybookUnique {
       workspace {
         id
+        uniqueType
         workspaceInstructions
         projectInstructions
         workspaceItems
@@ -710,6 +720,7 @@ const GAME = gql`
             type
             angelKit {
               id
+              uniqueType
               description
               stock
               angelKitMoves {
@@ -731,14 +742,17 @@ const GAME = gql`
             }
             brainerGear {
               id
+              uniqueType
               brainerGear
             }
             customWeapons {
               id
+              uniqueType
               weapons
             }
             followers {
               id
+              uniqueType
               description
               travelOption
               characterization
@@ -769,6 +783,7 @@ const GAME = gql`
             }
             gang {
               id
+              uniqueType
               size
               harm
               armor
@@ -788,6 +803,7 @@ const GAME = gql`
             }
             holding {
               id
+              uniqueType
               holdingSize
               gangSize
               souls
@@ -830,6 +846,7 @@ const GAME = gql`
             }
             skinnerGear {
               id
+              uniqueType
               graciousWeapon {
                 id
                 item
@@ -843,10 +860,12 @@ const GAME = gql`
             }
             weapons {
               id
+              uniqueType
               weapons
             }
             workspace {
               id
+              uniqueType
               workspaceInstructions
               projectInstructions
               workspaceItems
@@ -858,6 +877,7 @@ const GAME = gql`
             }
             establishment {
               id
+              uniqueType
               mainAttraction
               bestRegular
               worstRegular

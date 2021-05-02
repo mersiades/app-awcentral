@@ -18,6 +18,8 @@ import { ItemCharacteristic, TaggedItem } from '../../../@types';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 
+export const CUSTOM_WEAPONS_FORM_TEST_ID = 'custom-weapons-form';
+
 const WeaponsUL = styled.ul`
   margin: 0;
   padding: 5px;
@@ -276,7 +278,7 @@ const CustomWeaponsForm: FC = () => {
 
   return (
     <Box
-      data-testid="custom-weapons-form"
+      data-testid={CUSTOM_WEAPONS_FORM_TEST_ID}
       justify="start"
       width="85vw"
       align="start"

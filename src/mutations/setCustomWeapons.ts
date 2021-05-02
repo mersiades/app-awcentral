@@ -28,6 +28,7 @@ export const getSetCustomWeaponsOR = (character: Character, weapons: string[]): 
       type: character.playbookUniques.type,
       customWeapons: {
         id: character.playbookUniques.customWeapons.id,
+        uniqueType: UniqueTypes.customWeapons,
         weapons,
         __typename: 'CustomWeapons',
       },
@@ -39,6 +40,7 @@ export const getSetCustomWeaponsOR = (character: Character, weapons: string[]): 
       type: UniqueTypes.customWeapons,
       customWeapons: {
         id: 'temp-id-2',
+        uniqueType: UniqueTypes.customWeapons,
         weapons,
         __typename: 'CustomWeapons',
       },
@@ -64,6 +66,7 @@ const SET_CUSTOM_WEAPONS = gql`
         type
         customWeapons {
           id
+          uniqueType
           weapons
         }
       }

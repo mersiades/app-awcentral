@@ -29,6 +29,7 @@ export const getSetFollowerOR = (character: Character, followersInput: Followers
     followers: {
       ...followersInput,
       id: followersInput.id ? followersInput.id : 'temp-id-2',
+      uniqueType: UniqueTypes.followers,
       selectedStrengths: followersInput.selectedStrengths.map((opt) => ({ ...opt, __typename: 'FollowersOption' })),
       selectedWeaknesses: followersInput.selectedWeaknesses.map((opt) => ({ ...opt, __typename: 'FollowersOption' })),
       __typename: 'Followers',
@@ -55,6 +56,7 @@ const SET_FOLLOWERS = gql`
         type
         followers {
           id
+          uniqueType
           description
           travelOption
           characterization

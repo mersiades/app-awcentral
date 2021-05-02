@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { InMemoryCache } from '@apollo/client';
-import { getAllByRole, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 import CharacterMovesForm, { INCREASED_BY_IMPROVEMENT_TEXT } from '../CharacterMovesForm';
 import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';

@@ -28,7 +28,11 @@ export const getSetEstablishmentOR = (
   let optimisticPlaybookUniques: PlaybookUniques = {
     id: !!character.playbookUniques?.id ? character.playbookUniques.id : 'temp-id-1',
     type: UniqueTypes.establishment,
-    establishment: { ...establishmentInput, id: !establishmentInput.id ? 'temporary-id' : establishmentInput.id },
+    establishment: {
+      ...establishmentInput,
+      uniqueType: UniqueTypes.establishment,
+      id: !establishmentInput.id ? 'temporary-id' : establishmentInput.id,
+    },
     __typename: 'PlaybookUniques',
   };
   return {
@@ -49,6 +53,7 @@ const SET_ESTABLISHMENT = gql`
         type
         establishment {
           id
+          uniqueType
           mainAttraction
           bestRegular
           worstRegular

@@ -11,6 +11,8 @@ import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 
+export const WEAPONS_FORM_TEST_ID = 'weapons-form';
+
 const WeaponsForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [fobGun, setFobGun] = useState('');
@@ -139,7 +141,7 @@ const WeaponsForm: FC = () => {
 
   return (
     <Box
-      data-testid="weapons-form"
+      data-testid={WEAPONS_FORM_TEST_ID}
       justify="start"
       width="85vw"
       align="start"

@@ -29,6 +29,7 @@ export const getSetWorkspaceOR = (character: Character, workspaceInput: Workspac
     workspace: {
       ...workspaceInput,
       id: workspaceInput.id ? workspaceInput.id : 'temp-id-2',
+      uniqueType: UniqueTypes.workspace,
       projects: character.playbookUniques?.workspace ? character.playbookUniques.workspace.projects : [],
       __typename: 'Workspace',
     },
