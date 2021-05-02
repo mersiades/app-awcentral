@@ -1,0 +1,430 @@
+// ---------------------------------------------------- Dummy objects ---------------------------------------------------- //
+
+import { TaggedItem, ItemCharacteristic } from '../../@types';
+import {
+  AngelKit,
+  BrainerGear,
+  CustomWeapons,
+  Establishment,
+  Followers,
+  Gang,
+  Holding,
+  Project,
+  SkinnerGear,
+  Weapons,
+  Workspace,
+} from '../../@types/dataInterfaces';
+import {
+  MoveType,
+  PlaybookType,
+  StatType,
+  MoveActionType,
+  RollType,
+  HoldingSize,
+  GangSize,
+  VehicleFrameType,
+  BattleOptionType,
+} from '../../@types/enums';
+import {
+  AngelKitCreator,
+  BrainerGearCreator,
+  CustomWeaponsCreator,
+  EstablishmentCreator,
+  FollowersCreator,
+  FollowersOption,
+  GangCreator,
+  GangOption,
+  HoldConditions,
+  HoldingCreator,
+  HoldingOption,
+  Move,
+  MoveAction,
+  PlusOneForwardConditions,
+  RollModifier,
+  SecurityOption,
+  SkinnerGearCreator,
+  SkinnerGearItem,
+  StatModifier,
+  VehicleBattleOption,
+  VehicleFrame,
+  WeaponsCreator,
+  WorkspaceCreator,
+} from '../../@types/staticDataInterfaces';
+
+export const dummyTaggedItem: TaggedItem = {
+  id: 'dummy',
+  description: 'dummy',
+  tags: ['dummy'],
+};
+
+export const dummyItemCharacteristic: ItemCharacteristic = {
+  id: 'dummy',
+  description: 'dummy',
+  tag: 'dummy',
+};
+
+export const dummyRollModifier: RollModifier = {
+  id: 'dummy',
+  movesToModify: [
+    {
+      id: 'dummy',
+      name: 'dummy',
+      kind: MoveType.basic,
+      description: 'dummy',
+      playbook: PlaybookType.angel,
+      stat: StatType.hx,
+      statModifier: {
+        id: 'dummy',
+        statToModify: StatType.sharp,
+        modification: 0,
+        maxLimit: 0,
+      },
+      // rollModifier: {}, // Can't include RollModifier because recursive
+      moveAction: {
+        id: 'dummy',
+        actionType: MoveActionType.roll,
+        rollType: RollType.stat,
+        statToRollWith: StatType.hard,
+        holdConditions: {
+          id: 'dummy',
+          onTenPlus: 3,
+          onSevenToNine: 1,
+          onMiss: 0,
+        },
+        plusOneForwardConditions: {
+          id: 'dummy',
+          isManualGrant: false,
+          onTenPlus: false,
+          onSevenToNine: false,
+          onMiss: false,
+        },
+      },
+      __typename: 'Move',
+    },
+  ],
+  statToRollWith: StatType.sharp,
+};
+
+export const dummyStatModifier: StatModifier = {
+  id: 'dummy',
+  statToModify: StatType.sharp,
+  modification: 0,
+  maxLimit: 0,
+};
+
+//// ----------------------------------------------Dummy playbook creators ---------------------------------- ////
+
+export const dummyAngelKitCreator: AngelKitCreator = {
+  id: 'dummy',
+  angelKitInstructions: 'dummy',
+  startingStock: 0,
+};
+
+export const dummyBrainerGearCreator: BrainerGearCreator = {
+  id: 'dummy',
+  gear: ['dummy'],
+};
+
+export const dummyCustomWeaponsCreator: CustomWeaponsCreator = {
+  id: 'dummy',
+  firearmsTitle: 'dummy',
+  firearmsBaseInstructions: 'dummy',
+  firearmsBaseOptions: [dummyTaggedItem],
+  firearmsOptionsInstructions: 'dummy',
+  firearmsOptionsOptions: [dummyItemCharacteristic],
+  handTitle: 'dummy',
+  handBaseInstructions: 'dummy',
+  handBaseOptions: [dummyTaggedItem],
+  handOptionsInstructions: 'dummy',
+  handOptionsOptions: [dummyItemCharacteristic],
+};
+
+// TODO: dummySecurityOption
+
+export const dummyEstablishmentCreator: EstablishmentCreator = {
+  id: 'dummy',
+  mainAttractionCount: 1,
+  sideAttractionCount: 2,
+  attractions: [],
+  atmospheres: [],
+  atmosphereCount: [],
+  regularsNames: [],
+  regularsQuestions: [],
+  interestedPartyNames: [],
+  interestedPartyQuestions: [],
+  securityOptions: [],
+};
+
+export const dummyFollowersOption: FollowersOption = {
+  id: 'dummy',
+  description: 'dummy',
+  newNumberOfFollowers: 0,
+  surplusBarterChange: 0,
+  fortuneChange: 0,
+  surplusChange: 'dummy',
+  wantChange: ['dummy'],
+};
+
+export const dummyFollowerCreator: FollowersCreator = {
+  id: 'dummy',
+  instructions: 'dummy',
+  defaultNumberOfFollowers: 0,
+  defaultSurplusBarter: 0,
+  defaultFortune: 0,
+  strengthCount: 0,
+  weaknessCount: 0,
+  travelOptions: [],
+  characterizationOptions: [],
+  defaultWants: [],
+  strengthOptions: [],
+  weaknessOptions: [],
+};
+
+export const dummyGangOption: GangOption = {
+  id: 'dummy',
+  description: 'dummy',
+  modifier: 'dummy',
+  tag: 'dummy',
+};
+
+export const dummyGangCreator: GangCreator = {
+  id: 'dummy',
+  intro: 'dummy',
+  defaultSize: GangSize.small,
+  defaultHarm: 0,
+  defaultArmor: 0,
+  strengthChoiceCount: 0,
+  weaknessChoiceCount: 0,
+  defaultTags: ['dummy'],
+  strengths: [dummyGangOption],
+  weaknesses: [dummyGangOption],
+};
+
+export const dummyHoldingOption: HoldingOption = {
+  id: 'dummy',
+  description: 'dummy',
+  surplusChange: 0,
+  wantChange: ['string'],
+  newHoldingSize: HoldingSize.medium,
+  gigChange: 'dummy',
+  newGangSize: GangSize.medium,
+  gangTagChange: 'dummy',
+  gangHarmChange: 0,
+  newVehicleCount: 0,
+  newBattleVehicleCount: 0,
+  newArmorBonus: 0,
+};
+
+export const dummyHoldingCreator: HoldingCreator = {
+  id: 'dummy',
+  defaultHoldingSize: HoldingSize.medium,
+  instructions: 'dummy',
+  defaultSurplus: 0,
+  defaultWant: 'dummy',
+  defaultGigs: [],
+  defaultArmorBonus: 0,
+  defaultVehiclesCount: 0,
+  defaultBattleVehicleCount: 0,
+  defaultGangSize: GangSize.medium,
+  defaultGangHarm: 0,
+  defaultGangArmor: 0,
+  defaultGangTag: 'dummy',
+  strengthCount: 0,
+  weaknessCount: 0,
+  strengthOptions: [],
+  weaknessOptions: [],
+};
+
+export const dummySkinnerGearItem: SkinnerGearItem = {
+  id: 'dummy',
+  item: 'dummy',
+  note: 'dummy',
+};
+
+export const dummySkinnerGearCreator: SkinnerGearCreator = {
+  id: 'dummy',
+  graciousWeaponCount: 0,
+  luxeGearCount: 0,
+  graciousWeaponChoices: [dummySkinnerGearItem],
+  luxeGearChoices: [dummySkinnerGearItem],
+};
+
+export const dummyWeaponsCreator: WeaponsCreator = {
+  id: 'dummy',
+  bfoGunOptionCount: 1,
+  seriousGunOptionCount: 2,
+  backupWeaponsOptionCount: 1,
+  bigFuckOffGuns: ['dummy'],
+  seriousGuns: ['dummy'],
+  backupWeapons: ['dummy'],
+};
+
+export const dummyWorkspaceCreator: WorkspaceCreator = {
+  id: 'dummy',
+  itemsCount: 0,
+  workspaceInstructions: 'dummy',
+  projectInstructions: 'dummy',
+  workspaceItems: [],
+};
+
+export const dummyHolding: Holding = {
+  id: 'dummy',
+  holdingSize: HoldingSize.medium,
+  gangSize: GangSize.medium,
+  souls: 'dummy',
+  surplus: 0,
+  barter: 0,
+  gangHarm: 0,
+  gangArmor: 0,
+  gangDefenseArmorBonus: 0,
+  wants: ['dummy'],
+  gigs: ['dummy'],
+  gangTags: ['dummy'],
+  selectedStrengths: [dummyHoldingOption],
+  selectedWeaknesses: [dummyHoldingOption],
+};
+
+export const dummyGang: Gang = {
+  id: 'dummy',
+  size: GangSize.small,
+  harm: 2,
+  armor: 1,
+  strengths: [dummyGangOption],
+  weaknesses: [dummyGangOption],
+  tags: ['dummy'],
+};
+
+export const dummyHoldConditions: HoldConditions = {
+  id: 'dummy',
+  onTenPlus: 3,
+  onSevenToNine: 1,
+  onMiss: 0,
+};
+
+export const dummyPlusOneForwardConditions: PlusOneForwardConditions = {
+  id: 'dummy',
+  isManualGrant: false,
+  onTenPlus: false,
+  onSevenToNine: false,
+  onMiss: false,
+};
+
+export const dummyMoveAction: MoveAction = {
+  id: 'dummy',
+  actionType: MoveActionType.roll,
+  rollType: RollType.stat,
+  statToRollWith: StatType.hard,
+  holdConditions: dummyHoldConditions,
+  plusOneForwardConditions: dummyPlusOneForwardConditions,
+};
+
+export const dummyCustomWeapons: CustomWeapons = {
+  id: 'dummy',
+  weapons: ['dummy'],
+};
+
+export const dummyWeapons: Weapons = {
+  id: 'dummy',
+  weapons: ['dummy'],
+};
+
+export const dummyBrainerGear: BrainerGear = {
+  id: 'dummy',
+  brainerGear: ['dummy'],
+};
+
+export const dummySkinnerGear: SkinnerGear = {
+  id: 'dummy',
+  graciousWeapon: dummySkinnerGearItem,
+  luxeGear: [dummySkinnerGearItem],
+};
+
+export const dummyAngelKitMove: Move = {
+  id: 'dummy',
+  name: 'dummy',
+  description: 'dummy',
+  kind: MoveType.character,
+  playbook: PlaybookType.angel,
+  stat: StatType.cool,
+  statModifier: dummyStatModifier,
+  rollModifier: dummyRollModifier,
+  moveAction: dummyMoveAction,
+};
+
+export const dummyAngelKit: AngelKit = {
+  id: 'dummy',
+  description: 'dummy',
+  stock: 0,
+  hasSupplier: false,
+  supplierText: 'dummy',
+  angelKitMoves: [dummyAngelKitMove],
+};
+
+export const dummySecurityOption: SecurityOption = {
+  id: '',
+  description: '',
+  value: 0,
+  __typename: 'SecurityOption',
+};
+
+export const dummyEstablishment: Establishment = {
+  id: 'dummy',
+  mainAttraction: 'dummy',
+  bestRegular: 'dummy',
+  worstRegular: 'dummy',
+  wantsInOnIt: 'dummy',
+  oweForIt: 'dummy',
+  wantsItGone: 'dummy',
+  sideAttractions: ['dummy'],
+  atmospheres: ['dummy'],
+  regulars: ['dummy'],
+  interestedParties: ['dummy'],
+  securityOptions: [],
+  castAndCrew: [],
+  __typename: 'Establishment',
+};
+
+export const dummyFollowers: Followers = {
+  id: 'dummy',
+  description: 'dummy',
+  travelOption: 'dummy',
+  characterization: 'dummy',
+  followers: 0,
+  fortune: 0,
+  barter: 0,
+  surplusBarter: 0,
+  surplus: ['dummy'],
+  wants: ['dummy'],
+  selectedStrengths: [dummyFollowersOption],
+  selectedWeaknesses: [dummyFollowersOption],
+};
+
+export const dummyProject: Project = {
+  id: 'dummy',
+  name: 'dummy',
+  notes: 'dummy',
+  __typename: 'Project',
+};
+
+export const dummyWorkspace: Workspace = {
+  id: 'dummy',
+  workspaceInstructions: 'dummy',
+  projectInstructions: 'dummy',
+  workspaceItems: ['dummy'],
+  projects: [dummyProject],
+  __typename: 'Workspace',
+};
+
+export const dummyVehicleFrame: VehicleFrame = {
+  id: 'dummy',
+  frameType: VehicleFrameType.large,
+  massive: 0,
+  examples: 'dummy',
+  battleOptionCount: 0,
+};
+
+export const dummyBattleOption: VehicleBattleOption = {
+  id: 'dummy',
+  battleOptionType: BattleOptionType.speed,
+  name: '+1speed',
+};

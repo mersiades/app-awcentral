@@ -7,6 +7,7 @@ import {
   ADD_OTHER_PB_MOVE_2_NAME,
   ADD_SECOND_CHAR_NAME,
   ADJUST_ANGEL_UNIQUE_1_NAME,
+  BONEFEEL_NAME,
   CHANGE_PLAYBOOK_NAME,
   COOL_2_MAX_NAME,
   GENERIC_INCREASE_STAT_NAME,
@@ -19,6 +20,8 @@ import {
   WEIRD_2_MAX_NAME,
 } from '../../config/constants';
 import { mockCoolMax2Mod, mockHardMax2Mod, mockHotMax2Mod, mockSharpMax2Mod, mockWeirdMax2Mod } from './mockStatModifiers';
+
+// --------------------------------- Improvement Moves ------------------------------- //
 
 export const mockAddOtherPBMove1: Move = {
   id: 'mock-add-other-pb-move-move-1-id',
@@ -166,5 +169,34 @@ export const mockImproveBasicMoves2: Move = {
   description: 'advance the other three basic moves',
   playbook: PlaybookType.angel,
   kind: MoveType.improveBasicMoves,
+  __typename: 'Move',
+};
+
+// --------------------------------- Playbook Moves ------------------------------- //
+
+export const mockBonefeel: Move = {
+  id: 'mock-bonefeel-move-id',
+  name: BONEFEEL_NAME,
+  description: '_**Bonefeel**_: at the beginning of the session...',
+  playbook: PlaybookType.savvyhead,
+  kind: MoveType.character,
+  __typename: 'Move',
+};
+
+export const mockEverybodyEats: Move = {
+  id: 'mock-everybody-eats-move-id',
+  name: 'EVERYBODY EATS, EVEN THAT GUY',
+  description: '_**Everybody eats, even that guy**_: when you want...',
+  playbook: PlaybookType.maestroD,
+  kind: MoveType.character,
+  __typename: 'Move',
+};
+
+export const mockSeeingSouls: Move = {
+  id: 'mock-seeing-souls-move-id',
+  name: 'SEEING SOULS',
+  description: '_**Seeing souls**_: when you help or...',
+  playbook: PlaybookType.hocus,
+  kind: MoveType.character,
   __typename: 'Move',
 };
