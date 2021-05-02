@@ -19,6 +19,7 @@ import { Move } from '../../@types/staticDataInterfaces';
 import {
   ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES,
   ADD_PLAYBOOK_MOVE_IMPROVEMENT_NAMES,
+  ADD_UNIQUE_IMPROVEMENT_NAMES,
   ADJUST_UNIQUE_IMPROVEMENT_NAMES,
   IMPROVE_STAT_IMPROVEMENT_NAMES,
 } from '../../config/constants';
@@ -44,12 +45,11 @@ const getNavDestinationForNewImprovement = (
     return `/character-creation/${gameId}?step=7`;
   }
 
-  // If it's ADJUST_UNIQUE improvement, navigate to the character's Unique page
-  if (ADJUST_UNIQUE_IMPROVEMENT_NAMES.includes(newImprovement)) {
+  // If it's ADJUST_UNIQUE or ADD_UNIQUE improvement, navigate to the character's Unique page
+  if (ADJUST_UNIQUE_IMPROVEMENT_NAMES.includes(newImprovement) || ADD_UNIQUE_IMPROVEMENT_NAMES.includes(newImprovement)) {
     return `/character-creation/${gameId}?step=6`;
   }
 
-  // TODO: handle ADD_UNIQUE improvements
   // TODO: handle ADD_VEHICLE improvements
   // TODO: handle GENERIC_INCREASE_STAT improvements
   // TODO: handle RETIRE improvements

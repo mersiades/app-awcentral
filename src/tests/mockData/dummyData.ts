@@ -24,6 +24,7 @@ import {
   GangSize,
   VehicleFrameType,
   BattleOptionType,
+  UniqueTypes,
 } from '../../@types/enums';
 import {
   AngelKitCreator,
@@ -268,7 +269,8 @@ export const dummyWorkspaceCreator: WorkspaceCreator = {
 };
 
 export const dummyHolding: Holding = {
-  id: 'dummy',
+  id: 'dummy22',
+  uniqueType: UniqueTypes.holding,
   holdingSize: HoldingSize.medium,
   gangSize: GangSize.medium,
   souls: 'dummy',
@@ -282,16 +284,19 @@ export const dummyHolding: Holding = {
   gangTags: ['dummy'],
   selectedStrengths: [dummyHoldingOption],
   selectedWeaknesses: [dummyHoldingOption],
+  __typename: 'Holding',
 };
 
 export const dummyGang: Gang = {
-  id: 'dummy',
+  id: 'dummy11',
+  uniqueType: UniqueTypes.gang,
   size: GangSize.small,
   harm: 2,
   armor: 1,
   strengths: [dummyGangOption],
   weaknesses: [dummyGangOption],
   tags: ['dummy'],
+  __typename: 'Gang',
 };
 
 export const dummyHoldConditions: HoldConditions = {
@@ -319,28 +324,36 @@ export const dummyMoveAction: MoveAction = {
 };
 
 export const dummyCustomWeapons: CustomWeapons = {
-  id: 'dummy',
+  id: 'dummy1',
+  uniqueType: UniqueTypes.customWeapons,
   weapons: ['dummy'],
+  __typename: 'CustomWeapons',
 };
 
 export const dummyWeapons: Weapons = {
-  id: 'dummy',
+  id: 'dummy2',
+  uniqueType: UniqueTypes.weapons,
   weapons: ['dummy'],
+  __typename: 'Weapons',
 };
 
 export const dummyBrainerGear: BrainerGear = {
-  id: 'dummy',
+  id: 'dummy3',
+  uniqueType: UniqueTypes.brainerGear,
   brainerGear: ['dummy'],
+  __typename: 'BrainerGear',
 };
 
 export const dummySkinnerGear: SkinnerGear = {
-  id: 'dummy',
+  id: 'dummy4',
+  uniqueType: UniqueTypes.skinnerGear,
   graciousWeapon: dummySkinnerGearItem,
   luxeGear: [dummySkinnerGearItem],
+  __typename: 'SkinnerGear',
 };
 
 export const dummyAngelKitMove: Move = {
-  id: 'dummy',
+  id: 'dummy5',
   name: 'dummy',
   description: 'dummy',
   kind: MoveType.character,
@@ -352,12 +365,14 @@ export const dummyAngelKitMove: Move = {
 };
 
 export const dummyAngelKit: AngelKit = {
-  id: 'dummy',
+  id: 'dummy6',
+  uniqueType: UniqueTypes.angelKit,
   description: 'dummy',
   stock: 0,
   hasSupplier: false,
   supplierText: 'dummy',
   angelKitMoves: [dummyAngelKitMove],
+  __typename: 'AngelKit',
 };
 
 export const dummySecurityOption: SecurityOption = {
@@ -368,7 +383,8 @@ export const dummySecurityOption: SecurityOption = {
 };
 
 export const dummyEstablishment: Establishment = {
-  id: 'dummy',
+  id: 'dummy7',
+  uniqueType: UniqueTypes.establishment,
   mainAttraction: 'dummy',
   bestRegular: 'dummy',
   worstRegular: 'dummy',
@@ -385,7 +401,8 @@ export const dummyEstablishment: Establishment = {
 };
 
 export const dummyFollowers: Followers = {
-  id: 'dummy',
+  id: 'dummy8',
+  uniqueType: UniqueTypes.followers,
   description: 'dummy',
   travelOption: 'dummy',
   characterization: 'dummy',
@@ -397,6 +414,7 @@ export const dummyFollowers: Followers = {
   wants: ['dummy'],
   selectedStrengths: [dummyFollowersOption],
   selectedWeaknesses: [dummyFollowersOption],
+  __typename: 'Followers',
 };
 
 export const dummyProject: Project = {
@@ -407,7 +425,8 @@ export const dummyProject: Project = {
 };
 
 export const dummyWorkspace: Workspace = {
-  id: 'dummy',
+  id: 'dummy9',
+  uniqueType: UniqueTypes.workspace,
   workspaceInstructions: 'dummy',
   projectInstructions: 'dummy',
   workspaceItems: ['dummy'],
@@ -421,10 +440,12 @@ export const dummyVehicleFrame: VehicleFrame = {
   massive: 0,
   examples: 'dummy',
   battleOptionCount: 0,
+  __typename: 'VehicleFrame',
 };
 
 export const dummyBattleOption: VehicleBattleOption = {
   id: 'dummy',
   battleOptionType: BattleOptionType.speed,
   name: '+1speed',
+  __typename: 'VehicleBattleOption',
 };

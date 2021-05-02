@@ -2,15 +2,7 @@ import React from 'react';
 import { InMemoryCache } from '@apollo/client';
 import userEvent from '@testing-library/user-event';
 
-import {
-  mockGame1,
-  mockGame7,
-  mockKeycloakUser1,
-  mockKeycloakUser2,
-  mockKeycloakUserInfo1,
-  mockKeycloakUserInfo2,
-  mockPlaybookCreatorAngel,
-} from './mocks';
+import { mockGame7, mockKeycloakUser1, mockKeycloakUserInfo1, mockPlaybookCreatorAngel } from './mocks';
 import App from '../components/App';
 import { RenderResult, renderWithRouter, waitOneTick } from './test-utils';
 import { mockKeycloakStub } from '../../__mocks__/@react-keycloak/web';
@@ -18,7 +10,7 @@ import { MockedResponse } from '@apollo/client/testing';
 import GAME, { GameData } from '../queries/game';
 import SPEND_EXPERIENCE, { SpendExperienceData } from '../mutations/spendExperience';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../queries/playbookCreator';
-import { mockAddAngelMove1, mockCoolMax2 } from './mockData/mockMoves';
+import { mockCoolMax2 } from './mockData/mockMoves';
 import ADJUST_IMPROVEMENTS, { AdjustImprovementsData } from '../mutations/adjustImprovements';
 
 jest.mock('@react-keycloak/web', () => {
@@ -45,31 +37,6 @@ const mockGameQuery1: MockedResponse<GameData> = {
               {
                 ...mockGame7.gameRoles[2].characters[0],
                 experience: 8,
-              },
-            ],
-          },
-        ],
-      },
-    },
-  },
-};
-
-const mockGameQuery2: MockedResponse<GameData> = {
-  request: {
-    query: GAME,
-    variables: { gameId: mockGame7.id },
-  },
-  result: {
-    data: {
-      game: {
-        ...mockGame7,
-        gameRoles: [
-          {
-            ...mockGame7.gameRoles[2],
-            characters: [
-              {
-                ...mockGame7.gameRoles[2].characters[0],
-                experience: 3,
               },
             ],
           },

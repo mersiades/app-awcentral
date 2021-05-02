@@ -28,6 +28,7 @@ export const getSetSkinnerGearOR = (character: Character, skinnerGearInput: Skin
     skinnerGear: {
       ...skinnerGearInput,
       id: character.playbookUniques?.skinnerGear ? character.playbookUniques.skinnerGear.id : 'temp-id-2',
+      uniqueType: UniqueTypes.skinnerGear,
       graciousWeapon: { ...skinnerGearInput.graciousWeapon, __typename: 'SkinnerGearItem' },
       luxeGear: skinnerGearInput.luxeGear.map((lg) => ({ ...lg, __typename: 'SkinnerGearItem' })),
       __typename: 'SkinnerGear',
@@ -53,6 +54,7 @@ const SET_SKINNER_GEAR = gql`
         type
         skinnerGear {
           id
+          uniqueType
           graciousWeapon {
             id
             item

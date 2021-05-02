@@ -33,6 +33,7 @@ export const getSetHoldingOR = (character: Character, holdingInput: HoldingInput
       holding: {
         ...holdingInput,
         id: character.playbookUniques.holding.id,
+        uniqueType: UniqueTypes.holding,
         selectedStrengths: holdingInput.selectedStrengths.map((str) => ({ ...str, __typename: 'HoldingOption' })),
         selectedWeaknesses: holdingInput.selectedWeaknesses.map((wk) => ({ ...wk, __typename: 'HoldingOption' })),
       },
@@ -45,6 +46,7 @@ export const getSetHoldingOR = (character: Character, holdingInput: HoldingInput
       holding: {
         ...holdingInput,
         id: 'temp-id-2',
+        uniqueType: UniqueTypes.holding,
         selectedStrengths: holdingInput.selectedStrengths.map((str) => ({ ...str, __typename: 'HoldingOption' })),
         selectedWeaknesses: holdingInput.selectedWeaknesses.map((wk) => ({ ...wk, __typename: 'HoldingOption' })),
       },
@@ -83,6 +85,7 @@ const SET_HOLDING = gql`
         type
         holding {
           id
+          uniqueType
           holdingSize
           gangSize
           souls
