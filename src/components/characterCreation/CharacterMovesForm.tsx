@@ -21,6 +21,8 @@ const StyledMarkdown = styled(ReactMarkdown)`
   }
 `;
 
+export const INCREASED_BY_IMPROVEMENT_TEXT = '(increased by improvement)';
+
 const CharacterMovesForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [selectedMoves, setSelectedMoves] = useState<{ id: string; name: string }[]>([]);
@@ -140,7 +142,9 @@ const CharacterMovesForm: FC = () => {
             <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
               {`Select ${moveChoiceCount < allowedPlaybookMoves ? allowedPlaybookMoves : moveChoiceCount}`}
             </Text>
-            {moveChoiceCount < allowedPlaybookMoves && <TextWS color={accentColors[0]}>(increased by improvement)</TextWS>}
+            {moveChoiceCount < allowedPlaybookMoves && (
+              <TextWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</TextWS>
+            )}
           </Box>
         )}
         <Box align="start" gap="12px">
