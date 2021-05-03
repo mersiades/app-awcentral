@@ -36,7 +36,7 @@ export const FontsProvider: FC<FontsProviderProps> = ({ children, isVtksReady = 
   const crustFont = new FontFaceObserver('crust_clean');
 
   // Sets a longer timeout for running tests
-  const timeout = typeof jest === 'undefined' ? 15000 : 60000;
+  const timeout = 60000;
 
   vtksFont.load(null, timeout).then(
     () => setVtksReady(true),

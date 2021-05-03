@@ -1,0 +1,2777 @@
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """The variable name to export this field as."""
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """Specify the store key."""
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+""""""
+type AngelKit {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  stock: Int!
+
+  """"""
+  angelKitMoves: [Move]
+
+  """"""
+  hasSupplier: Boolean!
+
+  """"""
+  supplierText: String!
+}
+
+""""""
+type AngelKitCreator {
+  """"""
+  id: ID!
+
+  """"""
+  angelKitInstructions: String!
+
+  """"""
+  startingStock: Int!
+}
+
+""""""
+enum BattleOptionType {
+  """"""
+  SPEED
+
+  """"""
+  HANDLING
+
+  """"""
+  MASSIVE
+
+  """"""
+  ARMOR
+
+  """"""
+  WEAPON
+}
+
+""""""
+type BattleVehicle {
+  """"""
+  id: ID!
+
+  """"""
+  vehicleType: VehicleType
+
+  """"""
+  name: String
+
+  """"""
+  vehicleFrame: VehicleFrame
+
+  """"""
+  speed: Int
+
+  """"""
+  handling: Int
+
+  """"""
+  armor: Int
+
+  """"""
+  massive: Int
+
+  """"""
+  strengths: [String]
+
+  """"""
+  weaknesses: [String]
+
+  """"""
+  looks: [String]
+
+  """"""
+  weapons: [String]
+
+  """"""
+  battleOptions: [VehicleBattleOption]
+
+  """"""
+  battleVehicleOptions: [VehicleBattleOption]
+}
+
+""""""
+type BattleVehicleCreator {
+  """"""
+  id: ID!
+
+  """"""
+  vehicleType: VehicleType
+
+  """"""
+  battleVehicleOptions: [VehicleBattleOption]
+}
+
+""""""
+input BattleVehicleInput {
+  """"""
+  id: ID
+
+  """"""
+  vehicleType: VehicleType!
+
+  """"""
+  name: String!
+
+  """"""
+  vehicleFrame: VehicleFrameInput!
+
+  """"""
+  speed: Int!
+
+  """"""
+  handling: Int!
+
+  """"""
+  armor: Int!
+
+  """"""
+  massive: Int!
+
+  """"""
+  strengths: [String]!
+
+  """"""
+  weaknesses: [String]!
+
+  """"""
+  looks: [String]!
+
+  """"""
+  weapons: [String]!
+
+  """"""
+  battleOptions: [VehicleBattleOptionInput]!
+
+  """"""
+  battleVehicleOptions: [VehicleBattleOptionInput]!
+}
+
+""""""
+type BikeCreator {
+  """"""
+  id: ID!
+
+  """"""
+  vehicleType: VehicleType
+
+  """"""
+  introInstructions: String
+
+  """"""
+  frame: VehicleFrame
+
+  """"""
+  strengths: [String]
+
+  """"""
+  looks: [String]
+
+  """"""
+  weaknesses: [String]
+
+  """"""
+  battleOptions: [VehicleBattleOption]
+}
+
+""""""
+type BrainerGear {
+  """"""
+  id: ID!
+
+  """"""
+  brainerGear: [String]
+}
+
+""""""
+type BrainerGearCreator {
+  """"""
+  id: ID!
+
+  """"""
+  gear: [String]!
+}
+
+""""""
+type CarCreator {
+  """"""
+  id: ID!
+
+  """"""
+  vehicleType: VehicleType
+
+  """"""
+  introInstructions: String
+
+  """"""
+  frames: [VehicleFrame]
+
+  """"""
+  strengths: [String]
+
+  """"""
+  looks: [String]
+
+  """"""
+  weaknesses: [String]
+
+  """"""
+  battleOptions: [VehicleBattleOption]
+}
+
+""""""
+type CastCrew {
+  """"""
+  id: ID!
+
+  """"""
+  name: String!
+
+  """"""
+  description: String
+}
+
+""""""
+input CastCrewInput {
+  """"""
+  id: ID!
+
+  """"""
+  name: String!
+
+  """"""
+  description: String
+}
+
+""""""
+type Character {
+  """"""
+  id: ID!
+
+  """"""
+  name: String
+
+  """"""
+  gear: [String]
+
+  """"""
+  playbook: PlaybookType
+
+  """"""
+  hasCompletedCharacterCreation: Boolean
+
+  """"""
+  hasPlusOneForward: Boolean
+
+  """"""
+  holds: [Hold]
+
+  """"""
+  looks: [Look]
+
+  """"""
+  statsBlock: StatsBlock
+
+  """"""
+  hxBlock: [HxStat]
+
+  """"""
+  playbookUnique: PlaybookUnique
+
+  """"""
+  characterMoves: [CharacterMove]
+
+  """"""
+  barter: Int
+
+  """"""
+  harm: CharacterHarm
+
+  """"""
+  vehicleCount: Int
+
+  """"""
+  vehicles: [Vehicle]
+
+  """"""
+  battleVehicleCount: Int
+
+  """"""
+  battleVehicles: [BattleVehicle]
+
+  """"""
+  experience: Int!
+}
+
+""""""
+type CharacterHarm {
+  """"""
+  id: ID!
+
+  """"""
+  value: Int!
+
+  """"""
+  isStabilized: Boolean!
+
+  """"""
+  hasComeBackHard: Boolean!
+
+  """"""
+  hasComeBackWeird: Boolean!
+
+  """"""
+  hasChangedPlaybook: Boolean!
+
+  """"""
+  hasDied: Boolean!
+}
+
+""""""
+type CharacterMove {
+  """"""
+  id: ID!
+
+  """"""
+  isSelected: Boolean!
+
+  """"""
+  name: String!
+
+  """"""
+  kind: MoveType!
+
+  """"""
+  description: String!
+
+  """"""
+  playbook: PlaybookType!
+
+  """"""
+  stat: StatType
+
+  """"""
+  statModifier: StatModifier
+
+  """"""
+  rollModifier: RollModifier
+
+  """"""
+  moveAction: MoveAction
+}
+
+""""""
+type CharacterStat {
+  """"""
+  id: ID!
+
+  """"""
+  stat: StatType
+
+  """"""
+  value: Int
+
+  """"""
+  isHighlighted: Boolean
+}
+
+""""""
+type ContentItem {
+  """"""
+  id: ID!
+
+  """"""
+  title: String!
+
+  """"""
+  content: String!
+}
+
+""""""
+type CustomWeapons {
+  """"""
+  id: ID!
+
+  """"""
+  weapons: [String]!
+}
+
+""""""
+type CustomWeaponsCreator {
+  """"""
+  id: ID!
+
+  """"""
+  firearmsTitle: String!
+
+  """"""
+  firearmsBaseInstructions: String!
+
+  """"""
+  firearmsBaseOptions: [TaggedItem]
+
+  """"""
+  firearmsOptionsInstructions: String!
+
+  """"""
+  firearmsOptionsOptions: [ItemCharacteristic]
+
+  """"""
+  handTitle: String!
+
+  """"""
+  handBaseInstructions: String!
+
+  """"""
+  handBaseOptions: [TaggedItem]
+
+  """"""
+  handOptionsInstructions: String!
+
+  """"""
+  handOptionsOptions: [ItemCharacteristic]
+}
+
+""""""
+type Establishment {
+  """"""
+  id: ID!
+
+  """"""
+  mainAttraction: String!
+
+  """"""
+  bestRegular: String!
+
+  """"""
+  worstRegular: String!
+
+  """"""
+  wantsInOnIt: String!
+
+  """"""
+  oweForIt: String!
+
+  """"""
+  wantsItGone: String!
+
+  """"""
+  sideAttractions: [String]!
+
+  """"""
+  atmospheres: [String]!
+
+  """"""
+  regulars: [String]!
+
+  """"""
+  interestedParties: [String]!
+
+  """"""
+  securityOptions: [SecurityOption]!
+
+  """"""
+  castAndCrew: [CastCrew]!
+}
+
+""""""
+type EstablishmentCreator {
+  """"""
+  id: ID!
+
+  """"""
+  mainAttractionCount: Int!
+
+  """"""
+  sideAttractionCount: Int!
+
+  """"""
+  attractions: [String]!
+
+  """"""
+  atmospheres: [String]!
+
+  """"""
+  atmosphereCount: [Int]!
+
+  """"""
+  regularsNames: [String]!
+
+  """"""
+  regularsQuestions: [String]!
+
+  """"""
+  interestedPartyNames: [String]!
+
+  """"""
+  interestedPartyQuestions: [String]!
+
+  """"""
+  securityOptions: [SecurityOption]!
+}
+
+""""""
+input EstablishmentInput {
+  """"""
+  id: ID
+
+  """"""
+  mainAttraction: String!
+
+  """"""
+  bestRegular: String!
+
+  """"""
+  worstRegular: String!
+
+  """"""
+  wantsInOnIt: String!
+
+  """"""
+  oweForIt: String!
+
+  """"""
+  wantsItGone: String!
+
+  """"""
+  sideAttractions: [String]!
+
+  """"""
+  atmospheres: [String]!
+
+  """"""
+  regulars: [String]!
+
+  """"""
+  interestedParties: [String]!
+
+  """"""
+  securityOptions: [SecurityOptionInput]!
+
+  """"""
+  castAndCrew: [CastCrewInput]!
+}
+
+""""""
+type FirstSessionContent {
+  """"""
+  id: ID!
+
+  """"""
+  intro: String!
+
+  """"""
+  duringCharacterCreation: ContentItem!
+
+  """"""
+  duringFirstSession: TickerList!
+
+  """"""
+  threatMapInstructions: ContentItem!
+
+  """"""
+  afterFirstSession: TickerList!
+}
+
+""""""
+type Followers {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  travelOption: String!
+
+  """"""
+  characterization: String!
+
+  """"""
+  followers: Int!
+
+  """"""
+  fortune: Int!
+
+  """"""
+  barter: Int!
+
+  """"""
+  surplusBarter: Int!
+
+  """"""
+  surplus: [String]!
+
+  """"""
+  wants: [String]!
+
+  """"""
+  selectedStrengths: [FollowersOption]!
+
+  """"""
+  selectedWeaknesses: [FollowersOption]!
+}
+
+""""""
+type FollowersCreator {
+  """"""
+  id: ID!
+
+  """"""
+  instructions: String!
+
+  """"""
+  defaultNumberOfFollowers: Int!
+
+  """"""
+  defaultSurplusBarter: Int!
+
+  """"""
+  defaultFortune: Int!
+
+  """"""
+  strengthCount: Int!
+
+  """"""
+  weaknessCount: Int!
+
+  """"""
+  travelOptions: [String]!
+
+  """"""
+  characterizationOptions: [String]!
+
+  """"""
+  defaultWants: [String]!
+
+  """"""
+  strengthOptions: [FollowersOption]!
+
+  """"""
+  weaknessOptions: [FollowersOption]!
+}
+
+""""""
+input FollowersInput {
+  """"""
+  id: ID
+
+  """"""
+  description: String!
+
+  """"""
+  travelOption: String!
+
+  """"""
+  characterization: String!
+
+  """"""
+  followers: Int!
+
+  """"""
+  fortune: Int!
+
+  """"""
+  barter: Int!
+
+  """"""
+  surplusBarter: Int!
+
+  """"""
+  surplus: [String]!
+
+  """"""
+  wants: [String]!
+
+  """"""
+  selectedStrengths: [FollowersOptionInput]!
+
+  """"""
+  selectedWeaknesses: [FollowersOptionInput]!
+}
+
+""""""
+type FollowersOption {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  newNumberOfFollowers: Int!
+
+  """"""
+  surplusBarterChange: Int!
+
+  """"""
+  fortuneChange: Int!
+
+  """"""
+  surplusChange: String
+
+  """"""
+  wantChange: [String]
+}
+
+""""""
+input FollowersOptionInput {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  newNumberOfFollowers: Int!
+
+  """"""
+  surplusBarterChange: Int!
+
+  """"""
+  fortuneChange: Int!
+
+  """"""
+  surplusChange: String
+
+  """"""
+  wantChange: [String]
+}
+
+""""""
+type Game {
+  """"""
+  id: ID!
+
+  """"""
+  name: String!
+
+  """"""
+  mc: User
+
+  """"""
+  commsApp: String
+
+  """"""
+  commsUrl: String
+
+  """"""
+  hasFinishedPreGame: Boolean
+
+  """"""
+  showFirstSession: Boolean
+
+  """"""
+  players: [User]
+
+  """"""
+  gameRoles: [GameRole]
+
+  """"""
+  invitees: [String]
+
+  """"""
+  gameMessages: [GameMessage]
+}
+
+""""""
+type GameMessage {
+  """"""
+  id: ID!
+
+  """"""
+  gameId: String
+
+  """"""
+  gameRoleId: String
+
+  """"""
+  messageType: MessageType
+
+  """"""
+  title: String
+
+  """"""
+  sentOn: String
+
+  """"""
+  stockSpent: Int
+
+  """"""
+  currentStock: Int
+
+  """"""
+  content: String
+
+  """"""
+  roll1: Int
+
+  """"""
+  roll2: Int
+
+  """"""
+  rollModifier: Int
+
+  """"""
+  usedPlusOneForward: Boolean
+
+  """"""
+  rollResult: Int
+
+  """"""
+  modifierStatName: StatType
+
+  """"""
+  additionalModifierValue: Int
+
+  """"""
+  additionalModifierName: String
+
+  """"""
+  barterSpent: Int
+
+  """"""
+  currentBarter: Int
+
+  """"""
+  harmSuffered: Int
+
+  """"""
+  currentHarm: Int
+}
+
+""""""
+type GameRole {
+  """"""
+  id: ID!
+
+  """"""
+  role: RoleType
+
+  """"""
+  userId: String!
+
+  """"""
+  gameId: String!
+
+  """"""
+  gameName: String!
+
+  """"""
+  npcs: [Npc]
+
+  """"""
+  threats: [Threat]
+
+  """"""
+  characters: [Character]
+}
+
+""""""
+type Gang {
+  """"""
+  id: ID!
+
+  """"""
+  size: GangSize
+
+  """"""
+  harm: Int
+
+  """"""
+  armor: Int
+
+  """"""
+  strengths: [GangOption]
+
+  """"""
+  weaknesses: [GangOption]
+
+  """"""
+  tags: [String]
+}
+
+""""""
+type GangCreator {
+  """"""
+  id: ID!
+
+  """"""
+  intro: String!
+
+  """"""
+  defaultSize: GangSize!
+
+  """"""
+  defaultHarm: Int!
+
+  """"""
+  defaultArmor: Int!
+
+  """"""
+  strengthChoiceCount: Int!
+
+  """"""
+  weaknessChoiceCount: Int!
+
+  """"""
+  defaultTags: [String]!
+
+  """"""
+  strengths: [GangOption]!
+
+  """"""
+  weaknesses: [GangOption]!
+}
+
+""""""
+input GangInput {
+  """"""
+  id: ID
+
+  """"""
+  size: GangSize
+
+  """"""
+  harm: Int
+
+  """"""
+  armor: Int
+
+  """"""
+  strengths: [GangOptionInput]
+
+  """"""
+  weaknesses: [GangOptionInput]
+
+  """"""
+  tags: [String]
+}
+
+""""""
+type GangOption {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  modifier: String
+
+  """"""
+  tag: String
+}
+
+""""""
+input GangOptionInput {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  modifier: String
+
+  """"""
+  tag: String
+}
+
+""""""
+enum GangSize {
+  """"""
+  SMALL
+
+  """"""
+  MEDIUM
+
+  """"""
+  LARGE
+}
+
+""""""
+type GearInstructions {
+  """"""
+  id: ID!
+
+  """"""
+  gearIntro: String
+
+  """"""
+  youGetItems: [String]
+
+  """"""
+  introduceChoice: String
+
+  """"""
+  numberCanChoose: Int
+
+  """"""
+  chooseableGear: [String]
+
+  """"""
+  withMC: String
+
+  """"""
+  startingBarter: Int
+}
+
+""""""
+input HarmInput {
+  """"""
+  id: ID!
+
+  """"""
+  value: Int!
+
+  """"""
+  isStabilized: Boolean!
+
+  """"""
+  hasComeBackHard: Boolean!
+
+  """"""
+  hasComeBackWeird: Boolean!
+
+  """"""
+  hasChangedPlaybook: Boolean!
+
+  """"""
+  hasDied: Boolean!
+}
+
+""""""
+type Hold {
+  """"""
+  id: ID!
+
+  """"""
+  moveName: String!
+
+  """"""
+  moveDescription: String!
+
+  """"""
+  rollResult: Int!
+}
+
+"""
+---------------------------------------- STATIC GAME CONTENT TYPES -------------------------------------- #
+"""
+type HoldConditions {
+  """"""
+  id: ID!
+
+  """"""
+  onTenPlus: Int
+
+  """"""
+  onSevenToNine: Int
+
+  """"""
+  onMiss: Int
+}
+
+""""""
+input HoldInput {
+  """"""
+  id: ID!
+
+  """"""
+  moveName: String!
+
+  """"""
+  moveDescription: String!
+
+  """"""
+  rollResult: Int!
+}
+
+""""""
+type Holding {
+  """"""
+  id: ID!
+
+  """"""
+  holdingSize: HoldingSize!
+
+  """"""
+  gangSize: GangSize!
+
+  """"""
+  souls: String!
+
+  """"""
+  surplus: Int!
+
+  """"""
+  barter: Int!
+
+  """"""
+  gangHarm: Int!
+
+  """"""
+  gangArmor: Int!
+
+  """"""
+  gangDefenseArmorBonus: Int!
+
+  """"""
+  wants: [String]!
+
+  """"""
+  gigs: [String]!
+
+  """"""
+  gangTags: [String]!
+
+  """"""
+  selectedStrengths: [HoldingOption]!
+
+  """"""
+  selectedWeaknesses: [HoldingOption]!
+}
+
+""""""
+type HoldingCreator {
+  """"""
+  id: ID!
+
+  """"""
+  defaultHoldingSize: HoldingSize!
+
+  """"""
+  instructions: String!
+
+  """"""
+  defaultSurplus: Int!
+
+  """"""
+  defaultWant: String!
+
+  """"""
+  defaultGigs: [String]!
+
+  """"""
+  defaultArmorBonus: Int!
+
+  """"""
+  defaultVehiclesCount: Int!
+
+  """"""
+  defaultBattleVehicleCount: Int!
+
+  """"""
+  defaultGangSize: GangSize!
+
+  """"""
+  defaultGangHarm: Int!
+
+  """"""
+  defaultGangArmor: Int!
+
+  """"""
+  defaultGangTag: String!
+
+  """"""
+  strengthCount: Int!
+
+  """"""
+  weaknessCount: Int!
+
+  """"""
+  strengthOptions: [HoldingOption]!
+
+  """"""
+  weaknessOptions: [HoldingOption]!
+}
+
+""""""
+input HoldingInput {
+  """"""
+  id: ID
+
+  """"""
+  holdingSize: HoldingSize!
+
+  """"""
+  gangSize: GangSize!
+
+  """"""
+  souls: String!
+
+  """"""
+  surplus: Int!
+
+  """"""
+  barter: Int!
+
+  """"""
+  gangHarm: Int!
+
+  """"""
+  gangArmor: Int!
+
+  """"""
+  gangDefenseArmorBonus: Int!
+
+  """"""
+  wants: [String]!
+
+  """"""
+  gigs: [String]!
+
+  """"""
+  gangTags: [String]!
+
+  """"""
+  selectedStrengths: [HoldingOptionInput]!
+
+  """"""
+  selectedWeaknesses: [HoldingOptionInput]!
+}
+
+""""""
+type HoldingOption {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  surplusChange: Int!
+
+  """"""
+  wantChange: [String]
+
+  """"""
+  newHoldingSize: HoldingSize
+
+  """"""
+  gigChange: String
+
+  """"""
+  newGangSize: GangSize
+
+  """"""
+  gangTagChange: String
+
+  """"""
+  gangHarmChange: Int!
+
+  """"""
+  newVehicleCount: Int!
+
+  """"""
+  newBattleVehicleCount: Int!
+
+  """"""
+  newArmorBonus: Int!
+}
+
+""""""
+input HoldingOptionInput {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  surplusChange: Int!
+
+  """"""
+  wantChange: [String]
+
+  """"""
+  newHoldingSize: HoldingSize
+
+  """"""
+  gigChange: String
+
+  """"""
+  newGangSize: GangSize
+
+  """"""
+  gangTagChange: String
+
+  """"""
+  gangHarmChange: Int!
+
+  """"""
+  newVehicleCount: Int!
+
+  """"""
+  newBattleVehicleCount: Int!
+
+  """"""
+  newArmorBonus: Int!
+}
+
+""""""
+enum HoldingSize {
+  """"""
+  SMALL
+
+  """"""
+  MEDIUM
+
+  """"""
+  LARGE
+}
+
+""""""
+input HxInput {
+  """"""
+  id: ID
+
+  """"""
+  characterId: String!
+
+  """"""
+  characterName: String!
+
+  """"""
+  hxValue: Int!
+}
+
+""""""
+type HxStat {
+  """"""
+  id: ID!
+
+  """"""
+  characterId: String!
+
+  """"""
+  characterName: String!
+
+  """"""
+  hxValue: Int!
+}
+
+""""""
+type ItemCharacteristic {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  tag: String
+}
+
+""""""
+type Look {
+  """"""
+  id: ID!
+
+  """"""
+  playbookType: PlaybookType
+
+  """"""
+  category: LookType
+
+  """"""
+  look: String
+}
+
+"""
+---------------------------------------------- INPUTS --------------------------------------------- #
+"""
+input LookInput {
+  """"""
+  id: ID
+
+  """"""
+  playbookType: PlaybookType
+
+  """"""
+  category: LookType
+
+  """"""
+  look: String
+}
+
+""""""
+enum LookType {
+  """"""
+  GENDER
+
+  """"""
+  CLOTHES
+
+  """"""
+  FACE
+
+  """"""
+  EYES
+
+  """"""
+  BODY
+}
+
+""""""
+type McContent {
+  """"""
+  id: ID!
+
+  """"""
+  firstSessionContent: FirstSessionContent!
+
+  """"""
+  decisionMaking: ContentItem!
+
+  """"""
+  core: [TickerList]!
+
+  """"""
+  harm: [ContentItem]!
+
+  """"""
+  selected: [ContentItem]!
+}
+
+"""
+------------------------------------------------ ENUMS ---------------------------------------------- #
+"""
+enum MessageType {
+  """"""
+  PRINT_MOVE
+
+  """"""
+  ROLL_STAT_MOVE
+
+  """"""
+  ROLL_HX_MOVE
+
+  """"""
+  BARTER_MOVE
+
+  """"""
+  ROLL_BARTER_MOVE
+
+  """"""
+  SUFFER_HARM_MOVE
+
+  """"""
+  ADJUST_HX_MOVE
+
+  """"""
+  ROLL_STOCK_MOVE
+
+  """"""
+  STOCK_MOVE
+
+  """"""
+  SUFFER_V_HARM_MOVE
+
+  """"""
+  X_CARD
+}
+
+""""""
+type Move {
+  """"""
+  id: ID!
+
+  """"""
+  name: String!
+
+  """"""
+  kind: MoveType!
+
+  """"""
+  description: String!
+
+  """"""
+  playbook: PlaybookType
+
+  """"""
+  stat: StatType
+
+  """"""
+  statModifier: StatModifier
+
+  """"""
+  rollModifier: RollModifier
+
+  """"""
+  moveAction: MoveAction
+}
+
+""""""
+type MoveAction {
+  """"""
+  id: ID!
+
+  """"""
+  actionType: MoveActionType
+
+  """"""
+  rollType: RollType
+
+  """"""
+  statToRollWith: StatType
+
+  """"""
+  holdConditions: HoldConditions
+
+  """"""
+  plusOneForwardConditions: PlusOneForwardConditions
+}
+
+""""""
+enum MoveActionType {
+  """"""
+  ROLL
+
+  """"""
+  PRINT
+
+  """"""
+  BARTER
+
+  """"""
+  ADJUST_HX
+
+  """"""
+  STOCK
+
+  """"""
+  GUNLUGGER_SPECIAL
+
+  """"""
+  HOCUS_SPECIAL
+
+  """"""
+  SKINNER_SPECIAL
+}
+
+""""""
+enum MoveType {
+  """"""
+  CHARACTER
+
+  """"""
+  DEFAULT_CHARACTER
+
+  """"""
+  BASIC
+
+  """"""
+  PERIPHERAL
+
+  """"""
+  BATTLE
+
+  """"""
+  ROAD_WAR
+
+  """"""
+  UNIQUE
+}
+
+"""
+--------------------------------------------- MUTATIONS -------------------------------------------- #
+"""
+type Mutation {
+  """Game-related"""
+  createGame(userId: String!, displayName: String!, email: String!, name: String!): Game
+
+  """"""
+  setGameName(gameId: String!, name: String!): Game
+
+  """"""
+  addInvitee(gameId: String!, email: String!): Game
+
+  """"""
+  removeInvitee(gameId: String!, email: String!): Game
+
+  """"""
+  removePlayer(gameId: String!, playerId: String!): Game
+
+  """"""
+  addCommsApp(gameId: String!, app: String!): Game
+
+  """"""
+  addCommsUrl(gameId: String!, url: String!): Game
+
+  """"""
+  deleteGame(gameId: String!): Game
+
+  """"""
+  addUserToGame(gameId: String!, userId: String!, displayName: String!, email: String!): Game
+
+  """MC stuff"""
+  finishPreGame(gameId: String!): Game
+
+  """"""
+  closeFirstSession(gameId: String!): Game
+
+  """"""
+  addThreat(gameRoleId: String!, threat: ThreatInput): GameRole
+
+  """"""
+  addNpc(gameRoleId: String!, npc: NpcInput): GameRole
+
+  """Creating and editing characters"""
+  createCharacter(gameRoleId: String!): Character
+
+  """"""
+  setCharacterPlaybook(gameRoleId: String!, characterId: String!, playbookType: PlaybookType!): Character
+
+  """"""
+  setCharacterName(gameRoleId: String!, characterId: String!, name: String!): Character
+
+  """"""
+  setCharacterLook(gameRoleId: String!, characterId: String!, look: LookInput!): Character
+
+  """"""
+  setCharacterStats(gameRoleId: String!, characterId: String!, statsOptionId: String!): Character
+
+  """"""
+  setCharacterGear(gameRoleId: String!, characterId: String!, gear: [String]!): Character
+
+  """"""
+  setCharacterMoves(gameRoleId: String!, characterId: String!, moveIds: [String]!): Character
+
+  """"""
+  setCharacterHx(gameRoleId: String!, characterId: String!, hxStats: [HxInput]!): Character
+
+  """"""
+  finishCharacterCreation(gameRoleId: String!, characterId: String!): Character
+
+  """"""
+  setAngelKit(gameRoleId: String!, characterId: String!, stock: Int!, hasSupplier: Boolean!): Character
+
+  """"""
+  setBrainerGear(gameRoleId: String!, characterId: String!, brainerGear: [String]!): Character
+
+  """"""
+  setCustomWeapons(gameRoleId: String!, characterId: String!, weapons: [String]!): Character
+
+  """"""
+  setEstablishment(gameRoleId: String!, characterId: String!, establishment: EstablishmentInput!): Character
+
+  """"""
+  setFollowers(gameRoleId: String!, characterId: String!, followers: FollowersInput!): Character
+
+  """"""
+  setGang(gameRoleId: String!, characterId: String!, gang: GangInput!): Character
+
+  """"""
+  setHolding(gameRoleId: String!, characterId: String!, holding: HoldingInput!, vehicleCount: Int!, battleVehicleCount: Int!): Character
+
+  """"""
+  setSkinnerGear(gameRoleId: String!, characterId: String!, skinnerGear: SkinnerGearInput!): Character
+
+  """"""
+  setWeapons(gameRoleId: String!, characterId: String!, weapons: [String]!): Character
+
+  """"""
+  setWorkspace(gameRoleId: String!, characterId: String!, workspace: WorkspaceInput!): Character
+
+  """"""
+  setVehicleCount(gameRoleId: String!, characterId: String!, vehicleCount: Int!): Character
+
+  """"""
+  setBattleVehicleCount(gameRoleId: String!, characterId: String!, battleVehicleCount: Int!): Character
+
+  """"""
+  setVehicle(gameRoleId: String!, characterId: String!, vehicleInput: VehicleInput!): Character
+
+  """"""
+  setBattleVehicle(gameRoleId: String!, characterId: String!, battleVehicle: BattleVehicleInput!): Character
+
+  """"""
+  adjustCharacterHx(gameRoleId: String!, characterId: String!, hxStat: HxInput!): Character
+
+  """"""
+  setCharacterHarm(gameRoleId: String!, characterId: String!, harm: HarmInput!): Character
+
+  """"""
+  toggleStatHighlight(gameRoleId: String!, characterId: String!, stat: StatType): Character
+
+  """"""
+  setCharacterBarter(gameRoleId: String!, characterId: String!, amount: Int!): Character
+
+  """"""
+  setHoldingBarter(gameRoleId: String!, characterId: String!, amount: Int!): Character
+
+  """"""
+  updateFollowers(gameRoleId: String!, characterId: String!, barter: Int!, followers: Int!, description: String!): Character
+
+  """"""
+  addProject(gameRoleId: String!, characterId: String!, project: ProjectInput): Character
+
+  """"""
+  removeProject(gameRoleId: String!, characterId: String!, project: ProjectInput): Character
+
+  """Move categories"""
+  performPrintMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, isGangMove: Boolean!): Game
+
+  """"""
+  performBarterMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
+
+  """"""
+  performStockMove(gameId: String!, gameRoleId: String!, characterId: String!, moveName: String!, stockSpent: Int!): Game
+
+  """Roll move categories"""
+  performStatRollMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, isGangMove: Boolean!): Game
+
+  """"""
+  performSpeedRollMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, modifier: Int!): Game
+
+  """
+  Modifier can be speed difference, relative speed, or handling
+     Specific moves
+  """
+  performWealthMove(gameId: String!, gameRoleId: String!, characterId: String!): Game
+
+  """"""
+  performFortunesMove(gameId: String!, gameRoleId: String!, characterId: String!): Game
+
+  """"""
+  performHelpOrInterfereMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
+
+  """"""
+  performMakeWantKnownMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
+
+  """"""
+  performSufferHarmMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
+
+  """"""
+  performSufferVHarmMove(gameId: String!, gameRoleId: String!, characterId: String!, vHarm: Int!): Game
+
+  """"""
+  performInflictHarmMove(gameId: String!, gameRoleId: String!, otherGameroleId: String!, characterId: String!, otherCharacterId: String!, harm: Int!): Game
+
+  """"""
+  performHealHarmMove(gameId: String!, gameRoleId: String!, otherGameroleId: String!, characterId: String!, otherCharacterId: String!, harm: Int!): Game
+
+  """"""
+  performAngelSpecialMove(gameId: String!, gameRoleId: String!, otherGameroleId: String!, characterId: String!, otherCharacterId: String!): Game
+
+  """"""
+  performChopperSpecialMove(gameId: String!, gameRoleId: String!, otherGameroleId: String!, characterId: String!, otherCharacterId: String!, hxChange: Int!): Game
+
+  """"""
+  performGunluggerSpecialMove(gameId: String!, gameRoleId: String!, otherGameroleId: String!, characterId: String!, otherCharacterId: String!, addPlus1Forward: Boolean!): Game
+
+  """"""
+  performHocusSpecialMove(gameId: String!, gameRoleId: String!, otherGameroleId: String!, characterId: String!, otherCharacterId: String!): Game
+
+  """"""
+  performSkinnerSpecialMove(gameId: String!, gameRoleId: String!, otherGameroleId: String!, characterId: String!, otherCharacterId: String!, plus1ForUser: Boolean!, plus1ForOther: Boolean!): Game
+
+  """"""
+  performStabilizeAndHealMove(gameId: String!, gameRoleId: String!, characterId: String!, stockSpent: Int!): Game
+
+  """"""
+  performJustGiveMotivationMove(gameId: String!, gameRoleId: String!, characterId: String!, targetId: String): Game
+
+  """Other"""
+  spendHold(gameId: String!, gameRoleId: String!, characterId: String!, hold: HoldInput!): Game
+
+  """"""
+  removeHold(gameRoleId: String!, characterId: String!, hold: HoldInput!): Character
+
+  """"""
+  playXCard(gameId: String!): Game
+}
+
+""""""
+type Name {
+  """"""
+  id: ID!
+
+  """"""
+  playbookType: PlaybookType
+
+  """"""
+  name: String
+}
+
+""""""
+type Npc {
+  """"""
+  id: ID
+
+  """"""
+  name: String
+
+  """"""
+  description: String
+}
+
+""""""
+input NpcInput {
+  """"""
+  id: ID
+
+  """"""
+  name: String!
+
+  """"""
+  description: String
+}
+
+""""""
+type Playbook {
+  """"""
+  id: ID!
+
+  """"""
+  playbookType: PlaybookType!
+
+  """"""
+  barterInstructions: String!
+
+  """"""
+  intro: String!
+
+  """"""
+  introComment: String!
+
+  """"""
+  playbookImageUrl: String!
+}
+
+""""""
+type PlaybookCreator {
+  """"""
+  id: ID!
+
+  """"""
+  playbookType: PlaybookType
+
+  """"""
+  defaultMoveCount: Int
+
+  """"""
+  moveChoiceCount: Int
+
+  """"""
+  defaultVehicleCount: Int
+
+  """"""
+  improvementInstructions: String
+
+  """"""
+  movesInstructions: String
+
+  """"""
+  hxInstructions: String
+
+  """"""
+  names: [Name]
+
+  """"""
+  looks: [Look]
+
+  """"""
+  statsOptions: [StatsOption]
+
+  """"""
+  optionalMoves: [Move]
+
+  """"""
+  defaultMoves: [Move]
+
+  """"""
+  gearInstructions: GearInstructions
+
+  """"""
+  playbookUniqueCreator: PlaybookUniqueCreator
+}
+
+""""""
+enum PlaybookType {
+  """"""
+  ANGEL
+
+  """"""
+  BATTLEBABE
+
+  """"""
+  BRAINER
+
+  """"""
+  CHOPPER
+
+  """"""
+  DRIVER
+
+  """"""
+  GUNLUGGER
+
+  """"""
+  HARDHOLDER
+
+  """"""
+  HOCUS
+
+  """"""
+  MAESTRO_D
+
+  """"""
+  SAVVYHEAD
+
+  """"""
+  SKINNER
+}
+
+""""""
+type PlaybookUnique {
+  """"""
+  id: ID!
+
+  """"""
+  type: UniqueType
+
+  """"""
+  brainerGear: BrainerGear
+
+  """"""
+  angelKit: AngelKit
+
+  """"""
+  customWeapons: CustomWeapons
+
+  """"""
+  gang: Gang
+
+  """"""
+  weapons: Weapons
+
+  """"""
+  holding: Holding
+
+  """"""
+  followers: Followers
+
+  """"""
+  skinnerGear: SkinnerGear
+
+  """"""
+  establishment: Establishment
+
+  """"""
+  workspace: Workspace
+}
+
+""""""
+type PlaybookUniqueCreator {
+  """"""
+  id: ID!
+
+  """"""
+  type: UniqueType!
+
+  """"""
+  angelKitCreator: AngelKitCreator
+
+  """"""
+  brainerGearCreator: BrainerGearCreator
+
+  """"""
+  customWeaponsCreator: CustomWeaponsCreator
+
+  """"""
+  establishmentCreator: EstablishmentCreator
+
+  """"""
+  followersCreator: FollowersCreator
+
+  """"""
+  gangCreator: GangCreator
+
+  """"""
+  holdingCreator: HoldingCreator
+
+  """"""
+  skinnerGearCreator: SkinnerGearCreator
+
+  """"""
+  weaponsCreator: WeaponsCreator
+
+  """"""
+  workspaceCreator: WorkspaceCreator
+}
+
+""""""
+type PlusOneForwardConditions {
+  """"""
+  id: ID!
+
+  """"""
+  isManualGrant: Boolean
+
+  """"""
+  onTenPlus: Boolean
+
+  """"""
+  onSevenToNine: Boolean
+
+  """"""
+  onMiss: Boolean
+}
+
+""""""
+type Project {
+  """"""
+  id: ID!
+
+  """"""
+  name: String!
+
+  """"""
+  notes: String
+}
+
+""""""
+input ProjectInput {
+  """"""
+  id: ID
+
+  """"""
+  name: String!
+
+  """"""
+  notes: String
+}
+
+"""
+---------------------------------------------- QUERIES --------------------------------------------- #
+"""
+type Query {
+  """"""
+  gameRolesByUserId(id: String!): [GameRole]
+
+  """"""
+  game(gameId: String!): Game
+
+  """"""
+  gameForPlayer(gameId: String!, userId: String!): Game
+
+  """"""
+  gamesForInvitee(email: String!): [Game]
+
+  """"""
+  allMoves: [Move]
+
+  """"""
+  playbooks: [Playbook]
+
+  """"""
+  playbook(playbookType: PlaybookType!): Playbook
+
+  """"""
+  playbookCreator(playbookType: PlaybookType!): PlaybookCreator
+
+  """"""
+  vehicleCreator: VehicleCreator
+
+  """"""
+  threatCreator: ThreatCreator
+
+  """"""
+  mcContent: McContent
+}
+
+""""""
+enum RoleType {
+  """"""
+  MC
+
+  """"""
+  PLAYER
+}
+
+""""""
+type RollModifier {
+  """"""
+  id: ID!
+
+  """"""
+  movesToModify: [Move!]
+
+  """"""
+  statToRollWith: StatType!
+}
+
+""""""
+enum RollType {
+  """"""
+  STAT
+
+  """"""
+  HX
+
+  """"""
+  HARM
+
+  """"""
+  BARTER
+
+  """"""
+  SPEED
+
+  """"""
+  HANDLING
+
+  """"""
+  STOCK
+
+  """"""
+  FORTUNE
+
+  """"""
+  CHOICE
+
+  """"""
+  V_HARM
+}
+
+""""""
+type SecurityOption {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  value: Int!
+}
+
+""""""
+input SecurityOptionInput {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  value: Int!
+}
+
+""""""
+type SkinnerGear {
+  """"""
+  id: ID!
+
+  """"""
+  graciousWeapon: SkinnerGearItem!
+
+  """"""
+  luxeGear: [SkinnerGearItem]!
+}
+
+""""""
+type SkinnerGearCreator {
+  """"""
+  id: ID!
+
+  """"""
+  graciousWeaponCount: Int!
+
+  """"""
+  luxeGearCount: Int!
+
+  """"""
+  graciousWeaponChoices: [SkinnerGearItem]!
+
+  """"""
+  luxeGearChoices: [SkinnerGearItem]!
+}
+
+""""""
+input SkinnerGearInput {
+  """"""
+  id: ID
+
+  """"""
+  graciousWeapon: SkinnerGearItemInput!
+
+  """"""
+  luxeGear: [SkinnerGearItemInput]!
+}
+
+""""""
+type SkinnerGearItem {
+  """"""
+  id: ID!
+
+  """"""
+  item: String!
+
+  """"""
+  note: String
+}
+
+""""""
+input SkinnerGearItemInput {
+  """"""
+  id: ID!
+
+  """"""
+  item: String!
+
+  """"""
+  note: String
+}
+
+""""""
+type StatModifier {
+  """"""
+  id: ID!
+
+  """"""
+  statToModify: StatType!
+
+  """"""
+  modification: Int!
+}
+
+""""""
+enum StatType {
+  """"""
+  COOL
+
+  """"""
+  HARD
+
+  """"""
+  HOT
+
+  """"""
+  SHARP
+
+  """"""
+  WEIRD
+
+  """"""
+  HX
+}
+
+""""""
+type StatsBlock {
+  """"""
+  id: ID!
+
+  """"""
+  statsOptionId: String!
+
+  """"""
+  stats: [CharacterStat]
+}
+
+""""""
+type StatsOption {
+  """"""
+  id: ID!
+
+  """"""
+  playbookType: PlaybookType
+
+  """"""
+  COOL: Int
+
+  """"""
+  HARD: Int
+
+  """"""
+  HOT: Int
+
+  """"""
+  SHARP: Int
+
+  """"""
+  WEIRD: Int
+}
+
+"""
+----------------------------------------------- OTHER ---------------------------------------------- #
+"""
+type TaggedItem {
+  """"""
+  id: ID!
+
+  """"""
+  description: String!
+
+  """"""
+  tags: [String]
+}
+
+""""""
+type Threat {
+  """"""
+  id: ID
+
+  """"""
+  name: String
+
+  """"""
+  threatKind: ThreatType
+
+  """"""
+  impulse: String
+
+  """"""
+  description: String
+
+  """"""
+  stakes: String
+}
+
+""""""
+type ThreatCreator {
+  """"""
+  id: ID!
+
+  """"""
+  createThreatInstructions: String!
+
+  """"""
+  essentialThreatInstructions: String!
+
+  """"""
+  threatNames: [String]!
+
+  """"""
+  threats: [ThreatCreatorContent]!
+}
+
+""""""
+type ThreatCreatorContent {
+  """"""
+  id: ID!
+
+  """"""
+  threatType: ThreatType!
+
+  """"""
+  impulses: [String]!
+
+  """"""
+  moves: [String]!
+}
+
+""""""
+input ThreatInput {
+  """"""
+  id: ID
+
+  """"""
+  name: String!
+
+  """"""
+  threatKind: ThreatType!
+
+  """"""
+  impulse: String!
+
+  """"""
+  description: String
+
+  """"""
+  stakes: String
+}
+
+""""""
+enum ThreatType {
+  """"""
+  WARLORD
+
+  """"""
+  GROTESQUE
+
+  """"""
+  BRUTE
+
+  """"""
+  AFFLICTION
+
+  """"""
+  LANDSCAPE
+
+  """"""
+  TERRAIN
+
+  """"""
+  VEHICLE
+}
+
+""""""
+type TickerList {
+  """"""
+  id: ID!
+
+  """"""
+  title: String!
+
+  """"""
+  items: [String]!
+}
+
+""""""
+enum UniqueType {
+  """"""
+  ANGEL_KIT
+
+  """"""
+  CUSTOM_WEAPONS
+
+  """"""
+  BRAINER_GEAR
+
+  """"""
+  GANG
+
+  """"""
+  WEAPONS
+
+  """"""
+  HOLDING
+
+  """"""
+  FOLLOWERS
+
+  """"""
+  ESTABLISHMENT
+
+  """"""
+  WORKSPACE
+
+  """"""
+  SKINNER_GEAR
+}
+
+"""
+---------------------------------------- GAME & CHARACTER TYPES --------------------------------------- #
+"""
+type User {
+  """"""
+  id: ID!
+
+  """"""
+  displayName: String
+
+  """"""
+  email: String
+
+  """"""
+  gameRoles: [GameRole]
+}
+
+""""""
+type Vehicle {
+  """"""
+  id: ID!
+
+  """"""
+  vehicleType: VehicleType
+
+  """"""
+  name: String
+
+  """"""
+  vehicleFrame: VehicleFrame
+
+  """"""
+  speed: Int
+
+  """"""
+  handling: Int
+
+  """"""
+  armor: Int
+
+  """"""
+  massive: Int
+
+  """"""
+  strengths: [String]
+
+  """"""
+  weaknesses: [String]
+
+  """"""
+  looks: [String]
+
+  """"""
+  battleOptions: [VehicleBattleOption]
+}
+
+""""""
+type VehicleBattleOption {
+  """"""
+  id: ID!
+
+  """"""
+  battleOptionType: BattleOptionType
+
+  """"""
+  name: String
+}
+
+""""""
+input VehicleBattleOptionInput {
+  """"""
+  id: ID!
+
+  """"""
+  battleOptionType: BattleOptionType
+
+  """"""
+  name: String
+}
+
+""""""
+type VehicleCreator {
+  """"""
+  id: ID!
+
+  """"""
+  bikeCreator: BikeCreator
+
+  """"""
+  carCreator: CarCreator
+
+  """"""
+  battleVehicleCreator: BattleVehicleCreator
+}
+
+""""""
+type VehicleFrame {
+  """"""
+  id: ID!
+
+  """"""
+  frameType: VehicleFrameType
+
+  """"""
+  massive: Int
+
+  """"""
+  examples: String
+
+  """"""
+  battleOptionCount: Int
+}
+
+""""""
+input VehicleFrameInput {
+  """"""
+  id: ID!
+
+  """"""
+  frameType: VehicleFrameType
+
+  """"""
+  massive: Int
+
+  """"""
+  examples: String
+
+  """"""
+  battleOptionCount: Int
+}
+
+""""""
+enum VehicleFrameType {
+  """"""
+  BIKE
+
+  """"""
+  SMALL
+
+  """"""
+  MEDIUM
+
+  """"""
+  LARGE
+}
+
+""""""
+input VehicleInput {
+  """"""
+  id: ID
+
+  """"""
+  vehicleType: VehicleType
+
+  """"""
+  name: String
+
+  """"""
+  vehicleFrame: VehicleFrameInput
+
+  """"""
+  speed: Int
+
+  """"""
+  handling: Int
+
+  """"""
+  armor: Int
+
+  """"""
+  massive: Int
+
+  """"""
+  strengths: [String]
+
+  """"""
+  weaknesses: [String]
+
+  """"""
+  looks: [String]
+
+  """"""
+  battleOptions: [VehicleBattleOptionInput]
+}
+
+""""""
+enum VehicleType {
+  """"""
+  BIKE
+
+  """"""
+  CAR
+
+  """"""
+  BATTLE
+}
+
+""""""
+type Weapons {
+  """"""
+  id: ID!
+
+  """"""
+  weapons: [String]!
+}
+
+""""""
+type WeaponsCreator {
+  """"""
+  id: ID!
+
+  """"""
+  bfoGunOptionCount: Int!
+
+  """"""
+  seriousGunOptionCount: Int!
+
+  """"""
+  backupWeaponsOptionCount: Int!
+
+  """"""
+  bigFuckOffGuns: [String]!
+
+  """"""
+  seriousGuns: [String]!
+
+  """"""
+  backupWeapons: [String]!
+}
+
+""""""
+type Workspace {
+  """"""
+  id: ID!
+
+  """"""
+  workspaceInstructions: String!
+
+  """"""
+  projectInstructions: String!
+
+  """"""
+  workspaceItems: [String]!
+
+  """"""
+  projects: [Project]
+}
+
+""""""
+type WorkspaceCreator {
+  """"""
+  id: ID!
+
+  """"""
+  itemsCount: Int!
+
+  """"""
+  workspaceInstructions: String!
+
+  """"""
+  projectInstructions: String!
+
+  """"""
+  workspaceItems: [String]!
+}
+
+""""""
+input WorkspaceInput {
+  """"""
+  id: ID
+
+  """"""
+  workspaceInstructions: String!
+
+  """"""
+  projectInstructions: String!
+
+  """"""
+  workspaceItems: [String]!
+
+  """"""
+  projects: [ProjectInput]
+}

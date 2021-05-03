@@ -26,3 +26,6 @@ discordConfig.ts
 
 # Optional eslint cache
 .eslintcache
+
+/cypress/fixtures/users/user.json
+/cypress/fixtures/users/dave_userinfo.json
