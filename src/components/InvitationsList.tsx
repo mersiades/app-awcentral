@@ -1,16 +1,17 @@
-import { useMutation } from '@apollo/client';
-import { Box } from 'grommet';
 import React, { FC } from 'react';
+import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
-import { Game } from '../@types/dataInterfaces';
-import { RoleType } from '../@types/enums';
-import { brandColor, ButtonWS, TextWS } from '../config/grommetConfig';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
-import ADD_USER_TO_GAME, { AddUserToGameData, AddUserToGameVars } from '../mutations/addUserToGame';
+import { Box } from 'grommet';
+
 import Spinner from './Spinner';
+import { brandColor, ButtonWS, TextWS } from '../config/grommetConfig';
+import { GameForInviteeGame } from '../queries/gamesForInvitee';
+import ADD_USER_TO_GAME, { AddUserToGameData, AddUserToGameVars } from '../mutations/addUserToGame';
+import { RoleType } from '../@types/enums';
+import { useKeycloakUser } from '../contexts/keycloakUserContext';
 
 interface InvitationsListProps {
-  games: Game[];
+  games: GameForInviteeGame[];
 }
 
 const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
@@ -24,7 +25,7 @@ const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
     history.push(`/character-creation/${gameId}`, { role: RoleType.player });
   };
 
-  const getPlayersString = (game: Game) => {
+  const getPlayersString = (game: GameForInviteeGame) => {
     let string = 'with ';
     if (game.players.length === 0) {
       string += `${game.mc.displayName}`;

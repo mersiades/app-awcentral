@@ -16,6 +16,9 @@ interface RootProps {
   children: JSX.Element;
 }
 
+// @ts-ignore
+const checkLoginIframe = window.Cypress ? false : true;
+
 /**
  * This component wraps <App/> with all the Providers it needs.
  */
@@ -33,6 +36,7 @@ const Root: FC<RootProps> = ({ children }) => {
                     authClient={keycloak}
                     initOptions={{
                       onLoad: 'login-required',
+                      checkLoginIframe,
                     }}
                   >
                     <GameProvider>

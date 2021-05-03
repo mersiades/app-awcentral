@@ -1,8 +1,20 @@
 import { gql } from '@apollo/client';
-import { GameRole } from '../@types/dataInterfaces';
+import { RoleType } from '../@types/enums';
+
+export interface GameRolesByUserIdGameRoles {
+  id: string;
+  role: RoleType;
+  gameId: string;
+  gameName: string;
+  characters: {
+    id: string;
+    __typename: 'Character';
+  }[];
+  __typename: 'GameRole';
+}
 
 export interface GameRolesByUserIdData {
-  gameRolesByUserId: Partial<GameRole>[];
+  gameRolesByUserId: GameRolesByUserIdGameRoles[];
 }
 
 export interface GameRolesByUserIdVars {
