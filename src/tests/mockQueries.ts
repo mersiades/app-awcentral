@@ -104,6 +104,7 @@ export const mockGameRolesByUserId: MockedResponse<GameRolesByUserIdData> = {
           gameId: mockGame1.id,
           gameName: mockGame1.name,
           characters: [],
+          __typename: 'GameRole',
         },
         {
           id: mockGameRole2.id,
@@ -111,6 +112,7 @@ export const mockGameRolesByUserId: MockedResponse<GameRolesByUserIdData> = {
           gameId: mockGame1.id,
           gameName: mockGame1.name,
           characters: [],
+          __typename: 'GameRole',
         },
       ],
     },
