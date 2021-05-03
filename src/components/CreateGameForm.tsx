@@ -19,9 +19,8 @@ const CreateGameForm: FC = () => {
     if (!!userId && !!displayName) {
       // Tell awcentral-api to create a new game
       const { data: newGame } = await createGame({
-        // @ts-ignore
         variables: { userId, name, displayName, email },
-        skip: !displayName || !email,
+        // skip: !displayName || !email,
         optimisticResponse: getCreateGameOR(name, userId, displayName),
         refetchQueries: [{ query: GAMEROLES_BY_USER_ID, variables: { id: userId } }],
       });
@@ -43,7 +42,7 @@ const CreateGameForm: FC = () => {
     >
       <Box gap="small">
         <FormField name="name" label="Name" htmlFor="text-input-id">
-          <TextInput id="text-input-id" name="name" size="xlarge" placeholder={`${displayName}'s game`} />
+          <TextInput id="text-input-id" name="name" autoFocus size="xlarge" placeholder={`${displayName}'s game`} />
         </FormField>
         <TextWS color="accent-1" margin={{ top: 'xsmall' }}>
           Create a game with you as the MC

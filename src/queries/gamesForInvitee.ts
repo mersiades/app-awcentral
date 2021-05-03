@@ -1,8 +1,15 @@
 import { gql } from '@apollo/client';
-import { Game } from '../@types/dataInterfaces';
+
+export interface GameForInviteeGame {
+  id: string;
+  name: string;
+  mc: { displayName: string };
+  players: { displayName: string }[];
+  __typename: 'Game';
+}
 
 export interface GamesForInviteeData {
-  gamesForInvitee: Game[];
+  gamesForInvitee: GameForInviteeGame[];
 }
 
 export interface GamesForInviteeVars {
@@ -22,6 +29,6 @@ const GAMES_FOR_INVITEE = gql`
       }
     }
   }
-`
+`;
 
-export default GAMES_FOR_INVITEE
+export default GAMES_FOR_INVITEE;

@@ -29,3 +29,5 @@ discordConfig.ts
 
 /cypress/fixtures/users/user.json
 /cypress/fixtures/users/dave_userinfo.json
+/cypress/videos
+/cypress/screenshots

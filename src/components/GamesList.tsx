@@ -1,11 +1,12 @@
 import { FC } from 'react';
-import { List } from 'grommet';
 import { useHistory } from 'react-router-dom';
-import { GameRole } from '../@types/dataInterfaces';
+import { List } from 'grommet';
+
 import { RoleType } from '../@types/enums';
+import { GameRolesByUserIdGameRoles } from '../queries/gameRolesByUserId';
 
 interface GamesListProps {
-  gameRoles: Partial<GameRole>[];
+  gameRoles: GameRolesByUserIdGameRoles[];
 }
 
 interface GameInList {
