@@ -40,7 +40,7 @@ describe('Rendering CommsForm', () => {
     screen.getByRole('heading', { name: 'COMMS' });
     screen.getAllByRole('button', { name: /SET/i }); // aria role was showing up as 'Set' in CircleCI
     screen.getByRole('button', { name: 'Open Drop' });
-    screen.getByRole('button', { name: 'LATER' });
+    screen.getByRole('button', { name: /LATER/i });
     screen.getByRole('textbox', { name: 'comms-url-input' });
     screen.getByRole('textbox', { name: 'comms-app-input' });
   });
