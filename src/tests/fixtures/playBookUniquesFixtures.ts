@@ -1,4 +1,4 @@
-import { PlaybookUniques, AngelKit, CustomWeapons, Weapons } from '../../@types/dataInterfaces';
+import { PlaybookUniques, AngelKit, CustomWeapons, Weapons, BrainerGear } from '../../@types/dataInterfaces';
 import { UniqueTypes } from '../../@types/enums';
 import {
   dummyAngelKit,
@@ -64,6 +64,36 @@ export const mockPlaybookUniqueAngel_withDummyUniques: PlaybookUniques = {
   type: UniqueTypes.angelKit,
   angelKit: mockAngelKit,
   brainerGear: dummyBrainerGear,
+  customWeapons: dummyCustomWeapons,
+  establishment: dummyEstablishment,
+  followers: dummyFollowers,
+  gang: dummyGang,
+  holding: dummyHolding,
+  skinnerGear: dummySkinnerGear,
+  weapons: dummyWeapons,
+  workspace: dummyWorkspace,
+  __typename: 'PlaybookUniques',
+};
+
+export const mockBrainerGear: BrainerGear = {
+  id: 'mock-brainer-gear-id',
+  uniqueType: UniqueTypes.brainerGear,
+  allowedItemsCount: 2,
+  brainerGear: [],
+};
+
+export const mockPlaybookUniqueBrainer: PlaybookUniques = {
+  id: 'mock-angel-unique-id',
+  type: UniqueTypes.brainerGear,
+  brainerGear: mockBrainerGear,
+  __typename: 'PlaybookUniques',
+};
+
+export const mockPlaybookUniqueBrainer_withDummyUniques: PlaybookUniques = {
+  id: 'mock-angel-unique-id',
+  type: UniqueTypes.brainerGear,
+  angelKit: dummyAngelKit,
+  brainerGear: mockBrainerGear,
   customWeapons: dummyCustomWeapons,
   establishment: dummyEstablishment,
   followers: dummyFollowers,

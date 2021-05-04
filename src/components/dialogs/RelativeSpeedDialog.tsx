@@ -14,7 +14,7 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { Vehicle } from '../../@types/dataInterfaces';
-import { dummyVehicleFrame } from '../../tests/mockData/dummyData';
+import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
 import { OUTDISTANCE_VEHICLE_NAME } from '../../config/constants';
 import { VehicleType } from '../../@types/enums';
 

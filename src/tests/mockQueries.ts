@@ -35,7 +35,17 @@ import PLAYBOOK from '../queries/playbook';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../queries/playbookCreator';
 import PLAYBOOKS from '../queries/playbooks';
 import VEHICLE_CREATOR from '../queries/vehicleCreator';
-import { dummyAngelKitMove } from './mockData/dummyData';
+import { dummyAngelKitMove } from './fixtures/dummyData';
+import {
+  mockPlaybookCreatorBrainer,
+  mockPlaybookCreatorMaestroD,
+  mockPlaybookCreatorHocus,
+  mockPlaybookCreatorChopper,
+  mockPlaybookCreatorHardHolder,
+  mockPlaybookCreatorSkinner,
+  mockPlaybookCreatorGunlugger,
+  mockPlaybookCreatorSavvyhead,
+} from './fixtures/playbookCreatorFixtures';
 import {
   mockAllMovesArray,
   mockCharacter2,
@@ -77,15 +87,7 @@ import {
   mockUniqueCreatorBrainer,
   mockVehicleCreator,
   mockPlaybookCreatorMoveAngel1,
-  mockPlaybookCreatorMaestroD,
-  mockPlaybookCreatorHocus,
-  mockPlaybookCreatorChopper,
-  mockPlaybookCreatorHardHolder,
-  mockPlaybookCreatorSkinner,
-  mockPlaybookCreatorGunlugger,
-  mockPlaybookCreatorSavvyhead,
   mockMcContent,
-  mockPlaybookCreatorBrainer,
 } from './mocks';
 
 export const mockGameRolesByUserId: MockedResponse<GameRolesByUserIdData> = {

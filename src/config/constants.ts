@@ -166,3 +166,5 @@ export const gamePageTopNavbarHeight = 30;
 export const gamePageBottomNavbarHeight = 80;
 
 export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
+
+export const INCREASED_BY_IMPROVEMENT_TEXT = '(increased by improvement)';

@@ -13,7 +13,7 @@ import {
   mockPlaybookUniqueBattlebabe,
   mockPlaybookUniqueGunlugger,
   mockPlaybookUniqueGunlugger_withAngelKit,
-} from '../../../tests/mockData/mockPlayBookUniques';
+} from '../../../tests/fixtures/playBookUniquesFixtures';
 import { ANGEL_KIT_FORM_TEST_ID } from '../uniques/AngelKitForm';
 import { WEAPONS_FORM_TEST_ID } from '../uniques/WeaponsForm';
 import { decapitalize } from '../../../helpers/decapitalize';

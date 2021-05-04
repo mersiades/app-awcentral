@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Box } from 'grommet';
+import { Box, CheckBox } from 'grommet';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { useGame } from '../../contexts/gameContext';
@@ -13,6 +13,7 @@ import SPEND_EXPERIENCE, {
   spendExperienceOR,
   SpendExperienceVars,
 } from '../../mutations/spendExperience';
+import { StyledMarkdown } from '../styledComponents';
 
 interface ImprovementBoxProps {}
 
@@ -142,6 +143,9 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
               />
             </Box>
           )}
+          {character?.improvementMoves.map((move) => (
+            <CheckBox key={move.id} label={<StyledMarkdown>{move.description}</StyledMarkdown>} checked disabled />
+          ))}
         </Box>
       </Box>
     </CollapsiblePanelBox>

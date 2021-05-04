@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
-import CharacterMovesForm, { INCREASED_BY_IMPROVEMENT_TEXT } from '../CharacterMovesForm';
+import CharacterMovesForm from '../CharacterMovesForm';
 import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
@@ -22,11 +22,12 @@ import {
   mockCharacterMoveAngel3,
   mockCharacterMoveAngel4,
   mockSeeingSoulsAsCM,
-} from '../../../tests/mockData/mockCharacterMoves';
+} from '../../../tests/fixtures/characterMovesFixtures';
 import { MockedResponse } from '@apollo/client/testing';
 import OTHER_PLAYBOOK_MOVES, { OtherPlaybookMovesData } from '../../../queries/otherPlaybookMoves';
-import { mockBonefeel, mockEverybodyEats, mockSeeingSouls } from '../../../tests/mockData/mockMoves';
+import { mockBonefeel, mockEverybodyEats, mockSeeingSouls } from '../../../tests/fixtures/mockMoves';
 import { decapitalize } from '../../../helpers/decapitalize';
+import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');

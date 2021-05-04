@@ -182,6 +182,7 @@ export interface AngelKitCreator {
 
 export interface BrainerGearCreator {
   id: string;
+  defaultItemCount: number;
   gear: string[];
   __typename?: 'BrainerGearCreator';
 }

@@ -123,6 +123,7 @@ export const dummyAngelKitCreator: AngelKitCreator = {
 
 export const dummyBrainerGearCreator: BrainerGearCreator = {
   id: 'dummy',
+  defaultItemCount: 0,
   gear: ['dummy'],
 };
 
@@ -340,6 +341,7 @@ export const dummyWeapons: Weapons = {
 export const dummyBrainerGear: BrainerGear = {
   id: 'dummy3',
   uniqueType: UniqueTypes.brainerGear,
+  allowedItemsCount: 0,
   brainerGear: ['dummy'],
   __typename: 'BrainerGear',
 };

@@ -646,6 +646,7 @@ const PLAYBOOK_CREATOR = gql`
         }
         brainerGearCreator {
           id
+          defaultItemCount
           gear
         }
         customWeaponsCreator {

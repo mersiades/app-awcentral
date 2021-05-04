@@ -41,6 +41,7 @@ export const playbookUniqueFragments = {
       brainerGear {
         id
         uniqueType
+        allowedItemsCount
         brainerGear
       }
     }
@@ -743,6 +744,7 @@ const GAME = gql`
             brainerGear {
               id
               uniqueType
+              allowedItemsCount
               brainerGear
             }
             customWeapons {

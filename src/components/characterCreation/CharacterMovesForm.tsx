@@ -15,6 +15,7 @@ import { useGame } from '../../contexts/gameContext';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { decapitalize } from '../../helpers/decapitalize';
 import OTHER_PLAYBOOK_MOVES, { OtherPlaybookMovesData, OtherPlaybookMovesVars } from '../../queries/otherPlaybookMoves';
+import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../config/constants';
 
 const StyledMarkdown = styled(ReactMarkdown)`
   & p {
@@ -22,8 +23,6 @@ const StyledMarkdown = styled(ReactMarkdown)`
     text-shadow: 0 0 1px #000, 0 0 3px #000;
   }
 `;
-
-export const INCREASED_BY_IMPROVEMENT_TEXT = '(increased by improvement)';
 
 const CharacterMovesForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //

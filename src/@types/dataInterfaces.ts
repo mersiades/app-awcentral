@@ -169,6 +169,7 @@ export interface AngelKit {
 export interface BrainerGear {
   id: string;
   uniqueType: UniqueTypes;
+  allowedItemsCount: number;
   brainerGear: string[];
   __typename?: 'BrainerGear';
 }

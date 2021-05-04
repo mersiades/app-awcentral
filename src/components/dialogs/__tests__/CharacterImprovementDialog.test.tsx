@@ -10,8 +10,8 @@ import {
   mockHotMax2AsCM,
   mockSharpMax2AsCM,
   mockWeirdMax2AsCM,
-} from '../../../tests/mockData/mockCharacterMoves';
-import { mockCoolMax2 } from '../../../tests/mockData/mockMoves';
+} from '../../../tests/fixtures/characterMovesFixtures';
+import { mockCoolMax2 } from '../../../tests/fixtures/mockMoves';
 import { mockGame7, mockPlaybookCreatorAngel } from '../../../tests/mocks';
 import { customRenderForComponent, RenderResult, waitOneTick } from '../../../tests/test-utils';
 import CharacterImprovementDialog from '../CharacterImprovementDialog';

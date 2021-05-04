@@ -92,20 +92,20 @@ import {
   dummySkinnerGearCreator,
   dummyWeaponsCreator,
   dummyWorkspaceCreator,
-} from './mockData/dummyData';
+} from './fixtures/dummyData';
 import {
   mockCharacterMoveAngel1,
   mockCharacterMoveAngel2,
   mockCharacterMoveAngel3,
   mockCharacterMoveAngel4,
-} from './mockData/mockCharacterMoves';
-import { mockImprovementBlockAngel, mockImprovementBlockDefault } from './mockData/mockImprovementBlocks';
+} from './fixtures/characterMovesFixtures';
+import { mockImprovementBlockAngel, mockImprovementBlockDefault } from './fixtures/mockImprovementBlocks';
 import {
   mockPlaybookUniqueAngel,
   mockPlaybookUniqueAngel_withDummyUniques,
   mockPlaybookUniqueBattlebabe,
   mockPlaybookUniqueBattlebabe_withDummyUniques,
-} from './mockData/mockPlayBookUniques';
+} from './fixtures/playBookUniquesFixtures';
 
 // Same as Character, but with no nullable fields
 interface MockCharacter {
@@ -1039,37 +1039,6 @@ export const mockgearInstructionsDefault: GearInstructions = {
   __typename: 'GearInstructions',
 };
 
-export const mockPlaybookCreatorDefault: PlaybookCreator = {
-  id: 'default-playbook-creator-id',
-  playbookType: PlaybookType.angel,
-  gearInstructions: mockgearInstructionsDefault,
-  improvementInstructions: 'Whenever you roll a highlighted stat...',
-  movesInstructions: 'You get all the basic moves. Choose 2 angel moves.  ',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
-  names: [mockNameAngel1, mockNameAngel2],
-  looks: [
-    mockLookAngel1,
-    mockLookAngel2,
-    mockLookAngel3,
-    mockLookAngel4,
-    mockLookAngel5,
-    mockLookAngel6,
-    mockLookAngel7,
-    mockLookAngel8,
-    mockLookAngel9,
-    mockLookAngel10,
-  ],
-  statsOptions: [mockStatsOptionsDefault1, mockStatsOptionsDefault2, mockStatsOptionsDefault3],
-  playbookUniqueCreator: mockUniqueCreatorDefault,
-  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3, mockCharacterMoveAngel4],
-  defaultMoves: [mockCharacterMoveAngel1],
-  defaultMoveCount: 1,
-  moveChoiceCount: 2,
-  defaultVehicleCount: 0,
-  improvementBlock: mockImprovementBlockDefault,
-  __typename: 'PlaybookCreator',
-};
-
 // ------------------------------------------------------- Mock Angel playbook --------------------------------------------------- //
 export const mockStatsOptionsAngel1: StatsOption = {
   id: 'angel-stats-options-1',
@@ -1419,21 +1388,13 @@ export const mockVehicleCreator: VehicleCreator = {
   battleVehicleCreator: mockBattleVehicleCreator,
 };
 
-export const mockPlaybookCreatorDriver: PlaybookCreator = {
-  ...mockPlaybookCreatorDefault,
-  id: 'driver-playbook-creator-id',
-  playbookType: PlaybookType.driver,
-  movesInstructions: 'You get all the basic moves. Choose 2 driver moves.',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
-  playbookUniqueCreator: undefined,
-};
-
 // ------------------------------------------------------- Mock PlaybookCreators --------------------------------------------------- //
 
 // ##### -------------------------------------------------- Brainer/Brainer Gear ----------------------------------------------##### //
 
 export const mockBrainerGearCreator: BrainerGearCreator = {
   id: 'mock-brainer-gear-creator-id',
+  defaultItemCount: 2,
   gear: [
     'implant syringe (tag hi-tech)_After you’ve tagged someone,...',
     'brain relay (area close hi-tech)_For purposes of brainer moves...',
@@ -1445,15 +1406,6 @@ export const mockUniqueCreatorBrainer: PlaybookUniqueCreator = {
   id: 'brainer-playbook-unique-creator-id',
   type: UniqueTypes.brainerGear,
   brainerGearCreator: mockBrainerGearCreator,
-};
-
-export const mockPlaybookCreatorBrainer: PlaybookCreator = {
-  ...mockPlaybookCreatorDefault,
-  id: 'brainer-playbook-creator-id',
-  playbookType: PlaybookType.brainer,
-  movesInstructions: 'You get all the basic moves. Choose 2 driver moves.',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
-  playbookUniqueCreator: mockUniqueCreatorBrainer,
 };
 
 // ##### -------------------------------------------------- Maestro D/Establishment ----------------------------------------------##### //
@@ -1499,15 +1451,6 @@ export const mockUniqueCreatorMaestroD: PlaybookUniqueCreator = {
   id: 'maestro-d-playbook-unique-creator-id',
   type: UniqueTypes.establishment,
   establishmentCreator: mockEstablishmentCreator,
-};
-
-export const mockPlaybookCreatorMaestroD: PlaybookCreator = {
-  ...mockPlaybookCreatorDefault,
-  id: 'maestro-d-playbook-creator-id',
-  playbookType: PlaybookType.maestroD,
-  movesInstructions: "You get all the basic moves. Choose 2 maestro d' moves. ",
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
-  playbookUniqueCreator: mockUniqueCreatorMaestroD,
 };
 
 // ##### -------------------------------------------------- Hocus/Followers ----------------------------------------------##### //
@@ -1579,14 +1522,6 @@ export const mockUniqueCreatorHocus: PlaybookUniqueCreator = {
   followersCreator: mockFollowersCreator,
 };
 
-export const mockPlaybookCreatorHocus: PlaybookCreator = {
-  ...mockPlaybookCreatorDefault,
-  id: 'hocus-playbook-creator-id',
-  playbookType: PlaybookType.hocus,
-  movesInstructions: 'You get all the basic moves. You get fortunes, and the choose 2 more hocus moves.',
-  playbookUniqueCreator: mockUniqueCreatorHocus,
-};
-
 // ##### -------------------------------------------------- Chopper/Gang ----------------------------------------------##### //
 
 export const mockGangOption1: GangOption = {
@@ -1640,14 +1575,6 @@ export const mockUniqueCreatorChopper: PlaybookUniqueCreator = {
   id: 'chopper-playbook-unique-creator-id',
   type: UniqueTypes.gang,
   gangCreator: mockGangCreator,
-};
-
-export const mockPlaybookCreatorChopper: PlaybookCreator = {
-  ...mockPlaybookCreatorDefault,
-  id: 'chopper-playbook-creator-id',
-  playbookType: PlaybookType.chopper,
-  movesInstructions: 'You get all the basic moves. You get both chopper moves. ',
-  playbookUniqueCreator: mockUniqueCreatorChopper,
 };
 
 // ##### -------------------------------------------------- Hardholder/Holding ----------------------------------------------##### //
@@ -1777,14 +1704,6 @@ export const mockUniqueCreatorHardHolder: PlaybookUniqueCreator = {
   holdingCreator: mockHoldingCreator,
 };
 
-export const mockPlaybookCreatorHardHolder: PlaybookCreator = {
-  ...mockPlaybookCreatorDefault,
-  id: 'hardholder-playbook-creator-id',
-  playbookType: PlaybookType.hardholder,
-  movesInstructions: 'You get all the basic moves. You get both hardholder moves.  ',
-  playbookUniqueCreator: mockUniqueCreatorHardHolder,
-};
-
 // ##### -------------------------------------------------- Skinner/SkinnerGear ----------------------------------------------##### //
 
 export const mockGraciousWeapon1: SkinnerGearItem = {
@@ -1829,14 +1748,6 @@ export const mockUniqueCreatorSkinner: PlaybookUniqueCreator = {
   skinnerGearCreator: mockSkinnerGearCreator,
 };
 
-export const mockPlaybookCreatorSkinner: PlaybookCreator = {
-  ...mockPlaybookCreatorDefault,
-  id: 'skinner-playbook-creator-id',
-  playbookType: PlaybookType.skinner,
-  movesInstructions: 'You get all the basic moves. Choose 2 skinner moves.  ',
-  playbookUniqueCreator: mockUniqueCreatorSkinner,
-};
-
 // ##### -------------------------------------------------- Gunlugger/Weapons ----------------------------------------------##### //
 
 export const mockWeaponsCreator: WeaponsCreator = {
@@ -1857,14 +1768,6 @@ export const mockUniqueCreatorGunlugger: PlaybookUniqueCreator = {
   weaponsCreator: mockWeaponsCreator,
 };
 
-export const mockPlaybookCreatorGunlugger: PlaybookCreator = {
-  ...mockPlaybookCreatorDefault,
-  id: 'gunlugger-playbook-creator-id',
-  playbookType: PlaybookType.gunlugger,
-  movesInstructions: 'You get all the basic moves. Choose 3 gunlugger moves. ',
-  playbookUniqueCreator: mockUniqueCreatorGunlugger,
-};
-
 // ##### -------------------------------------------------- Savvyhead/Workspace ----------------------------------------------##### //
 
 export const mockWorkspaceCreator: WorkspaceCreator = {
@@ -1881,14 +1784,6 @@ export const mockUniqueCreatorSavvyhead: PlaybookUniqueCreator = {
   id: 'savvyhead-playbook-unique-creator-id',
   type: UniqueTypes.workspace,
   workspaceCreator: mockWorkspaceCreator,
-};
-
-export const mockPlaybookCreatorSavvyhead: PlaybookCreator = {
-  ...mockPlaybookCreatorDefault,
-  id: 'savvyhead-playbook-creator-id',
-  playbookType: PlaybookType.savvyhead,
-  movesInstructions: 'You get all the basic moves. Choose 3 savvyhead moves. ',
-  playbookUniqueCreator: mockUniqueCreatorSavvyhead,
 };
 
 // ------------------------------------------------------- Mock MC Content --------------------------------------------------- //

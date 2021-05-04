@@ -1,8 +1,19 @@
 import { gql } from '@apollo/client';
-import { Character } from '../@types/dataInterfaces';
+import { BrainerGear } from '../@types/dataInterfaces';
+import { PlaybookType, UniqueTypes } from '../@types/enums';
 
 export interface SetBrainerGearData {
-  setBrainerGear: Character;
+  setBrainerGear: {
+    id: string;
+    name: string;
+    playbook: PlaybookType;
+    playbookUniques: {
+      id: string;
+      type: UniqueTypes;
+      brainerGear: BrainerGear;
+    };
+    __typename: 'Character';
+  };
 }
 
 export interface SetBrainerGearVars {
@@ -22,6 +33,7 @@ const SET_BRAINER_GEAR = gql`
         type
         brainerGear {
           id
+          allowedItemsCount
           brainerGear
         }
       }

@@ -28,7 +28,10 @@ import {
   // mockVehicleFrame3,
 } from '../../tests/mocks';
 import { PlaybookType } from '../../@types/enums';
-import { mockPlaybookUniqueAngel, mockPlaybookUniqueAngel_withDummyUniques } from '../../tests/mockData/mockPlayBookUniques';
+import {
+  mockPlaybookUniqueAngel,
+  mockPlaybookUniqueAngel_withDummyUniques,
+} from '../../tests/fixtures/playBookUniquesFixtures';
 import { Character } from '../../@types/dataInterfaces';
 // import { mockPlayBookCreatorQueryBattlebabe } from '../../components/characterCreation/uniques/__tests__/CustomWeaponsForm.test';
 

@@ -18,9 +18,9 @@ import { MockedResponse } from '@apollo/client/testing';
 import GAME, { GameData } from '../queries/game';
 import SPEND_EXPERIENCE, { SpendExperienceData } from '../mutations/spendExperience';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../queries/playbookCreator';
-import { mockAddAngelMove1, mockCoolMax2 } from './mockData/mockMoves';
+import { mockAddAngelMove1, mockCoolMax2 } from './fixtures/mockMoves';
 import ADJUST_IMPROVEMENTS, { AdjustImprovementsData } from '../mutations/adjustImprovements';
-import { mockSharpMax2AsCM } from './mockData/mockCharacterMoves';
+import { mockSharpMax2AsCM } from './fixtures/characterMovesFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
