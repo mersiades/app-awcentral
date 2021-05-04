@@ -19,6 +19,7 @@ const CreateGameForm: FC = () => {
     if (!!userId && !!displayName) {
       // Tell awcentral-api to create a new game
       const { data: newGame } = await createGame({
+        // @ts-ignore
         variables: { userId, name, displayName, email },
         // skip: !displayName || !email,
         optimisticResponse: getCreateGameOR(name, userId, displayName),
