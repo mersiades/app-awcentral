@@ -160,6 +160,7 @@ export interface GangInput {
   size: GangSize;
   harm: number;
   armor: number;
+  allowedStrengths: number;
   strengths: GangOption[];
   weaknesses: GangOption[];
   tags: string[];

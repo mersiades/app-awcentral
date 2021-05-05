@@ -127,6 +127,7 @@ export const playbookUniqueFragments = {
         size
         harm
         armor
+        allowedStrengths
         strengths {
           id
           description
@@ -789,6 +790,7 @@ const GAME = gql`
               size
               harm
               armor
+              allowedStrengths
               strengths {
                 id
                 description

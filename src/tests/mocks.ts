@@ -106,6 +106,20 @@ import {
   mockPlaybookUniqueBattlebabe,
   mockPlaybookUniqueBattlebabe_withDummyUniques,
 } from './fixtures/playBookUniquesFixtures';
+import {
+  mockLookBattleBabe1,
+  mockLookBattlebabe2,
+  mockLookAngel1,
+  mockLookAngel3,
+  mockLookAngel5,
+  mockLookAngel7,
+  mockLookAngel9,
+  mockLookAngel2,
+  mockLookAngel4,
+  mockLookAngel6,
+  mockLookAngel8,
+  mockLookAngel10,
+} from './fixtures/lookFixtures';
 
 // Same as Character, but with no nullable fields
 interface MockCharacter {
@@ -278,102 +292,6 @@ export const mockNameAngel2: Name = {
   __typename: 'Name',
 };
 
-export const mockLookAngel1: Look = {
-  id: 'mock-angel-look-id-1',
-  look: 'man',
-  category: LookType.gender,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookAngel2: Look = {
-  id: 'mock-angel-look-id-2',
-  look: 'woman',
-  category: LookType.gender,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookAngel3: Look = {
-  id: 'mock-angel-look-id-3',
-  look: 'utility wear',
-  category: LookType.clothes,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookAngel4: Look = {
-  id: 'mock-angel-look-id-4',
-  look: 'casual wear plus utility',
-  category: LookType.clothes,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookAngel5: Look = {
-  id: 'mock-angel-look-id-5',
-  look: 'kind face',
-  category: LookType.face,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookAngel6: Look = {
-  id: 'mock-angel-look-id-6',
-  look: 'strong face',
-  category: LookType.face,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookAngel7: Look = {
-  id: 'mock-angel-look-id-7',
-  look: 'hard eyes',
-  category: LookType.eyes,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookAngel8: Look = {
-  id: 'mock-angel-look-id-8',
-  look: 'quick eyes',
-  category: LookType.eyes,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookAngel9: Look = {
-  id: 'mock-angel-look-id-9',
-  look: 'compact body',
-  category: LookType.body,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookAngel10: Look = {
-  id: 'mock-angel-look-id-10',
-  look: 'stout body',
-  category: LookType.body,
-  playbookType: PlaybookType.angel,
-  __typename: 'Look',
-};
-
-export const mockLookBettleBabe1: Look = {
-  id: 'mock-battlebabe-look-id-1',
-  look: 'woman',
-  category: LookType.gender,
-  playbookType: PlaybookType.battlebabe,
-  __typename: 'Look',
-};
-
-export const mockLookBattlebabe2: Look = {
-  id: 'mock-battlebabe-look-id-2',
-  look: 'formal wear',
-  category: LookType.clothes,
-  playbookType: PlaybookType.battlebabe,
-  __typename: 'Look',
-};
-
 export const mockVehicle1: Vehicle = {
   id: 'mock-vehicle-id-1',
   vehicleType: VehicleType.car,
@@ -437,7 +355,7 @@ export const mockCharacter1: MockCharacter = {
   harm: mockCharacterHarm,
   statsBlock: mockStatsBlock1,
   hxBlock: [],
-  looks: [mockLookBettleBabe1, mockLookBattlebabe2],
+  looks: [mockLookBattleBabe1, mockLookBattlebabe2],
   characterMoves: [
     mockCharacterMoveAngel1,
     { ...mockCharacterMoveAngel2, isSelected: true },

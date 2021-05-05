@@ -8,7 +8,11 @@ import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { useMutation, useQuery } from '@apollo/client';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
-import SET_BRAINER_GEAR, { SetBrainerGearData, SetBrainerGearVars } from '../../../mutations/setBrainerGear';
+import SET_BRAINER_GEAR, {
+  SetBrainerGearData,
+  setBrainerGearOR,
+  SetBrainerGearVars,
+} from '../../../mutations/setBrainerGear';
 import { useHistory } from 'react-router-dom';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
@@ -51,7 +55,7 @@ const BrainerGearForm: FC = () => {
       try {
         await setBrainerGear({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, brainerGear },
-          // refetchQueries: [{ query: GAME, variables: { gameId } }],
+          optimisticResponse: setBrainerGearOR(character, brainerGear),
         });
         history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

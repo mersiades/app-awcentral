@@ -25,9 +25,12 @@ import {
 } from '../../../tests/fixtures/characterMovesFixtures';
 import { MockedResponse } from '@apollo/client/testing';
 import OTHER_PLAYBOOK_MOVES, { OtherPlaybookMovesData } from '../../../queries/otherPlaybookMoves';
-import { mockBonefeel, mockEverybodyEats, mockSeeingSouls } from '../../../tests/fixtures/mockMoves';
+import { mockBonefeel, mockEverybodyEats, mockSeeingSouls } from '../../../tests/fixtures/movesFixtures';
 import { decapitalize } from '../../../helpers/decapitalize';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import { PlaybookType } from '../../../@types/enums';
+import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../../../queries/playbookCreator';
+import { mockPlaybookCreatorChopper } from '../../../tests/fixtures/playbookCreatorFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -37,7 +40,23 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
-const mockOtherPlaybookMovesQuery: MockedResponse<OtherPlaybookMovesData> = {
+const mockPlaybookCreator_Chopper: MockedResponse<PlaybookCreatorData> = {
+  request: {
+    query: PLAYBOOK_CREATOR,
+    variables: { playbookType: PlaybookType.chopper },
+  },
+  result: () => {
+    // console.log('mockPlaybookCreator');
+    return {
+      data: {
+        __typename: 'PlaybookCreator',
+        playbookCreator: mockPlaybookCreatorChopper,
+      },
+    };
+  },
+};
+
+const mockOtherPlaybookMovesQuery_angel: MockedResponse<OtherPlaybookMovesData> = {
   request: {
     query: OTHER_PLAYBOOK_MOVES,
     variables: { playbookType: mockCharacter2.playbook },
@@ -52,7 +71,23 @@ const mockOtherPlaybookMovesQuery: MockedResponse<OtherPlaybookMovesData> = {
   },
 };
 
+const mockOtherPlaybookMovesQuery_chopper: MockedResponse<OtherPlaybookMovesData> = {
+  request: {
+    query: OTHER_PLAYBOOK_MOVES,
+    variables: { playbookType: PlaybookType.chopper },
+  },
+  result: () => {
+    // console.log('mockOtherPlaybookMovesQuery');
+    return {
+      data: {
+        otherPlaybookMoves: [mockBonefeel, mockEverybodyEats, mockSeeingSouls],
+      },
+    };
+  },
+};
+
 const generateGame = (
+  playbook: PlaybookType,
   allowedPlaybookMoves: number,
   allowedOtherPlaybookMoves: number,
   characterMoves: CharacterMove[]
@@ -73,7 +108,7 @@ const generateGame = (
         {
           ...blankCharacter,
           id: mockCharacter2.id,
-          playbook: mockCharacter2.playbook,
+          playbook,
           name: mockCharacter2.name,
           looks: mockCharacter2.looks,
           statsBlock: mockCharacter2.statsBlock,
@@ -99,7 +134,7 @@ describe('Rendering CharacterMovesForm', () => {
     beforeEach(async () => {
       renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
         isAuthenticated: true,
-        injectedGame: generateGame(2, 0, [{ ...mockCharacterMoveAngel1, isSelected: true }]),
+        injectedGame: generateGame(mockCharacter2.playbook, 2, 0, [{ ...mockCharacterMoveAngel1, isSelected: true }]),
         apolloMocks: [mockPlaybookCreator],
         injectedUserId: mockKeycloakUserInfo1.sub,
         cache,
@@ -148,7 +183,7 @@ describe('Rendering CharacterMovesForm', () => {
     beforeEach(async () => {
       renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
         isAuthenticated: true,
-        injectedGame: generateGame(2, 0, [
+        injectedGame: generateGame(mockCharacter2.playbook, 2, 0, [
           { ...mockCharacterMoveAngel1, isSelected: true },
           { ...mockCharacterMoveAngel2, isSelected: true },
           { ...mockCharacterMoveAngel3, isSelected: true },
@@ -194,7 +229,7 @@ describe('Rendering CharacterMovesForm', () => {
     beforeEach(async () => {
       renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
         isAuthenticated: true,
-        injectedGame: generateGame(3, 0, [
+        injectedGame: generateGame(mockCharacter2.playbook, 3, 0, [
           { ...mockCharacterMoveAngel1, isSelected: true },
           { ...mockCharacterMoveAngel2, isSelected: true },
           { ...mockCharacterMoveAngel3, isSelected: true },
@@ -234,13 +269,13 @@ describe('Rendering CharacterMovesForm', () => {
     beforeEach(async () => {
       renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
         isAuthenticated: true,
-        injectedGame: generateGame(3, 1, [
+        injectedGame: generateGame(mockCharacter2.playbook, 3, 1, [
           { ...mockCharacterMoveAngel1, isSelected: true },
           { ...mockCharacterMoveAngel2, isSelected: true },
           { ...mockCharacterMoveAngel3, isSelected: true },
           { ...mockCharacterMoveAngel4, isSelected: true },
         ]),
-        apolloMocks: [mockPlaybookCreator, mockOtherPlaybookMovesQuery],
+        apolloMocks: [mockPlaybookCreator, mockOtherPlaybookMovesQuery_angel],
         injectedUserId: mockKeycloakUserInfo1.sub,
         cache,
       });
@@ -278,14 +313,14 @@ describe('Rendering CharacterMovesForm', () => {
     beforeEach(async () => {
       renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
         isAuthenticated: true,
-        injectedGame: generateGame(3, 1, [
+        injectedGame: generateGame(mockCharacter2.playbook, 3, 1, [
           { ...mockCharacterMoveAngel1, isSelected: true },
           { ...mockCharacterMoveAngel2, isSelected: true },
           { ...mockCharacterMoveAngel3, isSelected: true },
           { ...mockCharacterMoveAngel4, isSelected: true },
           { ...mockSeeingSoulsAsCM, isSelected: true },
         ]),
-        apolloMocks: [mockPlaybookCreator, mockOtherPlaybookMovesQuery],
+        apolloMocks: [mockPlaybookCreator, mockOtherPlaybookMovesQuery_angel],
         injectedUserId: mockKeycloakUserInfo1.sub,
         cache,
       });
@@ -304,6 +339,29 @@ describe('Rendering CharacterMovesForm', () => {
       userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
       checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
       expect(checkboxes.filter((cb) => cb.checked)).toHaveLength(2); // 1 selected default move + 1 selected other playbook move
+    });
+  });
+
+  describe('with default moves, 0 optional moves, and one ADD_OTHER_PB_MOVE improvement', () => {
+    beforeEach(async () => {
+      renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
+        isAuthenticated: true,
+        injectedGame: generateGame(PlaybookType.chopper, 0, 1, []),
+        apolloMocks: [mockPlaybookCreator_Chopper, mockOtherPlaybookMovesQuery_chopper],
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      });
+
+      await waitOneTick(); // wait for game query & otherPlaybookMoves query
+    });
+
+    test('should should render CharacterMovesForm with correct initial state', () => {
+      expect(screen.getByText('Select 1')).toBeInTheDocument();
+      expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+      expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+      const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
+      expect(checkboxes).toHaveLength(4); // 1 selected default move + 3 other playbook moves ready for selection
+      expect(checkboxes.filter((cb) => cb.checked)).toHaveLength(1); // 1 selected default move
     });
   });
 });

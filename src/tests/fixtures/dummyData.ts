@@ -292,6 +292,7 @@ export const dummyGang: Gang = {
   id: 'dummy11',
   uniqueType: UniqueTypes.gang,
   size: GangSize.small,
+  allowedStrengths: 2,
   harm: 2,
   armor: 1,
   strengths: [dummyGangOption],

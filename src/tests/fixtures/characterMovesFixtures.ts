@@ -71,7 +71,7 @@ export const mockWeirdMax2AsCM: CharacterMove = {
 // --------------------------------- Playbook CharacterMoves ------------------------------- //
 
 export const mockCharacterMoveAngel1: CharacterMove = {
-  id: 'angel-move-id-1',
+  id: 'angel-character-move-id-1',
   name: ANGEL_SPECIAL_NAME,
   kind: MoveType.default,
   description: 'If you and another character have sex,',
@@ -85,7 +85,7 @@ export const mockCharacterMoveAngel1: CharacterMove = {
 };
 
 export const mockCharacterMoveAngel2: CharacterMove = {
-  id: 'angel-move-id-2',
+  id: 'angel-character-move-id-2',
   name: 'SIXTH SENSE',
   kind: MoveType.character,
   description: 'when you open your brain to the world’s psychic maelstrom...',
@@ -99,7 +99,7 @@ export const mockCharacterMoveAngel2: CharacterMove = {
 };
 
 export const mockCharacterMoveAngel3: CharacterMove = {
-  id: 'angel-move-id-3',
+  id: 'angel-character-move-id-3',
   name: 'INFIRMARY',
   description: 'you get an infirmary, a workspace with life support...',
   kind: MoveType.character,
@@ -113,7 +113,7 @@ export const mockCharacterMoveAngel3: CharacterMove = {
 };
 
 export const mockCharacterMoveAngel4: CharacterMove = {
-  id: 'angel-move-id-4',
+  id: 'angel-character-move-id-4',
   name: 'PROFESSIONAL COMPASSION',
   description: 'you can roll+sharp instead of roll+Hx when you help someone who’s rolling.',
   kind: MoveType.character,
@@ -133,5 +133,19 @@ export const mockSeeingSoulsAsCM: CharacterMove = {
   description: '_**Seeing souls**_: when you help or...',
   playbook: PlaybookType.hocus,
   kind: MoveType.character,
+  __typename: 'CharacterMove',
+};
+
+export const mockChopperSpecial: CharacterMove = {
+  id: 'mock-chopper-special-character-move-id',
+  isSelected: true,
+  name: 'CHOPPER SPECIAL',
+  description: 'When you have sex with...',
+  playbook: PlaybookType.chopper,
+  kind: MoveType.default,
+  stat: StatType.hx,
+  rollModifier: dummyRollModifier,
+  statModifier: dummyStatModifier,
+  moveAction: dummyMoveAction,
   __typename: 'CharacterMove',
 };

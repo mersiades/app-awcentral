@@ -227,6 +227,7 @@ export interface Gang {
   id: string;
   uniqueType: UniqueTypes;
   size: GangSize;
+  allowedStrengths: number;
   harm: number;
   armor: number;
   strengths: GangOption[];

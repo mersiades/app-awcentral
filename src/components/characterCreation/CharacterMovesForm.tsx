@@ -197,10 +197,24 @@ const CharacterMovesForm: FC = () => {
 
   const tabbedMoveLists = (
     <Tabs activeIndex={activeTab} onActive={(tab) => setActiveTab(tab)} margin={{ top: '6px' }}>
-      <Tab title={`${decapitalize(character.playbook)} moves`}>{playbookMovesList}</Tab>
+      {!!optionalMoves && optionalMoves.length > 0 && (
+        <Tab title={`${decapitalize(character.playbook)} moves`}>{playbookMovesList}</Tab>
+      )}
       <Tab title="Other moves">{otherMovesList}</Tab>
     </Tabs>
   );
+
+  const renderLists = () => {
+    if (allowedOtherPlaybookMoves === 0) {
+      return playbookMovesList;
+    }
+
+    if (!!allowedOtherPlaybookMoves && allowedOtherPlaybookMoves > 0 && !!optionalMoves && optionalMoves.length > 0) {
+      return tabbedMoveLists;
+    } else if (!!allowedOtherPlaybookMoves && allowedOtherPlaybookMoves > 0) {
+      return otherMovesList;
+    }
+  };
 
   return (
     <Box
@@ -236,10 +250,14 @@ const CharacterMovesForm: FC = () => {
           Default moves
         </Text>
         {!!defaultMoves &&
-          defaultMoves.map((move) => (
-            <CheckBox key={move.id} checked label={<StyledMarkdown>{move.description}</StyledMarkdown>} />
-          ))}
-        {!!allowedOtherPlaybookMoves && allowedOtherPlaybookMoves > 0 ? tabbedMoveLists : playbookMovesList}
+          defaultMoves.map((move) => {
+            return (
+              <Box key={move.id} margin={{ vertical: '6px' }}>
+                <CheckBox checked label={<StyledMarkdown>{move.description}</StyledMarkdown>} />
+              </Box>
+            );
+          })}
+        {renderLists()}
       </Box>
     </Box>
   );

@@ -32,6 +32,7 @@ export const getSetGangOR = (character: Character, gangInput: GangInput): SetGan
         ...gangInput,
         id: character.playbookUniques.gang.id,
         uniqueType: UniqueTypes.gang,
+        allowedStrengths: character.playbookUniques.gang.allowedStrengths,
         strengths: gangInput.strengths.map((str) => ({ ...str, __typename: 'GangOption' })),
         weaknesses: gangInput.weaknesses.map((wk) => ({ ...wk, __typename: 'GangOption' })),
         __typename: 'Gang',
@@ -46,6 +47,7 @@ export const getSetGangOR = (character: Character, gangInput: GangInput): SetGan
         ...gangInput,
         id: 'temp-id-2',
         uniqueType: UniqueTypes.gang,
+        allowedStrengths: 2,
         strengths: gangInput.strengths.map((str) => ({ ...str, __typename: 'GangOption' })),
         weaknesses: gangInput.weaknesses.map((wk) => ({ ...wk, __typename: 'GangOption' })),
         __typename: 'Gang',
@@ -79,6 +81,7 @@ const SET_GANG = gql`
           size
           harm
           armor
+          allowedStrengths
           strengths {
             id
             description

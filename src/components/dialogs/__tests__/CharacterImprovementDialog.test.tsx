@@ -11,7 +11,7 @@ import {
   mockSharpMax2AsCM,
   mockWeirdMax2AsCM,
 } from '../../../tests/fixtures/characterMovesFixtures';
-import { mockCoolMax2 } from '../../../tests/fixtures/mockMoves';
+import { mockCoolMax2 } from '../../../tests/fixtures/movesFixtures';
 import { mockGame7, mockPlaybookCreatorAngel } from '../../../tests/mocks';
 import { customRenderForComponent, RenderResult, waitOneTick } from '../../../tests/test-utils';
 import CharacterImprovementDialog from '../CharacterImprovementDialog';

@@ -17,7 +17,7 @@ import {
   mockChangePlaybook,
   mockImproveBasicMoves1,
   mockImproveBasicMoves2,
-} from './mockMoves';
+} from './movesFixtures';
 
 export const mockImprovementBlockDefault: ImprovementBlock = {
   id: 'mock-default-improvement-block-id',

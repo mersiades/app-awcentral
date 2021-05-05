@@ -4,16 +4,6 @@ import {
   mockgearInstructionsDefault,
   mockNameAngel1,
   mockNameAngel2,
-  mockLookAngel1,
-  mockLookAngel2,
-  mockLookAngel3,
-  mockLookAngel4,
-  mockLookAngel5,
-  mockLookAngel6,
-  mockLookAngel7,
-  mockLookAngel8,
-  mockLookAngel9,
-  mockLookAngel10,
   mockStatsOptionsDefault1,
   mockStatsOptionsDefault2,
   mockStatsOptionsDefault3,
@@ -32,7 +22,20 @@ import {
   mockCharacterMoveAngel3,
   mockCharacterMoveAngel4,
   mockCharacterMoveAngel1,
+  mockChopperSpecial,
 } from './characterMovesFixtures';
+import {
+  mockLookAngel1,
+  mockLookAngel2,
+  mockLookAngel3,
+  mockLookAngel4,
+  mockLookAngel5,
+  mockLookAngel6,
+  mockLookAngel7,
+  mockLookAngel8,
+  mockLookAngel9,
+  mockLookAngel10,
+} from './lookFixtures';
 import { mockImprovementBlockDefault } from './mockImprovementBlocks';
 
 export const mockPlaybookCreatorDefault: PlaybookCreator = {
@@ -81,6 +84,8 @@ export const mockPlaybookCreatorChopper: PlaybookCreator = {
   playbookType: PlaybookType.chopper,
   movesInstructions: 'You get all the basic moves. You get both chopper moves. ',
   playbookUniqueCreator: mockUniqueCreatorChopper,
+  defaultMoves: [mockChopperSpecial],
+  optionalMoves: [],
 };
 
 export const mockPlaybookCreatorDriver: PlaybookCreator = {

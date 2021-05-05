@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Box, CheckBox } from 'grommet';
 
 import Spinner from '../../Spinner';
-import { ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
+import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
@@ -17,6 +17,7 @@ import { omit } from 'lodash';
 import DoubleRedBox from '../../DoubleRedBox';
 import SingleRedBox from '../../SingleRedBox';
 import RedTagsBox from '../../RedTagsBox';
+import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
 
 interface GangFormProps {
   existingGang?: Gang;
@@ -164,6 +165,8 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
+  const allowedStrengths = character?.playbookUniques?.gang?.allowedStrengths;
+
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
   const history = useHistory();
 
@@ -176,7 +179,7 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const handleSubmitGang = async () => {
-    if (!!userGameRole && !!character && !!game) {
+    if (!!userGameRole && !!character && !!game && !!allowedStrengths) {
       // @ts-ignore
       const strengthsNoTypename = strengths.map((str: GangOption) => omit(str, ['__typename']));
       // @ts-ignore
@@ -187,10 +190,12 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
         size,
         harm,
         armor,
+        allowedStrengths,
         strengths: strengthsNoTypename,
         weaknesses: weaknessesNoTypename,
         tags,
       };
+
       try {
         setGang({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, gang: gangInput },
@@ -211,7 +216,7 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
     if (!!gangCreator) {
       if (strengths.map((str: GangOption) => str.id).includes(option.id)) {
         dispatch({ type: 'REMOVE_STRENGTH', payload: option });
-      } else if (strengths.length < gangCreator.strengthChoiceCount) {
+      } else if (!!allowedStrengths && strengths.length < allowedStrengths) {
         dispatch({ type: 'ADD_STRENGTH', payload: option });
       }
     }
@@ -235,6 +240,10 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
   }, [character]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
+  if (!allowedStrengths || !gangCreator) {
+    return null;
+  }
+
   return (
     <Box
       data-testid="gang-form"
@@ -254,7 +263,7 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
           onClick={() => !settingGang && handleSubmitGang()}
           disabled={
             settingGang ||
-            (!!gangCreator && strengths.length < gangCreator.strengthChoiceCount) ||
+            (!!gangCreator && strengths.length < allowedStrengths) ||
             (!!gangCreator && weaknesses.length < gangCreator.weaknessChoiceCount)
           }
         />
@@ -264,8 +273,12 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
           {gangCreator.intro}
         </ParagraphWS>
       )}
-      <ParagraphWS>Then, choose {!!gangCreator ? gangCreator?.strengthChoiceCount : 2}:</ParagraphWS>
-
+      <Box direction="row" align="center" gap="12px">
+        <ParagraphWS>{`Then, choose ${allowedStrengths}:`}</ParagraphWS>
+        {allowedStrengths > gangCreator.strengthChoiceCount && (
+          <ParagraphWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+        )}
+      </Box>
       <Box direction="row" fill="horizontal" gap="12px">
         <Box>
           {!!gangCreator &&

@@ -1,21 +1,14 @@
 import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { InMemoryCache } from '@apollo/client';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
+import BrainerGearForm from '../BrainerGearForm';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
-import {
-  blankCharacter,
-  mockBrainerGearCreator,
-  mockCharacter2,
-  mockGame5,
-  mockKeycloakUserInfo1,
-} from '../../../../tests/mocks';
+import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { PlaybookType } from '../../../../@types/enums';
 import { mockPlayBookCreatorQueryBrainer } from '../../../../tests/mockQueries';
-import BrainerGearForm from '../BrainerGearForm';
-import { InMemoryCache } from '@apollo/client';
-import wait from 'waait';
-import userEvent from '@testing-library/user-event';
 import { BrainerGear, Game } from '../../../../@types/dataInterfaces';
 import { mockPlaybookUniqueBrainer } from '../../../../tests/fixtures/playBookUniquesFixtures';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';

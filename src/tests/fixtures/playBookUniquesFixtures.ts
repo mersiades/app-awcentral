@@ -1,5 +1,5 @@
-import { PlaybookUniques, AngelKit, CustomWeapons, Weapons, BrainerGear } from '../../@types/dataInterfaces';
-import { UniqueTypes } from '../../@types/enums';
+import { PlaybookUniques, AngelKit, CustomWeapons, Weapons, BrainerGear, Gang } from '../../@types/dataInterfaces';
+import { GangSize, UniqueTypes } from '../../@types/enums';
 import {
   dummyAngelKit,
   dummyBrainerGear,
@@ -124,5 +124,25 @@ export const mockPlaybookUniqueGunlugger_withAngelKit: PlaybookUniques = {
   type: UniqueTypes.weapons,
   weapons: mockWeapons,
   angelKit: mockAngelKit,
+  __typename: 'PlaybookUniques',
+};
+
+export const mockGang_noSelectionsMade: Gang = {
+  id: 'mock-gang-id',
+  uniqueType: UniqueTypes.gang,
+  size: GangSize.small,
+  allowedStrengths: 2,
+  harm: 2,
+  armor: 1,
+  strengths: [],
+  weaknesses: [],
+  tags: ['savage'],
+  __typename: 'Gang',
+};
+
+export const mockPlaybookUniqueChopper: PlaybookUniques = {
+  id: 'mock-chopper-unique-id',
+  type: UniqueTypes.gang,
+  gang: mockGang_noSelectionsMade,
   __typename: 'PlaybookUniques',
 };
