@@ -177,7 +177,7 @@ describe('Rendering CharacterImprovementDialog', () => {
       await waitOneTick(); // wait for playbookCreator query
     });
 
-    test('should render with no pre-selected moves and 1 improvement available', async () => {
+    test.skip('should render with no pre-selected moves and 1 improvement available', async () => {
       expect(screen.getByRole('heading', { name: 'Improvements' })).toBeInTheDocument();
       expect(screen.getByRole('heading', { name: 'You can select 1 improvement' })).toBeInTheDocument();
       const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
