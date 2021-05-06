@@ -9,20 +9,9 @@ import {
 } from '../../../../@types/staticDataInterfaces';
 import { Character, Game } from '../../../../@types/dataInterfaces';
 import {
-  dummyAngelKitCreator,
-  dummyEstablishmentCreator,
-  dummyFollowerCreator,
-  dummyGangCreator,
-  dummyHoldingCreator,
-  dummySkinnerGearCreator,
-  dummyWeaponsCreator,
-  dummyWorkspaceCreator,
   mockBattlebabeLook,
   mockBrainerGearCreator,
   mockCharacterHarm,
-  mockCharacterMoveAngel1,
-  mockCharacterMoveAngel2,
-  mockCharacterMoveAngel3,
   mockCustomWeaponsCreator,
   mockFirearmBaseOption,
   mockFirearmOption,
@@ -31,9 +20,7 @@ import {
   mockHandOption,
   mockHandOption2,
   mockKeycloakUserInfo1,
-  mockLookBattlebabe2,
   mockPlaybookCreatorBattlebabe,
-  mockPlaybookUniqueBattlebabe,
   mockStatsBlock1,
   mockStatsOptionsAngel1,
   mockStatsOptionsAngel2,
@@ -46,6 +33,13 @@ import { MockedResponse } from '@apollo/client/testing';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../../../../queries/playbookCreator';
 import { InMemoryCache } from '@apollo/client';
 import userEvent from '@testing-library/user-event';
+import {
+  mockCharacterMoveAngel1,
+  mockCharacterMoveAngel2,
+  mockCharacterMoveAngel3,
+} from '../../../../tests/fixtures/characterMovesFixtures';
+import { mockLookBattlebabe2 } from '../../../../tests/fixtures/lookFixtures';
+import { mockPlaybookUniqueBattlebabe } from '../../../../tests/fixtures/playBookUniquesFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');

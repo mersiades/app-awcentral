@@ -3,18 +3,13 @@ import { act, screen } from '@testing-library/react';
 
 import CharacterNameForm from '../CharacterNameForm';
 import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
-import {
-  blankCharacter,
-  dummyAngelKitMove,
-  mockCharacter2,
-  mockGame5,
-  mockKeycloakUserInfo1,
-  mockNameAngel1,
-} from '../../../tests/mocks';
+import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import { mockPlaybookCreator } from '../../../tests/mockQueries';
 import { UniqueTypes } from '../../../@types/enums';
 import { Game } from '../../../@types/dataInterfaces';
+import { dummyAngelKitMove } from '../../../tests/fixtures/dummyData';
+import { mockNameAngel1 } from '../../../tests/fixtures/nameFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -112,14 +107,18 @@ describe('Rendering CharacterNameForm', () => {
                 type: UniqueTypes.angelKit,
                 brainerGear: {
                   id: 'dummy',
+                  uniqueType: UniqueTypes.brainerGear,
+                  allowedItemsCount: 2,
                   brainerGear: [],
                 },
                 customWeapons: {
                   id: 'dummy',
+                  uniqueType: UniqueTypes.customWeapons,
                   weapons: [],
                 },
                 angelKit: {
                   id: 'dummy',
+                  uniqueType: UniqueTypes.angelKit,
                   description: 'dummy',
                   stock: 0,
                   hasSupplier: false,

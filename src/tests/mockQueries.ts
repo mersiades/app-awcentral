@@ -61,8 +61,6 @@ import {
   mockHxInput,
   mockKeycloakUser1,
   mockKeycloakUser2,
-  mockNameAngel1,
-  mockNameAngel2,
   mockNewGameName,
   mockStatsBlockWithHighlight,
   mockVehicleInput,

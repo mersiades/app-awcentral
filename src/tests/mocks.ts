@@ -120,6 +120,7 @@ import {
   mockLookAngel8,
   mockLookAngel10,
 } from './fixtures/lookFixtures';
+import { mockNameAngel1, mockNameAngel2 } from './fixtures/nameFixtures';
 
 // Same as Character, but with no nullable fields
 interface MockCharacter {
@@ -278,18 +279,6 @@ export const mockPlaybookCreatorMoveAngel1: Move = {
   rollModifier: dummyRollModifier,
   moveAction: dummyMoveAction,
   __typename: 'Move',
-};
-
-export const mockNameAngel1: Name = {
-  id: 'mock-angel-name-id-1',
-  name: 'Jay',
-  __typename: 'Name',
-};
-
-export const mockNameAngel2: Name = {
-  id: 'mock-angel-name-id-2',
-  name: 'Boo',
-  __typename: 'Name',
 };
 
 export const mockVehicle1: Vehicle = {
@@ -899,35 +888,6 @@ export const mockAllMovesArray = [
 ];
 
 // ------------------------------------------------------- Default Creators --------------------------------------------------- //
-export const mockStatsOptionsDefault1: StatsOption = {
-  id: 'default-stats-options-1',
-  COOL: 1,
-  HARD: 0,
-  HOT: 1,
-  SHARP: 2,
-  WEIRD: -1,
-  __typename: 'StatsOption',
-};
-
-export const mockStatsOptionsDefault2: StatsOption = {
-  id: 'default-stats-options-2',
-  COOL: 1,
-  HARD: 1,
-  HOT: 0,
-  SHARP: 2,
-  WEIRD: -1,
-  __typename: 'StatsOption',
-};
-
-export const mockStatsOptionsDefault3: StatsOption = {
-  id: 'default-stats-options-3',
-  COOL: -1,
-  HARD: 1,
-  HOT: 0,
-  SHARP: 2,
-  WEIRD: 1,
-  __typename: 'StatsOption',
-};
 
 export const mockUniqueCreatorDefault: PlaybookUniqueCreator = {
   id: 'default-playbook-unique-creator-id',
@@ -943,18 +903,6 @@ export const mockUniqueCreatorDefault: PlaybookUniqueCreator = {
   weaponsCreator: dummyWeaponsCreator,
   workspaceCreator: dummyWorkspaceCreator,
   __typename: 'PlaybookUniqueCreator',
-};
-
-export const mockgearInstructionsDefault: GearInstructions = {
-  id: 'default-gear-instructions-id',
-  gearIntro: 'You get:',
-  youGetItems: ['fashion suitable to your look, including at your option a piece worth 1-armor (you detail)'],
-  introduceChoice: '',
-  numberCanChoose: 0,
-  chooseableGear: [],
-  withMC: 'If you’d like to start play with a vehicle or a prosthetic, get with the MC.',
-  startingBarter: 2,
-  __typename: 'GearInstructions',
 };
 
 // ------------------------------------------------------- Mock Angel playbook --------------------------------------------------- //
