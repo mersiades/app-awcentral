@@ -52,6 +52,7 @@ const SET_BRAINER_GEAR = gql`
         type
         brainerGear {
           id
+          uniqueType
           allowedItemsCount
           brainerGear
         }

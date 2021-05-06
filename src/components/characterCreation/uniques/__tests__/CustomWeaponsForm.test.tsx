@@ -1,17 +1,10 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import {
-  GearInstructions,
-  Look,
-  Name,
-  PlaybookCreator,
-  PlaybookUniqueCreator,
-} from '../../../../@types/staticDataInterfaces';
+
 import { Character, Game } from '../../../../@types/dataInterfaces';
 import {
   mockBattlebabeLook,
   mockCharacterHarm,
-  mockCustomWeaponsCreator,
   mockFirearmBaseOption,
   mockFirearmOption,
   mockFirearmOption2,
@@ -20,10 +13,8 @@ import {
   mockHandOption2,
   mockKeycloakUserInfo1,
   mockPlaybookCreatorBattlebabe,
-  mockStatsOptionsAngel1,
-  mockStatsOptionsAngel2,
 } from '../../../../tests/mocks';
-import { LookType, PlaybookType, RoleType, UniqueTypes } from '../../../../@types/enums';
+import { LookType, PlaybookType, RoleType } from '../../../../@types/enums';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import CustomWeaponsForm from '../CustomWeaponsForm';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
