@@ -5,7 +5,7 @@ import Spinner from '../Spinner';
 import AngelKitForm from './uniques/AngelKitForm';
 import CustomWeaponsForm from './uniques/CustomWeaponsForm';
 import BrainerGearForm from './uniques/BrainerGearForm';
-import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../@types/enums';
+import { CharacterCreationSteps, UniqueTypes } from '../../@types/enums';
 import { useGame } from '../../contexts/gameContext';
 import { useHistory } from 'react-router-dom';
 import GangForm from './uniques/GangForm';
@@ -82,7 +82,7 @@ const PlaybookUniqueRouter: FC = () => {
   }, [character]);
 
   useEffect(() => {
-    if (character?.playbook === PlaybookType.driver) {
+    if (!!character && !character.playbookUniques) {
       !!game && history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
     }
   }, [game, character, history]);

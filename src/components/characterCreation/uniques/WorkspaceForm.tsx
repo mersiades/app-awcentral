@@ -6,7 +6,7 @@ import { Box, Text } from 'grommet';
 import { StyledMarkdown } from '../../styledComponents';
 import { ButtonWS, HeadingWS } from '../../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
-import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
+import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../../@types/enums';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import SET_WORKSPACE, { getSetWorkspaceOR, SetWorkspaceData, SetWorkspaceVars } from '../../../mutations/setWorkspace';
@@ -40,6 +40,7 @@ const WorkspaceForm: FC = () => {
     if (!!userGameRole && !!character && !!game && !!workspaceCreator) {
       const workspaceInput: WorkspaceInput = {
         id: character.playbookUniques?.workspace ? character.playbookUniques.workspace.id : undefined,
+        uniqueType: UniqueTypes.workspace,
         workspaceItems: items,
         workspaceInstructions: workspaceCreator.workspaceInstructions,
         projectInstructions: workspaceCreator.projectInstructions,

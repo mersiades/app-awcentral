@@ -59,8 +59,8 @@ const CharacterCreationStepper: FC = () => {
 
   const handlePrevious = () => {
     if (!!character?.name && !!character?.playbook && !!currentStep) {
-      // Skip over playbookUniques page for Driver
-      if (currentStep === CharacterCreationSteps.selectMoves && character.playbook === PlaybookType.driver) {
+      // Skip over playbookUniques page if null (usually for Driver)
+      if (currentStep === CharacterCreationSteps.selectMoves && !character.playbookUniques) {
         changeStep(currentStep - 2);
       } else {
         changeStep(currentStep - 1);
@@ -70,8 +70,8 @@ const CharacterCreationStepper: FC = () => {
 
   const handleNext = () => {
     if (!!character?.name && !!character?.playbook && !!currentStep) {
-      // Skip over playbookUniques page for Driver
-      if (currentStep === CharacterCreationSteps.selectGear && character.playbook === PlaybookType.driver) {
+      // Skip over playbookUniques page if null (usually for Driver)
+      if (currentStep === CharacterCreationSteps.selectGear && !character.playbookUniques) {
         changeStep(currentStep + 2);
       } else {
         changeStep(currentStep + 1);
@@ -353,6 +353,14 @@ const CharacterCreationStepper: FC = () => {
         default:
           return null;
       }
+    } else {
+      if (character?.playbook === PlaybookType.driver) {
+        return (
+          <Text color="white" alignSelf="center">
+            Improve Driver to get workspace
+          </Text>
+        );
+      }
     }
   };
 
@@ -369,13 +377,21 @@ const CharacterCreationStepper: FC = () => {
       background={{ color: 'neutral-1', opacity: CharacterCreationSteps.setUnique === currentStep ? 1 : 0.5 }}
       onClick={(e: any) => {
         e.currentTarget.blur();
+        if (!character?.playbookUniques) {
+          e.preventDefault();
+
+          return;
+        }
+
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setUnique);
       }}
     >
       <Text color="white" weight="bold" alignSelf="center">
-        {!!pbCreator && pbCreator.playbookUniqueCreator ? decapitalize(pbCreator.playbookUniqueCreator.type) : '...'}
+        {!!pbCreator && pbCreator.playbookUniqueCreator
+          ? decapitalize(pbCreator.playbookUniqueCreator.type)
+          : `${character?.playbook === PlaybookType.driver ? 'Workspace' : '...'}`}
       </Text>
-      {!!character && !!character.playbookUniques ? renderUnique() : <Text>...</Text>}
+      {!!character && renderUnique()}
     </Box>
   );
 
@@ -528,10 +544,12 @@ const CharacterCreationStepper: FC = () => {
   );
 
   // Omit box for PlayBookUniques for Driver
-  const boxesArray =
-    character?.playbook !== PlaybookType.driver
-      ? [box0Step1, box1Step3, box2Step4, box3Step5, box4Step6, box5Step7, box6Step8, box7Step9, box8Step10]
-      : [box0Step1, box1Step3, box2Step4, box3Step5, box5Step7, box6Step8, box7Step9, box8Step10];
+  // const boxesArray =
+  //   character?.playbook !== PlaybookType.driver
+  //     ? [box0Step1, box1Step3, box2Step4, box3Step5, box4Step6, box5Step7, box6Step8, box7Step9, box8Step10]
+  //     : [box0Step1, box1Step3, box2Step4, box3Step5, box5Step7, box6Step8, box7Step9, box8Step10];
+
+  const boxesArray = [box0Step1, box1Step3, box2Step4, box3Step5, box4Step6, box5Step7, box6Step8, box7Step9, box8Step10];
 
   const renderBoxesSmall = () => {
     if (currentStep !== undefined) {

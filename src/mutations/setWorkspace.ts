@@ -2,7 +2,6 @@ import { gql } from '@apollo/client';
 import { WorkspaceInput } from '../@types';
 import { Character, PlaybookUniques, Workspace } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
-import { playbookUniqueFragments } from '../queries/game';
 
 export interface SetWorkspaceData {
   setWorkspace: {
@@ -52,11 +51,21 @@ const SET_WORKSPACE = gql`
       playbookUniques {
         id
         type
-        ...Workspace
+        workspace {
+          id
+          uniqueType
+          workspaceInstructions
+          projectInstructions
+          workspaceItems
+          projects {
+            id
+            name
+            notes
+          }
+        }
       }
     }
   }
-  ${playbookUniqueFragments.workspace}
 `;
 
 export default SET_WORKSPACE;

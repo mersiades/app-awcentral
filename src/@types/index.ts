@@ -1,5 +1,5 @@
 import { CastCrew, Project } from './dataInterfaces';
-import { GangSize, HoldingSize, LookType, PlaybookType, ThreatType, VehicleType } from './enums';
+import { GangSize, HoldingSize, LookType, PlaybookType, ThreatType, UniqueTypes, VehicleType } from './enums';
 import {
   VehicleFrame,
   VehicleBattleOption,
@@ -197,6 +197,7 @@ export interface ProjectInput {
 
 export interface WorkspaceInput {
   id?: string;
+  uniqueType: UniqueTypes;
   workspaceInstructions: string;
   projectInstructions: string;
   workspaceItems: string[];
