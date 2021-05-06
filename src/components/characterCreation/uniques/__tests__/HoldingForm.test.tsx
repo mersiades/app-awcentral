@@ -1,22 +1,15 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-// import wait from 'waait';
 import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
 import HoldingForm from '../HoldingForm';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
-import {
-  blankCharacter,
-  holdingOption1,
-  mockCharacter2,
-  mockGame5,
-  mockHoldingCreator,
-  mockKeycloakUserInfo1,
-} from '../../../../tests/mocks';
+import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryHardHolder } from '../../../../tests/mockQueries';
 import { Game } from '../../../../@types/dataInterfaces';
+import { mockHoldingCreator, holdingOption1 } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');

@@ -10,7 +10,6 @@ import {
 import { Character, Game } from '../../../../@types/dataInterfaces';
 import {
   mockBattlebabeLook,
-  mockBrainerGearCreator,
   mockCharacterHarm,
   mockCustomWeaponsCreator,
   mockFirearmBaseOption,
@@ -21,7 +20,6 @@ import {
   mockHandOption2,
   mockKeycloakUserInfo1,
   mockPlaybookCreatorBattlebabe,
-  mockStatsBlock1,
   mockStatsOptionsAngel1,
   mockStatsOptionsAngel2,
 } from '../../../../tests/mocks';
@@ -40,6 +38,7 @@ import {
 } from '../../../../tests/fixtures/characterMovesFixtures';
 import { mockLookBattlebabe2 } from '../../../../tests/fixtures/lookFixtures';
 import { mockPlaybookUniqueBattlebabe } from '../../../../tests/fixtures/playBookUniquesFixtures';
+import { mockStatsBlock1 } from '../../../../tests/fixtures/statsBlockFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');

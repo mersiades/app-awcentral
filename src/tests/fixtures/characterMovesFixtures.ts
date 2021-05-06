@@ -10,7 +10,13 @@ import {
 } from '../../config/constants';
 import { dummyStatModifier, dummyRollModifier, dummyMoveAction } from './dummyData';
 
-import { mockCoolMax2Mod, mockHardMax2Mod, mockHotMax2Mod, mockSharpMax2Mod, mockWeirdMax2Mod } from './mockStatModifiers';
+import {
+  mockCoolMax2Mod,
+  mockHardMax2Mod,
+  mockHotMax2Mod,
+  mockSharpMax2Mod,
+  mockWeirdMax2Mod,
+} from './statModifierFixtures';
 
 // --------------------------------- Improvement CharacterMoves ------------------------------- //
 export const mockSharpMax2AsCM: CharacterMove = {

@@ -5,12 +5,13 @@ import { screen } from '@testing-library/react';
 
 import GangForm from '../GangForm';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
-import { mockGame5, mockGangCreator, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
+import { mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryChopper } from '../../../../tests/mockQueries';
 import { Character, Game, Gang, PlaybookUniques } from '../../../../@types/dataInterfaces';
 import { mockChopper_fresh } from '../../../../tests/fixtures/characterFixtures';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
+import { mockGangCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');

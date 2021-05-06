@@ -1,7 +1,8 @@
 import { Character } from '../../@types/dataInterfaces';
 import { PlaybookType } from '../../@types/enums';
-import { mockCharacterHarm, mockStatsBlock1 } from '../mocks';
+import { mockCharacterHarm } from '../mocks';
 import { mockPlaybookUniqueChopper } from './playBookUniquesFixtures';
+import { mockStatsBlock1 } from './statsBlockFixtures';
 
 // Newly-created, character creation 100% incomplete
 export const mockChopper_fresh: Character = {

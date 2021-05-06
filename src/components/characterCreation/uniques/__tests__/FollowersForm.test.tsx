@@ -1,13 +1,6 @@
 import React from 'react';
 import { act, screen } from '@testing-library/react';
-import {
-  blankCharacter,
-  mockCharacter2,
-  mockFollowersCreator,
-  mockGame5,
-  mockKeycloakUserInfo1,
-  mockUniqueCreatorHocus,
-} from '../../../../tests/mocks';
+import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { InMemoryCache } from '@apollo/client';
@@ -16,6 +9,7 @@ import FollowersForm from '../FollowersForm';
 import { mockPlayBookCreatorQueryHocus } from '../../../../tests/mockQueries';
 import wait from 'waait';
 import { Game } from '../../../../@types/dataInterfaces';
+import { mockFollowersCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');

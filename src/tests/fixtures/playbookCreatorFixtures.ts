@@ -1,16 +1,6 @@
 import { PlaybookType } from '../../@types/enums';
 import { PlaybookCreator } from '../../@types/staticDataInterfaces';
-import {
-  mockUniqueCreatorDefault,
-  mockUniqueCreatorBrainer,
-  mockUniqueCreatorChopper,
-  mockUniqueCreatorGunlugger,
-  mockUniqueCreatorHardHolder,
-  mockUniqueCreatorHocus,
-  mockUniqueCreatorMaestroD,
-  mockUniqueCreatorSavvyhead,
-  mockUniqueCreatorSkinner,
-} from '../mocks';
+
 import {
   mockCharacterMoveAngel2,
   mockCharacterMoveAngel3,
@@ -31,8 +21,19 @@ import {
   mockLookAngel9,
   mockLookAngel10,
 } from './lookFixtures';
-import { mockImprovementBlockDefault } from './mockImprovementBlocks';
+import { mockImprovementBlockDefault } from './improvementBlockFixtures';
 import { mockNameAngel1, mockNameAngel2 } from './nameFixtures';
+import {
+  mockUniqueCreatorBrainer,
+  mockUniqueCreatorChopper,
+  mockUniqueCreatorDefault,
+  mockUniqueCreatorGunlugger,
+  mockUniqueCreatorHardHolder,
+  mockUniqueCreatorHocus,
+  mockUniqueCreatorMaestroD,
+  mockUniqueCreatorSavvyhead,
+  mockUniqueCreatorSkinner,
+} from './playbookUniqueCreatorsFixtures';
 import { mockStatsOptionsDefault1, mockStatsOptionsDefault2, mockStatsOptionsDefault3 } from './statsOptionsFixtures';
 
 export const mockPlaybookCreatorDefault: PlaybookCreator = {

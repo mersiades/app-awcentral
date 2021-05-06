@@ -1,4 +1,4 @@
-import { MoveType, PlaybookType } from '../../@types/enums';
+import { MoveType, PlaybookType, StatType } from '../../@types/enums';
 import { Move } from '../../@types/staticDataInterfaces';
 import {
   ADD_ANGEL_MOVE_1_NAME,
@@ -7,6 +7,7 @@ import {
   ADD_OTHER_PB_MOVE_2_NAME,
   ADD_SECOND_CHAR_NAME,
   ADJUST_ANGEL_UNIQUE_1_NAME,
+  ANGEL_SPECIAL_NAME,
   BONEFEEL_NAME,
   CHANGE_PLAYBOOK_NAME,
   COOL_2_MAX_NAME,
@@ -19,7 +20,14 @@ import {
   SHARP_2_MAX_NAME,
   WEIRD_2_MAX_NAME,
 } from '../../config/constants';
-import { mockCoolMax2Mod, mockHardMax2Mod, mockHotMax2Mod, mockSharpMax2Mod, mockWeirdMax2Mod } from './mockStatModifiers';
+import { dummyStatModifier, dummyRollModifier, dummyMoveAction } from './dummyData';
+import {
+  mockCoolMax2Mod,
+  mockHardMax2Mod,
+  mockHotMax2Mod,
+  mockSharpMax2Mod,
+  mockWeirdMax2Mod,
+} from './statModifierFixtures';
 
 // --------------------------------- Improvement Moves ------------------------------- //
 
@@ -198,5 +206,18 @@ export const mockSeeingSouls: Move = {
   description: '_**Seeing souls**_: when you help or...',
   playbook: PlaybookType.hocus,
   kind: MoveType.character,
+  __typename: 'Move',
+};
+
+export const mockAngelSpecial: Move = {
+  id: 'angel-angel-special-move-id-1',
+  name: ANGEL_SPECIAL_NAME,
+  kind: MoveType.default,
+  description: 'If you and another character have sex,',
+  playbook: PlaybookType.angel,
+  stat: StatType.hx,
+  statModifier: dummyStatModifier,
+  rollModifier: dummyRollModifier,
+  moveAction: dummyMoveAction,
   __typename: 'Move',
 };

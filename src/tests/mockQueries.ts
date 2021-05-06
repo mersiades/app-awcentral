@@ -46,6 +46,7 @@ import {
   mockPlaybookCreatorGunlugger,
   mockPlaybookCreatorSavvyhead,
 } from './fixtures/playbookCreatorFixtures';
+import { mockStatsBlockWithHighlight } from './fixtures/statsBlockFixtures';
 import {
   mockAllMovesArray,
   mockCharacter2,
@@ -62,19 +63,11 @@ import {
   mockKeycloakUser1,
   mockKeycloakUser2,
   mockNewGameName,
-  mockStatsBlockWithHighlight,
   mockVehicleInput,
   mockPlaybookAngel,
   mockPlaybookCreatorAngel,
   mockPlaybooks,
-  mockgearInstructionsAngel,
-  mockStatsOptionsAngel1,
-  mockStatsOptionsAngel2,
-  mockStatsOptionsAngel3,
-  mockUniqueCreatorAngel,
-  mockUniqueCreatorBrainer,
   mockVehicleCreator,
-  mockPlaybookCreatorMoveAngel1,
   mockMcContent,
 } from './mocks';
 
