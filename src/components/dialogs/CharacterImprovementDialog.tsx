@@ -20,6 +20,7 @@ import {
   ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES,
   ADD_PLAYBOOK_MOVE_IMPROVEMENT_NAMES,
   ADD_UNIQUE_IMPROVEMENT_NAMES,
+  ADD_VEHICLE,
   ADJUST_UNIQUE_IMPROVEMENT_NAMES,
   IMPROVE_STAT_IMPROVEMENT_NAMES,
 } from '../../config/constants';
@@ -50,7 +51,10 @@ const getNavDestinationForNewImprovement = (
     return `/character-creation/${gameId}?step=6`;
   }
 
-  // TODO: handle ADD_VEHICLE improvements
+  if (newImprovement === ADD_VEHICLE) {
+    return `/character-creation/${gameId}?step=8`;
+  }
+
   // TODO: handle GENERIC_INCREASE_STAT improvements
   // TODO: handle RETIRE improvements
   // TODO: handle ADD_SECOND_CHARACTER improvements
