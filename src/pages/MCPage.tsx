@@ -29,7 +29,7 @@ import { useGame } from '../contexts/gameContext';
 import { customTabStyles } from '../config/grommetConfig';
 import '../assets/styles/transitions.css';
 import GameNavbar from '../components/GameNavbar';
-import { gamePageBottomNavbarHeight } from '../config/constants';
+import { GAME_PAGE_BOTTOM_NAVBAR_HEIGHT } from '../config/constants';
 import { useMcContent } from '../contexts/mcContentContext';
 import FirstSessionDialog from '../components/dialogs/FirstSessionDialog';
 import XCard from '../components/XCard';
@@ -188,7 +188,7 @@ const MCPage: FC = () => {
           </RightMainContainer>
         </MainContainer>
       </div>
-      <Footer direction="row" justify="between" align="center" height={`${gamePageBottomNavbarHeight}px`} wrap>
+      <Footer direction="row" justify="between" align="center" height={`${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT}px`} wrap>
         <ThemeContext.Extend value={customTabStyles}>
           <Tabs
             activeIndex={sidePanel}

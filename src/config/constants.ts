@@ -23,7 +23,7 @@ export const SPEED_RECOVERY_NAME = 'SPEED THE RECOVERY OF SOMEONE';
 export const REVIVE_SOMEONE_NAME = 'REVIVE SOMEONE';
 export const TREAT_NPC_NAME = 'TREAT AN NPC';
 export const COLLECTOR_NAME = 'COLLECTOR';
-export const otherCarTankName = 'MY OTHER CAR IS A TANK';
+export const OTHER_CAR_TANK_NAME = 'MY OTHER CAR IS A TANK';
 export const GO_AGGRO_NAME = 'GO AGGRO ON SOMEONE';
 export const SUCKER_SOMEONE_NAME = 'SUCKER SOMEONE';
 export const CAT_OR_MOUSE_NAME = 'CAT OR MOUSE';
@@ -35,6 +35,7 @@ export const DEAL_WITH_TERRAIN_NAME = 'DEAL WITH BAD TERRAIN';
 export const LEADERSHIP_NAME = 'LEADERSHIP';
 export const WEALTH_NAME = 'WEALTH';
 export const FORTUNES_NAME = 'FORTUNES';
+export const PACK_ALPHA_NAME = 'PACK ALPHA';
 export const LOST_NAME = 'LOST';
 export const ARRTFUL_NAME = 'ARTFUL & GRACIOUS';
 export const HYPNOTIC_NAME = 'HYPNOTIC';
@@ -89,6 +90,7 @@ export const ADJUST_SAVVYHEAD_UNIQUE_2_NAME = 'ADJUST SAVVYHEAD UNIQUE 2';
 export const ADD_OTHER_PB_MOVE_1_NAME = 'ADD MOVE FROM OTHER PLAYBOOK 1';
 export const ADD_OTHER_PB_MOVE_2_NAME = 'ADD MOVE FROM OTHER PLAYBOOK 2';
 export const ADD_GANG_LEADERSHIP_NAME = 'ADD GANG AND LEADERSHIP';
+export const ADD_GANG_PACK_ALPHA_NAME = 'ADD GANG AND PACK ALPHA';
 export const ADD_HOLDING = 'ADD HOLDING';
 export const ADD_VEHICLE = 'ADD VEHICLE';
 export const ADD_WORKSPACE = 'ADD WORKSPACE';
@@ -99,7 +101,7 @@ export const CHANGE_PLAYBOOK_NAME = 'CHANGE PLAYBOOK';
 export const IMPROVE_BASIC_MOVES_1_NAME = 'IMPROVE BASIC MOVES 1';
 export const IMPROVE_BASIC_MOVES_2_NAME = 'IMPROVE BASIC MOVES 2';
 
-export const ADD_UNIQUE_IMPROVEMENT_NAMES = [ADD_GANG_LEADERSHIP_NAME, ADD_WORKSPACE];
+export const ADD_UNIQUE_IMPROVEMENT_NAMES = [ADD_GANG_LEADERSHIP_NAME, ADD_WORKSPACE, ADD_GANG_PACK_ALPHA_NAME];
 
 export const ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES = [ADD_OTHER_PB_MOVE_1_NAME, ADD_OTHER_PB_MOVE_2_NAME];
 
@@ -157,16 +159,16 @@ export const ADJUST_UNIQUE_IMPROVEMENT_NAMES = [
 ];
 
 // Moves that can earn holds
-export const readPersonName = 'READ A PERSON';
-export const keepEyeOutName = 'KEEP AN EYE OUT';
-export const dangerousAndSexyName = 'DANGEROUS & SEXY';
-export const brainScanName = 'DEEP BRAIN SCAN';
-export const puppetStringsName = 'IN BRAIN PUPPET STRINGS';
+export const READ_PERSON_NAME = 'READ A PERSON';
+export const KEEP_EYE_OUT_NAME = 'KEEP AN EYE OUT';
+export const DANGEROUS_AND_SEXY_NAME = 'DANGEROUS & SEXY';
+export const BRAINSCAN_NAME = 'DEEP BRAIN SCAN';
+export const PUPPET_STRINGS_NAME = 'IN BRAIN PUPPET STRINGS';
 export const BONEFEEL_NAME = 'BONEFEEL';
 
 // CSS
-export const gamePageTopNavbarHeight = 30;
-export const gamePageBottomNavbarHeight = 80;
+export const GAME_PAGE_TOP_NAVBAR_HEIGHT = 30;
+export const GAME_PAGE_BOTTOM_NAVBAR_HEIGHT = 80;
 
 export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
 
