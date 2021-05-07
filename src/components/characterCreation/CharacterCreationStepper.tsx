@@ -315,7 +315,7 @@ const CharacterCreationStepper: FC = () => {
           }
           return null;
         case UniqueTypes.skinnerGear:
-          if (!!character.playbookUniques.skinnerGear) {
+          if (!!character.playbookUniques.skinnerGear?.graciousWeapon) {
             const splitItem = (item: string) => item.substring(0, item.indexOf(' ('));
             return (
               <CustomUL>

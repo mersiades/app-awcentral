@@ -20,7 +20,7 @@ import {
   ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES,
   ADD_PLAYBOOK_MOVE_IMPROVEMENT_NAMES,
   ADD_UNIQUE_IMPROVEMENT_NAMES,
-  ADD_VEHICLE,
+  ADD_VEHICLE_NAME,
   ADJUST_UNIQUE_IMPROVEMENT_NAMES,
   IMPROVE_STAT_IMPROVEMENT_NAMES,
 } from '../../config/constants';
@@ -51,7 +51,7 @@ const getNavDestinationForNewImprovement = (
     return `/character-creation/${gameId}?step=6`;
   }
 
-  if (newImprovement === ADD_VEHICLE) {
+  if (newImprovement === ADD_VEHICLE_NAME) {
     return `/character-creation/${gameId}?step=8`;
   }
 
