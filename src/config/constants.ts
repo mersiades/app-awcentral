@@ -173,3 +173,8 @@ export const GAME_PAGE_BOTTOM_NAVBAR_HEIGHT = 80;
 export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
 
 export const INCREASED_BY_IMPROVEMENT_TEXT = '(increased by improvement)';
+export const DECREASED_BY_IMPROVEMENT_TEXT = '(decreased by improvement)';
+
+export const HOLDING_SOULS_SMALL = '50-60 souls';
+export const HOLDING_SOULS_MEDIUM = '75-150 souls';
+export const HOLDING_SOULS_LARGE = '200-300 souls';

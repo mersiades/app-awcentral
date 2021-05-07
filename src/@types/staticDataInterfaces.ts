@@ -321,8 +321,8 @@ export interface HoldingCreator {
   defaultGangHarm: number;
   defaultGangArmor: number;
   defaultGangTag: string;
-  strengthCount: number;
-  weaknessCount: number;
+  defaultStrengthsCount: number;
+  defaultWeaknessesCount: number;
   strengthOptions: HoldingOption[];
   weaknessOptions: HoldingOption[];
   __typename?: 'HoldingCreator';

@@ -9,7 +9,7 @@ import DoubleRedBox from '../../DoubleRedBox';
 import RedTagsBox from '../../RedTagsBox';
 import SingleRedBox from '../../SingleRedBox';
 import { StyledMarkdown } from '../../styledComponents';
-import { ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
+import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
 import SET_HOLDING, { getSetHoldingOR, SetHoldingData, SetHoldingVars } from '../../../mutations/setHolding';
 import { CharacterCreationSteps, GangSize, HoldingSize, PlaybookType } from '../../../@types/enums';
@@ -18,6 +18,13 @@ import { GangOption, HoldingOption } from '../../../@types/staticDataInterfaces'
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { updateTags, unUpdateTags } from '../../../helpers/updateTags';
+import {
+  DECREASED_BY_IMPROVEMENT_TEXT,
+  HOLDING_SOULS_LARGE,
+  HOLDING_SOULS_MEDIUM,
+  HOLDING_SOULS_SMALL,
+  INCREASED_BY_IMPROVEMENT_TEXT,
+} from '../../../config/constants';
 
 interface HoldingFormState {
   holdingSize: HoldingSize;
@@ -31,6 +38,8 @@ interface HoldingFormState {
   wants: string[];
   gigs: string[];
   gangTags: string[];
+  strengthsCount: number;
+  weaknessesCount: number;
   selectedStrengths: HoldingOption[];
   selectedWeaknesses: HoldingOption[];
 }
@@ -43,11 +52,11 @@ interface Action {
 const getSouls = (holdingSize: HoldingSize) => {
   switch (holdingSize) {
     case HoldingSize.small:
-      return '50-60 souls';
+      return HOLDING_SOULS_SMALL;
     case HoldingSize.medium:
-      return '75-150 souls';
+      return HOLDING_SOULS_MEDIUM;
     case HoldingSize.large:
-      return '200-300 souls';
+      return HOLDING_SOULS_LARGE;
   }
 };
 
@@ -82,12 +91,16 @@ const HoldingForm: FC = () => {
     wants: ['hungry'],
     gigs: ['hunting', 'crude farming', 'scavenging'],
     gangTags: ['unruly'],
+    strengthsCount: 4,
+    weaknessesCount: 2,
     selectedStrengths: [],
     selectedWeaknesses: [],
   };
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [
     {
+      strengthsCount,
+      weaknessesCount,
       selectedStrengths,
       selectedWeaknesses,
       holdingSize,
@@ -132,6 +145,8 @@ const HoldingForm: FC = () => {
         id: character?.playbookUniques?.holding ? character.playbookUniques.holding.id : undefined,
         selectedStrengths: strengthsNoTypename,
         selectedWeaknesses: weaknessesNoTypename,
+        weaknessesCount,
+        strengthsCount,
         holdingSize,
         gangSize,
         surplus,
@@ -273,7 +288,7 @@ const HoldingForm: FC = () => {
     if (!!holdingCreator) {
       if (selectedStrengths.map((str: HoldingOption) => str.id).includes(option.id)) {
         removeOption(option, 'strength');
-      } else if (selectedStrengths.length < holdingCreator.strengthCount) {
+      } else if (selectedStrengths.length < strengthsCount) {
         addOption(option, 'strength');
       }
     }
@@ -283,7 +298,7 @@ const HoldingForm: FC = () => {
     if (!!holdingCreator) {
       if (selectedWeaknesses.map((wk: HoldingOption) => wk.id).includes(option.id)) {
         removeOption(option, 'weakness');
-      } else if (selectedWeaknesses.length < holdingCreator.weaknessCount) {
+      } else if (selectedWeaknesses.length < weaknessesCount) {
         addOption(option, 'weakness');
       }
     }
@@ -294,7 +309,7 @@ const HoldingForm: FC = () => {
     if (!!character?.playbookUniques?.holding) {
       dispatch({ type: 'SET_EXISTING_HOLDING', payload: character.playbookUniques.holding });
       setVehicleCount(character.vehicleCount);
-      // TODO add battleVehicleCount
+      !!holdingCreator && setBattleVehicleCount(holdingCreator.defaultBattleVehicleCount);
     } else if (!!holdingCreator) {
       const defaultState: HoldingFormState = {
         holdingSize: holdingCreator.defaultHoldingSize,
@@ -308,6 +323,8 @@ const HoldingForm: FC = () => {
         wants: [holdingCreator.defaultWant],
         gigs: holdingCreator.defaultGigs,
         gangTags: [holdingCreator.defaultGangTag],
+        strengthsCount: 4,
+        weaknessesCount: 2,
         selectedStrengths: [],
         selectedWeaknesses: [],
       };
@@ -318,6 +335,10 @@ const HoldingForm: FC = () => {
   }, [character, holdingCreator]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
+
+  if (!holdingCreator) {
+    return null;
+  }
 
   return (
     <Box
@@ -337,14 +358,17 @@ const HoldingForm: FC = () => {
           label={settingHolding ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
           onClick={() => !settingHolding && handleSubmitHolding()}
           disabled={
-            settingHolding ||
-            (!!holdingCreator && selectedStrengths.length < holdingCreator.strengthCount) ||
-            (!!holdingCreator && selectedWeaknesses.length < holdingCreator.weaknessCount)
+            settingHolding || selectedStrengths.length !== strengthsCount || selectedWeaknesses.length !== weaknessesCount
           }
         />
       </Box>
-      {!!holdingCreator && <StyledMarkdown>{holdingCreator.instructions}</StyledMarkdown>}
-      <ParagraphWS>Then, choose {!!holdingCreator ? holdingCreator?.strengthCount : 2}:</ParagraphWS>
+      {<StyledMarkdown>{holdingCreator.instructions}</StyledMarkdown>}
+      <Box direction="row" align="center" gap="12px">
+        <ParagraphWS>Then, choose {strengthsCount}:</ParagraphWS>
+        {strengthsCount > holdingCreator.defaultStrengthsCount && (
+          <ParagraphWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+        )}
+      </Box>
       <Box direction="row" fill="horizontal" gap="12px">
         <Box>
           {!!holdingCreator &&
@@ -358,7 +382,13 @@ const HoldingForm: FC = () => {
                 />
               );
             })}
-          <ParagraphWS>And choose {!!holdingCreator ? holdingCreator?.weaknessCount : 1}:</ParagraphWS>
+          <Box direction="row" align="center" gap="12px">
+            <ParagraphWS>And choose {weaknessesCount}:</ParagraphWS>
+            {weaknessesCount < holdingCreator.defaultWeaknessesCount && (
+              <ParagraphWS color={accentColors[0]}>{DECREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+            )}
+          </Box>
+
           {!!holdingCreator &&
             holdingCreator.weaknessOptions.map((option) => {
               return (

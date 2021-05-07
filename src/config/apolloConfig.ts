@@ -56,6 +56,22 @@ export const apolloClient = new ApolloClient({
           },
         },
       },
+      Holding: {
+        fields: {
+          selectedWeaknesses: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
+          selectedStrengths: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
+        },
+      },
     },
   }),
 });

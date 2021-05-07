@@ -761,8 +761,8 @@ const PLAYBOOK_CREATOR = gql`
           defaultGangHarm
           defaultGangArmor
           defaultGangTag
-          strengthCount
-          weaknessCount
+          defaultStrengthsCount
+          defaultWeaknessesCount
           strengthOptions {
             id
             description

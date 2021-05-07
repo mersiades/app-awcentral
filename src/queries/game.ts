@@ -819,6 +819,8 @@ const GAME = gql`
               wants
               gigs
               gangTags
+              strengthsCount
+              weaknessesCount
               selectedStrengths {
                 id
                 description

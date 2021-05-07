@@ -179,6 +179,8 @@ export interface HoldingInput {
   wants: string[];
   gigs: string[];
   gangTags: string[];
+  strengthsCount: number;
+  weaknessesCount: number;
   selectedStrengths: HoldingOption[];
   selectedWeaknesses: HoldingOption[];
 }

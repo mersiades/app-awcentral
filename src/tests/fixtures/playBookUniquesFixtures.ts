@@ -1,5 +1,6 @@
-import { PlaybookUniques, AngelKit, CustomWeapons, Weapons, BrainerGear, Gang } from '../../@types/dataInterfaces';
-import { GangSize, UniqueTypes } from '../../@types/enums';
+import { PlaybookUniques, AngelKit, CustomWeapons, Weapons, BrainerGear, Gang, Holding } from '../../@types/dataInterfaces';
+import { GangSize, HoldingSize, UniqueTypes } from '../../@types/enums';
+import { HOLDING_SOULS_MEDIUM } from '../../config/constants';
 import {
   dummyAngelKit,
   dummyBrainerGear,
@@ -13,6 +14,8 @@ import {
   dummyAngelKitMove,
   dummyCustomWeapons,
 } from './dummyData';
+
+// ------------------------------------------------------- CustomWeapons / Battlebabe -------------------------------------------------------- //
 
 export const mockCustomWeapons: CustomWeapons = {
   id: 'mock-custom-weapons-id',
@@ -40,6 +43,8 @@ export const mockPlaybookUniqueBattlebabe_withDummyUniques: PlaybookUniques = {
   weapons: dummyWeapons,
   workspace: dummyWorkspace,
 };
+
+// ------------------------------------------------------- AngelKit / Angel -------------------------------------------------------- //
 
 export const mockAngelKit: AngelKit = {
   id: 'mock-angel-kit-id',
@@ -75,6 +80,8 @@ export const mockPlaybookUniqueAngel_withDummyUniques: PlaybookUniques = {
   __typename: 'PlaybookUniques',
 };
 
+// ------------------------------------------------------- BrainerGear / Brainer -------------------------------------------------------- //
+
 export const mockBrainerGear: BrainerGear = {
   id: 'mock-brainer-gear-id',
   uniqueType: UniqueTypes.brainerGear,
@@ -105,6 +112,8 @@ export const mockPlaybookUniqueBrainer_withDummyUniques: PlaybookUniques = {
   __typename: 'PlaybookUniques',
 };
 
+// ------------------------------------------------------- Weapons / Gunlugger -------------------------------------------------------- //
+
 export const mockWeapons: Weapons = {
   id: 'mock-weapons-id',
   uniqueType: UniqueTypes.weapons,
@@ -127,6 +136,8 @@ export const mockPlaybookUniqueGunlugger_withAngelKit: PlaybookUniques = {
   __typename: 'PlaybookUniques',
 };
 
+// ------------------------------------------------------- Gang / Chopper -------------------------------------------------------- //
+
 export const mockGang_noSelectionsMade: Gang = {
   id: 'mock-gang-id',
   uniqueType: UniqueTypes.gang,
@@ -145,4 +156,46 @@ export const mockPlaybookUniqueChopper: PlaybookUniques = {
   type: UniqueTypes.gang,
   gang: mockGang_noSelectionsMade,
   __typename: 'PlaybookUniques',
+};
+
+// ------------------------------------------------------- Holding / HardHolder -------------------------------------------------------- //
+
+export const mockHolding_noSelectionsMade: Holding = {
+  id: 'mock-holding-1-id',
+  uniqueType: UniqueTypes.holding,
+  holdingSize: HoldingSize.medium,
+  gangSize: GangSize.small,
+  souls: HOLDING_SOULS_MEDIUM,
+  surplus: 1,
+  barter: 0,
+  gangHarm: 2,
+  gangArmor: 1,
+  gangDefenseArmorBonus: 1,
+  wants: ['hungry'],
+  gigs: ['hunting', 'crude farming', 'scavenging'],
+  gangTags: ['unruly'],
+  strengthsCount: 4,
+  weaknessesCount: 2,
+  selectedStrengths: [],
+  selectedWeaknesses: [],
+  __typename: 'Holding',
+};
+
+export const mockHolding_with3Improvements: Holding = {
+  ...mockHolding_noSelectionsMade,
+  id: 'mock-holding-2-id',
+  strengthsCount: 6,
+  weaknessesCount: 1,
+};
+
+export const mockPlaybookUniqueHardHolder: PlaybookUniques = {
+  id: 'mock-hardholder-unique-1-id',
+  type: UniqueTypes.holding,
+  holding: mockHolding_noSelectionsMade,
+  __typename: 'PlaybookUniques',
+};
+export const mockPlaybookUniqueHardHolder_with3Improvements: PlaybookUniques = {
+  ...mockPlaybookUniqueHardHolder,
+  id: 'mock-hardholder-unique-2-id',
+  holding: mockHolding_with3Improvements,
 };

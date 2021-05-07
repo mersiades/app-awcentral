@@ -250,6 +250,8 @@ export interface Holding {
   wants: string[];
   gigs: string[];
   gangTags: string[];
+  strengthsCount: number;
+  weaknessesCount: number;
   selectedStrengths: HoldingOption[];
   selectedWeaknesses: HoldingOption[];
   __typename?: 'Holding';
