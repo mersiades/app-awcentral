@@ -1,4 +1,13 @@
-import { PlaybookUniques, AngelKit, CustomWeapons, Weapons, BrainerGear, Gang, Holding } from '../../@types/dataInterfaces';
+import {
+  PlaybookUniques,
+  AngelKit,
+  CustomWeapons,
+  Weapons,
+  BrainerGear,
+  Gang,
+  Holding,
+  Followers,
+} from '../../@types/dataInterfaces';
 import { GangSize, HoldingSize, UniqueTypes } from '../../@types/enums';
 import { HOLDING_SOULS_MEDIUM } from '../../config/constants';
 import {
@@ -194,8 +203,49 @@ export const mockPlaybookUniqueHardHolder: PlaybookUniques = {
   holding: mockHolding_noSelectionsMade,
   __typename: 'PlaybookUniques',
 };
+
 export const mockPlaybookUniqueHardHolder_with3Improvements: PlaybookUniques = {
   ...mockPlaybookUniqueHardHolder,
   id: 'mock-hardholder-unique-2-id',
   holding: mockHolding_with3Improvements,
+};
+
+// ------------------------------------------------------- Followers / Hocus -------------------------------------------------------- //
+
+export const mockFollowers_noSelectionsMade: Followers = {
+  id: 'mock-followers-1-id',
+  uniqueType: UniqueTypes.followers,
+  description: '',
+  travelOption: '',
+  characterization: '',
+  followers: 20,
+  fortune: 1,
+  barter: 0,
+  surplusBarter: 1,
+  strengthsCount: 2,
+  weaknessesCount: 2,
+  surplus: [],
+  wants: [],
+  selectedStrengths: [],
+  selectedWeaknesses: [],
+  __typename: 'Followers',
+};
+
+export const mockFollowers_with1Improvement: Followers = {
+  ...mockFollowers_noSelectionsMade,
+  id: 'mock-followers-2-id',
+  strengthsCount: 3,
+};
+
+export const mockPlaybookUniqueHocus: PlaybookUniques = {
+  id: 'mock-hocus-unique-1-id',
+  type: UniqueTypes.followers,
+  followers: mockFollowers_noSelectionsMade,
+  __typename: 'PlaybookUniques',
+};
+
+export const mockPlaybookUniqueHocus_with1Improvement: PlaybookUniques = {
+  ...mockPlaybookUniqueHocus,
+  id: 'mock-hocus-unique-2-id',
+  followers: mockFollowers_with1Improvement,
 };

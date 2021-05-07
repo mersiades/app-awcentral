@@ -66,6 +66,8 @@ const SET_FOLLOWERS = gql`
           surplusBarter
           surplus
           wants
+          strengthsCount
+          weaknessesCount
           selectedStrengths {
             id
             description

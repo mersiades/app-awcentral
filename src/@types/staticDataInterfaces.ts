@@ -247,8 +247,8 @@ export interface FollowersCreator {
   defaultNumberOfFollowers: number;
   defaultSurplusBarter: number;
   defaultFortune: number;
-  strengthCount: number;
-  weaknessCount: number;
+  defaultStrengthsCount: number;
+  defaultWeaknessesCount: number;
   travelOptions: string[];
   characterizationOptions: string[];
   defaultWants: string[];

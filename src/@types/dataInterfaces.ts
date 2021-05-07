@@ -216,6 +216,8 @@ export interface Followers {
   fortune: number;
   barter: number;
   surplusBarter: number;
+  strengthsCount: number;
+  weaknessesCount: number;
   surplus: string[];
   wants: string[];
   selectedStrengths: FollowersOption[];

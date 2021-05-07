@@ -8,7 +8,7 @@ import Spinner from '../../Spinner';
 import DoubleRedBox from '../../DoubleRedBox';
 import RedTagsBox from '../../RedTagsBox';
 import { StyledMarkdown } from '../../styledComponents';
-import { ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
+import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
 import SET_FOLLOWERS, { getSetFollowerOR, SetFollowersData, SetFollowersVars } from '../../../mutations/setFollowers';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
@@ -18,6 +18,7 @@ import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { updateTags, unUpdateTags } from '../../../helpers/updateTags';
 import { getFollowersDescription } from '../../../helpers/getFollowersDescription';
+import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
 
 interface FollowersFormState {
   description: string;
@@ -27,6 +28,8 @@ interface FollowersFormState {
   fortune: number;
   barter: number;
   surplusBarter: number;
+  strengthsCount: number;
+  weaknessesCount: number;
   surplus: string[];
   wants: string[];
   selectedStrengths: FollowersOption[];
@@ -88,6 +91,8 @@ const FollowersForm: FC = () => {
     fortune: 1,
     barter: 0,
     surplusBarter: 1,
+    strengthsCount: 2,
+    weaknessesCount: 2,
     surplus: ['1-barter'],
     wants: ['desertion'],
     selectedStrengths: [],
@@ -105,6 +110,8 @@ const FollowersForm: FC = () => {
       surplusBarter,
       surplus,
       wants,
+      strengthsCount,
+      weaknessesCount,
       selectedStrengths,
       selectedWeaknesses,
     },
@@ -138,6 +145,8 @@ const FollowersForm: FC = () => {
         id: character?.playbookUniques?.followers ? character.playbookUniques.followers.id : undefined,
         selectedStrengths: strengthsNoTypename,
         selectedWeaknesses: weaknessesNoTypename,
+        strengthsCount,
+        weaknessesCount,
         description,
         travelOption,
         characterization,
@@ -245,7 +254,7 @@ const FollowersForm: FC = () => {
     if (!!followersCreator) {
       if (selectedStrengths.map((str: FollowersOption) => str.id).includes(option.id)) {
         removeOption(option, 'strength');
-      } else if (selectedStrengths.length < followersCreator.strengthCount) {
+      } else if (selectedStrengths.length < strengthsCount) {
         addOption(option, 'strength');
       }
     }
@@ -255,7 +264,7 @@ const FollowersForm: FC = () => {
     if (!!followersCreator) {
       if (selectedWeaknesses.map((wk: FollowersOption) => wk.id).includes(option.id)) {
         removeOption(option, 'weakness');
-      } else if (selectedWeaknesses.length < followersCreator.weaknessCount) {
+      } else if (selectedWeaknesses.length < weaknessesCount) {
         addOption(option, 'weakness');
       }
     }
@@ -274,6 +283,8 @@ const FollowersForm: FC = () => {
         fortune: followersCreator.defaultFortune,
         barter: 0,
         surplusBarter: followersCreator.defaultSurplusBarter,
+        strengthsCount: followersCreator.defaultStrengthsCount,
+        weaknessesCount: followersCreator.defaultWeaknessesCount,
         surplus: ['1-barter'],
         wants: followersCreator.defaultWants,
         selectedStrengths: [],
@@ -284,6 +295,10 @@ const FollowersForm: FC = () => {
   }, [character, followersCreator]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
+
+  if (!followersCreator) {
+    return null;
+  }
 
   const renderPills = () => (
     <Box direction="row" margin={{ top: '3px' }} wrap overflow="auto">
@@ -324,8 +339,8 @@ const FollowersForm: FC = () => {
           onClick={() => !settingFollowers && handleSubmitFollowers()}
           disabled={
             settingFollowers ||
-            (!!followersCreator && selectedStrengths.length < followersCreator.strengthCount) ||
-            (!!followersCreator && selectedWeaknesses.length < followersCreator.weaknessCount) ||
+            (!!followersCreator && selectedStrengths.length < followersCreator.defaultStrengthsCount) ||
+            (!!followersCreator && selectedWeaknesses.length < followersCreator.defaultWeaknessesCount) ||
             !characterization ||
             !travelOption
           }
@@ -358,9 +373,12 @@ const FollowersForm: FC = () => {
         </Box>
       </Box>
       <Box fill="horizontal" justify="between" margin={{ top: '6px' }}>
-        <ParagraphWS margin={{ bottom: '0px' }}>
-          Choose {!!followersCreator ? followersCreator?.strengthCount : 2}:
-        </ParagraphWS>
+        <Box direction="row" align="center" gap="12px" margin={{ bottom: '0px' }}>
+          <ParagraphWS>Choose {strengthsCount}:</ParagraphWS>
+          {strengthsCount > followersCreator.defaultStrengthsCount && (
+            <ParagraphWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+          )}
+        </Box>
         <Box direction="row">
           <Box>
             {!!followersCreator &&
@@ -376,7 +394,7 @@ const FollowersForm: FC = () => {
                 );
               })}
             <ParagraphWS margin={{ bottom: '0px' }}>
-              Choose {!!followersCreator ? followersCreator?.weaknessCount : 2}:
+              Choose {!!followersCreator ? followersCreator?.defaultWeaknessesCount : 2}:
             </ParagraphWS>
             {!!followersCreator &&
               followersCreator.weaknessOptions.map((option) => {

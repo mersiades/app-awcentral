@@ -765,6 +765,8 @@ const GAME = gql`
               surplusBarter
               surplus
               wants
+              strengthsCount
+              weaknessesCount
               selectedStrengths {
                 id
                 description
