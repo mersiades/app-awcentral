@@ -11,6 +11,7 @@ import {
   Establishment,
 } from '../../@types/dataInterfaces';
 import { GangSize, HoldingSize, UniqueTypes } from '../../@types/enums';
+import { SecurityOption } from '../../@types/staticDataInterfaces';
 import { HOLDING_SOULS_MEDIUM, LIFE_SUPPORT_TEXT } from '../../config/constants';
 import {
   dummyAngelKit,
@@ -323,6 +324,54 @@ export const mockEstablishment_withOneImprovement: Establishment = {
   securitiesCount: 3,
 };
 
+export const mockEstablishment_needingInterestResolution: Establishment = {
+  ...mockEstablishment_noSelectionsMade,
+  securitiesCount: 3,
+  oweForIt: 'Rolfball',
+  wantsItGone: 'Gams',
+  wantsInOnIt: 'Been',
+};
+
+export const mockSecurityOption1: SecurityOption = {
+  id: 'mock-security-option-1-id',
+  description: 'mock-description-1',
+  value: 1,
+  __typename: 'SecurityOption',
+};
+
+export const mockSecurityOption2: SecurityOption = {
+  id: 'mock-security-option-2-id',
+  description: 'mock-description-2',
+  value: 1,
+  __typename: 'SecurityOption',
+};
+
+export const mockSecurityOption3: SecurityOption = {
+  id: 'mock-security-option-3-id',
+  description: 'mock-description-3',
+  value: 1,
+  __typename: 'SecurityOption',
+};
+
+export const mockEstablishment_completeWithBothImprovements: Establishment = {
+  id: 'mock-establishment-4-id',
+  uniqueType: UniqueTypes.establishment,
+  securitiesCount: 3,
+  mainAttraction: 'luxury food',
+  bestRegular: 'Lamprey',
+  worstRegular: 'Ba',
+  oweForIt: 'Rolfball',
+  wantsItGone: 'Gams',
+  wantsInOnIt: '',
+  sideAttractions: ['music', 'sex'],
+  atmospheres: ['bustle', 'intimacy', 'smoke'],
+  regulars: ['Lamprey', 'Ba', 'Camo', 'Toyota', 'Lits'],
+  interestedParties: ['Been', 'Rolfball', 'Gams'],
+  securityOptions: [mockSecurityOption1, mockSecurityOption2, mockSecurityOption3],
+  castAndCrew: [],
+  __typename: 'Establishment',
+};
+
 export const mockPlaybookUniqueMaestroD: PlaybookUniques = {
   id: 'mock-meastrod-unique-1-id',
   type: UniqueTypes.establishment,
@@ -334,4 +383,16 @@ export const mockPlaybookUniqueMaestroD_withOneImprovement: PlaybookUniques = {
   ...mockPlaybookUniqueMaestroD,
   id: 'mock-meastrod-unique-2-id',
   establishment: mockEstablishment_withOneImprovement,
+};
+
+export const mockPlaybookUniqueMaestroD_needingInterestResolution: PlaybookUniques = {
+  ...mockPlaybookUniqueMaestroD,
+  id: 'mock-meastrod-unique-3-id',
+  establishment: mockEstablishment_needingInterestResolution,
+};
+
+export const mockPlaybookUniqueMaestroD_completeWithBothImprovements: PlaybookUniques = {
+  ...mockPlaybookUniqueMaestroD,
+  id: 'mock-meastrod-unique-3-id',
+  establishment: mockEstablishment_completeWithBothImprovements,
 };

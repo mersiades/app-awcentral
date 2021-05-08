@@ -5,15 +5,25 @@ import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { InMemoryCache } from '@apollo/client';
 import userEvent from '@testing-library/user-event';
-import EstablishmentForm from '../EstablishmentForm';
+import EstablishmentForm, { RESOLVED_INTEREST_TEXT } from '../EstablishmentForm';
 import { mockPlayBookCreatorQueryMaestroD } from '../../../../tests/mockQueries';
 import { Game, PlaybookUniques } from '../../../../@types/dataInterfaces';
 import { mockEstablishmentCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 import {
+  mockEstablishment_completeWithBothImprovements,
+  mockEstablishment_needingInterestResolution,
   mockPlaybookUniqueMaestroD,
+  mockPlaybookUniqueMaestroD_completeWithBothImprovements,
+  mockPlaybookUniqueMaestroD_needingInterestResolution,
   mockPlaybookUniqueMaestroD_withOneImprovement,
 } from '../../../../tests/fixtures/playBookUniquesFixtures';
-import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
+import { ADJUST_MAESTROD_UNIQUE_2_NAME, INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
+import {
+  RESOLVE_INTEREST_DIALOG_TITLE,
+  RESOLVE_INTEREST_SELECT_LABEL,
+} from '../../../dialogs/EstablishmentInterestResolutionDialog';
+import { CharacterMove } from '../../../../@types/staticDataInterfaces';
+import { MoveType } from '../../../../@types/enums';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -23,7 +33,7 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
-const generateGame = (playbookUniques: PlaybookUniques) => ({
+const generateGame = (playbookUniques: PlaybookUniques, improvementMoves: CharacterMove[]) => ({
   ...mockGame5,
   gameRoles: [
     mockGame5.gameRoles[0],
@@ -46,11 +56,21 @@ const generateGame = (playbookUniques: PlaybookUniques) => ({
           statsBlock: mockCharacter2.statsBlock,
           gear: mockCharacter2.gear,
           playbookUniques,
+          improvementMoves,
         },
       ],
     },
   ],
 });
+
+const mockImprovementMove: CharacterMove = {
+  id: 'mock-move-id',
+  name: ADJUST_MAESTROD_UNIQUE_2_NAME,
+  description: 'mock-desscription',
+  kind: MoveType.adjustUnique,
+  isSelected: true,
+  __typename: 'CharacterMove',
+};
 
 describe('Rendering EstablishmentForm', () => {
   let cache = new InMemoryCache();
@@ -64,7 +84,7 @@ describe('Rendering EstablishmentForm', () => {
       renderWithRouter(<EstablishmentForm />, `/character-creation/${mockGame5.id}`, {
         isAuthenticated: true,
         apolloMocks: [mockPlayBookCreatorQueryMaestroD],
-        injectedGame: generateGame(mockPlaybookUniqueMaestroD),
+        injectedGame: generateGame(mockPlaybookUniqueMaestroD, []),
         injectedUserId: mockKeycloakUserInfo1.sub,
         cache,
       });
@@ -185,7 +205,7 @@ describe('Rendering EstablishmentForm', () => {
       renderWithRouter(<EstablishmentForm />, `/character-creation/${mockGame5.id}`, {
         isAuthenticated: true,
         apolloMocks: [mockPlayBookCreatorQueryMaestroD],
-        injectedGame: generateGame(mockPlaybookUniqueMaestroD_withOneImprovement),
+        injectedGame: generateGame(mockPlaybookUniqueMaestroD_withOneImprovement, []),
         injectedUserId: mockKeycloakUserInfo1.sub,
         cache,
       });
@@ -194,6 +214,52 @@ describe('Rendering EstablishmentForm', () => {
     });
 
     test('should show extra security options', () => {
+      expect(screen.getByText('For security, choose 3')).toBeInTheDocument();
+      expect(screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
+    });
+  });
+
+  describe('with Establishment needing interest resolution', () => {
+    beforeEach(async () => {
+      renderWithRouter(<EstablishmentForm />, `/character-creation/${mockGame5.id}`, {
+        isAuthenticated: true,
+        apolloMocks: [mockPlayBookCreatorQueryMaestroD],
+        injectedGame: generateGame(mockPlaybookUniqueMaestroD_needingInterestResolution, [mockImprovementMove]),
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      });
+
+      await waitOneTick();
+    });
+
+    test('should render functional EstablishInterestResolutionDialog', () => {
+      expect(screen.getByRole('heading', { name: RESOLVE_INTEREST_DIALOG_TITLE })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Open Drop' })).toBeInTheDocument();
+      userEvent.click(screen.getByRole('button', { name: 'Open Drop' }));
+      expect(screen.getAllByRole('menuitem')).toHaveLength(3);
+      userEvent.click(screen.getAllByRole('menuitem')[0]);
+      const input = screen.getByRole('textbox', { name: RESOLVE_INTEREST_SELECT_LABEL }) as HTMLInputElement;
+      expect(input.value).toContain(mockEstablishment_needingInterestResolution.wantsInOnIt);
+      const button = screen.getByRole('button', { name: 'RESOLVE' }) as HTMLButtonElement;
+      expect(button.disabled).toBeFalsy();
+    });
+  });
+
+  describe('with complete Establishment with both improvements', () => {
+    beforeEach(async () => {
+      renderWithRouter(<EstablishmentForm />, `/character-creation/${mockGame5.id}`, {
+        isAuthenticated: true,
+        apolloMocks: [mockPlayBookCreatorQueryMaestroD],
+        injectedGame: generateGame(mockPlaybookUniqueMaestroD_completeWithBothImprovements, [mockImprovementMove]),
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      });
+
+      await waitOneTick();
+    });
+
+    test('should show complete Establishment, with resolved interest', () => {
+      expect(screen.getByText(RESOLVED_INTEREST_TEXT)).toBeInTheDocument();
       expect(screen.getByText('For security, choose 3')).toBeInTheDocument();
       expect(screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
     });
