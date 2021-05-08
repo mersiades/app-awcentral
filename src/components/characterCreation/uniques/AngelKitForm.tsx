@@ -50,8 +50,6 @@ const AngelKitForm: FC = () => {
     }
   };
 
-  console.log(`character.playbook`, character?.playbookUniques?.angelKit);
-
   // ------------------------------------------------------ Render -------------------------------------------------------- //
   return (
     <Box
@@ -87,7 +85,7 @@ const AngelKitForm: FC = () => {
             <HeadingWS crustReady={crustReady} level={3} margin="6px">
               Supplier?
             </HeadingWS>
-            <HeadingWS aria-label="stock-value" crustReady={crustReady} level={2} margin={{ vertical: '3px' }}>
+            <HeadingWS aria-label="supplier-status" crustReady={crustReady} level={2} margin={{ vertical: '3px' }}>
               {character?.playbookUniques?.angelKit?.hasSupplier ? 'Yes' : 'No'}
             </HeadingWS>
           </RedBox>
