@@ -10,7 +10,7 @@ import {
   Workspace,
 } from '../../@types/dataInterfaces';
 import { GangSize, HoldingSize, UniqueTypes } from '../../@types/enums';
-import { HOLDING_SOULS_MEDIUM } from '../../config/constants';
+import { HOLDING_SOULS_MEDIUM, LIFE_SUPPORT_TEXT } from '../../config/constants';
 import {
   dummyAngelKit,
   dummyBrainerGear,
@@ -270,6 +270,13 @@ export const mockWorkspace_withImprovement: Workspace = {
   itemsCount: 5,
 };
 
+export const mockWorkspace_withBothImprovements: Workspace = {
+  ...mockWorkspace_noSelectionsMade,
+  id: 'mock-workspace-3-id',
+  itemsCount: 6,
+  workspaceItems: ['item1', 'item2', 'item3', 'item4', 'item5', LIFE_SUPPORT_TEXT],
+};
+
 export const mockPlaybookUniqueSavvyhead: PlaybookUniques = {
   id: 'mock-savvyhead-unique-1-id',
   type: UniqueTypes.workspace,
@@ -281,4 +288,10 @@ export const mockPlaybookUniqueSavvyhead_withImprovement: PlaybookUniques = {
   ...mockPlaybookUniqueSavvyhead,
   id: 'mock-savvyhead-unique-2-id',
   workspace: mockWorkspace_withImprovement,
+};
+
+export const mockPlaybookUniqueSavvyhead_withBothImprovements: PlaybookUniques = {
+  ...mockPlaybookUniqueSavvyhead,
+  id: 'mock-savvyhead-unique-3-id',
+  workspace: mockWorkspace_withBothImprovements,
 };

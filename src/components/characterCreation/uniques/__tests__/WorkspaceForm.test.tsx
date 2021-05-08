@@ -13,9 +13,13 @@ import { mockWorkspaceCreator } from '../../../../tests/fixtures/playbookUniqueC
 import { PlaybookType } from '../../../../@types/enums';
 import {
   mockPlaybookUniqueSavvyhead,
+  mockPlaybookUniqueSavvyhead_withBothImprovements,
   mockPlaybookUniqueSavvyhead_withImprovement,
 } from '../../../../tests/fixtures/playBookUniquesFixtures';
-import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
+import {
+  INCREASED_BY_IMPROVEMENT_TEXT,
+  INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT,
+} from '../../../../config/constants';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -118,6 +122,24 @@ describe('Rendering WorkspaceForm', () => {
     test('should show increased item count', () => {
       expect(screen.getByText('Choose 5:')).toBeInTheDocument();
       expect(screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
+    });
+  });
+
+  describe('with a Workspace with both improvements', () => {
+    beforeEach(async () => {
+      renderWithRouter(<WorkspaceForm />, `/character-creation/${mockGame5.id}`, {
+        isAuthenticated: true,
+        apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
+        injectedGame: generateGame(mockPlaybookUniqueSavvyhead_withBothImprovements),
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      });
+      await waitOneTick();
+    });
+
+    test('should show increased item count', () => {
+      expect(screen.getByText('Choose 5:')).toBeInTheDocument();
+      expect(screen.getByText(INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT)).toBeInTheDocument();
     });
   });
 });

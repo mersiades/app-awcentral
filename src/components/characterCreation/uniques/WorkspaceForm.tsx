@@ -12,7 +12,11 @@ import { useGame } from '../../../contexts/gameContext';
 import SET_WORKSPACE, { getSetWorkspaceOR, SetWorkspaceData, SetWorkspaceVars } from '../../../mutations/setWorkspace';
 import Spinner from '../../Spinner';
 import { WorkspaceInput } from '../../../@types';
-import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import {
+  INCREASED_BY_IMPROVEMENT_TEXT,
+  INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT,
+  LIFE_SUPPORT_TEXT,
+} from '../../../config/constants';
 import { omit } from 'lodash';
 
 const ITEMS_INSTRUCTIONS = 'Choose which of the following your workspace includes.';
@@ -130,10 +134,14 @@ const WorkspaceForm: FC = () => {
       <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '0px' }}>
         <ParagraphWS margin={{ bottom: '6px' }}>{ITEMS_INSTRUCTIONS}</ParagraphWS>
         <Box direction="row" align="center" gap="12px">
-          <ParagraphWS margin={{ vertical: '0px' }}>{`Choose ${workspace.itemsCount}:`}</ParagraphWS>
+          <ParagraphWS margin={{ vertical: '0px' }}>{`Choose ${
+            items.includes(LIFE_SUPPORT_TEXT) ? workspace.itemsCount - 1 : workspace.itemsCount
+          }:`}</ParagraphWS>
           {!!workspaceCreator && workspaceCreator?.defaultItemsCount < workspace.itemsCount && (
             <ParagraphWS margin={{ vertical: '0px' }} color={accentColors[0]}>
-              {INCREASED_BY_IMPROVEMENT_TEXT}
+              {items.includes(LIFE_SUPPORT_TEXT)
+                ? INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT
+                : INCREASED_BY_IMPROVEMENT_TEXT}
             </ParagraphWS>
           )}
         </Box>
