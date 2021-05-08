@@ -147,6 +147,7 @@ export const dummyEstablishmentCreator: EstablishmentCreator = {
   id: 'dummy',
   mainAttractionCount: 1,
   sideAttractionCount: 2,
+  defaultSecuritiesCount: 2,
   attractions: [],
   atmospheres: [],
   atmosphereCount: [],
@@ -390,6 +391,7 @@ export const dummySecurityOption: SecurityOption = {
 export const dummyEstablishment: Establishment = {
   id: 'dummy7',
   uniqueType: UniqueTypes.establishment,
+  securitiesCount: 2,
   mainAttraction: 'dummy',
   bestRegular: 'dummy',
   worstRegular: 'dummy',

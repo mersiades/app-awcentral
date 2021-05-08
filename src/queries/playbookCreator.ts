@@ -682,6 +682,7 @@ const PLAYBOOK_CREATOR = gql`
           id
           mainAttractionCount
           sideAttractionCount
+          defaultSecuritiesCount
           attractions
           atmospheres
           atmosphereCount

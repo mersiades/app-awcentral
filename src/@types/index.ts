@@ -126,6 +126,7 @@ export interface NpcInput {
 
 export interface EstablishmentInput {
   id?: string;
+  securitiesCount: number;
   mainAttraction: string;
   bestRegular: string;
   worstRegular: string;

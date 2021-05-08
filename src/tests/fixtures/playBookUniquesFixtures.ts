@@ -8,6 +8,7 @@ import {
   Holding,
   Followers,
   Workspace,
+  Establishment,
 } from '../../@types/dataInterfaces';
 import { GangSize, HoldingSize, UniqueTypes } from '../../@types/enums';
 import { HOLDING_SOULS_MEDIUM, LIFE_SUPPORT_TEXT } from '../../config/constants';
@@ -294,4 +295,43 @@ export const mockPlaybookUniqueSavvyhead_withBothImprovements: PlaybookUniques =
   ...mockPlaybookUniqueSavvyhead,
   id: 'mock-savvyhead-unique-3-id',
   workspace: mockWorkspace_withBothImprovements,
+};
+
+// ------------------------------------------------------- Establishment / Maestro D' -------------------------------------------------------- //
+
+export const mockEstablishment_noSelectionsMade: Establishment = {
+  id: 'mock-establishment-1-id',
+  uniqueType: UniqueTypes.establishment,
+  securitiesCount: 2,
+  mainAttraction: '',
+  bestRegular: '',
+  worstRegular: '',
+  wantsInOnIt: '',
+  oweForIt: '',
+  wantsItGone: '',
+  sideAttractions: [],
+  atmospheres: [],
+  regulars: ['Lamprey', 'Ba', 'Camo', 'Toyota', 'Lits'],
+  interestedParties: ['Been', 'Rolfball', 'Gams'],
+  securityOptions: [],
+  castAndCrew: [],
+  __typename: 'Establishment',
+};
+
+export const mockEstablishment_withOneImprovement: Establishment = {
+  ...mockEstablishment_noSelectionsMade,
+  securitiesCount: 3,
+};
+
+export const mockPlaybookUniqueMaestroD: PlaybookUniques = {
+  id: 'mock-meastrod-unique-1-id',
+  type: UniqueTypes.establishment,
+  establishment: mockEstablishment_noSelectionsMade,
+  __typename: 'PlaybookUniques',
+};
+
+export const mockPlaybookUniqueMaestroD_withOneImprovement: PlaybookUniques = {
+  ...mockPlaybookUniqueMaestroD,
+  id: 'mock-meastrod-unique-2-id',
+  establishment: mockEstablishment_withOneImprovement,
 };

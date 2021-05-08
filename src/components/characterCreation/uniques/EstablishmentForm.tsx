@@ -7,7 +7,7 @@ import { Box, CheckBox, Select, Text } from 'grommet';
 
 import Spinner from '../../Spinner';
 import { StyledMarkdown } from '../../styledComponents';
-import { ButtonWS, HeadingWS, ParagraphWS, RedBox, TextInputWS, TextWS } from '../../../config/grommetConfig';
+import { accentColors, ButtonWS, HeadingWS, ParagraphWS, RedBox, TextInputWS, TextWS } from '../../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
 import SET_ESTABLISHMENT, {
   getSetEstablishmentOR,
@@ -20,6 +20,7 @@ import { SecurityOption } from '../../../@types/staticDataInterfaces';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { CastCrew } from '../../../@types/dataInterfaces';
+import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
 
 const ATTRACTIONS_INSTRUCTIONS =
   'Your establishment features one main attraction supported by 2 side attractions (like a bar features drinks, supported by music and easy food). Choose one to be your main act and 2 for lube:';
@@ -34,7 +35,7 @@ const ATMOSPHERE_INSTRUCTIONS = "_**For your establishment's atmosphere**_, choo
 const INTERESTED_NPCS_INSTRUCTIONS =
   'These 3 NPCs (at least) have an _**interest in your establishment**_: Been, Rolfball, Gams.';
 
-const SECURITY_INSTRUCTIONS = '_**For security, choose 2**_';
+// const SECURITY_INSTRUCTIONS = '_**For security, choose 2**_';
 
 interface EstablishmentBoxWrapperProps {
   children: JSX.Element;
@@ -272,6 +273,7 @@ const initialState: EstablishmentInput = {
   wantsInOnIt: '',
   oweForIt: '',
   wantsItGone: '',
+  securitiesCount: 2,
   sideAttractions: [],
   atmospheres: [],
   regulars: [],
@@ -284,6 +286,7 @@ const EstablishmentForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [
     {
+      securitiesCount,
       mainAttraction,
       bestRegular,
       worstRegular,
@@ -336,7 +339,7 @@ const EstablishmentForm: FC = () => {
     regulars.length >= 5 &&
     interestedParties.length >= 3 &&
     securityValues.length > 0 &&
-    securityValues.reduce((a: number, b: number) => a + b) === 2 &&
+    securityValues.reduce((a: number, b: number) => a + b) === securitiesCount &&
     castAndCrew.length > 0;
 
   const handleSubmitEstablishment = async () => {
@@ -354,6 +357,7 @@ const EstablishmentForm: FC = () => {
         wantsInOnIt,
         oweForIt,
         wantsItGone,
+        securitiesCount,
         sideAttractions,
         atmospheres,
         regulars,
@@ -420,7 +424,10 @@ const EstablishmentForm: FC = () => {
   const handleSelectSecurity = (option: SecurityOption) => {
     if (securityOptions.includes(option)) {
       dispatch({ type: 'REMOVE_SECURITY_OPTION', payload: option });
-    } else if (securityValues.length === 0 || securityValues.reduce((a: number, b: number) => a + b) + option.value <= 2) {
+    } else if (
+      securityValues.length === 0 ||
+      securityValues.reduce((a: number, b: number) => a + b) + option.value <= securitiesCount
+    ) {
       dispatch({ type: 'ADD_SECURITY_OPTION', payload: option });
     }
   };
@@ -656,7 +663,16 @@ const EstablishmentForm: FC = () => {
         </Box>
       </Box>
       <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
-        <StyledMarkdown>{SECURITY_INSTRUCTIONS}</StyledMarkdown>
+        <Box direction="row" align="center" gap="12px">
+          <strong>
+            <em>
+              <ParagraphWS>{`For security, choose ${securitiesCount}`}</ParagraphWS>
+            </em>
+          </strong>
+          {!!establishmentCreator && securitiesCount > establishmentCreator?.defaultSecuritiesCount && (
+            <ParagraphWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+          )}
+        </Box>
         <Box direction="row" justify="between">
           <Box gap="12px">
             {establishmentCreator?.securityOptions.map((option) => (

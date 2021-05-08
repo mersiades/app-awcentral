@@ -100,6 +100,7 @@ export const mockEstablishmentCreator: EstablishmentCreator = {
   id: 'mock-establishment-creator-id',
   mainAttractionCount: 1,
   sideAttractionCount: 2,
+  defaultSecuritiesCount: 2,
   attractions: ['luxury food', 'music', 'fashion', 'lots of food', 'games'],
   atmospheres: ['bustle', 'intimacy', 'smoke', 'shadows', 'slime'],
   atmosphereCount: [3, 4],

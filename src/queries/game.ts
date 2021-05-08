@@ -887,6 +887,7 @@ const GAME = gql`
             establishment {
               id
               uniqueType
+              securitiesCount
               mainAttraction
               bestRegular
               worstRegular

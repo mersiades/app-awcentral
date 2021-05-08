@@ -235,7 +235,7 @@ const PreGamePage = () => {
               ) : (
                 <Checkbox size="large" color="neutral-1" />
               )}
-              <TextWS size="large" textAlign="center">
+              <TextWS size="large" textAlign="center" truncate>
                 {!!character.playbook ? getUnique(character.playbook) : 'Unique'}
               </TextWS>
             </Box>

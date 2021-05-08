@@ -213,6 +213,7 @@ export interface EstablishmentCreator {
   id: string;
   mainAttractionCount: number;
   sideAttractionCount: number;
+  defaultSecuritiesCount: number;
   attractions: string[];
   atmospheres: string[];
   atmosphereCount: number[];

@@ -191,6 +191,7 @@ export interface CastCrew {
 export interface Establishment {
   id: string;
   uniqueType: UniqueTypes;
+  securitiesCount: number;
   mainAttraction: string;
   bestRegular: string;
   worstRegular: string;
