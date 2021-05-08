@@ -230,12 +230,12 @@ const PreGamePage = () => {
           </Box>
           {!!character && character.playbook !== PlaybookType.driver && (
             <Box align="center" pad="12px" gap="12px" width="80px">
-              {!!character.playbookUnique ? (
+              {!!character.playbookUniques ? (
                 <Checkmark size="large" color="accent-1" />
               ) : (
                 <Checkbox size="large" color="neutral-1" />
               )}
-              <TextWS size="large" textAlign="center">
+              <TextWS size="large" textAlign="center" truncate>
                 {!!character.playbook ? getUnique(character.playbook) : 'Unique'}
               </TextWS>
             </Box>

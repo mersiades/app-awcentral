@@ -31,8 +31,8 @@ import {
   BOARD_VEHICLE_NAME,
   CHOPPER_SPECIAL_NAME,
   DEAL_WITH_TERRAIN_NAME,
-  gamePageBottomNavbarHeight,
-  gamePageTopNavbarHeight,
+  GAME_PAGE_BOTTOM_NAVBAR_HEIGHT,
+  GAME_PAGE_TOP_NAVBAR_HEIGHT,
   GUNLUGGER_SPECIAL_NAME,
   HEAL_HARM_NAME,
   HELP_OR_INTERFERE_NAME,
@@ -116,6 +116,7 @@ const PlayerPage: FC = () => {
       if (!!game && !!userId) {
         const memberIds = game?.players.map((player) => player.id);
         if (!memberIds.includes(userId)) {
+          console.log('push---------------------------');
           history.push('/menu');
         }
       }
@@ -192,7 +193,7 @@ const PlayerPage: FC = () => {
       {dialog?.name === SUFFER_V_HARM && <VHarmDialog move={dialog} handleClose={() => setDialog(undefined)} />}
       <div
         data-testid="player-page"
-        style={{ height: `calc(100vh - ${gamePageBottomNavbarHeight + gamePageTopNavbarHeight}px)` }}
+        style={{ height: `calc(100vh - ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px)` }}
       >
         <Collapsible direction="horizontal" open={sidePanel < 2}>
           <SidePanel sidePanel={sidePanel} growWidth={SIDE_PANEL_WIDTH}>
@@ -217,7 +218,7 @@ const PlayerPage: FC = () => {
           <MessagesPanel />
         </MainContainer>
       </div>
-      <Footer direction="row" justify="between" align="center" height={`${gamePageBottomNavbarHeight}px`}>
+      <Footer direction="row" justify="between" align="center" height={`${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT}px`}>
         <ThemeContext.Extend value={customTabStyles}>
           <Tabs
             activeIndex={sidePanel}

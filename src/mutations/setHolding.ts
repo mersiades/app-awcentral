@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client';
 import { HoldingInput } from '../@types';
-import { Character, Holding, PlaybookUnique } from '../@types/dataInterfaces';
+import { Character, Holding, PlaybookUniques } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetHoldingData {
   setHolding: {
     id: string;
-    playbookUnique: {
+    playbookUniques: {
       id: string;
       type: UniqueTypes;
       holding?: Holding;
@@ -25,37 +25,39 @@ export interface SetHoldingVars {
 }
 
 export const getSetHoldingOR = (character: Character, holdingInput: HoldingInput): SetHoldingData => {
-  let optimisticPlaybookUnique: PlaybookUnique;
-  if (!!character.playbookUnique?.holding) {
-    optimisticPlaybookUnique = {
-      id: character.playbookUnique.id,
+  let optimisticPlaybookUniques: PlaybookUniques;
+  if (!!character.playbookUniques?.holding) {
+    optimisticPlaybookUniques = {
+      id: character.playbookUniques.id,
       type: UniqueTypes.holding,
       holding: {
         ...holdingInput,
-        id: character.playbookUnique.holding.id,
+        id: character.playbookUniques.holding.id,
+        uniqueType: UniqueTypes.holding,
         selectedStrengths: holdingInput.selectedStrengths.map((str) => ({ ...str, __typename: 'HoldingOption' })),
         selectedWeaknesses: holdingInput.selectedWeaknesses.map((wk) => ({ ...wk, __typename: 'HoldingOption' })),
       },
-      __typename: 'PlaybookUnique',
+      __typename: 'PlaybookUniques',
     };
   } else {
-    optimisticPlaybookUnique = {
+    optimisticPlaybookUniques = {
       id: 'temp-id-1',
       type: UniqueTypes.holding,
       holding: {
         ...holdingInput,
         id: 'temp-id-2',
+        uniqueType: UniqueTypes.holding,
         selectedStrengths: holdingInput.selectedStrengths.map((str) => ({ ...str, __typename: 'HoldingOption' })),
         selectedWeaknesses: holdingInput.selectedWeaknesses.map((wk) => ({ ...wk, __typename: 'HoldingOption' })),
       },
-      __typename: 'PlaybookUnique',
+      __typename: 'PlaybookUniques',
     };
   }
 
   return {
     setHolding: {
       ...character,
-      playbookUnique: optimisticPlaybookUnique,
+      playbookUniques: optimisticPlaybookUniques,
       __typename: 'Character',
     },
     __typename: 'Mutation',
@@ -78,11 +80,12 @@ const SET_HOLDING = gql`
       battleVehicleCount: $battleVehicleCount
     ) {
       id
-      playbookUnique {
+      playbookUniques {
         id
         type
         holding {
           id
+          uniqueType
           holdingSize
           gangSize
           souls

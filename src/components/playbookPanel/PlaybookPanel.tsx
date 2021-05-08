@@ -64,48 +64,48 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({ character, navigateToCharacterC
       <GearBox gear={character.gear} navigateToCharacterCreation={navigateToCharacterCreation} />
 
       {data?.playbook.barterInstructions && <BarterBox />}
-      {!!character.playbookUnique?.angelKit && (
+      {!!character.playbookUniques?.angelKit && (
         <AngelKitBox
-          angelKit={character.playbookUnique.angelKit}
+          angelKit={character.playbookUniques.angelKit}
           navigateToCharacterCreation={navigateToCharacterCreation}
           openDialog={openDialog}
         />
       )}
-      {!!character.playbookUnique?.brainerGear && (
+      {!!character.playbookUniques?.brainerGear && (
         <UniqueItemsBox
           title="Brainer gear"
-          items={character.playbookUnique.brainerGear.brainerGear.map((item) => item.substring(0, item.indexOf(')_') + 1))}
+          items={character.playbookUniques.brainerGear.brainerGear.map((item) => item.substring(0, item.indexOf(')_') + 1))}
           navigateToCharacterCreation={navigateToCharacterCreation}
         />
       )}
-      {!!character.playbookUnique?.customWeapons && (
+      {!!character.playbookUniques?.customWeapons && (
         <UniqueItemsBox
           title="Custom weapons"
-          items={character.playbookUnique.customWeapons.weapons}
+          items={character.playbookUniques.customWeapons.weapons}
           navigateToCharacterCreation={navigateToCharacterCreation}
         />
       )}
 
-      {!!character.playbookUnique?.establishment && (
+      {!!character.playbookUniques?.establishment && (
         <EstablishmentBox navigateToCharacterCreation={navigateToCharacterCreation} />
       )}
-      {!!character.playbookUnique?.followers && <FollowersBox navigateToCharacterCreation={navigateToCharacterCreation} />}
-      {!!character.playbookUnique?.gang && (
+      {!!character.playbookUniques?.followers && <FollowersBox navigateToCharacterCreation={navigateToCharacterCreation} />}
+      {!!character.playbookUniques?.gang && (
         <GangBox navigateToCharacterCreation={navigateToCharacterCreation} openDialog={openDialog} />
       )}
-      {!!character.playbookUnique?.holding && <HoldingBox navigateToCharacterCreation={navigateToCharacterCreation} />}
+      {!!character.playbookUniques?.holding && <HoldingBox navigateToCharacterCreation={navigateToCharacterCreation} />}
 
-      {!!character.playbookUnique?.skinnerGear && (
+      {!!character.playbookUniques?.skinnerGear && (
         <SkinnerGearBox navigateToCharacterCreation={navigateToCharacterCreation} />
       )}
-      {!!character.playbookUnique?.weapons && (
+      {!!character.playbookUniques?.weapons && (
         <UniqueItemsBox
           title="Weapons"
-          items={character.playbookUnique.weapons.weapons}
+          items={character.playbookUniques.weapons.weapons}
           navigateToCharacterCreation={navigateToCharacterCreation}
         />
       )}
-      {!!character.playbookUnique?.workspace && <WorkshopBox navigateToCharacterCreation={navigateToCharacterCreation} />}
+      {!!character.playbookUniques?.workspace && <WorkshopBox navigateToCharacterCreation={navigateToCharacterCreation} />}
 
       <VehiclesBox vehicles={character.vehicles} navigateToCharacterCreation={navigateToCharacterCreation} />
       <BattleVehiclesBox vehicles={character.battleVehicles} navigateToCharacterCreation={navigateToCharacterCreation} />

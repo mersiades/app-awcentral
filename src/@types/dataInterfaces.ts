@@ -34,6 +34,7 @@ export interface User {
   id: string;
   userId: string;
   gameRoles: GameRole[];
+  __typename?: 'User';
 }
 
 // -------------------------------------------------- Game interfaces -------------------------------------------------- //
@@ -67,25 +68,30 @@ export interface GameRole {
 
 export interface Character {
   id: string;
+  name?: string;
   playbook: PlaybookType;
+  playbookUniques?: PlaybookUniques;
   hasCompletedCharacterCreation: boolean;
   hasPlusOneForward: boolean;
-  holds: Hold[];
+  // A value of -1 indicates that barter hasn't been initially set yet
+  barter?: number;
   statsBlock?: StatsBlock;
+  harm: CharacterHarm;
+  vehicleCount: number;
+  battleVehicleCount: number;
+  experience: number;
+  allowedImprovements: number;
+  allowedPlaybookMoves: number;
+  allowedOtherPlaybookMoves: number;
+  battleVehicles: BattleVehicle[];
+  vehicles: Vehicle[];
   hxBlock: HxStat[];
   gear: string[];
   looks: Look[];
   characterMoves: CharacterMove[];
-  harm: CharacterHarm;
-  vehicleCount: number;
-  battleVehicleCount: number;
-  name?: string;
-  // A value of -1 indicates that barter hasn't been initially set yet
-  barter?: number;
-  playbookUnique?: PlaybookUnique;
-  vehicles: Vehicle[];
-  battleVehicles: BattleVehicle[];
-  experience: number;
+  improvementMoves: CharacterMove[];
+  futureImprovementMoves: CharacterMove[];
+  holds: Hold[];
   __typename?: 'Character';
 }
 
@@ -128,11 +134,12 @@ export interface Hold {
   moveName: string;
   moveDescription: string;
   rollResult: number;
+  __typename?: 'Hold';
 }
 
 // ------------------------------------------------- Playbook Unique interfaces ------------------------------------------------- //
 
-export interface PlaybookUnique {
+export interface PlaybookUniques {
   id: string;
   type: UniqueTypes;
   brainerGear?: BrainerGear;
@@ -145,25 +152,31 @@ export interface PlaybookUnique {
   skinnerGear?: SkinnerGear;
   establishment?: Establishment;
   workspace?: Workspace;
-  __typename?: 'PlaybookUnique';
+  __typename?: 'PlaybookUniques';
 }
 
 export interface AngelKit {
   id: string;
+  uniqueType: UniqueTypes;
   description: string;
   stock: number;
   angelKitMoves: Move[];
   hasSupplier: boolean;
   supplierText: string;
+  __typename?: 'AngelKit';
 }
 
 export interface BrainerGear {
   id: string;
+  uniqueType: UniqueTypes;
+  allowedItemsCount: number;
   brainerGear: string[];
+  __typename?: 'BrainerGear';
 }
 
 export interface CustomWeapons {
   id: string;
+  uniqueType: UniqueTypes;
   weapons: string[];
   __typename?: 'CustomWeapons';
 }
@@ -172,10 +185,13 @@ export interface CastCrew {
   id: string;
   name: string;
   description: string;
+  __typename?: 'CastCrew';
 }
 
 export interface Establishment {
   id: string;
+  uniqueType: UniqueTypes;
+  securitiesCount: number;
   mainAttraction: string;
   bestRegular: string;
   worstRegular: string;
@@ -193,6 +209,7 @@ export interface Establishment {
 
 export interface Followers {
   id: string;
+  uniqueType: UniqueTypes;
   description: string;
   travelOption: string;
   characterization: string;
@@ -200,6 +217,8 @@ export interface Followers {
   fortune: number;
   barter: number;
   surplusBarter: number;
+  strengthsCount: number;
+  weaknessesCount: number;
   surplus: string[];
   wants: string[];
   selectedStrengths: FollowersOption[];
@@ -209,7 +228,9 @@ export interface Followers {
 
 export interface Gang {
   id: string;
+  uniqueType: UniqueTypes;
   size: GangSize;
+  allowedStrengths: number;
   harm: number;
   armor: number;
   strengths: GangOption[];
@@ -220,6 +241,7 @@ export interface Gang {
 
 export interface Holding {
   id: string;
+  uniqueType: UniqueTypes;
   holdingSize: HoldingSize;
   gangSize: GangSize;
   souls: string;
@@ -231,6 +253,8 @@ export interface Holding {
   wants: string[];
   gigs: string[];
   gangTags: string[];
+  strengthsCount: number;
+  weaknessesCount: number;
   selectedStrengths: HoldingOption[];
   selectedWeaknesses: HoldingOption[];
   __typename?: 'Holding';
@@ -238,6 +262,7 @@ export interface Holding {
 
 export interface SkinnerGear {
   id: string;
+  uniqueType: UniqueTypes;
   graciousWeapon: SkinnerGearItem;
   luxeGear: SkinnerGearItem[];
   __typename?: 'SkinnerGear';
@@ -245,7 +270,9 @@ export interface SkinnerGear {
 
 export interface Weapons {
   id: string;
+  uniqueType: UniqueTypes;
   weapons: string[];
+  __typename?: 'Weapons';
 }
 
 export interface Project {
@@ -257,8 +284,10 @@ export interface Project {
 
 export interface Workspace {
   id: string;
+  uniqueType: UniqueTypes;
   workspaceInstructions: string;
   projectInstructions: string;
+  itemsCount: number;
   workspaceItems: string[];
   projects: Project[];
   __typename?: 'Workspace';
@@ -279,6 +308,7 @@ export interface Vehicle {
   weaknesses: string[];
   looks: string[];
   battleOptions: VehicleBattleOption[];
+  __typename?: 'Vehicle';
 }
 
 export interface BattleVehicle {
@@ -296,6 +326,7 @@ export interface BattleVehicle {
   weapons: string[];
   battleOptions: VehicleBattleOption[];
   battleVehicleOptions: VehicleBattleOption[];
+  __typename?: 'BattleVehicle';
 }
 
 // --------------------------------------------------- MC interfaces --------------------------------------------------- //
@@ -314,6 +345,7 @@ export interface Threat {
   impulse: string;
   description?: string;
   stakes?: string;
+  __typename?: 'Threat';
 }
 
 // --------------------------------------------------- Message interfaces --------------------------------------------------- //
@@ -342,3 +374,15 @@ export interface GameMessage {
   currentStock: number;
   __typename?: 'GameMessage';
 }
+
+export type PlaybookUniqueTypes =
+  | AngelKit
+  | CustomWeapons
+  | BrainerGear
+  | Gang
+  | Weapons
+  | Holding
+  | Followers
+  | Establishment
+  | Workspace
+  | SkinnerGear;

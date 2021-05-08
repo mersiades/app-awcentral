@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client';
 import { GangInput } from '../@types';
-import { Character, Gang, PlaybookUnique } from '../@types/dataInterfaces';
+import { Character, Gang, PlaybookUniques } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetGangData {
   setGang: {
     id: string;
-    playbookUnique: {
+    playbookUniques: {
       id: string;
       type: UniqueTypes;
       gang?: Gang;
@@ -23,39 +23,43 @@ export interface SetGangVars {
 }
 
 export const getSetGangOR = (character: Character, gangInput: GangInput): SetGangData => {
-  let optimisticPlaybookUnique: PlaybookUnique;
-  if (!!character.playbookUnique?.gang) {
-    optimisticPlaybookUnique = {
-      id: character.playbookUnique.id,
+  let optimisticPlaybookUniques: PlaybookUniques;
+  if (!!character.playbookUniques?.gang) {
+    optimisticPlaybookUniques = {
+      id: character.playbookUniques.id,
       type: UniqueTypes.gang,
       gang: {
         ...gangInput,
-        id: character.playbookUnique.gang.id,
+        id: character.playbookUniques.gang.id,
+        uniqueType: UniqueTypes.gang,
+        allowedStrengths: character.playbookUniques.gang.allowedStrengths,
         strengths: gangInput.strengths.map((str) => ({ ...str, __typename: 'GangOption' })),
         weaknesses: gangInput.weaknesses.map((wk) => ({ ...wk, __typename: 'GangOption' })),
         __typename: 'Gang',
       },
-      __typename: 'PlaybookUnique',
+      __typename: 'PlaybookUniques',
     };
   } else {
-    optimisticPlaybookUnique = {
+    optimisticPlaybookUniques = {
       id: 'temp-id-1',
       type: UniqueTypes.gang,
       gang: {
         ...gangInput,
         id: 'temp-id-2',
+        uniqueType: UniqueTypes.gang,
+        allowedStrengths: 2,
         strengths: gangInput.strengths.map((str) => ({ ...str, __typename: 'GangOption' })),
         weaknesses: gangInput.weaknesses.map((wk) => ({ ...wk, __typename: 'GangOption' })),
         __typename: 'Gang',
       },
-      __typename: 'PlaybookUnique',
+      __typename: 'PlaybookUniques',
     };
   }
 
   return {
     setGang: {
       ...character,
-      playbookUnique: optimisticPlaybookUnique,
+      playbookUniques: optimisticPlaybookUniques,
       __typename: 'Character',
     },
     __typename: 'Mutation',
@@ -68,14 +72,16 @@ const SET_GANG = gql`
       id
       name
       playbook
-      playbookUnique {
+      playbookUniques {
         id
         type
         gang {
           id
+          uniqueType
           size
           harm
           armor
+          allowedStrengths
           strengths {
             id
             description

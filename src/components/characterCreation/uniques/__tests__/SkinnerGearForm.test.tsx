@@ -3,16 +3,11 @@ import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
 import SkinnerGearForm from '../SkinnerGearForm';
-import {
-  blankCharacter,
-  mockCharacter2,
-  mockGame5,
-  mockKeycloakUserInfo1,
-  mockSkinnerGearCreator,
-} from '../../../../tests/mocks';
+import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQuerySkinner } from '../../../../tests/mockQueries';
 import { Game } from '../../../../@types/dataInterfaces';
+import { mockSkinnerGearCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 
 describe('Rendering SkinnerGearForm', () => {
   let cache = new InMemoryCache();

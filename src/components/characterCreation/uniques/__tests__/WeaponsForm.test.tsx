@@ -6,16 +6,11 @@ import { screen } from '@testing-library/react';
 
 import WeaponsForm from '../WeaponsForm';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
-import {
-  blankCharacter,
-  mockCharacter2,
-  mockGame5,
-  mockKeycloakUserInfo1,
-  mockWeaponsCreator,
-} from '../../../../tests/mocks';
+import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryGunlugger } from '../../../../tests/mockQueries';
 import { Game } from '../../../../@types/dataInterfaces';
+import { mockWeaponsCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');

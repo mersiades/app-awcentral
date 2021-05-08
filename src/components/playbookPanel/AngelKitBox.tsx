@@ -80,7 +80,7 @@ const AngelKitBox: FC<AngelKitBoxProps> = ({ angelKit, navigateToCharacterCreati
         <Box fill="horizontal" direction="row" align="start" justify="between" margin={{ bottom: '6px' }}>
           <Box>{angelKit.description}</Box>
           <Box flex="grow">
-            <Box direction="row" align="center" gap="12px" margin={{ left: '12px' }}>
+            <Box align="start" justify="start" gap="12px" margin={{ left: '12px' }}>
               <SingleRedBox
                 value={angelKit.stock.toString()}
                 label="Stock"
@@ -88,6 +88,7 @@ const AngelKitBox: FC<AngelKitBoxProps> = ({ angelKit, navigateToCharacterCreati
                 onIncrease={() => handleSetAngelKit(angelKit.stock + 1, angelKit.hasSupplier)}
                 onDecrease={() => handleSetAngelKit(angelKit.stock - 1, angelKit.hasSupplier)}
               />
+              <SingleRedBox value={angelKit.hasSupplier ? 'Yes' : 'No'} label="Supplier" loading={settingAngelKit} />
             </Box>
           </Box>
         </Box>

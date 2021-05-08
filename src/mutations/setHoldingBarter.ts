@@ -16,7 +16,7 @@ const SET_HOLDING_BARTER = gql`
   mutation SetHoldingBarter($gameRoleId: String!, $characterId: String!, $amount: Int!) {
     setHoldingBarter(gameRoleId: $gameRoleId, characterId: $characterId, amount: $amount) {
       id
-      playbookUnique {
+      playbookUniques {
         id
         holding {
           id

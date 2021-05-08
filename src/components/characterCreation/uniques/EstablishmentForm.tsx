@@ -7,7 +7,7 @@ import { Box, CheckBox, Select, Text } from 'grommet';
 
 import Spinner from '../../Spinner';
 import { StyledMarkdown } from '../../styledComponents';
-import { ButtonWS, HeadingWS, ParagraphWS, RedBox, TextInputWS, TextWS } from '../../../config/grommetConfig';
+import { accentColors, ButtonWS, HeadingWS, ParagraphWS, RedBox, TextInputWS, TextWS } from '../../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
 import SET_ESTABLISHMENT, {
   getSetEstablishmentOR,
@@ -20,6 +20,8 @@ import { SecurityOption } from '../../../@types/staticDataInterfaces';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { CastCrew } from '../../../@types/dataInterfaces';
+import { ADJUST_MAESTROD_UNIQUE_2_NAME, INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import EstablishmentInterestResolutionDialog from '../../dialogs/EstablishmentInterestResolutionDialog';
 
 const ATTRACTIONS_INSTRUCTIONS =
   'Your establishment features one main attraction supported by 2 side attractions (like a bar features drinks, supported by music and easy food). Choose one to be your main act and 2 for lube:';
@@ -34,7 +36,7 @@ const ATMOSPHERE_INSTRUCTIONS = "_**For your establishment's atmosphere**_, choo
 const INTERESTED_NPCS_INSTRUCTIONS =
   'These 3 NPCs (at least) have an _**interest in your establishment**_: Been, Rolfball, Gams.';
 
-const SECURITY_INSTRUCTIONS = '_**For security, choose 2**_';
+export const RESOLVED_INTEREST_TEXT = 'Interest resolved';
 
 interface EstablishmentBoxWrapperProps {
   children: JSX.Element;
@@ -272,6 +274,7 @@ const initialState: EstablishmentInput = {
   wantsInOnIt: '',
   oweForIt: '',
   wantsItGone: '',
+  securitiesCount: 2,
   sideAttractions: [],
   atmospheres: [],
   regulars: [],
@@ -284,6 +287,7 @@ const EstablishmentForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [
     {
+      securitiesCount,
       mainAttraction,
       bestRegular,
       worstRegular,
@@ -304,6 +308,8 @@ const EstablishmentForm: FC = () => {
   const [interestedNpcName, setInterestedNpcName] = useState('');
   const [crewName, setCrewName] = useState('');
   const [crewDesc, setCrewDesc] = useState('');
+  const [needsInterestResolution, setNeedsInterestResolution] = useState(false);
+  const [hasResolveInterestImprovement, setHasResolveInterestImprovement] = useState(false);
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, character, userGameRole } = useGame();
@@ -324,36 +330,69 @@ const EstablishmentForm: FC = () => {
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const securityValues = securityOptions.map((opt: SecurityOption) => opt.value);
 
-  const isEstablishmentComplete =
-    !!mainAttraction &&
-    !!bestRegular &&
-    !!worstRegular &&
-    !!wantsInOnIt &&
-    !!oweForIt &&
-    !!wantsItGone &&
-    sideAttractions.length === 2 &&
-    [3, 4].includes(atmospheres.length) &&
-    regulars.length >= 5 &&
-    interestedParties.length >= 3 &&
-    securityValues.length > 0 &&
-    securityValues.reduce((a: number, b: number) => a + b) === 2 &&
-    castAndCrew.length > 0;
+  const isEstablishmentComplete = (): boolean => {
+    if (hasResolveInterestImprovement) {
+      let count = 0;
+      if (wantsInOnIt) {
+        count++;
+      }
+
+      if (oweForIt) {
+        count++;
+      }
+
+      if (wantsItGone) {
+        count++;
+      }
+
+      return (
+        count === 2 &&
+        !!mainAttraction &&
+        !!bestRegular &&
+        !!worstRegular &&
+        sideAttractions.length === 2 &&
+        [3, 4].includes(atmospheres.length) &&
+        regulars.length >= 5 &&
+        interestedParties.length >= 3 &&
+        securityValues.length > 0 &&
+        securityValues.reduce((a: number, b: number) => a + b) === securitiesCount &&
+        castAndCrew.length > 0
+      );
+    } else {
+      return (
+        !!mainAttraction &&
+        !!bestRegular &&
+        !!worstRegular &&
+        !!wantsInOnIt &&
+        !!oweForIt &&
+        !!wantsItGone &&
+        sideAttractions.length === 2 &&
+        [3, 4].includes(atmospheres.length) &&
+        regulars.length >= 5 &&
+        interestedParties.length >= 3 &&
+        securityValues.length > 0 &&
+        securityValues.reduce((a: number, b: number) => a + b) === securitiesCount &&
+        castAndCrew.length > 0
+      );
+    }
+  };
 
   const handleSubmitEstablishment = async () => {
-    if (!!userGameRole && !!character && !!game && isEstablishmentComplete) {
+    if (!!userGameRole && !!character && !!game && isEstablishmentComplete()) {
       // @ts-ignore
       const securityNoTypename = securityOptions.map((so: SecurityOption) => omit(so, ['__typename']));
       // @ts-ignore
       const crewNoTypename = castAndCrew.map((cc: CastCrew) => omit(cc, ['__typename']));
 
       const establishmentInput: EstablishmentInput = {
-        id: character.playbookUnique?.establishment ? character.playbookUnique.establishment.id : undefined,
+        id: character.playbookUniques?.establishment ? character.playbookUniques.establishment.id : undefined,
         mainAttraction,
         bestRegular,
         worstRegular,
         wantsInOnIt,
         oweForIt,
         wantsItGone,
+        securitiesCount,
         sideAttractions,
         atmospheres,
         regulars,
@@ -420,7 +459,10 @@ const EstablishmentForm: FC = () => {
   const handleSelectSecurity = (option: SecurityOption) => {
     if (securityOptions.includes(option)) {
       dispatch({ type: 'REMOVE_SECURITY_OPTION', payload: option });
-    } else if (securityValues.length === 0 || securityValues.reduce((a: number, b: number) => a + b) + option.value <= 2) {
+    } else if (
+      securityValues.length === 0 ||
+      securityValues.reduce((a: number, b: number) => a + b) + option.value <= securitiesCount
+    ) {
       dispatch({ type: 'ADD_SECURITY_OPTION', payload: option });
     }
   };
@@ -440,10 +482,10 @@ const EstablishmentForm: FC = () => {
 
   // Set workingAttractions when component mounts
   useEffect(() => {
-    if (!!establishmentCreator && !character?.playbookUnique?.establishment) {
+    if (!!establishmentCreator && !character?.playbookUniques?.establishment) {
       setWorkingAttractions(establishmentCreator.attractions);
-    } else if (!!establishmentCreator && !!character?.playbookUnique?.establishment) {
-      const { mainAttraction } = character.playbookUnique.establishment;
+    } else if (!!establishmentCreator && !!character?.playbookUniques?.establishment) {
+      const { mainAttraction } = character.playbookUniques.establishment;
       const filteredAttractions = establishmentCreator.attractions.filter((attr) => attr !== mainAttraction);
       setWorkingAttractions(filteredAttractions);
     }
@@ -451,8 +493,8 @@ const EstablishmentForm: FC = () => {
 
   // Set existing or blank Establishment when component mounts
   useEffect(() => {
-    if (!!character?.playbookUnique?.establishment) {
-      dispatch({ type: 'SET_EXISTING_ESTABLISHMENT', payload: character.playbookUnique.establishment });
+    if (!!character?.playbookUniques?.establishment) {
+      dispatch({ type: 'SET_EXISTING_ESTABLISHMENT', payload: character.playbookUniques.establishment });
     } else if (!!establishmentCreator) {
       dispatch({
         type: 'SET_DEFAULT_ESTABLISHMENT',
@@ -464,6 +506,21 @@ const EstablishmentForm: FC = () => {
       });
     }
   }, [character, establishmentCreator]);
+
+  // Calculates whether the user needs to resolve an interest in the Establishment
+  useEffect(() => {
+    if (character?.improvementMoves.some((move) => move.name === ADJUST_MAESTROD_UNIQUE_2_NAME)) {
+      setHasResolveInterestImprovement(true);
+      if (!!wantsInOnIt && !!wantsItGone && !!oweForIt) {
+        setNeedsInterestResolution(true);
+      } else {
+        setNeedsInterestResolution(false);
+      }
+    } else {
+      setNeedsInterestResolution(false);
+      setHasResolveInterestImprovement(false);
+    }
+  }, [character, oweForIt, wantsInOnIt, wantsItGone]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 
@@ -490,10 +547,12 @@ const EstablishmentForm: FC = () => {
       justify="start"
       width="85vw"
       align="start"
-      pad="24px"
       gap="18px"
       style={{ maxWidth: '763px' }}
     >
+      {needsInterestResolution && (
+        <EstablishmentInterestResolutionDialog oweForIt={oweForIt} wantsInOnIt={wantsInOnIt} wantsItGone={wantsItGone} />
+      )}
       <Box direction="row" fill="horizontal" align="center" justify="between">
         <HeadingWS
           crustReady={crustReady}
@@ -505,7 +564,7 @@ const EstablishmentForm: FC = () => {
           primary
           label={settingEstablishment ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
           onClick={() => !settingEstablishment && handleSubmitEstablishment()}
-          disabled={settingEstablishment || !isEstablishmentComplete}
+          disabled={settingEstablishment || !isEstablishmentComplete()}
           style={{ height: '45px' }}
         />
       </Box>
@@ -618,33 +677,45 @@ const EstablishmentForm: FC = () => {
             </Box>
             <Box direction="row" fill align="center" gap="12px">
               <TextWS style={{ minWidth: '250px' }}>{establishmentCreator?.interestedPartyQuestions[0]}</TextWS>
-              <Select
-                aria-label="wants-in-on-it-input"
-                placeholder="Select NPC"
-                value={wantsInOnIt}
-                options={interestedParties.filter((npc: string) => npc !== oweForIt && npc !== wantsItGone)}
-                onChange={(e) => dispatch({ type: 'SET_WANTS_IN', payload: e.value })}
-              />
+              {hasResolveInterestImprovement && !wantsInOnIt ? (
+                <TextWS color={accentColors[0]}>{RESOLVED_INTEREST_TEXT}</TextWS>
+              ) : (
+                <Select
+                  aria-label="wants-in-on-it-input"
+                  placeholder="Select NPC"
+                  value={wantsInOnIt}
+                  options={interestedParties.filter((npc: string) => npc !== oweForIt && npc !== wantsItGone)}
+                  onChange={(e) => dispatch({ type: 'SET_WANTS_IN', payload: e.value })}
+                />
+              )}
             </Box>
             <Box direction="row" fill align="center" gap="12px">
               <TextWS style={{ minWidth: '250px' }}>{establishmentCreator?.interestedPartyQuestions[1]}</TextWS>
-              <Select
-                aria-label="owes-for-it-input"
-                placeholder="Select NPC"
-                value={oweForIt}
-                options={interestedParties.filter((npc: string) => npc !== wantsInOnIt && npc !== wantsItGone)}
-                onChange={(e) => dispatch({ type: 'SET_OWES_FOR_IT', payload: e.value })}
-              />
+              {hasResolveInterestImprovement && !oweForIt ? (
+                <TextWS color={accentColors[0]}>{RESOLVED_INTEREST_TEXT}</TextWS>
+              ) : (
+                <Select
+                  aria-label="owes-for-it-input"
+                  placeholder="Select NPC"
+                  value={oweForIt}
+                  options={interestedParties.filter((npc: string) => npc !== wantsInOnIt && npc !== wantsItGone)}
+                  onChange={(e) => dispatch({ type: 'SET_OWES_FOR_IT', payload: e.value })}
+                />
+              )}
             </Box>
             <Box direction="row" fill align="center" gap="12px">
               <TextWS style={{ minWidth: '250px' }}>{establishmentCreator?.interestedPartyQuestions[2]}</TextWS>
-              <Select
-                aria-label="wants-it-gone-input"
-                placeholder="Select NPC"
-                value={wantsItGone}
-                options={interestedParties.filter((npc: string) => npc !== wantsInOnIt && npc !== oweForIt)}
-                onChange={(e) => dispatch({ type: 'SET_WANTS_IT_GONE', payload: e.value })}
-              />
+              {hasResolveInterestImprovement && !wantsItGone ? (
+                <TextWS color={accentColors[0]}>{RESOLVED_INTEREST_TEXT}</TextWS>
+              ) : (
+                <Select
+                  aria-label="wants-it-gone-input"
+                  placeholder="Select NPC"
+                  value={wantsItGone}
+                  options={interestedParties.filter((npc: string) => npc !== wantsInOnIt && npc !== oweForIt)}
+                  onChange={(e) => dispatch({ type: 'SET_WANTS_IT_GONE', payload: e.value })}
+                />
+              )}
             </Box>
           </Box>
           <InterestedPartiesBox
@@ -656,7 +727,16 @@ const EstablishmentForm: FC = () => {
         </Box>
       </Box>
       <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
-        <StyledMarkdown>{SECURITY_INSTRUCTIONS}</StyledMarkdown>
+        <Box direction="row" align="center" gap="12px">
+          <strong>
+            <em>
+              <ParagraphWS>{`For security, choose ${securitiesCount}`}</ParagraphWS>
+            </em>
+          </strong>
+          {!!establishmentCreator && securitiesCount > establishmentCreator?.defaultSecuritiesCount && (
+            <ParagraphWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+          )}
+        </Box>
         <Box direction="row" justify="between">
           <Box gap="12px">
             {establishmentCreator?.securityOptions.map((option) => (

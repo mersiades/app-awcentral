@@ -30,7 +30,7 @@ const UPDATE_FOLLOWERS = gql`
       description: $description
     ) {
       id
-      playbookUnique {
+      playbookUniques {
         id
         followers {
           id

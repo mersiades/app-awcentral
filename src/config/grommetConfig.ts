@@ -816,3 +816,9 @@ export const sufferVHarmDialogBackground = {
   size: 'contain',
   image: 'url(/images/background-image-31.jpg)',
 };
+
+export const improvementDialogBackground = {
+  ...backgroundBase,
+  size: 'contain',
+  image: 'url(/images/background-image-32.jpg)',
+};

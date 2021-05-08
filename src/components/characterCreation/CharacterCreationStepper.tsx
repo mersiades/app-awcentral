@@ -59,8 +59,8 @@ const CharacterCreationStepper: FC = () => {
 
   const handlePrevious = () => {
     if (!!character?.name && !!character?.playbook && !!currentStep) {
-      // Skip over playbookUnique page for Driver
-      if (currentStep === CharacterCreationSteps.selectMoves && character.playbook === PlaybookType.driver) {
+      // Skip over playbookUniques page if null (usually for Driver)
+      if (currentStep === CharacterCreationSteps.selectMoves && !character.playbookUniques) {
         changeStep(currentStep - 2);
       } else {
         changeStep(currentStep - 1);
@@ -70,8 +70,8 @@ const CharacterCreationStepper: FC = () => {
 
   const handleNext = () => {
     if (!!character?.name && !!character?.playbook && !!currentStep) {
-      // Skip over playbookUnique page for Driver
-      if (currentStep === CharacterCreationSteps.selectGear && character.playbook === PlaybookType.driver) {
+      // Skip over playbookUniques page if null (usually for Driver)
+      if (currentStep === CharacterCreationSteps.selectGear && !character.playbookUniques) {
         changeStep(currentStep + 2);
       } else {
         changeStep(currentStep + 1);
@@ -226,11 +226,11 @@ const CharacterCreationStepper: FC = () => {
   );
 
   const renderUnique = () => {
-    if (!!character?.playbookUnique) {
-      switch (character?.playbookUnique.type) {
+    if (!!character?.playbookUniques) {
+      switch (character?.playbookUniques.type) {
         case UniqueTypes.angelKit:
-          if (!!character.playbookUnique.angelKit) {
-            const { stock, hasSupplier } = character.playbookUnique.angelKit;
+          if (!!character.playbookUniques.angelKit) {
+            const { stock, hasSupplier } = character.playbookUniques.angelKit;
             return (
               <CustomUL data-testid="angel-kit-box">
                 <li key={1}>{`Stock: ${stock}`}</li>
@@ -240,8 +240,8 @@ const CharacterCreationStepper: FC = () => {
           }
           return null;
         case UniqueTypes.brainerGear:
-          if (!!character.playbookUnique.brainerGear) {
-            const concatGear = character.playbookUnique.brainerGear.brainerGear.map((gear) => gear.split('('));
+          if (!!character.playbookUniques.brainerGear) {
+            const concatGear = character.playbookUniques.brainerGear.brainerGear.map((gear) => gear.split('('));
             return (
               <CustomUL>
                 {concatGear.map((item, index) => (
@@ -254,8 +254,8 @@ const CharacterCreationStepper: FC = () => {
           }
           return null;
         case UniqueTypes.customWeapons:
-          if (!!character.playbookUnique.customWeapons) {
-            const { weapons } = character.playbookUnique.customWeapons;
+          if (!!character.playbookUniques.customWeapons) {
+            const { weapons } = character.playbookUniques.customWeapons;
             return (
               <CustomUL>
                 {weapons.map((weapon, index) => (
@@ -268,8 +268,8 @@ const CharacterCreationStepper: FC = () => {
           }
           return null;
         case UniqueTypes.establishment:
-          if (!!character.playbookUnique.establishment) {
-            const { mainAttraction, sideAttractions, atmospheres } = character.playbookUnique.establishment;
+          if (!!character.playbookUniques.establishment) {
+            const { mainAttraction, sideAttractions, atmospheres } = character.playbookUniques.establishment;
             return (
               <CustomUL>
                 <li>Main: {mainAttraction}</li>
@@ -280,17 +280,17 @@ const CharacterCreationStepper: FC = () => {
           }
           return null;
         case UniqueTypes.followers:
-          if (!!character.playbookUnique.followers) {
+          if (!!character.playbookUniques.followers) {
             return (
               <CustomUL>
-                <li>{character.playbookUnique.followers.description}</li>
+                <li>{character.playbookUniques.followers.description}</li>
               </CustomUL>
             );
           }
           return null;
         case UniqueTypes.gang:
-          if (!!character.playbookUnique.gang) {
-            const { size, harm, armor, tags } = character.playbookUnique.gang;
+          if (!!character.playbookUniques.gang) {
+            const { size, harm, armor, tags } = character.playbookUniques.gang;
             return (
               <CustomUL>
                 <li>Size: {size}</li>
@@ -302,8 +302,8 @@ const CharacterCreationStepper: FC = () => {
           }
           return null;
         case UniqueTypes.holding:
-          if (!!character.playbookUnique.holding) {
-            const { holdingSize, gangSize, barter, wants } = character.playbookUnique.holding;
+          if (!!character.playbookUniques.holding) {
+            const { holdingSize, gangSize, barter, wants } = character.playbookUniques.holding;
             return (
               <CustomUL>
                 <li>Holding size: {decapitalize(holdingSize)}</li>
@@ -315,12 +315,12 @@ const CharacterCreationStepper: FC = () => {
           }
           return null;
         case UniqueTypes.skinnerGear:
-          if (!!character.playbookUnique.skinnerGear) {
+          if (!!character.playbookUniques.skinnerGear?.graciousWeapon) {
             const splitItem = (item: string) => item.substring(0, item.indexOf(' ('));
             return (
               <CustomUL>
-                <li>{splitItem(character.playbookUnique.skinnerGear.graciousWeapon.item)}</li>
-                {character.playbookUnique.skinnerGear.luxeGear.map((item) => (
+                <li>{splitItem(character.playbookUniques.skinnerGear.graciousWeapon.item)}</li>
+                {character.playbookUniques.skinnerGear.luxeGear.map((item) => (
                   <li key={item.id}>{splitItem(item.item)}</li>
                 ))}
               </CustomUL>
@@ -328,10 +328,10 @@ const CharacterCreationStepper: FC = () => {
           }
           return null;
         case UniqueTypes.weapons:
-          if (!!character.playbookUnique.weapons) {
+          if (!!character.playbookUniques.weapons) {
             return (
               <CustomUL>
-                {character.playbookUnique.weapons.weapons.map((weapon) => {
+                {character.playbookUniques.weapons.weapons.map((weapon) => {
                   const weaponName = weapon.substring(0, weapon.indexOf(' ('));
                   return <li key={weapon}>{weaponName}</li>;
                 })}
@@ -340,10 +340,10 @@ const CharacterCreationStepper: FC = () => {
           }
           return null;
         case UniqueTypes.workspace:
-          if (!!character.playbookUnique.workspace) {
+          if (!!character.playbookUniques.workspace) {
             return (
               <CustomUL>
-                {character.playbookUnique.workspace.workspaceItems.map((item) => {
+                {character.playbookUniques.workspace.workspaceItems.map((item) => {
                   return <li key={item}>{item}</li>;
                 })}
               </CustomUL>
@@ -352,6 +352,14 @@ const CharacterCreationStepper: FC = () => {
           return null;
         default:
           return null;
+      }
+    } else {
+      if (character?.playbook === PlaybookType.driver) {
+        return (
+          <Text color="white" alignSelf="center">
+            Improve Driver to get workspace
+          </Text>
+        );
       }
     }
   };
@@ -369,13 +377,21 @@ const CharacterCreationStepper: FC = () => {
       background={{ color: 'neutral-1', opacity: CharacterCreationSteps.setUnique === currentStep ? 1 : 0.5 }}
       onClick={(e: any) => {
         e.currentTarget.blur();
+        if (!character?.playbookUniques) {
+          e.preventDefault();
+
+          return;
+        }
+
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setUnique);
       }}
     >
       <Text color="white" weight="bold" alignSelf="center">
-        {!!pbCreator && pbCreator.playbookUniqueCreator ? decapitalize(pbCreator.playbookUniqueCreator.type) : '...'}
+        {!!pbCreator && pbCreator.playbookUniqueCreator
+          ? decapitalize(pbCreator.playbookUniqueCreator.type)
+          : `${character?.playbook === PlaybookType.driver ? 'Workspace' : '...'}`}
       </Text>
-      {!!character && !!character.playbookUnique ? renderUnique() : <Text>...</Text>}
+      {!!character && renderUnique()}
     </Box>
   );
 
@@ -528,10 +544,12 @@ const CharacterCreationStepper: FC = () => {
   );
 
   // Omit box for PlayBookUniques for Driver
-  const boxesArray =
-    character?.playbook !== PlaybookType.driver
-      ? [box0Step1, box1Step3, box2Step4, box3Step5, box4Step6, box5Step7, box6Step8, box7Step9, box8Step10]
-      : [box0Step1, box1Step3, box2Step4, box3Step5, box5Step7, box6Step8, box7Step9, box8Step10];
+  // const boxesArray =
+  //   character?.playbook !== PlaybookType.driver
+  //     ? [box0Step1, box1Step3, box2Step4, box3Step5, box4Step6, box5Step7, box6Step8, box7Step9, box8Step10]
+  //     : [box0Step1, box1Step3, box2Step4, box3Step5, box5Step7, box6Step8, box7Step9, box8Step10];
+
+  const boxesArray = [box0Step1, box1Step3, box2Step4, box3Step5, box4Step6, box5Step7, box6Step8, box7Step9, box8Step10];
 
   const renderBoxesSmall = () => {
     if (currentStep !== undefined) {

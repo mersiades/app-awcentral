@@ -1,5 +1,5 @@
 import { CastCrew, Project } from './dataInterfaces';
-import { GangSize, HoldingSize, LookType, PlaybookType, ThreatType, VehicleType } from './enums';
+import { GangSize, HoldingSize, LookType, PlaybookType, ThreatType, UniqueTypes, VehicleType } from './enums';
 import {
   VehicleFrame,
   VehicleBattleOption,
@@ -126,6 +126,7 @@ export interface NpcInput {
 
 export interface EstablishmentInput {
   id?: string;
+  securitiesCount: number;
   mainAttraction: string;
   bestRegular: string;
   worstRegular: string;
@@ -149,6 +150,8 @@ export interface FollowersInput {
   fortune: number;
   barter: number;
   surplusBarter: number;
+  strengthsCount: number;
+  weaknessesCount: number;
   surplus: string[];
   wants: string[];
   selectedStrengths: FollowersOption[];
@@ -160,6 +163,7 @@ export interface GangInput {
   size: GangSize;
   harm: number;
   armor: number;
+  allowedStrengths: number;
   strengths: GangOption[];
   weaknesses: GangOption[];
   tags: string[];
@@ -178,6 +182,8 @@ export interface HoldingInput {
   wants: string[];
   gigs: string[];
   gangTags: string[];
+  strengthsCount: number;
+  weaknessesCount: number;
   selectedStrengths: HoldingOption[];
   selectedWeaknesses: HoldingOption[];
 }
@@ -196,8 +202,10 @@ export interface ProjectInput {
 
 export interface WorkspaceInput {
   id?: string;
+  uniqueType: UniqueTypes;
   workspaceInstructions: string;
   projectInstructions: string;
+  itemsCount: number;
   workspaceItems: string[];
   projects: Project[];
 }

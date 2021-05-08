@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client';
 import { FollowersInput } from '../@types';
-import { Character, Followers, PlaybookUnique } from '../@types/dataInterfaces';
+import { Character, Followers, PlaybookUniques } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetFollowersData {
   setFollowers: {
     id: string;
-    playbookUnique: {
+    playbookUniques: {
       id: string;
       type: UniqueTypes;
       followers?: Followers;
@@ -23,23 +23,24 @@ export interface SetFollowersVars {
 }
 
 export const getSetFollowerOR = (character: Character, followersInput: FollowersInput): SetFollowersData => {
-  const optimisticPlaybookUnique: PlaybookUnique = {
-    id: character.playbookUnique?.id ? character.playbookUnique.id : 'temp-id-1',
+  const optimisticPlaybookUniques: PlaybookUniques = {
+    id: character.playbookUniques?.id ? character.playbookUniques.id : 'temp-id-1',
     type: UniqueTypes.followers,
     followers: {
       ...followersInput,
       id: followersInput.id ? followersInput.id : 'temp-id-2',
+      uniqueType: UniqueTypes.followers,
       selectedStrengths: followersInput.selectedStrengths.map((opt) => ({ ...opt, __typename: 'FollowersOption' })),
       selectedWeaknesses: followersInput.selectedWeaknesses.map((opt) => ({ ...opt, __typename: 'FollowersOption' })),
       __typename: 'Followers',
     },
-    __typename: 'PlaybookUnique',
+    __typename: 'PlaybookUniques',
   };
 
   return {
     setFollowers: {
       ...character,
-      playbookUnique: optimisticPlaybookUnique,
+      playbookUniques: optimisticPlaybookUniques,
       __typename: 'Character',
     },
     __typename: 'Mutation',
@@ -50,11 +51,12 @@ const SET_FOLLOWERS = gql`
   mutation SetFollowers($gameRoleId: String!, $characterId: String!, $followers: FollowersInput!) {
     setFollowers(gameRoleId: $gameRoleId, characterId: $characterId, followers: $followers) {
       id
-      playbookUnique {
+      playbookUniques {
         id
         type
         followers {
           id
+          uniqueType
           description
           travelOption
           characterization
@@ -64,6 +66,8 @@ const SET_FOLLOWERS = gql`
           surplusBarter
           surplus
           wants
+          strengthsCount
+          weaknessesCount
           selectedStrengths {
             id
             description

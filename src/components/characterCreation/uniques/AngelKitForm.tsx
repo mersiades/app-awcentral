@@ -12,6 +12,8 @@ import { useGame } from '../../../contexts/gameContext';
 import { useHistory } from 'react-router-dom';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 
+export const ANGEL_KIT_FORM_TEST_ID = 'angel-kit-form';
+
 const AngelKitForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, character, userGameRole } = useGame();
@@ -49,20 +51,24 @@ const AngelKitForm: FC = () => {
   };
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
-
   return (
-    <Box data-testid="angel-kit-form" justify="start" width="85vw" align="start" pad="24px" style={{ maxWidth: '763px' }}>
+    <Box
+      data-testid={ANGEL_KIT_FORM_TEST_ID}
+      justify="start"
+      width="85vw"
+      align="start"
+      pad="24px"
+      style={{ maxWidth: '763px' }}
+    >
       <Box direction="row" fill="horizontal" justify="between" align="center">
         <HeadingWS crustReady={crustReady} level={2} alignSelf="center">{`${
           !!character?.name ? character.name?.toUpperCase() : '...'
         }'S ANGEL KIT`}</HeadingWS>
-        {!character?.playbookUnique?.angelKit && (
-          <ButtonWS
-            label={settingAngelKit ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
-            primary
-            onClick={() => !settingAngelKit && !!startingStock && handleSubmitAngelKit(startingStock, false)}
-          />
-        )}
+        <ButtonWS
+          label={settingAngelKit ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+          primary
+          onClick={() => !settingAngelKit && !!startingStock && handleSubmitAngelKit(startingStock, false)}
+        />
       </Box>
       <Box flex="grow" direction="row" align="start">
         <Box fill="horizontal">{!!angelKitInstructions && <ReactMarkdown>{angelKitInstructions}</ReactMarkdown>}</Box>
@@ -72,7 +78,15 @@ const AngelKitForm: FC = () => {
               Stock
             </HeadingWS>
             <HeadingWS aria-label="stock-value" crustReady={crustReady} level={2} margin={{ vertical: '3px' }}>
-              {character?.playbookUnique?.angelKit ? character?.playbookUnique?.angelKit.stock : startingStock}
+              {character?.playbookUniques?.angelKit ? character?.playbookUniques?.angelKit.stock : startingStock}
+            </HeadingWS>
+          </RedBox>
+          <RedBox align="center" justify="between" pad="24px" fill="horizontal">
+            <HeadingWS crustReady={crustReady} level={3} margin="6px">
+              Supplier?
+            </HeadingWS>
+            <HeadingWS aria-label="supplier-status" crustReady={crustReady} level={2} margin={{ vertical: '3px' }}>
+              {character?.playbookUniques?.angelKit?.hasSupplier ? 'Yes' : 'No'}
             </HeadingWS>
           </RedBox>
         </Box>

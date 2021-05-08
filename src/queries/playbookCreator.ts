@@ -547,6 +547,25 @@ const PLAYBOOK_CREATOR = gql`
         category
         playbookType
       }
+      improvementBlock {
+        id
+        playbookType
+        improvementInstructions
+        improvementMoves {
+          id
+          name
+          kind
+          description
+          playbook
+        }
+        futureImprovementMoves {
+          id
+          name
+          kind
+          description
+          playbook
+        }
+      }
       statsOptions {
         id
         COOL
@@ -627,6 +646,7 @@ const PLAYBOOK_CREATOR = gql`
         }
         brainerGearCreator {
           id
+          defaultItemCount
           gear
         }
         customWeaponsCreator {
@@ -662,6 +682,7 @@ const PLAYBOOK_CREATOR = gql`
           id
           mainAttractionCount
           sideAttractionCount
+          defaultSecuritiesCount
           attractions
           atmospheres
           atmosphereCount
@@ -681,8 +702,8 @@ const PLAYBOOK_CREATOR = gql`
           defaultNumberOfFollowers
           defaultSurplusBarter
           defaultFortune
-          strengthCount
-          weaknessCount
+          defaultStrengthsCount
+          defaultWeaknessesCount
           travelOptions
           characterizationOptions
           defaultWants
@@ -741,8 +762,8 @@ const PLAYBOOK_CREATOR = gql`
           defaultGangHarm
           defaultGangArmor
           defaultGangTag
-          strengthCount
-          weaknessCount
+          defaultStrengthsCount
+          defaultWeaknessesCount
           strengthOptions {
             id
             description
@@ -798,7 +819,7 @@ const PLAYBOOK_CREATOR = gql`
         }
         workspaceCreator {
           id
-          itemsCount
+          defaultItemsCount
           workspaceInstructions
           projectInstructions
           workspaceItems

@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client';
 import { SkinnerGearInput } from '../@types';
-import { Character, PlaybookUnique, SkinnerGear } from '../@types/dataInterfaces';
+import { Character, PlaybookUniques, SkinnerGear } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetSkinnerGearData {
   setSkinnerGear: {
     id: string;
-    playbookUnique: {
+    playbookUniques: {
       id: string;
       type: UniqueTypes;
       skinnerGear?: SkinnerGear;
@@ -22,23 +22,24 @@ export interface SetSkinnerGearVars {
 }
 
 export const getSetSkinnerGearOR = (character: Character, skinnerGearInput: SkinnerGearInput): SetSkinnerGearData => {
-  const optimisticPlaybookUnique: PlaybookUnique = {
-    id: character.playbookUnique ? character.playbookUnique.id : 'temp-id-1',
+  const optimisticPlaybookUniques: PlaybookUniques = {
+    id: character.playbookUniques ? character.playbookUniques.id : 'temp-id-1',
     type: UniqueTypes.skinnerGear,
     skinnerGear: {
       ...skinnerGearInput,
-      id: character.playbookUnique?.skinnerGear ? character.playbookUnique.skinnerGear.id : 'temp-id-2',
+      id: character.playbookUniques?.skinnerGear ? character.playbookUniques.skinnerGear.id : 'temp-id-2',
+      uniqueType: UniqueTypes.skinnerGear,
       graciousWeapon: { ...skinnerGearInput.graciousWeapon, __typename: 'SkinnerGearItem' },
       luxeGear: skinnerGearInput.luxeGear.map((lg) => ({ ...lg, __typename: 'SkinnerGearItem' })),
       __typename: 'SkinnerGear',
     },
-    __typename: 'PlaybookUnique',
+    __typename: 'PlaybookUniques',
   };
 
   return {
     setSkinnerGear: {
       ...character,
-      playbookUnique: optimisticPlaybookUnique,
+      playbookUniques: optimisticPlaybookUniques,
       __typename: 'Character',
     },
   };
@@ -48,11 +49,12 @@ const SET_SKINNER_GEAR = gql`
   mutation SetSkinnerGear($gameRoleId: String!, $characterId: String!, $skinnerGear: SkinnerGearInput!) {
     setSkinnerGear(gameRoleId: $gameRoleId, characterId: $characterId, skinnerGear: $skinnerGear) {
       id
-      playbookUnique {
+      playbookUniques {
         id
         type
         skinnerGear {
           id
+          uniqueType
           graciousWeapon {
             id
             item

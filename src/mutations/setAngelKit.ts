@@ -19,7 +19,7 @@ const SET_ANGEL_KIT = gql`
       id
       name
       playbook
-      playbookUnique {
+      playbookUniques {
         id
         type
         angelKit {

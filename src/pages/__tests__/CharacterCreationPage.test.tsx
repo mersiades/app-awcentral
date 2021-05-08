@@ -28,6 +28,11 @@ import {
   // mockVehicleFrame3,
 } from '../../tests/mocks';
 import { PlaybookType } from '../../@types/enums';
+import {
+  mockPlaybookUniqueAngel,
+  mockPlaybookUniqueAngel_withDummyUniques,
+} from '../../tests/fixtures/playBookUniquesFixtures';
+import { Character } from '../../@types/dataInterfaces';
 // import { mockPlayBookCreatorQueryBattlebabe } from '../../components/characterCreation/uniques/__tests__/CustomWeaponsForm.test';
 
 jest.mock('@react-keycloak/web', () => {
@@ -156,7 +161,7 @@ describe('Rendering CharacterCreationPage', () => {
   // });
 
   test('should submit AngelKitForm and navigate to next step', async () => {
-    const startCharacter = {
+    const startCharacter: Character = {
       id: mockCharacter2.id,
       hasCompletedCharacterCreation: mockCharacter2.hasCompletedCharacterCreation,
       harm: mockCharacter2.harm,
@@ -167,8 +172,13 @@ describe('Rendering CharacterCreationPage', () => {
       gear: mockCharacter2.gear,
       barter: mockCharacter2.barter,
       experience: mockCharacter2.experience,
+      allowedImprovements: mockCharacter2.allowedImprovements,
+      allowedPlaybookMoves: mockCharacter2.allowedPlaybookMoves,
+      allowedOtherPlaybookMoves: mockCharacter2.allowedOtherPlaybookMoves,
+      improvementMoves: mockCharacter2.improvementMoves,
+      futureImprovementMoves: mockCharacter2.futureImprovementMoves,
       vehicleCount: 0,
-      playbookUnique: undefined,
+      playbookUniques: mockPlaybookUniqueAngel_withDummyUniques,
       characterMoves: [],
       hxBlock: mockCharacter2.hxBlock,
       vehicles: [],

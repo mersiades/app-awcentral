@@ -49,7 +49,7 @@ const CharacterNameForm: FC = () => {
             },
           },
         });
-        console.log(`character.hasCompletedCharacterCreation`, character.hasCompletedCharacterCreation);
+
         if (!character.hasCompletedCharacterCreation) {
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectLooks}`);
         }

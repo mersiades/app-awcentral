@@ -17,11 +17,12 @@ const SET_WEAPONS = gql`
       id
       name
       playbook
-      playbookUnique {
+      playbookUniques {
         id
         type
         weapons {
           id
+          uniqueType
           weapons
         }
       }

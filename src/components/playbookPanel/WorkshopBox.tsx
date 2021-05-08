@@ -36,7 +36,7 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
   const [removeProject, { loading: removingProject }] = useMutation<RemoveProjectData, RemoveProjectVars>(REMOVE_PROJECT);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const workspace = character?.playbookUnique?.workspace;
+  const workspace = character?.playbookUniques?.workspace;
 
   const resetProject = () => {
     setProjectId('');
@@ -69,7 +69,7 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
             addProject: {
               __typename: 'Character',
               ...character,
-              playbookUnique: optimisticPlaybookUnique,
+              playbookUniques: optimisticPlaybookUnique,
             },
           },
         });
@@ -106,7 +106,7 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
             removeProject: {
               __typename: 'Character',
               ...character,
-              playbookUnique: optimisticPlaybookUnique,
+              playbookUniques: optimisticPlaybookUnique,
             },
           },
         });

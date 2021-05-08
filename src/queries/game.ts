@@ -14,6 +14,7 @@ export const playbookUniqueFragments = {
     fragment AngelKit on PlaybookUnique {
       angelKit {
         id
+        uniqueType
         description
         stock
         angelKitMoves {
@@ -39,6 +40,8 @@ export const playbookUniqueFragments = {
     fragment BrainerGear on PlaybookUnique {
       brainerGear {
         id
+        uniqueType
+        allowedItemsCount
         brainerGear
       }
     }
@@ -48,6 +51,7 @@ export const playbookUniqueFragments = {
     fragment CustomWeapons on PlaybookUnique {
       customWeapons {
         id
+        uniqueType
         weapons
       }
     }
@@ -56,6 +60,7 @@ export const playbookUniqueFragments = {
     fragment Establishment on PlaybookUnique {
       establishment {
         id
+        uniqueType
         mainAttraction
         bestRegular
         worstRegular
@@ -83,6 +88,7 @@ export const playbookUniqueFragments = {
     fragment Followers on PlaybookUnique {
       followers {
         id
+        uniqueType
         description
         travelOption
         characterization
@@ -117,9 +123,11 @@ export const playbookUniqueFragments = {
     fragment Gang on PlaybookUnique {
       gang {
         id
+        uniqueType
         size
         harm
         armor
+        allowedStrengths
         strengths {
           id
           description
@@ -140,6 +148,7 @@ export const playbookUniqueFragments = {
     fragment Holding on PlaybookUnique {
       holding {
         id
+        uniqueType
         holdingSize
         gangSize
         souls
@@ -186,6 +195,7 @@ export const playbookUniqueFragments = {
     fragment SkinnerGear on PlaybookUnique {
       skinnerGear {
         id
+        uniqueType
         graciousWeapon {
           id
           item
@@ -203,6 +213,7 @@ export const playbookUniqueFragments = {
     fragment Weapons on PlaybookUnique {
       weapons {
         id
+        uniqueType
         weapons
       }
     }
@@ -211,6 +222,7 @@ export const playbookUniqueFragments = {
     fragment Workspace on PlaybookUnique {
       workspace {
         id
+        uniqueType
         workspaceInstructions
         projectInstructions
         workspaceItems
@@ -365,7 +377,7 @@ export const characterFragments = {
   `,
   playbookUnique: gql`
     fragment PlaybookUnique on Character {
-      playbookUnique {
+      playbookUniques {
         id
         type
         ...AngelKit
@@ -578,6 +590,9 @@ const GAME = gql`
           gear
           barter
           experience
+          allowedImprovements
+          allowedPlaybookMoves
+          allowedOtherPlaybookMoves
           vehicleCount
           battleVehicleCount
           holds {
@@ -631,6 +646,22 @@ const GAME = gql`
               rollType
               statToRollWith
             }
+          }
+          improvementMoves {
+            id
+            isSelected
+            name
+            kind
+            description
+            playbook
+          }
+          futureImprovementMoves {
+            id
+            isSelected
+            name
+            kind
+            description
+            playbook
           }
           vehicles {
             id
@@ -686,11 +717,12 @@ const GAME = gql`
               name
             }
           }
-          playbookUnique {
+          playbookUniques {
             id
             type
             angelKit {
               id
+              uniqueType
               description
               stock
               angelKitMoves {
@@ -712,14 +744,18 @@ const GAME = gql`
             }
             brainerGear {
               id
+              uniqueType
+              allowedItemsCount
               brainerGear
             }
             customWeapons {
               id
+              uniqueType
               weapons
             }
             followers {
               id
+              uniqueType
               description
               travelOption
               characterization
@@ -729,6 +765,8 @@ const GAME = gql`
               surplusBarter
               surplus
               wants
+              strengthsCount
+              weaknessesCount
               selectedStrengths {
                 id
                 description
@@ -750,9 +788,11 @@ const GAME = gql`
             }
             gang {
               id
+              uniqueType
               size
               harm
               armor
+              allowedStrengths
               strengths {
                 id
                 description
@@ -769,6 +809,7 @@ const GAME = gql`
             }
             holding {
               id
+              uniqueType
               holdingSize
               gangSize
               souls
@@ -780,6 +821,8 @@ const GAME = gql`
               wants
               gigs
               gangTags
+              strengthsCount
+              weaknessesCount
               selectedStrengths {
                 id
                 description
@@ -811,6 +854,7 @@ const GAME = gql`
             }
             skinnerGear {
               id
+              uniqueType
               graciousWeapon {
                 id
                 item
@@ -824,12 +868,15 @@ const GAME = gql`
             }
             weapons {
               id
+              uniqueType
               weapons
             }
             workspace {
               id
+              uniqueType
               workspaceInstructions
               projectInstructions
+              itemsCount
               workspaceItems
               projects {
                 id
@@ -839,6 +886,8 @@ const GAME = gql`
             }
             establishment {
               id
+              uniqueType
+              securitiesCount
               mainAttraction
               bestRegular
               worstRegular

@@ -46,6 +46,7 @@ export interface PlaybookCreator {
   optionalMoves: Move[];
   defaultMoves: Move[];
   gearInstructions: GearInstructions;
+  improvementBlock: ImprovementBlock;
   playbookUniqueCreator?: PlaybookUniqueCreator; // Driver does not have a PlaybookUnique
   __typename?: 'PlaybookCreator';
 }
@@ -68,9 +69,9 @@ export interface GearInstructions {
   id: string;
   gearIntro: string;
   youGetItems: string[];
-  introduceChoice: string;
-  numberCanChoose: number;
-  chooseableGear: string[];
+  introduceChoice?: string;
+  numberCanChoose?: number;
+  chooseableGear?: string[];
   withMC: string;
   startingBarter: number;
   __typename?: 'GearInstructions';
@@ -84,6 +85,15 @@ export interface StatsOption {
   SHARP: number;
   WEIRD: number;
   __typename?: 'StatsOption';
+}
+
+export interface ImprovementBlock {
+  id: string;
+  playbookType: PlaybookType;
+  improvementInstructions: string;
+  improvementMoves: Move[];
+  futureImprovementMoves: Move[];
+  __typename: 'ImprovementBlock';
 }
 
 // -------------------------------------------------- Move interfaces -------------------------------------------------- //
@@ -123,11 +133,12 @@ export interface Move {
   statModifier?: StatModifier;
   rollModifier?: RollModifier;
   moveAction?: MoveAction;
-  __typename?: 'Move';
+  __typename?: 'Move' | 'CharacterMove';
 }
 
 export interface CharacterMove extends Move {
   isSelected: boolean;
+  __typename?: 'CharacterMove';
 }
 
 export interface RollModifier {
@@ -140,6 +151,8 @@ export interface StatModifier {
   id: string;
   statToModify: StatType;
   modification: number;
+  maxLimit: number;
+  __typename?: 'StatModifier';
 }
 
 // --------------------------------------------- PlaybookUnique interfaces --------------------------------------------- //
@@ -169,6 +182,7 @@ export interface AngelKitCreator {
 
 export interface BrainerGearCreator {
   id: string;
+  defaultItemCount: number;
   gear: string[];
   __typename?: 'BrainerGearCreator';
 }
@@ -199,6 +213,7 @@ export interface EstablishmentCreator {
   id: string;
   mainAttractionCount: number;
   sideAttractionCount: number;
+  defaultSecuritiesCount: number;
   attractions: string[];
   atmospheres: string[];
   atmosphereCount: number[];
@@ -233,8 +248,8 @@ export interface FollowersCreator {
   defaultNumberOfFollowers: number;
   defaultSurplusBarter: number;
   defaultFortune: number;
-  strengthCount: number;
-  weaknessCount: number;
+  defaultStrengthsCount: number;
+  defaultWeaknessesCount: number;
   travelOptions: string[];
   characterizationOptions: string[];
   defaultWants: string[];
@@ -307,8 +322,8 @@ export interface HoldingCreator {
   defaultGangHarm: number;
   defaultGangArmor: number;
   defaultGangTag: string;
-  strengthCount: number;
-  weaknessCount: number;
+  defaultStrengthsCount: number;
+  defaultWeaknessesCount: number;
   strengthOptions: HoldingOption[];
   weaknessOptions: HoldingOption[];
   __typename?: 'HoldingCreator';
@@ -343,7 +358,7 @@ export interface WeaponsCreator {
 
 export interface WorkspaceCreator {
   id: string;
-  itemsCount: number;
+  defaultItemsCount: number;
   workspaceInstructions: string;
   projectInstructions: string;
   workspaceItems: string[];

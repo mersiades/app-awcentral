@@ -33,6 +33,17 @@ export enum MoveType {
   peripheral = 'PERIPHERAL',
   battle = 'BATTLE',
   roadWar = 'ROAD_WAR',
+  improveStat = 'IMPROVE_STAT',
+  addCharacterMove = 'ADD_CHARACTER_MOVE',
+  adjustUnique = 'ADJUST_UNIQUE',
+  addOtherPBMove = 'ADD_OTHER_PB_MOVE',
+  addUnique = 'ADD_UNIQUE',
+  addVehicle = 'ADD_VEHICLE',
+  genereicIncreaseStat = 'GENERIC_INCREASE_STAT',
+  retire = 'RETIRE',
+  addSecondCharacter = 'ADD_SECOND_CHARACTER',
+  changePlaybook = 'CHANGE_PLAYBOOK',
+  improveBasicMoves = 'IMPROVE_BASIC_MOVES',
 }
 
 export enum PlaybookType {

@@ -36,7 +36,7 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
   >(PERFORM_STABILIZE_AND_HEAL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const currentStock = userGameRole?.characters[0].playbookUnique?.angelKit?.stock || 0;
+  const currentStock = userGameRole?.characters[0].playbookUniques?.angelKit?.stock || 0;
 
   const handleStabilizeAndHealMove = () => {
     if (currentStock - stockSpent < 0) {

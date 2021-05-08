@@ -128,7 +128,7 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
           <Box align="center" justify="between" height="90px" gap="6px" margin={{ bottom: '6px' }}>
             <RedBox pad="12px" align="center" fill justify="center">
               <HeadingWS crustReady={crustReady} level={3} margin={{ horizontal: '9px', bottom: '-3px', top: '3px' }}>
-                {character?.playbookUnique?.gang?.size}
+                {character?.playbookUniques?.gang?.size}
               </HeadingWS>
             </RedBox>
             <TextWS style={{ fontWeight: 600 }}>Size</TextWS>
@@ -136,7 +136,7 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
           <Box align="center" justify="between" height="90px" gap="6px" margin={{ bottom: '6px' }}>
             <RedBox align="center" width="50px" fill="vertical" justify="center">
               <HeadingWS crustReady={crustReady} level="2" margin={{ left: '9px', right: '9px', bottom: '3px', top: '9px' }}>
-                {character?.playbookUnique?.gang?.harm}
+                {character?.playbookUniques?.gang?.harm}
               </HeadingWS>
             </RedBox>
             <TextWS style={{ fontWeight: 600 }}>Harm</TextWS>
@@ -144,14 +144,14 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
           <Box align="center" justify="between" height="90px" gap="6px" margin={{ bottom: '6px' }}>
             <RedBox align="center" width="50px" fill="vertical" justify="center">
               <HeadingWS crustReady={crustReady} level="2" margin={{ left: '9px', right: '9px', bottom: '3px', top: '9px' }}>
-                {character?.playbookUnique?.gang?.armor}
+                {character?.playbookUniques?.gang?.armor}
               </HeadingWS>
             </RedBox>
             <TextWS style={{ fontWeight: 600 }}>Armor</TextWS>
           </Box>
           <Box align="center" justify="between" height="90px" gap="6px" margin={{ bottom: '6px' }}>
             <RedBox pad="12px" fill justify="center">
-              <TextWS>{character?.playbookUnique?.gang?.tags.join(', ')}</TextWS>
+              <TextWS>{character?.playbookUniques?.gang?.tags.join(', ')}</TextWS>
             </RedBox>
             <TextWS style={{ fontWeight: 600 }}>Tags</TextWS>
           </Box>

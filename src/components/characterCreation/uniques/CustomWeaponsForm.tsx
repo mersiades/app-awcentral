@@ -18,6 +18,8 @@ import { ItemCharacteristic, TaggedItem } from '../../../@types';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 
+export const CUSTOM_WEAPONS_FORM_TEST_ID = 'custom-weapons-form';
+
 const WeaponsUL = styled.ul`
   margin: 0;
   padding: 5px;
@@ -41,7 +43,7 @@ const CustomWeaponsForm: FC = () => {
   const [characteristics, setCharacteristics] = useState<ItemCharacteristic[]>([]);
   const [value, setValue] = useState('');
   const [weapons, setWeapons] = useState<string[]>(
-    !!character?.playbookUnique?.customWeapons ? [...character.playbookUnique.customWeapons.weapons] : []
+    !!character?.playbookUniques?.customWeapons ? [...character.playbookUniques.customWeapons.weapons] : []
   );
 
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
@@ -65,6 +67,7 @@ const CustomWeaponsForm: FC = () => {
     handOptionsInstructions,
     handOptionsOptions,
   } = pbCreatorData?.playbookCreator.playbookUniqueCreator?.customWeaponsCreator || {};
+
   const [setCustomWeapons, { loading: settingCustomWeapons }] = useMutation<SetCustomWeaponsData, SetCustomWeaponsVars>(
     SET_CUSTOM_WEAPONS
   );
@@ -274,14 +277,7 @@ const CustomWeaponsForm: FC = () => {
   };
 
   return (
-    <Box
-      data-testid="custom-weapons-form"
-      justify="start"
-      width="85vw"
-      align="start"
-      pad="24px"
-      style={{ maxWidth: '763px' }}
-    >
+    <Box data-testid={CUSTOM_WEAPONS_FORM_TEST_ID} justify="start" width="85vw" align="start" style={{ maxWidth: '763px' }}>
       <Box direction="row" fill="horizontal" justify="between" align="center">
         <HeadingWS
           crustReady={crustReady}
