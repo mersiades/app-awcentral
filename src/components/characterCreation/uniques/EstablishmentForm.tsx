@@ -547,7 +547,6 @@ const EstablishmentForm: FC = () => {
       justify="start"
       width="85vw"
       align="start"
-      pad="24px"
       gap="18px"
       style={{ maxWidth: '763px' }}
     >

@@ -38,6 +38,12 @@ export const apolloClient = new ApolloClient({
               return [...incoming];
             },
           },
+          gameMessages: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
         },
       },
       Character: {
@@ -49,6 +55,24 @@ export const apolloClient = new ApolloClient({
             },
           },
           characterMoves: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
+          improvementMoves: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
+          vehicles: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
+          holds: {
             // @ts-ignore
             merge(existing = [], incoming: any[]) {
               return [...incoming];

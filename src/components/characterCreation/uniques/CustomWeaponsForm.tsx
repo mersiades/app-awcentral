@@ -277,14 +277,7 @@ const CustomWeaponsForm: FC = () => {
   };
 
   return (
-    <Box
-      data-testid={CUSTOM_WEAPONS_FORM_TEST_ID}
-      justify="start"
-      width="85vw"
-      align="start"
-      pad="24px"
-      style={{ maxWidth: '763px' }}
-    >
+    <Box data-testid={CUSTOM_WEAPONS_FORM_TEST_ID} justify="start" width="85vw" align="start" style={{ maxWidth: '763px' }}>
       <Box direction="row" fill="horizontal" justify="between" align="center">
         <HeadingWS
           crustReady={crustReady}

@@ -71,7 +71,7 @@ const BrainerGearForm: FC = () => {
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
   return (
-    <Box data-testid="brainer-gear-form" justify="start" width="85vw" align="start" pad="24px" style={{ maxWidth: '763px' }}>
+    <Box data-testid="brainer-gear-form" justify="start" width="85vw" align="start" style={{ maxWidth: '763px' }}>
       <Box direction="row" fill="horizontal" justify="between" align="center">
         <HeadingWS crustReady={crustReady} level={2} style={{ lineHeight: '44px' }}>
           {!!character && !!character.name ? `WHAT SPECIAL BRAINER GEAR DOES ${character.name.toUpperCase()} HAVE?` : '...'}
