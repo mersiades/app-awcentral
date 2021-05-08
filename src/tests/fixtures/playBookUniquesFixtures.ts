@@ -7,6 +7,7 @@ import {
   Gang,
   Holding,
   Followers,
+  Workspace,
 } from '../../@types/dataInterfaces';
 import { GangSize, HoldingSize, UniqueTypes } from '../../@types/enums';
 import { HOLDING_SOULS_MEDIUM } from '../../config/constants';
@@ -248,4 +249,36 @@ export const mockPlaybookUniqueHocus_with1Improvement: PlaybookUniques = {
   ...mockPlaybookUniqueHocus,
   id: 'mock-hocus-unique-2-id',
   followers: mockFollowers_with1Improvement,
+};
+
+// ------------------------------------------------------- Workspace / Savvyhead -------------------------------------------------------- //
+
+export const mockWorkspace_noSelectionsMade: Workspace = {
+  id: 'mock-workspace-1-id',
+  uniqueType: UniqueTypes.workspace,
+  workspaceInstructions: 'When you go into your workspace and dedicate yourself to making a thing, or ...',
+  projectInstructions: "During play, it's your job to have your character start and pursue projects...",
+  itemsCount: 3,
+  workspaceItems: [],
+  projects: [],
+  __typename: 'Workspace',
+};
+
+export const mockWorkspace_withImprovement: Workspace = {
+  ...mockWorkspace_noSelectionsMade,
+  id: 'mock-workspace-2-id',
+  itemsCount: 5,
+};
+
+export const mockPlaybookUniqueSavvyhead: PlaybookUniques = {
+  id: 'mock-savvyhead-unique-1-id',
+  type: UniqueTypes.workspace,
+  workspace: mockWorkspace_noSelectionsMade,
+  __typename: 'PlaybookUniques',
+};
+
+export const mockPlaybookUniqueSavvyhead_withImprovement: PlaybookUniques = {
+  ...mockPlaybookUniqueSavvyhead,
+  id: 'mock-savvyhead-unique-2-id',
+  workspace: mockWorkspace_withImprovement,
 };

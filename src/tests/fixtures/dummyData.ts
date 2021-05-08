@@ -263,7 +263,7 @@ export const dummyWeaponsCreator: WeaponsCreator = {
 
 export const dummyWorkspaceCreator: WorkspaceCreator = {
   id: 'dummy',
-  itemsCount: 0,
+  defaultItemsCount: 0,
   workspaceInstructions: 'dummy',
   projectInstructions: 'dummy',
   workspaceItems: [],
@@ -436,6 +436,7 @@ export const dummyWorkspace: Workspace = {
   uniqueType: UniqueTypes.workspace,
   workspaceInstructions: 'dummy',
   projectInstructions: 'dummy',
+  itemsCount: 3,
   workspaceItems: ['dummy'],
   projects: [dummyProject],
   __typename: 'Workspace',

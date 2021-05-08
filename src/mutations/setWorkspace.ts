@@ -56,6 +56,7 @@ const SET_WORKSPACE = gql`
           uniqueType
           workspaceInstructions
           projectInstructions
+          itemsCount
           workspaceItems
           projects {
             id

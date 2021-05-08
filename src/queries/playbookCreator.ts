@@ -818,7 +818,7 @@ const PLAYBOOK_CREATOR = gql`
         }
         workspaceCreator {
           id
-          itemsCount
+          defaultItemsCount
           workspaceInstructions
           projectInstructions
           workspaceItems

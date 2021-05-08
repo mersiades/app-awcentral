@@ -357,7 +357,7 @@ export interface WeaponsCreator {
 
 export interface WorkspaceCreator {
   id: string;
-  itemsCount: number;
+  defaultItemsCount: number;
   workspaceInstructions: string;
   projectInstructions: string;
   workspaceItems: string[];

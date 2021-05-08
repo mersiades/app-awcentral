@@ -1,16 +1,21 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import wait from 'waait';
 import { InMemoryCache } from '@apollo/client';
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 import WorkspaceForm from '../WorkspaceForm';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
-import { renderWithRouter } from '../../../../tests/test-utils';
+import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQuerySavvyhead } from '../../../../tests/mockQueries';
-import { Game } from '../../../../@types/dataInterfaces';
+import { PlaybookUniques } from '../../../../@types/dataInterfaces';
 import { mockWorkspaceCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
+import { PlaybookType } from '../../../../@types/enums';
+import {
+  mockPlaybookUniqueSavvyhead,
+  mockPlaybookUniqueSavvyhead_withImprovement,
+} from '../../../../tests/fixtures/playBookUniquesFixtures';
+import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -20,72 +25,99 @@ jest.mock('@react-keycloak/web', () => {
   };
 });
 
+const generateGame = (playbookUniques: PlaybookUniques) => ({
+  ...mockGame5,
+  gameRoles: [
+    mockGame5.gameRoles[0],
+    mockGame5.gameRoles[1],
+    {
+      id: mockGame5.gameRoles[2].id,
+      role: mockGame5.gameRoles[2].role,
+      userId: mockGame5.gameRoles[2].userId,
+      gameName: mockGame5.gameRoles[2].gameName,
+      gameId: mockGame5.gameRoles[2].gameId,
+      npcs: mockGame5.gameRoles[2].npcs,
+      threats: mockGame5.gameRoles[2].threats,
+      characters: [
+        {
+          ...blankCharacter,
+          id: mockCharacter2.id,
+          playbook: PlaybookType.savvyhead,
+          name: mockCharacter2.name,
+          looks: mockCharacter2.looks,
+          statsBlock: mockCharacter2.statsBlock,
+          gear: mockCharacter2.gear,
+          playbookUniques,
+        },
+      ],
+    },
+  ],
+});
+
 describe('Rendering WorkspaceForm', () => {
   let cache = new InMemoryCache();
-  const mockGame: Game = {
-    ...mockGame5,
-    gameRoles: [
-      mockGame5.gameRoles[0],
-      mockGame5.gameRoles[1],
-      {
-        id: mockGame5.gameRoles[2].id,
-        role: mockGame5.gameRoles[2].role,
-        userId: mockGame5.gameRoles[2].userId,
-        gameName: mockGame5.gameRoles[2].gameName,
-        gameId: mockGame5.gameRoles[2].gameId,
-        npcs: mockGame5.gameRoles[2].npcs,
-        threats: mockGame5.gameRoles[2].threats,
-        characters: [
-          {
-            ...blankCharacter,
-            id: mockCharacter2.id,
-            playbook: mockCharacter2.playbook,
-            name: mockCharacter2.name,
-            looks: mockCharacter2.looks,
-            statsBlock: mockCharacter2.statsBlock,
-            gear: mockCharacter2.gear,
-          },
-        ],
-      },
-    ],
-  };
-  beforeEach(async () => {
+
+  beforeEach(() => {
     cache = new InMemoryCache();
-    renderWithRouter(<WorkspaceForm />, `/character-creation/${mockGame5.id}`, {
-      isAuthenticated: true,
-      apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
-      injectedGame: mockGame,
-      injectedUserId: mockKeycloakUserInfo1.sub,
-      cache,
+  });
+
+  describe('with a fresh Workspace', () => {
+    beforeEach(async () => {
+      renderWithRouter(<WorkspaceForm />, `/character-creation/${mockGame5.id}`, {
+        isAuthenticated: true,
+        apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
+        injectedGame: generateGame(mockPlaybookUniqueSavvyhead),
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      });
+
+      await waitOneTick();
     });
-    await act(async () => await wait());
+
+    test('should render WorkspaceForm in initial state', () => {
+      screen.getByTestId('workspace-form');
+      screen.getByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S WORKSPACE` });
+      screen.getByRole('heading', { name: 'Projects' });
+      screen.getByRole;
+    });
+
+    test('should enable SET button when form is completed', () => {
+      screen.getByTestId('workspace-form');
+      let setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      const item1 = screen.getByTestId(`${mockWorkspaceCreator.workspaceItems[0]}-pill`);
+      const item2 = screen.getByTestId(`${mockWorkspaceCreator.workspaceItems[1]}-pill`);
+      const item3 = screen.getByTestId(`${mockWorkspaceCreator.workspaceItems[2]}-pill`);
+
+      // Select first workspace item
+      userEvent.click(item1);
+
+      // Select second workspace item
+      userEvent.click(item2);
+      setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      expect(setButton.disabled).toEqual(true);
+
+      // Select second workspace item
+      userEvent.click(item3);
+      setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      expect(setButton.disabled).toEqual(false);
+    });
   });
 
-  test('should render WorkspaceForm in initial state', async () => {
-    await screen.findByTestId('workspace-form');
-    screen.getByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S WORKSPACE` });
-    screen.getByRole('heading', { name: 'Projects' });
-    screen.getByRole;
-  });
+  describe('with a Workspace with improvement', () => {
+    beforeEach(async () => {
+      renderWithRouter(<WorkspaceForm />, `/character-creation/${mockGame5.id}`, {
+        isAuthenticated: true,
+        apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
+        injectedGame: generateGame(mockPlaybookUniqueSavvyhead_withImprovement),
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      });
+      await waitOneTick();
+    });
 
-  test('should enable SET button when form is completed', async () => {
-    await screen.findByTestId('workspace-form');
-    let setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
-    const item1 = screen.getByTestId(`${mockWorkspaceCreator.workspaceItems[0]}-pill`);
-    const item2 = screen.getByTestId(`${mockWorkspaceCreator.workspaceItems[1]}-pill`);
-    const item3 = screen.getByTestId(`${mockWorkspaceCreator.workspaceItems[2]}-pill`);
-
-    // Select first workspace item
-    userEvent.click(item1);
-
-    // Select second workspace item
-    userEvent.click(item2);
-    setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
-    expect(setButton.disabled).toEqual(true);
-
-    // Select second workspace item
-    userEvent.click(item3);
-    setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
-    expect(setButton.disabled).toEqual(false);
+    test('should show increased item count', () => {
+      expect(screen.getByText('Choose 5:')).toBeInTheDocument();
+      expect(screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
+    });
   });
 });

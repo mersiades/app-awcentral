@@ -876,6 +876,7 @@ const GAME = gql`
               uniqueType
               workspaceInstructions
               projectInstructions
+              itemsCount
               workspaceItems
               projects {
                 id

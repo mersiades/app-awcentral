@@ -4,16 +4,18 @@ import { useHistory } from 'react-router-dom';
 import { Box, Text } from 'grommet';
 
 import { StyledMarkdown } from '../../styledComponents';
-import { ButtonWS, HeadingWS } from '../../../config/grommetConfig';
+import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
-import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../../@types/enums';
+import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import SET_WORKSPACE, { getSetWorkspaceOR, SetWorkspaceData, SetWorkspaceVars } from '../../../mutations/setWorkspace';
 import Spinner from '../../Spinner';
 import { WorkspaceInput } from '../../../@types';
+import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import { omit } from 'lodash';
 
-const ITEMS_INSTRUCTIONS = 'Choose which of the following your workspace includes. Choose 3:';
+const ITEMS_INSTRUCTIONS = 'Choose which of the following your workspace includes.';
 
 const WorkspaceForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -22,6 +24,7 @@ const WorkspaceForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { character, game, userGameRole } = useGame();
   const { crustReady } = useFonts();
+  const workspace = character?.playbookUniques?.workspace;
 
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
   const history = useHistory();
@@ -30,21 +33,17 @@ const WorkspaceForm: FC = () => {
   const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
     variables: { playbookType: PlaybookType.savvyhead },
   });
-
   const workspaceCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.workspaceCreator;
+
   const [setWorkspace, { loading: settingWorkspace }] = useMutation<SetWorkspaceData, SetWorkspaceVars>(SET_WORKSPACE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
 
   const handleSubmitWorkspace = async () => {
-    if (!!userGameRole && !!character && !!game && !!workspaceCreator) {
+    if (!!userGameRole && !!character && !!game && !!workspaceCreator && !!workspace) {
       const workspaceInput: WorkspaceInput = {
-        id: character.playbookUniques?.workspace ? character.playbookUniques.workspace.id : undefined,
-        uniqueType: UniqueTypes.workspace,
+        ...omit(workspace, '__typename'),
         workspaceItems: items,
-        workspaceInstructions: workspaceCreator.workspaceInstructions,
-        projectInstructions: workspaceCreator.projectInstructions,
-        projects: character.playbookUniques?.workspace ? character.playbookUniques.workspace.projects : [],
       };
 
       try {
@@ -63,11 +62,11 @@ const WorkspaceForm: FC = () => {
   };
 
   const handleItemSelect = (item: string) => {
-    if (!!workspaceCreator) {
+    if (!!workspace) {
       if (items.includes(item)) {
         const newItems = items.filter((itm) => itm !== item);
         setItems(newItems);
-      } else if (items.length < workspaceCreator?.itemsCount) {
+      } else if (items.length < workspace.itemsCount) {
         setItems([...items, item]);
       }
     }
@@ -77,12 +76,16 @@ const WorkspaceForm: FC = () => {
 
   // Set existing Workspace when component mounts
   useEffect(() => {
-    if (!!character?.playbookUniques?.workspace) {
-      setItems(character.playbookUniques.workspace.workspaceItems);
+    if (!!workspace) {
+      setItems(workspace.workspaceItems);
     }
-  }, [character]);
+  }, [workspace]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
+
+  if (!workspace) {
+    return null;
+  }
 
   const renderPills = (item: string) => (
     <Box
@@ -118,14 +121,22 @@ const WorkspaceForm: FC = () => {
         <ButtonWS
           primary
           label={settingWorkspace ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
-          onClick={() => !settingWorkspace && items.length === 3 && handleSubmitWorkspace()}
-          disabled={settingWorkspace || items.length < 3}
+          onClick={() => !settingWorkspace && items.length === workspace.itemsCount && handleSubmitWorkspace()}
+          disabled={settingWorkspace || items.length !== workspace.itemsCount}
           style={{ height: '45px' }}
         />
       </Box>
 
-      <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
-        <StyledMarkdown>{ITEMS_INSTRUCTIONS}</StyledMarkdown>
+      <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '0px' }}>
+        <ParagraphWS margin={{ bottom: '6px' }}>{ITEMS_INSTRUCTIONS}</ParagraphWS>
+        <Box direction="row" align="center" gap="12px">
+          <ParagraphWS margin={{ vertical: '0px' }}>{`Choose ${workspace.itemsCount}:`}</ParagraphWS>
+          {!!workspaceCreator && workspaceCreator?.defaultItemsCount < workspace.itemsCount && (
+            <ParagraphWS margin={{ vertical: '0px' }} color={accentColors[0]}>
+              {INCREASED_BY_IMPROVEMENT_TEXT}
+            </ParagraphWS>
+          )}
+        </Box>
         <Box direction="row" gap="12px">
           <Box direction="row" wrap>
             {workspaceCreator?.workspaceItems.map((item) => renderPills(item))}

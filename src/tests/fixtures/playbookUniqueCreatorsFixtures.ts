@@ -437,7 +437,7 @@ export const mockUniqueCreatorGunlugger: PlaybookUniqueCreator = {
 
 export const mockWorkspaceCreator: WorkspaceCreator = {
   id: 'workspace-creator-id',
-  itemsCount: 3,
+  defaultItemsCount: 3,
   workspaceInstructions: 'When you go into your workspace and dedicate yourself to making a thing, or ...',
   projectInstructions: "During play, it's your job to have your character start and pursue projects...",
   workspaceItems: ['a garage', 'a darkroom', 'a controlled growing environment', 'skilled labor (Carna, Thuy, Pamming eg)'],

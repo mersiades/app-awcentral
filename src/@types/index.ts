@@ -204,6 +204,7 @@ export interface WorkspaceInput {
   uniqueType: UniqueTypes;
   workspaceInstructions: string;
   projectInstructions: string;
+  itemsCount: number;
   workspaceItems: string[];
   projects: Project[];
 }

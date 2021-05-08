@@ -286,6 +286,7 @@ export interface Workspace {
   uniqueType: UniqueTypes;
   workspaceInstructions: string;
   projectInstructions: string;
+  itemsCount: number;
   workspaceItems: string[];
   projects: Project[];
   __typename?: 'Workspace';
