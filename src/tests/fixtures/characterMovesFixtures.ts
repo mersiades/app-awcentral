@@ -1,8 +1,12 @@
 import { MoveType, PlaybookType, StatType } from '../../@types/enums';
 import { CharacterMove } from '../../@types/staticDataInterfaces';
 import {
+  ADD_GANG_PACK_ALPHA_NAME,
+  ADD_HOLDING_NAME,
   ANGEL_SPECIAL_NAME,
+  CHOPPER_SPECIAL_NAME,
   COOL_2_MAX_NAME,
+  GUNLUGGER_SPECIAL_NAME,
   HARD_2_MAX_NAME,
   HOT_2_MAX_NAME,
   SHARP_2_MAX_NAME,
@@ -71,6 +75,26 @@ export const mockWeirdMax2AsCM: CharacterMove = {
   statModifier: mockWeirdMax2Mod,
   playbook: PlaybookType.angel,
   kind: MoveType.improveStat,
+  __typename: 'CharacterMove',
+};
+
+export const mockAddHolding: CharacterMove = {
+  id: 'mock-add-holding-character-move-5-id',
+  isSelected: true,
+  name: ADD_HOLDING_NAME,
+  description: 'get a holding',
+  playbook: PlaybookType.gunlugger,
+  kind: MoveType.addUnique,
+  __typename: 'CharacterMove',
+};
+
+export const mockAddGangPackAlpha: CharacterMove = {
+  id: 'mock-add-gang-pack-alpha-character-move-5-id',
+  isSelected: true,
+  name: ADD_GANG_PACK_ALPHA_NAME,
+  description: 'get a gang',
+  playbook: PlaybookType.gunlugger,
+  kind: MoveType.addUnique,
   __typename: 'CharacterMove',
 };
 
@@ -145,11 +169,95 @@ export const mockSeeingSoulsAsCM: CharacterMove = {
 export const mockChopperSpecial: CharacterMove = {
   id: 'mock-chopper-special-character-move-id',
   isSelected: true,
-  name: 'CHOPPER SPECIAL',
+  name: CHOPPER_SPECIAL_NAME,
   description: 'When you have sex with...',
   playbook: PlaybookType.chopper,
   kind: MoveType.default,
   stat: StatType.hx,
+  rollModifier: dummyRollModifier,
+  statModifier: dummyStatModifier,
+  moveAction: dummyMoveAction,
+  __typename: 'CharacterMove',
+};
+
+export const mockGunluggerSpecial: CharacterMove = {
+  id: 'mock-gunlugger-special-character-move-id',
+  isSelected: true,
+  name: GUNLUGGER_SPECIAL_NAME,
+  description: 'When you have sex with...',
+  playbook: PlaybookType.gunlugger,
+  kind: MoveType.default,
+  stat: StatType.hx,
+  rollModifier: dummyRollModifier,
+  statModifier: dummyStatModifier,
+  moveAction: dummyMoveAction,
+  __typename: 'CharacterMove',
+};
+
+export const mockBattleHardened: CharacterMove = {
+  id: 'mock-battle-hardened-character-move-id',
+  isSelected: true,
+  name: 'BATTLE HARDENED',
+  description: 'When you act under fire...',
+  playbook: PlaybookType.gunlugger,
+  kind: MoveType.character,
+  stat: StatType.cool,
+  rollModifier: dummyRollModifier,
+  statModifier: dummyStatModifier,
+  moveAction: dummyMoveAction,
+  __typename: 'CharacterMove',
+};
+
+export const mockFuckThisShit: CharacterMove = {
+  id: 'mock-fuck-this-shit-character-move-id',
+  isSelected: true,
+  name: 'FUCK THIS SHIT',
+  description: 'name your escape route...',
+  playbook: PlaybookType.gunlugger,
+  kind: MoveType.character,
+  stat: StatType.hard,
+  rollModifier: dummyRollModifier,
+  statModifier: dummyStatModifier,
+  moveAction: dummyMoveAction,
+  __typename: 'CharacterMove',
+};
+
+export const mockBattlefieldInstincts: CharacterMove = {
+  id: 'mock-battlefield-instincts-character-move-id',
+  isSelected: true,
+  name: 'BATTLEFIELD INSTINCTS',
+  description: 'When you open your brain...',
+  playbook: PlaybookType.gunlugger,
+  kind: MoveType.character,
+  stat: StatType.hard,
+  rollModifier: dummyRollModifier,
+  statModifier: dummyStatModifier,
+  moveAction: dummyMoveAction,
+  __typename: 'CharacterMove',
+};
+
+export const mockWealth: CharacterMove = {
+  id: 'mock-wealth-character-move-id',
+  isSelected: true,
+  name: 'WEALTH',
+  description: 'If your hold is secure...',
+  playbook: PlaybookType.hardholder,
+  kind: MoveType.default,
+  stat: StatType.hard,
+  rollModifier: dummyRollModifier,
+  statModifier: dummyStatModifier,
+  moveAction: dummyMoveAction,
+  __typename: 'CharacterMove',
+};
+
+export const mockPackAlpha: CharacterMove = {
+  id: 'mock-pack-alpha-character-move-id',
+  isSelected: true,
+  name: 'PACK ALPHA',
+  description: 'When you try to impose...',
+  playbook: PlaybookType.chopper,
+  kind: MoveType.default,
+  stat: StatType.hard,
   rollModifier: dummyRollModifier,
   statModifier: dummyStatModifier,
   moveAction: dummyMoveAction,

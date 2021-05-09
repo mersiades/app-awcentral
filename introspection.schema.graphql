@@ -38,6 +38,9 @@ type AngelKit {
   id: ID!
 
   """"""
+  uniqueType: UniqueType!
+
+  """"""
   description: String!
 
   """"""
@@ -218,13 +221,22 @@ type BrainerGear {
   id: ID!
 
   """"""
-  brainerGear: [String]
+  uniqueType: UniqueType!
+
+  """"""
+  allowedItemsCount: Int!
+
+  """"""
+  brainerGear: [String]!
 }
 
 """"""
 type BrainerGearCreator {
   """"""
   id: ID!
+
+  """"""
+  defaultItemCount: Int!
 
   """"""
   gear: [String]!
@@ -290,10 +302,10 @@ type Character {
   name: String
 
   """"""
-  gear: [String]
+  playbook: PlaybookType
 
   """"""
-  playbook: PlaybookType
+  playbookUniques: PlaybookUniques
 
   """"""
   hasCompletedCharacterCreation: Boolean
@@ -302,25 +314,10 @@ type Character {
   hasPlusOneForward: Boolean
 
   """"""
-  holds: [Hold]
-
-  """"""
-  looks: [Look]
+  barter: Int
 
   """"""
   statsBlock: StatsBlock
-
-  """"""
-  hxBlock: [HxStat]
-
-  """"""
-  playbookUnique: PlaybookUnique
-
-  """"""
-  characterMoves: [CharacterMove]
-
-  """"""
-  barter: Int
 
   """"""
   harm: CharacterHarm
@@ -329,16 +326,46 @@ type Character {
   vehicleCount: Int
 
   """"""
-  vehicles: [Vehicle]
+  battleVehicleCount: Int
 
   """"""
-  battleVehicleCount: Int
+  experience: Int!
+
+  """"""
+  allowedImprovements: Int!
+
+  """"""
+  allowedPlaybookMoves: Int!
+
+  """"""
+  allowedOtherPlaybookMoves: Int!
 
   """"""
   battleVehicles: [BattleVehicle]
 
   """"""
-  experience: Int!
+  vehicles: [Vehicle]
+
+  """"""
+  hxBlock: [HxStat]
+
+  """"""
+  gear: [String]
+
+  """"""
+  looks: [Look]
+
+  """"""
+  characterMoves: [CharacterMove]
+
+  """"""
+  improvementMoves: [CharacterMove]
+
+  """"""
+  futureImprovementMoves: [CharacterMove]
+
+  """"""
+  holds: [Hold]
 }
 
 """"""
@@ -431,6 +458,9 @@ type CustomWeapons {
   id: ID!
 
   """"""
+  uniqueType: UniqueType!
+
+  """"""
   weapons: [String]!
 }
 
@@ -476,22 +506,28 @@ type Establishment {
   id: ID!
 
   """"""
-  mainAttraction: String!
+  uniqueType: UniqueType!
 
   """"""
-  bestRegular: String!
+  mainAttraction: String
 
   """"""
-  worstRegular: String!
+  bestRegular: String
 
   """"""
-  wantsInOnIt: String!
+  worstRegular: String
 
   """"""
-  oweForIt: String!
+  wantsInOnIt: String
 
   """"""
-  wantsItGone: String!
+  oweForIt: String
+
+  """"""
+  wantsItGone: String
+
+  """"""
+  securitiesCount: Int!
 
   """"""
   sideAttractions: [String]!
@@ -500,10 +536,10 @@ type Establishment {
   atmospheres: [String]!
 
   """"""
-  regulars: [String]!
+  regulars: [String!]!
 
   """"""
-  interestedParties: [String]!
+  interestedParties: [String!]!
 
   """"""
   securityOptions: [SecurityOption]!
@@ -522,6 +558,9 @@ type EstablishmentCreator {
 
   """"""
   sideAttractionCount: Int!
+
+  """"""
+  defaultSecuritiesCount: Int!
 
   """"""
   attractions: [String]!
@@ -572,6 +611,9 @@ input EstablishmentInput {
   wantsItGone: String!
 
   """"""
+  securitiesCount: Int!
+
+  """"""
   sideAttractions: [String]!
 
   """"""
@@ -617,25 +659,34 @@ type Followers {
   id: ID!
 
   """"""
-  description: String!
+  uniqueType: UniqueType!
 
   """"""
-  travelOption: String!
+  description: String
 
   """"""
-  characterization: String!
+  travelOption: String
+
+  """"""
+  characterization: String
 
   """"""
   followers: Int!
 
   """"""
+  surplusBarter: Int!
+
+  """"""
   fortune: Int!
 
   """"""
-  barter: Int!
+  barter: Int
 
   """"""
-  surplusBarter: Int!
+  strengthsCount: Int!
+
+  """"""
+  weaknessesCount: Int!
 
   """"""
   surplus: [String]!
@@ -668,10 +719,10 @@ type FollowersCreator {
   defaultFortune: Int!
 
   """"""
-  strengthCount: Int!
+  defaultStrengthsCount: Int!
 
   """"""
-  weaknessCount: Int!
+  defaultWeaknessesCount: Int!
 
   """"""
   travelOptions: [String]!
@@ -714,6 +765,12 @@ input FollowersInput {
 
   """"""
   surplusBarter: Int!
+
+  """"""
+  strengthsCount: Int!
+
+  """"""
+  weaknessesCount: Int!
 
   """"""
   surplus: [String]!
@@ -911,22 +968,28 @@ type Gang {
   id: ID!
 
   """"""
-  size: GangSize
+  uniqueType: UniqueType!
 
   """"""
-  harm: Int
+  size: GangSize!
 
   """"""
-  armor: Int
+  harm: Int!
 
   """"""
-  strengths: [GangOption]
+  armor: Int!
 
   """"""
-  weaknesses: [GangOption]
+  allowedStrengths: Int!
 
   """"""
-  tags: [String]
+  strengths: [GangOption]!
+
+  """"""
+  weaknesses: [GangOption]!
+
+  """"""
+  tags: [String]!
 }
 
 """"""
@@ -968,22 +1031,25 @@ input GangInput {
   id: ID
 
   """"""
-  size: GangSize
+  size: GangSize!
 
   """"""
-  harm: Int
+  harm: Int!
 
   """"""
-  armor: Int
+  armor: Int!
 
   """"""
-  strengths: [GangOptionInput]
+  allowedStrengths: Int!
 
   """"""
-  weaknesses: [GangOptionInput]
+  strengths: [GangOptionInput]!
 
   """"""
-  tags: [String]
+  weaknesses: [GangOptionInput]!
+
+  """"""
+  tags: [String]!
 }
 
 """"""
@@ -1132,6 +1198,9 @@ type Holding {
   id: ID!
 
   """"""
+  uniqueType: UniqueType!
+
+  """"""
   holdingSize: HoldingSize!
 
   """"""
@@ -1163,6 +1232,12 @@ type Holding {
 
   """"""
   gangTags: [String]!
+
+  """"""
+  strengthsCount: Int!
+
+  """"""
+  weaknessesCount: Int!
 
   """"""
   selectedStrengths: [HoldingOption]!
@@ -1213,10 +1288,10 @@ type HoldingCreator {
   defaultGangTag: String!
 
   """"""
-  strengthCount: Int!
+  defaultStrengthsCount: Int!
 
   """"""
-  weaknessCount: Int!
+  defaultWeaknessesCount: Int!
 
   """"""
   strengthOptions: [HoldingOption]!
@@ -1262,6 +1337,12 @@ input HoldingInput {
 
   """"""
   gangTags: [String]!
+
+  """"""
+  strengthsCount: Int!
+
+  """"""
+  weaknessesCount: Int!
 
   """"""
   selectedStrengths: [HoldingOptionInput]!
@@ -1388,6 +1469,24 @@ type HxStat {
 
   """"""
   hxValue: Int!
+}
+
+""""""
+type ImprovementBlock {
+  """"""
+  id: ID!
+
+  """"""
+  playbookType: PlaybookType
+
+  """"""
+  improvementInstructions: String
+
+  """"""
+  improvementMoves: [Move]
+
+  """"""
+  futureImprovementMoves: [Move]
 }
 
 """"""
@@ -1611,6 +1710,39 @@ enum MoveType {
 
   """"""
   UNIQUE
+
+  """"""
+  IMPROVE_STAT
+
+  """"""
+  ADD_CHARACTER_MOVE
+
+  """"""
+  ADJUST_UNIQUE
+
+  """"""
+  ADD_OTHER_PB_MOVE
+
+  """"""
+  ADD_UNIQUE
+
+  """"""
+  ADD_VEHICLE
+
+  """"""
+  GENERIC_INCREASE_STAT
+
+  """"""
+  RETIRE
+
+  """"""
+  ADD_SECOND_CHARACTER
+
+  """"""
+  CHANGE_PLAYBOOK
+
+  """"""
+  IMPROVE_BASIC_MOVES
 }
 
 """
@@ -1675,7 +1807,7 @@ type Mutation {
   setCharacterGear(gameRoleId: String!, characterId: String!, gear: [String]!): Character
 
   """"""
-  setCharacterMoves(gameRoleId: String!, characterId: String!, moveIds: [String]!): Character
+  setCharacterMoves(gameRoleId: String!, characterId: String!, moveNames: [String]!): Character
 
   """"""
   setCharacterHx(gameRoleId: String!, characterId: String!, hxStats: [HxInput]!): Character
@@ -1714,6 +1846,9 @@ type Mutation {
   setWorkspace(gameRoleId: String!, characterId: String!, workspace: WorkspaceInput!): Character
 
   """"""
+  resolveEstablishmentInterest(gameRoleId: String!, characterId: String!, oweForIt: String, wantsInOnIt: String, wantsItGone: String): Character
+
+  """"""
   setVehicleCount(gameRoleId: String!, characterId: String!, vehicleCount: Int!): Character
 
   """"""
@@ -1748,6 +1883,12 @@ type Mutation {
 
   """"""
   removeProject(gameRoleId: String!, characterId: String!, project: ProjectInput): Character
+
+  """"""
+  spendExperience(gameRoleId: String!, characterId: String!): Character
+
+  """"""
+  adjustImprovements(gameRoleId: String!, characterId: String!, improvementIds: [String]!, futureImprovementIds: [String]): Character
 
   """Move categories"""
   performPrintMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, isGangMove: Boolean!): Game
@@ -1925,6 +2066,9 @@ type PlaybookCreator {
 
   """"""
   playbookUniqueCreator: PlaybookUniqueCreator
+
+  """"""
+  improvementBlock: ImprovementBlock
 }
 
 """"""
@@ -1964,45 +2108,6 @@ enum PlaybookType {
 }
 
 """"""
-type PlaybookUnique {
-  """"""
-  id: ID!
-
-  """"""
-  type: UniqueType
-
-  """"""
-  brainerGear: BrainerGear
-
-  """"""
-  angelKit: AngelKit
-
-  """"""
-  customWeapons: CustomWeapons
-
-  """"""
-  gang: Gang
-
-  """"""
-  weapons: Weapons
-
-  """"""
-  holding: Holding
-
-  """"""
-  followers: Followers
-
-  """"""
-  skinnerGear: SkinnerGear
-
-  """"""
-  establishment: Establishment
-
-  """"""
-  workspace: Workspace
-}
-
-""""""
 type PlaybookUniqueCreator {
   """"""
   id: ID!
@@ -2039,6 +2144,45 @@ type PlaybookUniqueCreator {
 
   """"""
   workspaceCreator: WorkspaceCreator
+}
+
+""""""
+type PlaybookUniques {
+  """"""
+  id: ID!
+
+  """"""
+  type: UniqueType
+
+  """"""
+  brainerGear: BrainerGear
+
+  """"""
+  angelKit: AngelKit
+
+  """"""
+  customWeapons: CustomWeapons
+
+  """"""
+  gang: Gang
+
+  """"""
+  weapons: Weapons
+
+  """"""
+  holding: Holding
+
+  """"""
+  followers: Followers
+
+  """"""
+  skinnerGear: SkinnerGear
+
+  """"""
+  establishment: Establishment
+
+  """"""
+  workspace: Workspace
 }
 
 """"""
@@ -2101,6 +2245,9 @@ type Query {
 
   """"""
   allMoves: [Move]
+
+  """"""
+  otherPlaybookMoves(playbookType: PlaybookType!): [Move]
 
   """"""
   playbooks: [Playbook]
@@ -2205,7 +2352,10 @@ type SkinnerGear {
   id: ID!
 
   """"""
-  graciousWeapon: SkinnerGearItem!
+  uniqueType: UniqueType!
+
+  """"""
+  graciousWeapon: SkinnerGearItem
 
   """"""
   luxeGear: [SkinnerGearItem]!
@@ -2695,6 +2845,9 @@ type Weapons {
   id: ID!
 
   """"""
+  uniqueType: UniqueType!
+
+  """"""
   weapons: [String]!
 }
 
@@ -2728,10 +2881,16 @@ type Workspace {
   id: ID!
 
   """"""
+  uniqueType: UniqueType!
+
+  """"""
   workspaceInstructions: String!
 
   """"""
   projectInstructions: String!
+
+  """"""
+  itemsCount: Int!
 
   """"""
   workspaceItems: [String]!
@@ -2746,7 +2905,7 @@ type WorkspaceCreator {
   id: ID!
 
   """"""
-  itemsCount: Int!
+  defaultItemsCount: Int!
 
   """"""
   workspaceInstructions: String!
@@ -2764,10 +2923,16 @@ input WorkspaceInput {
   id: ID
 
   """"""
+  uniqueType: UniqueType!
+
+  """"""
   workspaceInstructions: String!
 
   """"""
   projectInstructions: String!
+
+  """"""
+  itemsCount: Int!
 
   """"""
   workspaceItems: [String]!
