@@ -7,7 +7,11 @@ import { Box, FormField, TextInput, Text } from 'grommet';
 import Spinner from '../Spinner';
 import { ButtonWS, HeadingWS } from '../../config/grommetConfig';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
-import SET_CHARACTER_LOOK, { SetCharacterLookData, SetCharacterLookVars } from '../../mutations/setCharacterLook';
+import SET_CHARACTER_LOOK, {
+  getSetCharacterLookOR,
+  SetCharacterLookData,
+  SetCharacterLookVars,
+} from '../../mutations/setCharacterLook';
 import { CharacterCreationSteps, LookType } from '../../@types/enums';
 import { Look } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
@@ -76,27 +80,11 @@ const CharacterLooksForm: FC = () => {
       // Prepare LookInput
       const lookInput: LookInput = omit(look, ['__typename']);
 
-      // Prepare optimistic response
-      const matchIndex = character.looks.findIndex((l: Look) => l.category === look.category);
-      let optimisticLooks: Look[] = [...character.looks];
-      if (matchIndex > -1) {
-        optimisticLooks[matchIndex] = { ...look, id: look.id ? look.id : 'temp-id' };
-      } else {
-        optimisticLooks = [...optimisticLooks, { ...look, id: look.id ? look.id : 'temp-id' }];
-      }
-
       // Send Look
       try {
         const data = await setCharacterLook({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, look: lookInput },
-          optimisticResponse: {
-            __typename: 'Mutation',
-            setCharacterLook: {
-              ...character,
-              looks: optimisticLooks,
-              __typename: 'Character',
-            },
-          },
+          optimisticResponse: getSetCharacterLookOR(character, lookInput),
         });
 
         if (data.data?.setCharacterLook.looks?.length === 5 && !character.hasCompletedCharacterCreation) {
