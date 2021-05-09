@@ -4,8 +4,7 @@ import DEATH_MOVES, { DeathMovesData } from '../../queries/deathMoves';
 import { Box, CheckBox } from 'grommet';
 
 import Spinner from '../Spinner';
-import { accentColors, TextWS } from '../../config/grommetConfig';
-import { Checkbox } from 'grommet-icons';
+import { TextWS } from '../../config/grommetConfig';
 import { Move } from '../../@types/staticDataInterfaces';
 
 export const LIFE_UNTENABLE_INSTRUCTIONS = 'When life becomes untenable:';

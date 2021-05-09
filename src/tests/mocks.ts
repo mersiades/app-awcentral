@@ -109,6 +109,7 @@ interface MockCharacter {
   allowedImprovements: number;
   allowedPlaybookMoves: number;
   allowedOtherPlaybookMoves: number;
+  isDead: false;
   battleVehicles: BattleVehicle[];
   vehicles: Vehicle[];
   hxBlock: HxStat[];
@@ -117,6 +118,7 @@ interface MockCharacter {
   characterMoves: CharacterMove[];
   improvementMoves: CharacterMove[];
   futureImprovementMoves: CharacterMove[];
+  deathMoves: CharacterMove[];
   holds: Hold[];
   __typename?: 'Character';
 }
@@ -189,6 +191,7 @@ export const mockCharacter1: MockCharacter = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 2,
   allowedOtherPlaybookMoves: 0,
+  isDead: false,
   harm: mockCharacterHarm,
   statsBlock: mockStatsBlock1,
   hxBlock: [],
@@ -203,6 +206,7 @@ export const mockCharacter1: MockCharacter = {
   battleVehicles: [],
   improvementMoves: [],
   futureImprovementMoves: [],
+  deathMoves: [],
 };
 
 export const mockCharacter2: MockCharacter = {
@@ -220,6 +224,7 @@ export const mockCharacter2: MockCharacter = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 2,
   allowedOtherPlaybookMoves: 0,
+  isDead: false,
   hxBlock: [
     {
       id: 'hx-stat-id-1',
@@ -242,6 +247,7 @@ export const mockCharacter2: MockCharacter = {
   battleVehicles: [],
   improvementMoves: [],
   futureImprovementMoves: [],
+  deathMoves: [],
 };
 
 export const mockGame1: Game = {
@@ -1186,6 +1192,7 @@ export const blankCharacter: MockCharacter = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 0,
   allowedOtherPlaybookMoves: 0,
+  isDead: false,
   hasCompletedCharacterCreation: false,
   hasPlusOneForward: false,
   holds: [],
@@ -1194,6 +1201,7 @@ export const blankCharacter: MockCharacter = {
   battleVehicles: [],
   improvementMoves: [],
   futureImprovementMoves: [],
+  deathMoves: [],
   __typename: 'Character',
 };
 

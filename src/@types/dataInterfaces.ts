@@ -83,6 +83,7 @@ export interface Character {
   allowedImprovements: number;
   allowedPlaybookMoves: number;
   allowedOtherPlaybookMoves: number;
+  isDead: boolean;
   battleVehicles: BattleVehicle[];
   vehicles: Vehicle[];
   hxBlock: HxStat[];
@@ -91,6 +92,7 @@ export interface Character {
   characterMoves: CharacterMove[];
   improvementMoves: CharacterMove[];
   futureImprovementMoves: CharacterMove[];
+  deathMoves: CharacterMove[];
   holds: Hold[];
   __typename?: 'Character';
 }

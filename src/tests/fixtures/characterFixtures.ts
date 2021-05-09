@@ -20,6 +20,7 @@ export const mockChopper_fresh: Character = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 0,
   allowedOtherPlaybookMoves: 0,
+  isDead: false,
   harm: mockCharacterHarm,
   statsBlock: mockStatsBlock1,
   hxBlock: [],
@@ -30,5 +31,6 @@ export const mockChopper_fresh: Character = {
   battleVehicles: [],
   improvementMoves: [],
   futureImprovementMoves: [],
+  deathMoves: [],
   __typename: 'Character',
 };

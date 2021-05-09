@@ -593,6 +593,7 @@ const GAME = gql`
           allowedImprovements
           allowedPlaybookMoves
           allowedOtherPlaybookMoves
+          isDead
           vehicleCount
           battleVehicleCount
           holds {
@@ -656,6 +657,14 @@ const GAME = gql`
             playbook
           }
           futureImprovementMoves {
+            id
+            isSelected
+            name
+            kind
+            description
+            playbook
+          }
+          deathMoves {
             id
             isSelected
             name
