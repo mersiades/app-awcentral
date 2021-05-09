@@ -16,7 +16,7 @@ export interface SetDeathMovesData {
   setDeathMoves: {
     id: string;
     playbook: PlaybookType;
-    characterMoves: SetDeathMovesData_CharacterMove[];
+    deathMoves: SetDeathMovesData_CharacterMove[];
     __typename?: 'Character';
   };
 }
@@ -28,7 +28,7 @@ export interface SetDeathMovesVars {
 }
 
 export const getSetDeathMovesOR = (character: Character, moveNames: string[]): SetDeathMovesData => {
-  const optimisticCharacterMoves: SetDeathMovesData_CharacterMove[] = [];
+  const optimisticDeathMoves: SetDeathMovesData_CharacterMove[] = [];
 
   moveNames.forEach((newMoveName) => {
     let match = false;
@@ -44,7 +44,7 @@ export const getSetDeathMovesOR = (character: Character, moveNames: string[]): S
           __typename: 'CharacterMove',
         };
 
-        optimisticCharacterMoves.push(optimisticMove);
+        optimisticDeathMoves.push(optimisticMove);
         match = true;
       }
     });
@@ -60,7 +60,7 @@ export const getSetDeathMovesOR = (character: Character, moveNames: string[]): S
         __typename: 'CharacterMove',
       };
 
-      optimisticCharacterMoves.push(optimisticMove);
+      optimisticDeathMoves.push(optimisticMove);
     }
   });
 
@@ -68,7 +68,7 @@ export const getSetDeathMovesOR = (character: Character, moveNames: string[]): S
     setDeathMoves: {
       id: character.id,
       playbook: character.playbook,
-      characterMoves: optimisticCharacterMoves,
+      deathMoves: optimisticDeathMoves,
     },
   };
 };
@@ -78,7 +78,7 @@ const SET_DEATH_MOVES = gql`
     setDeathMoves(gameRoleId: $gameRoleId, characterId: $characterId, moveNames: $moveNames) {
       id
       playbook
-      characterMoves {
+      deathMoves {
         id
         isSelected
         name

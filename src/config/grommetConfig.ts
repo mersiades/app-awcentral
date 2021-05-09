@@ -822,3 +822,9 @@ export const improvementDialogBackground = {
   size: 'contain',
   image: 'url(/images/background-image-32.jpg)',
 };
+
+export const deathDialogBackground = {
+  ...backgroundBase,
+  size: 'cover',
+  image: 'url(/images/background-image-33.jpg)',
+};
