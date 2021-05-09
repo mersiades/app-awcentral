@@ -13,6 +13,7 @@ import SET_CHARACTER_HARM, {
   SetCharacterHarmData,
   SetCharacterHarmVars,
 } from '../../mutations/setCharacterHarm';
+import DeathMovesBox from './DeathMovesBox';
 
 const HarmBox: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -56,6 +57,7 @@ const HarmBox: FC = () => {
     }
   };
 
+  // ------------------------------------------------------- Render -------------------------------------------------------- //
   return (
     <CollapsiblePanelBox open title="Harm">
       <Box
@@ -123,32 +125,16 @@ const HarmBox: FC = () => {
         <Box flex="grow" pad="12px" gap="12px" justify="center">
           {!!harm ? (
             <>
-              <CheckBox
-                label="Stabilized"
-                checked={harm.isStabilized}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })}
-              />
-              <TextWS>When life becomes untenable:</TextWS>
-              <CheckBox
-                label="Come back with -1hard"
-                checked={harm.hasComeBackHard}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasComeBackHard: !harm.hasComeBackHard })}
-              />
-              <CheckBox
-                label="Come back with +1weird (max+3)"
-                checked={harm.hasComeBackWeird}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasComeBackWeird: !harm.hasComeBackWeird })}
-              />
-              <CheckBox
-                label="Change to a new playbook"
-                checked={harm.hasChangedPlaybook}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasChangedPlaybook: !harm.hasChangedPlaybook })}
-              />
-              <CheckBox
-                label="Die"
-                checked={harm.hasDied}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasDied: !harm.hasDied })}
-              />
+              <Box border fill>
+                <CheckBox
+                  label="Stabilized"
+                  checked={harm.isStabilized}
+                  onClick={() => !settingHarm && handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })}
+                />
+              </Box>
+              <Box margin={{ top: '12px' }} gap="6px" fill>
+                <DeathMovesBox />
+              </Box>
             </>
           ) : (
             <Spinner width="200px" />
