@@ -92,8 +92,9 @@ const CharacterCreationStepper: FC = () => {
         background={{ color: 'neutral-1', opacity: CharacterCreationSteps.selectPlaybook === currentStep ? 1 : 0.5 }}
         onClick={(e: any) => {
           e.currentTarget.blur();
-          changeStep(CharacterCreationSteps.selectPlaybook);
+          !!character && changeStep(CharacterCreationSteps.selectPlaybook);
         }}
+        style={{ cursor: !character ? 'default' : 'pointer' }}
       >
         <Text color="white" weight="bold">
           Playbook
@@ -112,6 +113,7 @@ const CharacterCreationStepper: FC = () => {
           e.currentTarget.blur();
           !!character?.playbook && changeStep(CharacterCreationSteps.selectName);
         }}
+        style={{ cursor: !character ? 'default' : 'pointer' }}
       >
         <Text color="white" weight="bold">
           Name
@@ -137,6 +139,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectLooks);
       }}
+      style={{ cursor: !character ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold">
         Looks
@@ -171,6 +174,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectStats);
       }}
+      style={{ cursor: !character ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold">
         Stats
@@ -207,6 +211,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectGear);
       }}
+      style={{ cursor: !character ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold">
         Gear
@@ -385,6 +390,7 @@ const CharacterCreationStepper: FC = () => {
 
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setUnique);
       }}
+      style={{ cursor: !character ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         {!!pbCreator && pbCreator.playbookUniqueCreator
@@ -450,6 +456,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setVehicle);
       }}
+      style={{ cursor: !character ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         Vehicles
@@ -486,6 +493,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setBattleVehicle);
       }}
+      style={{ cursor: !character ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         Battle Vehicles
@@ -521,6 +529,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setHx);
       }}
+      style={{ cursor: !character ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         Hx
@@ -542,12 +551,6 @@ const CharacterCreationStepper: FC = () => {
       )}
     </Box>
   );
-
-  // Omit box for PlayBookUniques for Driver
-  // const boxesArray =
-  //   character?.playbook !== PlaybookType.driver
-  //     ? [box0Step1, box1Step3, box2Step4, box3Step5, box4Step6, box5Step7, box6Step8, box7Step9, box8Step10]
-  //     : [box0Step1, box1Step3, box2Step4, box3Step5, box5Step7, box6Step8, box7Step9, box8Step10];
 
   const boxesArray = [box0Step1, box1Step3, box2Step4, box3Step5, box4Step6, box5Step7, box6Step8, box7Step9, box8Step10];
 
