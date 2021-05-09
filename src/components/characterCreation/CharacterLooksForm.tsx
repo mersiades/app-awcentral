@@ -111,10 +111,22 @@ const CharacterLooksForm: FC = () => {
   // Create custom Look when User types
   const handleTypeLook = (look: string, category: LookType) => {
     if (!!character) {
-      const newLook: LookInput = { look, category, playbookType: character?.playbook };
+      const newLook: LookInput = { look, category, playbookType: character.playbook };
       switch (category) {
         case LookType.gender:
           dispatch({ type: 'SET_GENDER', payload: newLook });
+          break;
+        case LookType.clothes:
+          dispatch({ type: 'SET_CLOTHES', payload: newLook });
+          break;
+        case LookType.face:
+          dispatch({ type: 'SET_FACE', payload: newLook });
+          break;
+        case LookType.eyes:
+          dispatch({ type: 'SET_EYES', payload: newLook });
+          break;
+        case LookType.body:
+          dispatch({ type: 'SET_BODY', payload: newLook });
           break;
         default:
       }
