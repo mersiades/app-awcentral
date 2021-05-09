@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import ReactMarkdown from 'react-markdown';
 import { useHistory } from 'react-router-dom';
@@ -7,15 +7,29 @@ import { Box, CheckBox, Tab, Tabs, Text } from 'grommet';
 
 import Spinner from '../Spinner';
 import { accentColors, ButtonWS, HeadingWS, TextWS } from '../../config/grommetConfig';
-import SET_CHARACTER_MOVES, { SetCharacterMovesData, SetCharacterMovesVars } from '../../mutations/setCharacterMoves';
+import SET_CHARACTER_MOVES, {
+  getSetCharacterMovesOR,
+  SetCharacterMovesData,
+  SetCharacterMovesVars,
+} from '../../mutations/setCharacterMoves';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
 import { CharacterCreationSteps } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
-import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
+import { Move } from '../../@types/staticDataInterfaces';
 import { decapitalize } from '../../helpers/decapitalize';
 import OTHER_PLAYBOOK_MOVES, { OtherPlaybookMovesData, OtherPlaybookMovesVars } from '../../queries/otherPlaybookMoves';
-import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../config/constants';
+import {
+  ADD_FOLLOWERS_NAME,
+  ADD_GANG_LEADERSHIP_NAME,
+  ADD_GANG_PACK_ALPHA_NAME,
+  ADD_HOLDING_NAME,
+  FORTUNES_NAME,
+  INCREASED_BY_IMPROVEMENT_TEXT,
+  LEADERSHIP_NAME,
+  PACK_ALPHA_NAME,
+  WEALTH_NAME,
+} from '../../config/constants';
 
 const StyledMarkdown = styled(ReactMarkdown)`
   & p {
@@ -26,9 +40,8 @@ const StyledMarkdown = styled(ReactMarkdown)`
 
 const CharacterMovesForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [selectedMoves, setSelectedMoves] = useState<{ id: string; name: string }[]>([]);
+  const [selectedMoves, setSelectedMoves] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState(0);
-  let hasInitialised = useRef(false);
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
@@ -56,39 +69,65 @@ const CharacterMovesForm: FC = () => {
   const optionalMoves = pbCreatorData?.playbookCreator.optionalMoves;
   const defaultMoves = pbCreatorData?.playbookCreator.defaultMoves;
   const moveChoiceCount = pbCreatorData?.playbookCreator.moveChoiceCount;
-  const defaultMoveIds = defaultMoves?.map((move) => move.id) as string[]; // This will never be undefined; playbooks have at least one default move
   const [setCharacterMoves, { loading: settingMoves }] = useMutation<SetCharacterMovesData, SetCharacterMovesVars>(
     SET_CHARACTER_MOVES
   );
 
   // ------------------------------------------ Component functions and variables ------------------------------------------ //
 
+  const getMovesFromAddUniqueImprovement = (): string[] => {
+    const moveNames: string[] = [];
+    if (character?.improvementMoves) {
+      character.improvementMoves.forEach((move) => {
+        switch (move.name) {
+          case ADD_GANG_LEADERSHIP_NAME:
+            moveNames.push(LEADERSHIP_NAME);
+            break;
+          case ADD_GANG_PACK_ALPHA_NAME:
+            moveNames.push(PACK_ALPHA_NAME);
+            break;
+          case ADD_HOLDING_NAME:
+            moveNames.push(WEALTH_NAME);
+            break;
+          case ADD_FOLLOWERS_NAME:
+            moveNames.push(FORTUNES_NAME);
+            break;
+
+          default:
+          // Do nothing
+        }
+      });
+    }
+    return moveNames;
+  };
+
   const getTotalAllowedMoves = (): number | undefined => {
-    if (!!character && !!pbCreatorData) {
-      return (
-        character.allowedPlaybookMoves +
-        pbCreatorData.playbookCreator.defaultMoves.length +
-        character.allowedOtherPlaybookMoves
-      );
+    if (!!character && !!defaultMoves) {
+      return character.allowedPlaybookMoves + character.allowedOtherPlaybookMoves + defaultMoves.length;
     }
   };
   const handleSelectMove = (move: Move) => {
     const totalAllowedMoves = getTotalAllowedMoves();
 
-    if (selectedMoves.some((item) => item.name === move.name)) {
-      setSelectedMoves(selectedMoves.filter((item) => item.name !== move.name));
+    if (selectedMoves.some((name) => name === move.name)) {
+      setSelectedMoves(selectedMoves.filter((name) => name !== move.name));
     } else {
       if (!!totalAllowedMoves) {
-        selectedMoves.length < totalAllowedMoves && setSelectedMoves([...selectedMoves, { id: move.id, name: move.name }]);
+        selectedMoves.length < totalAllowedMoves && setSelectedMoves([...selectedMoves, move.name]);
       }
     }
   };
 
-  const handleSubmitCharacterMoves = async (moveIds: string[]) => {
+  const handleSubmitCharacterMoves = async () => {
     if (!!userGameRole && !!character && !!game) {
       try {
         await setCharacterMoves({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, moveIds },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            moveNames: selectedMoves,
+          },
+          optimisticResponse: getSetCharacterMovesOR(character, selectedMoves),
         });
         if (!character.hasCompletedCharacterCreation) {
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.setVehicle}`);
@@ -100,41 +139,49 @@ const CharacterMovesForm: FC = () => {
     }
   };
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
-
-  const setMatchingMoves = useCallback(
-    (originalMoves: Move[]) => {
-      !!character &&
-        character.characterMoves.forEach((characterMove: CharacterMove) => {
-          const matchingMove: Move | undefined = originalMoves.find((om) => om.name === characterMove.name);
-          !!matchingMove &&
-            setSelectedMoves((prevState) => [...prevState, { id: matchingMove.id, name: matchingMove.name }]);
-        });
-    },
-    [character]
-  );
-
-  // load in existing moves, but prevent duplicates
+  // ------------------------------------------------------ Effects -------------------------------------------------------- /
+  // load in existing moves
   useEffect(() => {
-    if (!!character && !hasInitialised.current && !!optionalMoves && !!defaultMoves) {
-      // The CharacterMoves have a different id, so need the original Move equivalent to the CharacterMove
-      let originalMoves: Move[];
-      if (!!allowedOtherPlaybookMoves && allowedOtherPlaybookMoves > 0 && !!otherPlaybookMoves) {
-        originalMoves = optionalMoves.concat(defaultMoves).concat(otherPlaybookMoves);
-        setMatchingMoves(originalMoves);
-        hasInitialised.current = true;
-      } else if (allowedOtherPlaybookMoves === 0) {
-        originalMoves = optionalMoves.concat(defaultMoves);
-        setMatchingMoves(originalMoves);
-        hasInitialised.current = true;
-      }
-    }
-  }, [character, optionalMoves, defaultMoves, allowedOtherPlaybookMoves, otherPlaybookMoves, setMatchingMoves]);
+    !!character && setSelectedMoves(character.characterMoves.map((move) => move.name));
+  }, [character]);
 
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
   if (!defaultMoves || !character || !getTotalAllowedMoves()) {
     return <Spinner />;
   }
+
+  const renderOtherMovesInstructions = () => {
+    const movesFromUniques = getMovesFromAddUniqueImprovement();
+    if (movesFromUniques.length === 0) {
+      return (
+        <Box direction="row" align="center" gap="12px">
+          <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
+            {`Select ${allowedOtherPlaybookMoves}`}
+          </Text>
+        </Box>
+      );
+    } else if (movesFromUniques.length === 1 && !!allowedOtherPlaybookMoves) {
+      return (
+        <Box direction="row" align="center" gap="12px">
+          <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
+            {`Select ${allowedOtherPlaybookMoves - 1}`}
+          </Text>
+          <TextWS color={accentColors[0]}>{`(Already includes ${decapitalize(movesFromUniques[0])})`}</TextWS>
+        </Box>
+      );
+    } else if (movesFromUniques.length === 2 && !!allowedOtherPlaybookMoves) {
+      return (
+        <Box direction="row" align="center" gap="12px">
+          <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
+            {`Select ${allowedOtherPlaybookMoves - 2}`}
+          </Text>
+          <TextWS color={accentColors[0]}>{`(Already includes ${decapitalize(movesFromUniques[0])} and ${decapitalize(
+            movesFromUniques[1]
+          )})`}</TextWS>
+        </Box>
+      );
+    }
+  };
 
   const playbookMovesList = (
     <>
@@ -159,7 +206,7 @@ const CharacterMovesForm: FC = () => {
                     <StyledMarkdown>{move.description}</StyledMarkdown>
                   </div>
                 }
-                checked={selectedMoves.some((mv) => mv.name === move.name)}
+                checked={selectedMoves.some((name) => name === move.name)}
                 onChange={() => handleSelectMove(move)}
               />
             );
@@ -170,11 +217,8 @@ const CharacterMovesForm: FC = () => {
 
   const otherMovesList = (
     <>
-      <Box>
-        <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
-          {`Select ${allowedOtherPlaybookMoves}`}
-        </Text>
-      </Box>
+      {renderOtherMovesInstructions()}
+
       <Box align="start" gap="12px">
         {!!otherPlaybookMoves &&
           otherPlaybookMoves.map((move) => {
@@ -186,7 +230,7 @@ const CharacterMovesForm: FC = () => {
                     <StyledMarkdown>{move.description}</StyledMarkdown>
                   </div>
                 }
-                checked={selectedMoves.some((mv) => mv.name === move.name)}
+                checked={selectedMoves.some((name) => name === move.name)}
                 onChange={() => handleSelectMove(move)}
               />
             );
@@ -236,9 +280,7 @@ const CharacterMovesForm: FC = () => {
             primary
             label={settingMoves ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
             disabled={selectedMoves.length !== getTotalAllowedMoves()}
-            onClick={() =>
-              !settingMoves && handleSubmitCharacterMoves([...selectedMoves.map((mv) => mv.id), ...defaultMoveIds])
-            }
+            onClick={() => !settingMoves && handleSubmitCharacterMoves()}
           />
         </Box>
 
