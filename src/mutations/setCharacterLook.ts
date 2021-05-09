@@ -2,7 +2,6 @@ import { gql } from '@apollo/client';
 import { LookInput } from '../@types';
 import { Character } from '../@types/dataInterfaces';
 import { LookType, PlaybookType } from '../@types/enums';
-import { Look } from '../@types/staticDataInterfaces';
 
 export interface SetCharacterLookData_Look {
   id: string;
