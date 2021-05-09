@@ -124,18 +124,18 @@ const HarmBox: FC = () => {
         </Box>
         <Box flex="grow" pad="12px" gap="12px" justify="center">
           {!!harm ? (
-            <>
-              <Box border fill>
+            <Box gap="12px">
+              <Box>
                 <CheckBox
                   label="Stabilized"
                   checked={harm.isStabilized}
                   onClick={() => !settingHarm && handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })}
                 />
               </Box>
-              <Box margin={{ top: '12px' }} gap="6px" fill>
+              <Box margin={{ top: '12px' }} fill>
                 <DeathMovesBox />
               </Box>
-            </>
+            </Box>
           ) : (
             <Spinner width="200px" />
           )}
