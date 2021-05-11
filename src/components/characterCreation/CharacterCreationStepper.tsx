@@ -58,7 +58,7 @@ const CharacterCreationStepper: FC = () => {
   };
 
   const handlePrevious = () => {
-    if (!!character?.name && !!character?.playbook && !!currentStep) {
+    if (!!character?.name && !!character.playbook && !!currentStep) {
       // Skip over playbookUniques page if null (usually for Driver)
       if (currentStep === CharacterCreationSteps.selectMoves && !character.playbookUniques) {
         changeStep(currentStep - 2);
@@ -69,7 +69,7 @@ const CharacterCreationStepper: FC = () => {
   };
 
   const handleNext = () => {
-    if (!!character?.name && !!character?.playbook && !!currentStep) {
+    if (!!character?.name && !!character.playbook && !!currentStep) {
       // Skip over playbookUniques page if null (usually for Driver)
       if (currentStep === CharacterCreationSteps.selectGear && !character.playbookUniques) {
         changeStep(currentStep + 2);
@@ -113,7 +113,7 @@ const CharacterCreationStepper: FC = () => {
           e.currentTarget.blur();
           !!character?.playbook && changeStep(CharacterCreationSteps.selectName);
         }}
-        style={{ cursor: !character ? 'default' : 'pointer' }}
+        style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
       >
         <Text color="white" weight="bold">
           Name
@@ -139,7 +139,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectLooks);
       }}
-      style={{ cursor: !character ? 'default' : 'pointer' }}
+      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold">
         Looks
@@ -174,12 +174,12 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectStats);
       }}
-      style={{ cursor: !character ? 'default' : 'pointer' }}
+      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold">
         Stats
       </Text>
-      {!!character && !!character.statsBlock && character.statsBlock.stats.length > 0 ? (
+      {!!character && !!character.playbook && !!character.statsBlock && character.statsBlock.stats.length > 0 ? (
         <>
           {character.statsBlock.stats.map((stat) => (
             <Box key={stat.id} direction="row" fill="horizontal" justify="between" align="center">
@@ -211,7 +211,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectGear);
       }}
-      style={{ cursor: !character ? 'default' : 'pointer' }}
+      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold">
         Gear
@@ -390,7 +390,7 @@ const CharacterCreationStepper: FC = () => {
 
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setUnique);
       }}
-      style={{ cursor: !character ? 'default' : 'pointer' }}
+      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         {!!pbCreator && pbCreator.playbookUniqueCreator
@@ -456,7 +456,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setVehicle);
       }}
-      style={{ cursor: !character ? 'default' : 'pointer' }}
+      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         Vehicles
@@ -493,7 +493,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setBattleVehicle);
       }}
-      style={{ cursor: !character ? 'default' : 'pointer' }}
+      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         Battle Vehicles
@@ -529,7 +529,7 @@ const CharacterCreationStepper: FC = () => {
         e.currentTarget.blur();
         !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setHx);
       }}
-      style={{ cursor: !character ? 'default' : 'pointer' }}
+      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         Hx

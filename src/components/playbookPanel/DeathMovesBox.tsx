@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { difference, pullAll } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
-import DEATH_MOVES, { DeathMovesData } from '../../queries/deathMoves';
+import { useHistory, useParams } from 'react-router-dom';
 import { Box, CheckBox } from 'grommet';
 
 import Spinner from '../Spinner';
-import { TextWS } from '../../config/grommetConfig';
-import { Move } from '../../@types/staticDataInterfaces';
-import { useGame } from '../../contexts/gameContext';
-import { difference, pullAll } from 'lodash';
 import DeathDialog from '../dialogs/DeathDialog';
-import SET_DEATH_MOVES, { SetDeathMovesData, SetDeathMovesVars } from '../../mutations/setDeathMoves';
+import { TextWS } from '../../config/grommetConfig';
+import DEATH_MOVES, { DeathMovesData } from '../../queries/deathMoves';
+import SET_DEATH_MOVES, { getSetDeathMovesOR, SetDeathMovesData, SetDeathMovesVars } from '../../mutations/setDeathMoves';
+import { useGame } from '../../contexts/gameContext';
+import { Move } from '../../@types/staticDataInterfaces';
+import { DEATH_CHANGE_PLAYBOOK_NAME } from '../../config/constants';
 
 export const LIFE_UNTENABLE_INSTRUCTIONS = 'When life becomes untenable:';
 
@@ -21,6 +23,10 @@ const DeathMovesBox = () => {
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { userGameRole, character } = useGame();
+
+  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  const history = useHistory();
+  const { gameId } = useParams<{ gameId: string }>();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const { data: deathMovesData } = useQuery<DeathMovesData>(DEATH_MOVES);
@@ -43,13 +49,23 @@ const DeathMovesBox = () => {
     !!character && setSelectedMoves(character.deathMoves.map((mv) => mv.name));
   };
 
+  const redirectAfterSet = () => {
+    if (addedMoves.includes(DEATH_CHANGE_PLAYBOOK_NAME)) {
+      history.push(`/character-creation/${gameId}?step=1`);
+    } else {
+      setAddedMoves([]);
+      setRemovedMoves([]);
+    }
+  };
+
   const handleConfirm = async () => {
     if (!!userGameRole && !!character) {
       try {
         await setDeathMoves({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, moveNames: selectedMoves },
+          optimisticResponse: getSetDeathMovesOR(character, selectedMoves, removedMoves, addedMoves),
         });
-        setSelectedMoves([]);
+        redirectAfterSet();
       } catch (error) {
         console.error(error);
       }
@@ -82,9 +98,6 @@ const DeathMovesBox = () => {
 
   // ------------------------------------------------------- Render -------------------------------------------------------- //
 
-  console.log(`selectedMoves`, selectedMoves);
-  console.log(`addedMoves`, addedMoves);
-  console.log(`removedMoves`, removedMoves);
   return (
     <Box fill gap="6px">
       {(addedMoves.length > 0 || removedMoves.length > 0) && (

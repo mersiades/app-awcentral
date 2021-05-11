@@ -594,6 +594,7 @@ const GAME = gql`
           allowedPlaybookMoves
           allowedOtherPlaybookMoves
           isDead
+          mustChangePlaybook
           vehicleCount
           battleVehicleCount
           holds {

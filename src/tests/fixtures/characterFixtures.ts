@@ -21,6 +21,7 @@ export const mockChopper_fresh: Character = {
   allowedPlaybookMoves: 0,
   allowedOtherPlaybookMoves: 0,
   isDead: false,
+  mustChangePlaybook: false,
   harm: mockCharacterHarm,
   statsBlock: mockStatsBlock1,
   hxBlock: [],

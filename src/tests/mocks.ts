@@ -109,7 +109,8 @@ interface MockCharacter {
   allowedImprovements: number;
   allowedPlaybookMoves: number;
   allowedOtherPlaybookMoves: number;
-  isDead: false;
+  isDead: boolean;
+  mustChangePlaybook: boolean;
   battleVehicles: BattleVehicle[];
   vehicles: Vehicle[];
   hxBlock: HxStat[];
@@ -192,6 +193,7 @@ export const mockCharacter1: MockCharacter = {
   allowedPlaybookMoves: 2,
   allowedOtherPlaybookMoves: 0,
   isDead: false,
+  mustChangePlaybook: false,
   harm: mockCharacterHarm,
   statsBlock: mockStatsBlock1,
   hxBlock: [],
@@ -225,6 +227,7 @@ export const mockCharacter2: MockCharacter = {
   allowedPlaybookMoves: 2,
   allowedOtherPlaybookMoves: 0,
   isDead: false,
+  mustChangePlaybook: false,
   hxBlock: [
     {
       id: 'hx-stat-id-1',
@@ -1193,6 +1196,7 @@ export const blankCharacter: MockCharacter = {
   allowedPlaybookMoves: 0,
   allowedOtherPlaybookMoves: 0,
   isDead: false,
+  mustChangePlaybook: false,
   hasCompletedCharacterCreation: false,
   hasPlusOneForward: false,
   holds: [],

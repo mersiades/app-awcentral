@@ -116,7 +116,6 @@ const PlayerPage: FC = () => {
       if (!!game && !!userId) {
         const memberIds = game?.players.map((player) => player.id);
         if (!memberIds.includes(userId)) {
-          console.log('push---------------------------');
           history.push('/menu');
         }
       }

@@ -84,6 +84,7 @@ export interface Character {
   allowedPlaybookMoves: number;
   allowedOtherPlaybookMoves: number;
   isDead: boolean;
+  mustChangePlaybook: boolean;
   battleVehicles: BattleVehicle[];
   vehicles: Vehicle[];
   hxBlock: HxStat[];

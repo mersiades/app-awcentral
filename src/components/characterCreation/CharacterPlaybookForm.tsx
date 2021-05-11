@@ -19,6 +19,12 @@ import { decapitalize } from '../../helpers/decapitalize';
 import '../../assets/styles/transitions.css';
 import { useHistory } from 'react-router-dom';
 
+export const CHOOSE_YOUR_PLAYBOOK_TEXT = 'Choose your playbook';
+export const NEW_PLAYER_INTRO_TEXT =
+  'You should probably wait for your MC and the rest of your crew, tho. No headstarts for nobody in Apocalypse World.';
+export const CHANGED_PLAYBOOK_INTRO_TEXT =
+  "You've chosen to change your playbook. Do it now, before continuing... you don't wanna throw yourself back out there half-cocked.";
+
 const CharacterPlaybookForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [selectedPlaybook, setSelectedPlaybook] = useState<Playbook | undefined>();
@@ -31,6 +37,8 @@ const CharacterPlaybookForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
+
+  console.log(`character.mustChangePlaybook`, character?.mustChangePlaybook);
 
   // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
   const history = useHistory();
@@ -67,15 +75,20 @@ const CharacterPlaybookForm: FC = () => {
 
   const handlePlaybookSelect = async (playbookType: PlaybookType) => {
     if (!!userGameRole && !!game && userGameRole.characters?.length === 1) {
-      try {
-        await setCharacterPlaybook({
-          variables: { gameRoleId: userGameRole.id, characterId: userGameRole.characters[0].id, playbookType },
-        });
-        setShowSwitchWarning(undefined);
-        history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-      } catch (error) {
-        console.error(error);
+      if (!!character?.mustChangePlaybook) {
+        // add new mutation here
+        // Redirect to stats page
+      } else {
+        try {
+          await setCharacterPlaybook({
+            variables: { gameRoleId: userGameRole.id, characterId: userGameRole.characters[0].id, playbookType },
+          });
+          setShowSwitchWarning(undefined);
+          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
+          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   };
@@ -134,13 +147,10 @@ const CharacterPlaybookForm: FC = () => {
         <Box width="85vw" align="center" style={{ maxWidth: '763px' }}>
           <Box direction="row" fill="horizontal" justify="start" align="center">
             <HeadingWS crustReady={crustReady} level={2}>
-              Choose your playbook
+              {CHOOSE_YOUR_PLAYBOOK_TEXT}
             </HeadingWS>
           </Box>
-          <ParagraphWS>
-            You should probably wait for your MC and the rest of your crew, tho. No headstarts for nobody in Apocalypse
-            World.
-          </ParagraphWS>
+          <ParagraphWS>{character?.mustChangePlaybook ? CHANGED_PLAYBOOK_INTRO_TEXT : NEW_PLAYER_INTRO_TEXT}</ParagraphWS>
         </Box>
       )}
       {!!selectedPlaybook && (

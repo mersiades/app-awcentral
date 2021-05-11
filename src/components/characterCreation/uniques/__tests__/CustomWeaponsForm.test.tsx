@@ -64,10 +64,13 @@ const mockBattleBabe: Character = {
   battleVehicleCount: 0,
   battleVehicles: [],
   hasPlusOneForward: false,
+  mustChangePlaybook: false,
+  isDead: false,
   holds: [],
   vehicles: [],
   improvementMoves: [],
   futureImprovementMoves: [],
+  deathMoves: [],
   __typename: 'Character',
 };
 

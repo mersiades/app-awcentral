@@ -14,7 +14,7 @@ export const ADD_WEIRD_1_TEXT = 'increase your WEIRD stat by 1';
 export const REMOVE_WEIRD_1_TEXT = 'reduce to your WEIRD stat by 1';
 export const ADD_CHANGE_PLAYBOOK_TEXT_1 = 'change your playbook. You will lose your';
 export const ADD_CHANGE_PLAYBOOK_TEXT_2 =
-  'your default moves and your gear. But you will keep everything else, and will be able to add everything from a new playbook';
+  "your default moves and your gear. You'll also lose your base stats, but you'll keep any stat bonus you might have. And you'll keep everything else, and will be able to add everything from a new playbook";
 export const REMOVE_CHANGE_PLAYBOOK_TEXT = "have no effect. You can't un-change a playbook";
 export const ADD_DIE_TEXT_1 = 'mark';
 export const ADD_DIE_TEXT_2 = 'as dead';
