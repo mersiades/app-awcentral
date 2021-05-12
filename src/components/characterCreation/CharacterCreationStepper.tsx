@@ -1,16 +1,14 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
-import { useQuery } from '@apollo/client';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Box, Text } from 'grommet';
 import { IconProps, Next, Previous } from 'grommet-icons';
 
+import Spinner from '../Spinner';
 import { CustomUL } from '../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
 import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../@types/enums';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
-import { useHistory, useLocation } from 'react-router-dom';
-import Spinner from '../Spinner';
 
 const NextWithHover = styled(Next as React.FC<IconProps & JSX.IntrinsicElements['svg']>)(() => {
   return css`
@@ -28,6 +26,22 @@ const PreviousWithHover = styled(Previous as React.FC<IconProps & JSX.IntrinsicE
   `;
 });
 
+interface UniqueBoxProps {
+  uniqueType: UniqueTypes;
+  children: JSX.Element | JSX.Element[];
+}
+
+const UniqueBox: FC<UniqueBoxProps> = ({ uniqueType, children }) => {
+  return (
+    <Box margin={{ bottom: '6px' }}>
+      <Text color="white" weight="bold" textAlign="center">
+        {decapitalize(uniqueType)}
+      </Text>
+      {children}
+    </Box>
+  );
+};
+
 const CharacterCreationStepper: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { character, game } = useGame();
@@ -37,15 +51,6 @@ const CharacterCreationStepper: FC = () => {
   const query = new URLSearchParams(useLocation().search);
   const step = query.get('step');
   const currentStep = !!step ? parseInt(step) : undefined;
-
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
-    // @ts-ignore
-    variables: { playbookType: character?.playbook },
-    skip: !character?.playbook,
-  });
-
-  const pbCreator = pbCreatorData?.playbookCreator;
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   let reversedLooks: string[] = [];
@@ -231,133 +236,102 @@ const CharacterCreationStepper: FC = () => {
   );
 
   const renderUnique = () => {
+    const splitItem = (item: string) => item.substring(0, item.indexOf(' ('));
+
     if (!!character?.playbookUniques) {
-      switch (character?.playbookUniques.type) {
-        case UniqueTypes.angelKit:
-          if (!!character.playbookUniques.angelKit) {
-            const { stock, hasSupplier } = character.playbookUniques.angelKit;
-            return (
-              <CustomUL data-testid="angel-kit-box">
-                <li key={1}>{`Stock: ${stock}`}</li>
-                <li key={2}>{hasSupplier ? 'Has supplier' : 'No supplier yet'}</li>
-              </CustomUL>
-            );
-          }
-          return null;
-        case UniqueTypes.brainerGear:
-          if (!!character.playbookUniques.brainerGear) {
-            const concatGear = character.playbookUniques.brainerGear.brainerGear.map((gear) => gear.split('('));
-            return (
-              <CustomUL>
-                {concatGear.map((item, index) => (
-                  <li key={index} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {item[0]}
-                  </li>
-                ))}
-              </CustomUL>
-            );
-          }
-          return null;
-        case UniqueTypes.customWeapons:
-          if (!!character.playbookUniques.customWeapons) {
-            const { weapons } = character.playbookUniques.customWeapons;
-            return (
-              <CustomUL>
-                {weapons.map((weapon, index) => (
-                  <li key={index} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {weapon}
-                  </li>
-                ))}
-              </CustomUL>
-            );
-          }
-          return null;
-        case UniqueTypes.establishment:
-          if (!!character.playbookUniques.establishment) {
-            const { mainAttraction, sideAttractions, atmospheres } = character.playbookUniques.establishment;
-            return (
-              <CustomUL>
-                <li>Main: {mainAttraction}</li>
-                <li>Sides: {sideAttractions.join(', ')}</li>
-                <li>Atmosphere: {atmospheres.join(', ')}</li>
-              </CustomUL>
-            );
-          }
-          return null;
-        case UniqueTypes.followers:
-          if (!!character.playbookUniques.followers) {
-            return (
-              <CustomUL>
-                <li>{character.playbookUniques.followers.description}</li>
-              </CustomUL>
-            );
-          }
-          return null;
-        case UniqueTypes.gang:
-          if (!!character.playbookUniques.gang) {
-            const { size, harm, armor, tags } = character.playbookUniques.gang;
-            return (
-              <CustomUL>
-                <li>Size: {size}</li>
-                <li>Harm: {harm}</li>
-                <li>Armor: {armor}</li>
-                <li>Tags: {tags.join(', ')}</li>
-              </CustomUL>
-            );
-          }
-          return null;
-        case UniqueTypes.holding:
-          if (!!character.playbookUniques.holding) {
-            const { holdingSize, gangSize, barter, wants } = character.playbookUniques.holding;
-            return (
-              <CustomUL>
-                <li>Holding size: {decapitalize(holdingSize)}</li>
-                <li>Gang size: {decapitalize(gangSize)}</li>
-                <li>Barter: {barter}</li>
-                <li>Wants: {wants.join(', ')}</li>
-              </CustomUL>
-            );
-          }
-          return null;
-        case UniqueTypes.skinnerGear:
-          if (!!character.playbookUniques.skinnerGear?.graciousWeapon) {
-            const splitItem = (item: string) => item.substring(0, item.indexOf(' ('));
-            return (
-              <CustomUL>
-                <li>{splitItem(character.playbookUniques.skinnerGear.graciousWeapon.item)}</li>
-                {character.playbookUniques.skinnerGear.luxeGear.map((item) => (
+      const angelKit = character.playbookUniques.angelKit;
+      const customWeapons = character.playbookUniques.customWeapons;
+      const weaponsBB = customWeapons?.weapons || [];
+      const brainerGear = character.playbookUniques.brainerGear;
+      const concatGear = brainerGear?.brainerGear.map((gear) => gear.split('(')) || [];
+      const gang = character.playbookUniques.gang;
+      const weapons = character.playbookUniques.weapons;
+      const holding = character.playbookUniques.holding;
+      const followers = character.playbookUniques.followers;
+      const establishment = character.playbookUniques.establishment;
+      const workspace = character.playbookUniques.workspace;
+      const skinnerGear = character.playbookUniques.skinnerGear;
+      return (
+        <CustomUL>
+          {!!angelKit && (
+            <UniqueBox uniqueType={angelKit.uniqueType}>
+              <li key={1}>{`Stock: ${angelKit.stock}`}</li>
+              <li key={2}>{angelKit.hasSupplier ? 'Has supplier' : 'No supplier yet'}</li>
+            </UniqueBox>
+          )}
+          {!!brainerGear && (
+            <UniqueBox uniqueType={brainerGear.uniqueType}>
+              {concatGear.map((item, index) => (
+                <li key={index} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {item[0]}
+                </li>
+              ))}
+            </UniqueBox>
+          )}
+          {!!customWeapons && (
+            <UniqueBox uniqueType={customWeapons.uniqueType}>
+              {weaponsBB.map((weapon, index) => (
+                <li key={index} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {weapon}
+                </li>
+              ))}
+            </UniqueBox>
+          )}
+          {!!gang && (
+            <UniqueBox uniqueType={gang.uniqueType}>
+              <li>Size: {gang.size}</li>
+              <li>Harm: {gang.harm}</li>
+              <li>Armor: {gang.armor}</li>
+              <li>Tags: {gang.tags.join(', ')}</li>
+            </UniqueBox>
+          )}
+          {!!weapons && (
+            <UniqueBox uniqueType={weapons.uniqueType}>
+              {weapons.weapons.map((weapon) => {
+                const weaponName = weapon.substring(0, weapon.indexOf(' ('));
+                return <li key={weapon}>{weaponName}</li>;
+              })}
+            </UniqueBox>
+          )}
+          {!!holding && (
+            <UniqueBox uniqueType={holding.uniqueType}>
+              <li>Holding size: {decapitalize(holding.holdingSize)}</li>
+              <li>Gang size: {decapitalize(holding.gangSize)}</li>
+              <li>Barter: {holding.barter}</li>
+              <li>Wants: {holding.wants.join(', ')}</li>
+            </UniqueBox>
+          )}
+          {!!followers && (
+            <UniqueBox uniqueType={followers.uniqueType}>
+              <li>{followers.description}</li>
+            </UniqueBox>
+          )}
+          {!!establishment && (
+            <UniqueBox uniqueType={establishment.uniqueType}>
+              <li>Main: {establishment.mainAttraction}</li>
+              <li>Sides: {establishment.sideAttractions.join(', ')}</li>
+              <li>Atmosphere: {establishment.atmospheres.join(', ')}</li>
+            </UniqueBox>
+          )}
+          {!!workspace && (
+            <UniqueBox uniqueType={workspace.uniqueType}>
+              {workspace.workspaceItems.map((item) => {
+                return <li key={item}>{item}</li>;
+              })}
+            </UniqueBox>
+          )}
+          {!!skinnerGear && (
+            <UniqueBox uniqueType={skinnerGear.uniqueType}>
+              <>
+                <li>{!!skinnerGear.graciousWeapon && splitItem(skinnerGear.graciousWeapon.item)}</li>
+                {skinnerGear.luxeGear.map((item) => (
                   <li key={item.id}>{splitItem(item.item)}</li>
                 ))}
-              </CustomUL>
-            );
-          }
-          return null;
-        case UniqueTypes.weapons:
-          if (!!character.playbookUniques.weapons) {
-            return (
-              <CustomUL>
-                {character.playbookUniques.weapons.weapons.map((weapon) => {
-                  const weaponName = weapon.substring(0, weapon.indexOf(' ('));
-                  return <li key={weapon}>{weaponName}</li>;
-                })}
-              </CustomUL>
-            );
-          }
-          return null;
-        case UniqueTypes.workspace:
-          if (!!character.playbookUniques.workspace) {
-            return (
-              <CustomUL>
-                {character.playbookUniques.workspace.workspaceItems.map((item) => {
-                  return <li key={item}>{item}</li>;
-                })}
-              </CustomUL>
-            );
-          }
-          return null;
-        default:
-          return null;
-      }
+              </>
+            </UniqueBox>
+          )}
+        </CustomUL>
+      );
     } else {
       if (character?.playbook === PlaybookType.driver) {
         return (
@@ -392,11 +366,6 @@ const CharacterCreationStepper: FC = () => {
       }}
       style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
-      <Text color="white" weight="bold" alignSelf="center">
-        {!!pbCreator && pbCreator.playbookUniqueCreator
-          ? decapitalize(pbCreator.playbookUniqueCreator.type)
-          : `${character?.playbook === PlaybookType.driver ? 'Workspace' : '...'}`}
-      </Text>
       {!!character && renderUnique()}
     </Box>
   );
