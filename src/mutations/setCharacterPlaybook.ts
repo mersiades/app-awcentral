@@ -23,6 +23,9 @@ const SET_CHARACTER_PLAYBOOK = gql`
         look
         category
       }
+      statsBlock {
+        id
+      }
     }
   }
 `;

@@ -7,6 +7,7 @@ import { decapitalize } from '../helpers/decapitalize';
 import { HeadingWS, RedBox } from '../config/grommetConfig';
 import { useFonts } from '../contexts/fontContext';
 import StatBox from './StatBox';
+import { getCharacterNameString } from '../helpers/getCharacterNameString';
 
 interface CharacterPreviewProps {
   character: Character;
@@ -34,9 +35,9 @@ const CharacterPreview: FC<CharacterPreviewProps> = ({ character, isMc }) => {
             />
           </Box>
           <Box data-testid="character-preview-name">
-            <HeadingWS level={3} crustReady={crustReady} style={{ width: '100%' }}>{`${character.name} the ${decapitalize(
-              character.playbook
-            )}`}</HeadingWS>
+            <HeadingWS level={3} crustReady={crustReady} style={{ width: '100%' }}>
+              {getCharacterNameString(character)}
+            </HeadingWS>
           </Box>
         </Box>
         <Box>

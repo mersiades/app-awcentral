@@ -60,6 +60,7 @@ import SkinnerSpecialDialog from '../components/dialogs/SkinnerSpecialDialog';
 import JustGiveMotiveDialog from '../components/dialogs/JustGiveMotiveDialog';
 import VHarmDialog from '../components/dialogs/VHarmDialog';
 import XCard from '../components/XCard';
+import RipSign from '../components/RipSign';
 
 interface AllMovesData {
   allMoves: Move[];
@@ -144,6 +145,7 @@ const PlayerPage: FC = () => {
   return (
     <Box fill background={background}>
       <GameNavbar isMc={false} />
+      {character?.isDead && <RipSign />}
       {dialog?.moveAction?.rollType === RollType.harm && (
         <HarmDialog move={dialog} handleClose={() => setDialog(undefined)} />
       )}

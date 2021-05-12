@@ -27,7 +27,10 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
     return gameRoles.map((gameRole: GameRole) =>
       gameRole.characters?.map((character: Character) => (
         <Tip key={character.id} content={<CharacterPreview character={character} isMc={isMc} />}>
-          <Button label={character.name} style={{ backgroundColor: 'transparent', height: '4vh', lineHeight: '16px' }} />
+          <Button
+            label={character.isDead ? `${character.name} [RIP]` : character.name}
+            style={{ backgroundColor: 'transparent', height: '4vh', lineHeight: '16px' }}
+          />
         </Tip>
       ))
     );

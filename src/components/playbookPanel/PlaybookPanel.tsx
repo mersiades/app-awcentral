@@ -19,12 +19,11 @@ import SkinnerGearBox from './SkinnerGearBox';
 import BattleVehiclesBox from './BattleVehiclesBox';
 import EstablishmentBox from './EstablishmentBox';
 import WorkshopBox from './WorkshopBox';
+import ImprovementBox from './ImprovementBox';
 import PLAYBOOK, { PlaybookData, PlaybookVars } from '../../queries/playbook';
 import { MoveType } from '../../@types/enums';
 import { Character } from '../../@types/dataInterfaces';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
-import { decapitalize } from '../../helpers/decapitalize';
-import ImprovementBox from './ImprovementBox';
 
 interface PlaybookPanelProps {
   character: Character;
@@ -37,13 +36,7 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({ character, navigateToCharacterC
 
   return (
     <Box data-testid="character-sheet" direction="row" wrap pad="12px" overflow="auto">
-      <NameAndLooksBox
-        name={character.name ? character.name : ''}
-        playbook={decapitalize(character.playbook)}
-        description={data?.playbook.intro}
-        looks={character.looks}
-        navigateToCharacterCreation={navigateToCharacterCreation}
-      />
+      <NameAndLooksBox description={data?.playbook.intro} navigateToCharacterCreation={navigateToCharacterCreation} />
 
       <StatsBox navigateToCharacterCreation={navigateToCharacterCreation} />
 
