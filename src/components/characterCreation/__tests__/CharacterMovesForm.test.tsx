@@ -21,10 +21,10 @@ import {
   mockAddHolding,
   mockBattlefieldInstincts,
   mockBattleHardened,
-  mockCharacterMoveAngel1,
-  mockCharacterMoveAngel2,
-  mockCharacterMoveAngel3,
-  mockCharacterMoveAngel4,
+  mockAngelSpecialCM,
+  mockSixthSenseCM,
+  mockInfirmaryCM,
+  mockProfessionalCompassionCM,
   mockFuckThisShit,
   mockGunluggerSpecial,
   mockPackAlpha,
@@ -145,7 +145,7 @@ describe('Rendering CharacterMovesForm', () => {
     beforeEach(async () => {
       renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
         isAuthenticated: true,
-        injectedGame: generateGame(mockCharacter2.playbook, 2, 0, [{ ...mockCharacterMoveAngel1, isSelected: true }], []),
+        injectedGame: generateGame(mockCharacter2.playbook, 2, 0, [{ ...mockAngelSpecialCM, isSelected: true }], []),
         apolloMocks: [mockPlaybookCreator],
         injectedUserId: mockKeycloakUserInfo1.sub,
         cache,
@@ -199,9 +199,9 @@ describe('Rendering CharacterMovesForm', () => {
           2,
           0,
           [
-            { ...mockCharacterMoveAngel1, isSelected: true },
-            { ...mockCharacterMoveAngel2, isSelected: true },
-            { ...mockCharacterMoveAngel3, isSelected: true },
+            { ...mockAngelSpecialCM, isSelected: true },
+            { ...mockSixthSenseCM, isSelected: true },
+            { ...mockInfirmaryCM, isSelected: true },
           ],
           []
         ),
@@ -251,9 +251,9 @@ describe('Rendering CharacterMovesForm', () => {
           3,
           0,
           [
-            { ...mockCharacterMoveAngel1, isSelected: true },
-            { ...mockCharacterMoveAngel2, isSelected: true },
-            { ...mockCharacterMoveAngel3, isSelected: true },
+            { ...mockAngelSpecialCM, isSelected: true },
+            { ...mockSixthSenseCM, isSelected: true },
+            { ...mockInfirmaryCM, isSelected: true },
           ],
           []
         ),
@@ -297,10 +297,10 @@ describe('Rendering CharacterMovesForm', () => {
           3,
           1,
           [
-            { ...mockCharacterMoveAngel1, isSelected: true },
-            { ...mockCharacterMoveAngel2, isSelected: true },
-            { ...mockCharacterMoveAngel3, isSelected: true },
-            { ...mockCharacterMoveAngel4, isSelected: true },
+            { ...mockAngelSpecialCM, isSelected: true },
+            { ...mockSixthSenseCM, isSelected: true },
+            { ...mockInfirmaryCM, isSelected: true },
+            { ...mockProfessionalCompassionCM, isSelected: true },
           ],
           []
         ),
@@ -347,10 +347,10 @@ describe('Rendering CharacterMovesForm', () => {
           3,
           1,
           [
-            { ...mockCharacterMoveAngel1, isSelected: true },
-            { ...mockCharacterMoveAngel2, isSelected: true },
-            { ...mockCharacterMoveAngel3, isSelected: true },
-            { ...mockCharacterMoveAngel4, isSelected: true },
+            { ...mockAngelSpecialCM, isSelected: true },
+            { ...mockSixthSenseCM, isSelected: true },
+            { ...mockInfirmaryCM, isSelected: true },
+            { ...mockProfessionalCompassionCM, isSelected: true },
             { ...mockSeeingSoulsAsCM, isSelected: true },
           ],
           []

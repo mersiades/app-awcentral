@@ -100,7 +100,7 @@ export const mockAddGangPackAlpha: CharacterMove = {
 
 // --------------------------------- Playbook CharacterMoves ------------------------------- //
 
-export const mockCharacterMoveAngel1: CharacterMove = {
+export const mockAngelSpecialCM: CharacterMove = {
   id: 'angel-character-move-id-1',
   name: ANGEL_SPECIAL_NAME,
   kind: MoveType.default,
@@ -114,7 +114,7 @@ export const mockCharacterMoveAngel1: CharacterMove = {
   __typename: 'CharacterMove',
 };
 
-export const mockCharacterMoveAngel2: CharacterMove = {
+export const mockSixthSenseCM: CharacterMove = {
   id: 'angel-character-move-id-2',
   name: 'SIXTH SENSE',
   kind: MoveType.character,
@@ -128,7 +128,7 @@ export const mockCharacterMoveAngel2: CharacterMove = {
   __typename: 'CharacterMove',
 };
 
-export const mockCharacterMoveAngel3: CharacterMove = {
+export const mockInfirmaryCM: CharacterMove = {
   id: 'angel-character-move-id-3',
   name: 'INFIRMARY',
   description: 'you get an infirmary, a workspace with life support...',
@@ -142,7 +142,7 @@ export const mockCharacterMoveAngel3: CharacterMove = {
   __typename: 'CharacterMove',
 };
 
-export const mockCharacterMoveAngel4: CharacterMove = {
+export const mockProfessionalCompassionCM: CharacterMove = {
   id: 'angel-character-move-id-4',
   name: 'PROFESSIONAL COMPASSION',
   description: 'you can roll+sharp instead of roll+Hx when you help someone who’s rolling.',

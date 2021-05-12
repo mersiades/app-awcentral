@@ -9,7 +9,7 @@ import { mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryChopper } from '../../../../tests/mockQueries';
 import { Character, Game, Gang, PlaybookUniques } from '../../../../@types/dataInterfaces';
-import { mockChopper_fresh } from '../../../../tests/fixtures/characterFixtures';
+import { mockChopper_withName } from '../../../../tests/fixtures/characterFixtures';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
 import { mockGangCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 
@@ -52,7 +52,7 @@ const mockGame: Game = {
       gameId: mockGame5.gameRoles[2].gameId,
       npcs: mockGame5.gameRoles[2].npcs,
       threats: mockGame5.gameRoles[2].threats,
-      characters: [mockChopper_fresh],
+      characters: [mockChopper_withName],
     },
   ],
 };
@@ -69,7 +69,7 @@ describe('Rendering GangForm', () => {
       renderWithRouter(<GangForm />, `/character-creation/${mockGame5.id}`, {
         isAuthenticated: true,
         apolloMocks: [mockPlayBookCreatorQueryChopper],
-        injectedGame: generateGame(mockChopper_fresh),
+        injectedGame: generateGame(mockChopper_withName),
         injectedUserId: mockKeycloakUserInfo1.sub,
         cache,
       });
@@ -79,7 +79,7 @@ describe('Rendering GangForm', () => {
 
     test('should render GangForm in intial state', () => {
       screen.getByTestId('gang-form');
-      screen.getByRole('heading', { name: `${mockChopper_fresh.name?.toUpperCase()}'S GANG` });
+      screen.getByRole('heading', { name: `${mockChopper_withName.name?.toUpperCase()}'S GANG` });
       const sizeValue = screen.getByRole('heading', { name: 'size-value' });
       expect(sizeValue.textContent).toEqual(mockGangCreator.defaultSize);
       const harmValue = screen.getByRole('heading', { name: 'harm-value' });
@@ -126,11 +126,11 @@ describe('Rendering GangForm', () => {
 
   describe('with ADJUST_UNIQUE improvement', () => {
     const chopperWithExtraStrengths: Character = {
-      ...mockChopper_fresh,
+      ...mockChopper_withName,
       playbookUniques: {
-        ...(mockChopper_fresh.playbookUniques as PlaybookUniques),
+        ...(mockChopper_withName.playbookUniques as PlaybookUniques),
         gang: {
-          ...(mockChopper_fresh.playbookUniques?.gang as Gang),
+          ...(mockChopper_withName.playbookUniques?.gang as Gang),
           allowedStrengths: 4,
         },
       },

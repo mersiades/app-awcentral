@@ -2,10 +2,10 @@ import { PlaybookType } from '../../@types/enums';
 import { PlaybookCreator } from '../../@types/staticDataInterfaces';
 
 import {
-  mockCharacterMoveAngel2,
-  mockCharacterMoveAngel3,
-  mockCharacterMoveAngel4,
-  mockCharacterMoveAngel1,
+  mockSixthSenseCM,
+  mockInfirmaryCM,
+  mockProfessionalCompassionCM,
+  mockAngelSpecialCM,
   mockChopperSpecial,
 } from './characterMovesFixtures';
 import { mockgearInstructionsDefault } from './gearInstructionsFixtures';
@@ -58,8 +58,8 @@ export const mockPlaybookCreatorDefault: PlaybookCreator = {
   ],
   statsOptions: [mockStatsOptionsDefault1, mockStatsOptionsDefault2, mockStatsOptionsDefault3],
   playbookUniqueCreator: mockUniqueCreatorDefault,
-  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3, mockCharacterMoveAngel4],
-  defaultMoves: [mockCharacterMoveAngel1],
+  optionalMoves: [mockSixthSenseCM, mockInfirmaryCM, mockProfessionalCompassionCM],
+  defaultMoves: [mockAngelSpecialCM],
   defaultMoveCount: 1,
   moveChoiceCount: 2,
   defaultVehicleCount: 0,

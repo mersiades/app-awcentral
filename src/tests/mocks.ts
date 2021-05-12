@@ -64,10 +64,10 @@ import {
   dummyWorkspaceCreator,
 } from './fixtures/dummyData';
 import {
-  mockCharacterMoveAngel1,
-  mockCharacterMoveAngel2,
-  mockCharacterMoveAngel3,
-  mockCharacterMoveAngel4,
+  mockAngelSpecialCM,
+  mockSixthSenseCM,
+  mockInfirmaryCM,
+  mockProfessionalCompassionCM,
 } from './fixtures/characterMovesFixtures';
 import { mockImprovementBlockAngel } from './fixtures/improvementBlockFixtures';
 import {
@@ -198,11 +198,7 @@ export const mockCharacter1: MockCharacter = {
   statsBlock: mockStatsBlock1,
   hxBlock: [],
   looks: [mockLookBattleBabe1, mockLookBattlebabe2],
-  characterMoves: [
-    mockCharacterMoveAngel1,
-    { ...mockCharacterMoveAngel2, isSelected: true },
-    { ...mockCharacterMoveAngel3, isSelected: true },
-  ], // TODO: change to battlebabe moves
+  characterMoves: [mockAngelSpecialCM, { ...mockSixthSenseCM, isSelected: true }, { ...mockInfirmaryCM, isSelected: true }], // TODO: change to battlebabe moves
   playbookUniques: mockPlaybookUniqueBattlebabe_withDummyUniques,
   vehicles: [],
   battleVehicles: [],
@@ -239,9 +235,9 @@ export const mockCharacter2: MockCharacter = {
   harm: { ...mockCharacterHarm, id: 'mock-character-harm-id-2' },
   looks: [mockLookAngel1, mockLookAngel3, mockLookAngel5, mockLookAngel7, mockLookAngel9],
   characterMoves: [
-    { ...mockCharacterMoveAngel1, isSelected: true },
-    { ...mockCharacterMoveAngel2, isSelected: true },
-    { ...mockCharacterMoveAngel3, isSelected: true },
+    { ...mockAngelSpecialCM, isSelected: true },
+    { ...mockSixthSenseCM, isSelected: true },
+    { ...mockInfirmaryCM, isSelected: true },
   ],
   playbookUniques: mockPlaybookUniqueAngel_withDummyUniques,
   vehicleCount: 0,
@@ -857,8 +853,8 @@ export const mockPlaybookCreatorAngel: PlaybookCreator = {
   ],
   statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2, mockStatsOptionsAngel3],
   playbookUniqueCreator: mockUniqueCreatorAngel,
-  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3, mockCharacterMoveAngel4],
-  defaultMoves: [mockCharacterMoveAngel1],
+  optionalMoves: [mockSixthSenseCM, mockInfirmaryCM, mockProfessionalCompassionCM],
+  defaultMoves: [mockAngelSpecialCM],
   defaultMoveCount: 1,
   moveChoiceCount: 2,
   defaultVehicleCount: 0,
@@ -981,8 +977,8 @@ export const mockPlaybookCreatorBattlebabe: PlaybookCreator = {
   names: [mockBattlebabeName],
   looks: [mockBattlebabeLook],
   statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2],
-  defaultMoves: [mockCharacterMoveAngel1],
-  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3],
+  defaultMoves: [mockAngelSpecialCM],
+  optionalMoves: [mockSixthSenseCM, mockInfirmaryCM],
   defaultMoveCount: 1,
   moveChoiceCount: 2,
   playbookUniqueCreator: mockUniqueCreatorBattlebabe,

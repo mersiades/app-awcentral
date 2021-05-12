@@ -22,11 +22,7 @@ import { MockedResponse } from '@apollo/client/testing';
 import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../../../../queries/playbookCreator';
 import { InMemoryCache } from '@apollo/client';
 import userEvent from '@testing-library/user-event';
-import {
-  mockCharacterMoveAngel1,
-  mockCharacterMoveAngel2,
-  mockCharacterMoveAngel3,
-} from '../../../../tests/fixtures/characterMovesFixtures';
+import { mockAngelSpecialCM, mockSixthSenseCM, mockInfirmaryCM } from '../../../../tests/fixtures/characterMovesFixtures';
 import { mockLookBattlebabe2 } from '../../../../tests/fixtures/lookFixtures';
 import { mockPlaybookUniqueBattlebabe } from '../../../../tests/fixtures/playBookUniquesFixtures';
 import { mockStatsBlock1 } from '../../../../tests/fixtures/statsBlockFixtures';
@@ -54,11 +50,7 @@ const mockBattleBabe: Character = {
   hxBlock: [],
   harm: mockCharacterHarm,
   looks: [mockBattlebabeLook, mockLookBattlebabe2],
-  characterMoves: [
-    mockCharacterMoveAngel1,
-    { ...mockCharacterMoveAngel2, isSelected: true },
-    { ...mockCharacterMoveAngel3, isSelected: true },
-  ], // TODO: change to battlebabe moves
+  characterMoves: [mockAngelSpecialCM, { ...mockSixthSenseCM, isSelected: true }, { ...mockInfirmaryCM, isSelected: true }], // TODO: change to battlebabe moves
   playbookUniques: mockPlaybookUniqueBattlebabe,
   vehicleCount: 0,
   battleVehicleCount: 0,

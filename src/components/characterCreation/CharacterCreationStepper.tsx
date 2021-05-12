@@ -10,6 +10,15 @@ import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../@types/
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 
+export const PLAYBOOK_TITLE = 'Playbook';
+export const NAME_TITLE = 'Name';
+export const LOOKS_TITLE = 'Looks';
+export const STATS_TITLE = 'Stats';
+export const GEAR_TITLE = 'Gear';
+export const MOVES_TITLE = 'Moves';
+export const VEHICLES_TITLE = 'Vehicles';
+export const BATTLE_VEHICLES_TITLE = 'Battle Vehicles';
+
 const NextWithHover = styled(Next as React.FC<IconProps & JSX.IntrinsicElements['svg']>)(() => {
   return css`
     &:hover {
@@ -102,7 +111,7 @@ const CharacterCreationStepper: FC = () => {
         style={{ cursor: !character ? 'default' : 'pointer' }}
       >
         <Text color="white" weight="bold">
-          Playbook
+          {PLAYBOOK_TITLE}
         </Text>
         {!!character?.playbook ? <Text>{decapitalize(character?.playbook)}</Text> : <Text>...</Text>}
       </Box>
@@ -121,7 +130,7 @@ const CharacterCreationStepper: FC = () => {
         style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
       >
         <Text color="white" weight="bold">
-          Name
+          {NAME_TITLE}
         </Text>
         {!!character?.name ? <Text>{character.name}</Text> : <Text>...</Text>}
       </Box>
@@ -147,7 +156,7 @@ const CharacterCreationStepper: FC = () => {
       style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold">
-        Looks
+        {LOOKS_TITLE}
       </Text>
       {reversedLooks.length > 0 ? (
         <CustomUL>
@@ -182,7 +191,7 @@ const CharacterCreationStepper: FC = () => {
       style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold">
-        Stats
+        {STATS_TITLE}
       </Text>
       {!!character && !!character.playbook && !!character.statsBlock && character.statsBlock.stats.length > 0 ? (
         <>
@@ -219,7 +228,7 @@ const CharacterCreationStepper: FC = () => {
       style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold">
-        Gear
+        {GEAR_TITLE}
       </Text>
       {!!character && character.gear?.length > 0 ? (
         <CustomUL>
@@ -251,6 +260,7 @@ const CharacterCreationStepper: FC = () => {
       const establishment = character.playbookUniques.establishment;
       const workspace = character.playbookUniques.workspace;
       const skinnerGear = character.playbookUniques.skinnerGear;
+
       return (
         <CustomUL>
           {!!angelKit && (
@@ -388,7 +398,7 @@ const CharacterCreationStepper: FC = () => {
       }}
     >
       <Text color="white" weight="bold" alignSelf="center">
-        Moves
+        {MOVES_TITLE}
       </Text>
       {!!character && !!character.characterMoves && character.characterMoves.length > 0 ? (
         <CustomUL>
@@ -428,7 +438,7 @@ const CharacterCreationStepper: FC = () => {
       style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
-        Vehicles
+        {VEHICLES_TITLE}
       </Text>
       {!!character && !!character.vehicles && character.vehicles.length > 0 ? (
         <CustomUL>
@@ -465,7 +475,7 @@ const CharacterCreationStepper: FC = () => {
       style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
-        Battle Vehicles
+        {BATTLE_VEHICLES_TITLE}
       </Text>
       {!!character && !!character.battleVehicles && character.battleVehicles.length > 0 ? (
         <CustomUL>
