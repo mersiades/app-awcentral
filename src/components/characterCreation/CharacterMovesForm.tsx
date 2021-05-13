@@ -40,7 +40,12 @@ const StyledMarkdown = styled(ReactMarkdown)`
 
 const CharacterMovesForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // Used for form submission
   const [selectedMoves, setSelectedMoves] = useState<string[]>([]);
+  // Used for counting and setting limit. Contains moves selected from character's own playbook. Doesn't include default moves.
+  const [selectedPBMoves, setSelectedPBMoves] = useState<string[]>([]);
+  // Used for counting and setting limit. Contains moves selected from other playbooks. Doesn't include default moves.
+  const [selectedOtherPBMoves, setSelectedOtherPBMoves] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState(0);
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, character, userGameRole } = useGame();
@@ -105,14 +110,27 @@ const CharacterMovesForm: FC = () => {
       return character.allowedPlaybookMoves + character.allowedOtherPlaybookMoves + defaultMoves.length;
     }
   };
-  const handleSelectMove = (move: Move) => {
+  const handleSelectMove = (move: Move, isOtherPBMove: boolean = false) => {
     const totalAllowedMoves = getTotalAllowedMoves();
 
     if (selectedMoves.some((name) => name === move.name)) {
       setSelectedMoves(selectedMoves.filter((name) => name !== move.name));
+      if (isOtherPBMove) {
+        setSelectedOtherPBMoves(selectedOtherPBMoves.filter((name) => name !== move.name));
+      } else {
+        setSelectedPBMoves(selectedPBMoves.filter((name) => name !== move.name));
+      }
     } else {
-      if (!!totalAllowedMoves) {
-        selectedMoves.length < totalAllowedMoves && setSelectedMoves([...selectedMoves, move.name]);
+      if (!!totalAllowedMoves && !!character && !!defaultMoves) {
+        if (selectedMoves.length < totalAllowedMoves) {
+          if (isOtherPBMove && selectedOtherPBMoves.length < character.allowedOtherPlaybookMoves) {
+            setSelectedMoves([...selectedMoves, move.name]);
+            setSelectedOtherPBMoves([...selectedOtherPBMoves, move.name]);
+          } else if (!isOtherPBMove && selectedPBMoves.length < character.allowedPlaybookMoves + defaultMoves.length) {
+            setSelectedMoves([...selectedMoves, move.name]);
+            setSelectedPBMoves([...selectedPBMoves, move.name]);
+          }
+        }
       }
     }
   };
@@ -141,8 +159,17 @@ const CharacterMovesForm: FC = () => {
   // ------------------------------------------------------ Effects -------------------------------------------------------- /
   // load in existing moves
   useEffect(() => {
-    !!character && setSelectedMoves(character.characterMoves.map((move) => move.name));
-  }, [character]);
+    if (!!character && !!defaultMoves && !!optionalMoves) {
+      setSelectedMoves(character.characterMoves.map((move) => move.name));
+      character.characterMoves.forEach((cm) => {
+        if (optionalMoves.map((om) => om.name).includes(cm.name) || defaultMoves.map((om) => om.name).includes(cm.name)) {
+          setSelectedPBMoves((prevState) => [...prevState, cm.name]);
+        } else {
+          setSelectedOtherPBMoves((prevState) => [...prevState, cm.name]);
+        }
+      });
+    }
+  }, [character, optionalMoves, defaultMoves]);
 
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
   if (!defaultMoves || !character || !getTotalAllowedMoves()) {
@@ -230,7 +257,7 @@ const CharacterMovesForm: FC = () => {
                   </div>
                 }
                 checked={selectedMoves.some((name) => name === move.name)}
-                onChange={() => handleSelectMove(move)}
+                onChange={() => handleSelectMove(move, true)}
               />
             );
           })}
