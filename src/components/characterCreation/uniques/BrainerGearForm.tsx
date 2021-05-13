@@ -37,9 +37,8 @@ const BrainerGearForm: FC = () => {
     skip: !character,
   });
   const brainerGearCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.brainerGearCreator;
-  const [setBrainerGear, { loading: settingBrainerGear }] = useMutation<SetBrainerGearData, SetBrainerGearVars>(
-    SET_BRAINER_GEAR
-  );
+  const [setBrainerGear, { loading: settingBrainerGear }] =
+    useMutation<SetBrainerGearData, SetBrainerGearVars>(SET_BRAINER_GEAR);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const handleSelectItem = (item: string) => {

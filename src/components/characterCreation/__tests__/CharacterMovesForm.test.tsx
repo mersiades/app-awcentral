@@ -421,6 +421,7 @@ describe('Rendering CharacterMovesForm', () => {
 
     test('should render correct instructions on other moves tab', () => {
       userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
+      screen.debug();
       expect(screen.getByText('Select 0')).toBeInTheDocument();
       expect(screen.getByText('(Already includes Wealth and Pack alpha)')).toBeInTheDocument();
     });

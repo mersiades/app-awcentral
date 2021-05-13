@@ -648,6 +648,12 @@ const GAME = gql`
               rollType
               statToRollWith
             }
+            statModifier {
+              id
+            }
+            rollModifier {
+              id
+            }
           }
           improvementMoves {
             id

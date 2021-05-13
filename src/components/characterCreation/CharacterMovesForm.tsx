@@ -46,6 +46,8 @@ const CharacterMovesForm: FC = () => {
   const [selectedPBMoves, setSelectedPBMoves] = useState<string[]>([]);
   // Used for counting and setting limit. Contains moves selected from other playbooks. Doesn't include default moves.
   const [selectedOtherPBMoves, setSelectedOtherPBMoves] = useState<string[]>([]);
+
+  const [movesNotInOtherPBList, setMovesNotInOtherPBList] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState(0);
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game, character, userGameRole } = useGame();
@@ -78,32 +80,6 @@ const CharacterMovesForm: FC = () => {
     useMutation<SetCharacterMovesData, SetCharacterMovesVars>(SET_CHARACTER_MOVES);
 
   // ------------------------------------------ Component functions and variables ------------------------------------------ //
-
-  const getMovesFromAddUniqueImprovement = (): string[] => {
-    const moveNames: string[] = [];
-    if (character?.improvementMoves) {
-      character.improvementMoves.forEach((move) => {
-        switch (move.name) {
-          case ADD_GANG_LEADERSHIP_NAME:
-            moveNames.push(LEADERSHIP_NAME);
-            break;
-          case ADD_GANG_PACK_ALPHA_NAME:
-            moveNames.push(PACK_ALPHA_NAME);
-            break;
-          case ADD_HOLDING_NAME:
-            moveNames.push(WEALTH_NAME);
-            break;
-          case ADD_FOLLOWERS_NAME:
-            moveNames.push(FORTUNES_NAME);
-            break;
-
-          default:
-          // Do nothing
-        }
-      });
-    }
-    return moveNames;
-  };
 
   const getTotalAllowedMoves = (): number | undefined => {
     if (!!character && !!defaultMoves) {
@@ -166,6 +142,28 @@ const CharacterMovesForm: FC = () => {
           setSelectedPBMoves((prevState) => [...prevState, cm.name]);
         } else {
           setSelectedOtherPBMoves((prevState) => [...prevState, cm.name]);
+          if (!cm.rollModifier && !cm.moveAction) {
+            setMovesNotInOtherPBList((prevState) => [...prevState, cm.name]);
+          }
+        }
+      });
+      character.improvementMoves.forEach((move) => {
+        switch (move.name) {
+          case ADD_GANG_LEADERSHIP_NAME:
+            setMovesNotInOtherPBList((prevState) => [...prevState, LEADERSHIP_NAME]);
+            break;
+          case ADD_GANG_PACK_ALPHA_NAME:
+            setMovesNotInOtherPBList((prevState) => [...prevState, PACK_ALPHA_NAME]);
+            break;
+          case ADD_HOLDING_NAME:
+            setMovesNotInOtherPBList((prevState) => [...prevState, WEALTH_NAME]);
+            break;
+          case ADD_FOLLOWERS_NAME:
+            setMovesNotInOtherPBList((prevState) => [...prevState, FORTUNES_NAME]);
+            break;
+
+          default:
+          // Do nothing
         }
       });
     }
@@ -177,8 +175,7 @@ const CharacterMovesForm: FC = () => {
   }
 
   const renderOtherMovesInstructions = () => {
-    const movesFromUniques = getMovesFromAddUniqueImprovement();
-    if (movesFromUniques.length === 0) {
+    if (movesNotInOtherPBList.length === 0) {
       return (
         <Box direction="row" align="center" gap="12px">
           <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
@@ -186,27 +183,51 @@ const CharacterMovesForm: FC = () => {
           </Text>
         </Box>
       );
-    } else if (movesFromUniques.length === 1 && !!allowedOtherPlaybookMoves) {
+    } else if (movesNotInOtherPBList.length > 0 && !!allowedOtherPlaybookMoves) {
+      const includedMoves = (): string => {
+        let string = `(Already includes `;
+        movesNotInOtherPBList.forEach((move, index) => {
+          if (index === movesNotInOtherPBList.length - 1 && movesNotInOtherPBList.length > 1) {
+            string += ` and ${decapitalize(move)}`;
+          } else if (index === 0) {
+            string += `${decapitalize(move)}`;
+          } else {
+            string += `, ${decapitalize(move)}`;
+          }
+        });
+        string += ')';
+        return string;
+      };
       return (
         <Box direction="row" align="center" gap="12px">
           <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
-            {`Select ${allowedOtherPlaybookMoves - 1}`}
+            {`Select ${allowedOtherPlaybookMoves - movesNotInOtherPBList.length}`}
           </Text>
-          <TextWS color={accentColors[0]}>{`(Already includes ${decapitalize(movesFromUniques[0])})`}</TextWS>
-        </Box>
-      );
-    } else if (movesFromUniques.length === 2 && !!allowedOtherPlaybookMoves) {
-      return (
-        <Box direction="row" align="center" gap="12px">
-          <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
-            {`Select ${allowedOtherPlaybookMoves - 2}`}
-          </Text>
-          <TextWS color={accentColors[0]}>{`(Already includes ${decapitalize(movesFromUniques[0])} and ${decapitalize(
-            movesFromUniques[1]
-          )})`}</TextWS>
+          <TextWS color={accentColors[0]}>{includedMoves()}</TextWS>
         </Box>
       );
     }
+    // else if (movesFromUniques.length === 1 && !!allowedOtherPlaybookMoves) {
+    //   return (
+    //     <Box direction="row" align="center" gap="12px">
+    //       <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
+    //         {`Select ${allowedOtherPlaybookMoves - 1}`}
+    //       </Text>
+    //       <TextWS color={accentColors[0]}>{`(Already includes ${decapitalize(movesFromUniques[0])})`}</TextWS>
+    //     </Box>
+    //   );
+    // } else if (movesFromUniques.length === 2 && !!allowedOtherPlaybookMoves) {
+    //   return (
+    //     <Box direction="row" align="center" gap="12px">
+    //       <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
+    //         {`Select ${allowedOtherPlaybookMoves - 2}`}
+    //       </Text>
+    //       <TextWS color={accentColors[0]}>{`(Already includes ${decapitalize(movesFromUniques[0])} and ${decapitalize(
+    //         movesFromUniques[1]
+    //       )})`}</TextWS>
+    //     </Box>
+    //   );
+    // }
   };
 
   const playbookMovesList = (
