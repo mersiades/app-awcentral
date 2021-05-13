@@ -30,13 +30,12 @@ const CharacterNameForm: FC = () => {
   );
 
   const names = pbCreatorData?.playbookCreator.names;
-  const [setCharacterName, { loading: settingName }] = useMutation<SetCharacterNameData, SetCharacterNameVars>(
-    SET_CHARACTER_NAME
-  );
+  const [setCharacterName, { loading: settingName }] =
+    useMutation<SetCharacterNameData, SetCharacterNameVars>(SET_CHARACTER_NAME);
 
   // ---------------------------------------- Component functions and variables ------------------------------------------ //
   const handleSubmitName = async () => {
-    if (!!userGameRole && !!character && !!game) {
+    if (!!userGameRole && !!character && !character.isDead && !!game) {
       try {
         await setCharacterName({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, name: selectedName },

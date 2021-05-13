@@ -71,9 +71,8 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
   const { crustReady } = useFonts();
 
   // ------------------------------------------------------ GraphQL -------------------------------------------------------- //
-  const [spendExperience, { loading: spendingExperience }] = useMutation<SpendExperienceData, SpendExperienceVars>(
-    SPEND_EXPERIENCE
-  );
+  const [spendExperience, { loading: spendingExperience }] =
+    useMutation<SpendExperienceData, SpendExperienceVars>(SPEND_EXPERIENCE);
 
   // ------------------------------------------------ Component functions -------------------------------------------------- //
   let experiences: { filled: boolean }[] = [];
@@ -99,7 +98,7 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
 
   const handleClickImprove = async () => {
     // spend experience if necessary
-    if (!!userGameRole && !!character && experience !== undefined && experience >= 5) {
+    if (!!userGameRole && !!character && !character.isDead && experience !== undefined && experience >= 5) {
       try {
         await spendExperience({
           variables: { gameRoleId: userGameRole.id, characterId: character.id },

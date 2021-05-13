@@ -21,15 +21,14 @@ const HarmBox: FC = () => {
   const harm = character?.harm;
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [setCharacterHarm, { loading: settingHarm }] = useMutation<SetCharacterHarmData, SetCharacterHarmVars>(
-    SET_CHARACTER_HARM
-  );
+  const [setCharacterHarm, { loading: settingHarm }] =
+    useMutation<SetCharacterHarmData, SetCharacterHarmVars>(SET_CHARACTER_HARM);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const circle = getCircle(200);
 
   const handleSetHarm = async (harmInput: HarmInput) => {
-    if (!!userGameRole && !!character) {
+    if (!!userGameRole && !!character && !character.isDead) {
       try {
         // @ts-ignore
         delete harmInput.__typename;

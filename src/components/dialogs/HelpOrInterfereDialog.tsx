@@ -27,25 +27,23 @@ const HelpOrInterfereDialog: FC<HelpOrInterfereDialogProps> = ({ move, buttonTit
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole, otherPlayerGameRoles } = useGame();
+  const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performHelpOrInterfereMove, { loading: performingHelpOrInterfereMove }] = useMutation<
-    PerformHelpOrInterfereMoveData,
-    PerformHelpOrInterfereMoveVars
-  >(PERFORM_HELP_OR_INTERFERE_MOVE);
+  const [performHelpOrInterfereMove, { loading: performingHelpOrInterfereMove }] =
+    useMutation<PerformHelpOrInterfereMoveData, PerformHelpOrInterfereMoveVars>(PERFORM_HELP_OR_INTERFERE_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
 
   const handleHelpOrInterfereMove = (move: Move | CharacterMove, targetId: string) => {
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingHelpOrInterfereMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingHelpOrInterfereMove) {
       try {
         performHelpOrInterfereMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveId: move.id,
             targetId,
           },

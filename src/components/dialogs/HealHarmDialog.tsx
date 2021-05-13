@@ -28,24 +28,16 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole, otherPlayerGameRoles } = useGame();
+  const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performHealHarmMove, { loading: performingHealHarmMove }] = useMutation<
-    PerformHealHarmMoveData,
-    PerformHealHarmMoveVars
-  >(PERFORM_HEAL_HARM_MOVE);
+  const [performHealHarmMove, { loading: performingHealHarmMove }] =
+    useMutation<PerformHealHarmMoveData, PerformHealHarmMoveVars>(PERFORM_HEAL_HARM_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleHealHarmMove = () => {
-    if (
-      !!userGameRole &&
-      userGameRole.characters.length === 1 &&
-      !performingHealHarmMove &&
-      harm > 0 &&
-      !!otherCharacterId
-    ) {
+    if (!!userGameRole && !!character && !character.isDead && !performingHealHarmMove && harm > 0 && !!otherCharacterId) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
         gameRole.characters.forEach((character) => {
@@ -62,7 +54,7 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             otherCharacterId,
             harm,
           },

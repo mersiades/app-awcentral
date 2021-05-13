@@ -32,14 +32,13 @@ const BarterBox: FC = () => {
     skip: !character,
   });
   const instructions = playbook?.playbook.barterInstructions;
-  const [setCharacterBarter, { loading: settingBarter }] = useMutation<SetCharacterBarterData, SetCharacterBarterVars>(
-    SET_CHARACTER_BARTER
-  );
+  const [setCharacterBarter, { loading: settingBarter }] =
+    useMutation<SetCharacterBarterData, SetCharacterBarterVars>(SET_CHARACTER_BARTER);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
 
   const handleSetBarter = async (amount: number) => {
-    if (!!userGameRole && !!character) {
+    if (!!userGameRole && !!character && !character.isDead) {
       try {
         await setCharacterBarter({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, amount },

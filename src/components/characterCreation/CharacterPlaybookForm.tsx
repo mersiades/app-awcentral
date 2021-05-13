@@ -68,8 +68,8 @@ const CharacterPlaybookForm: FC = () => {
       !!userGameRole &&
       !!userGameRole.characters &&
       userGameRole.characters.length > 0 &&
-      !!userGameRole.characters[0].playbook &&
-      userGameRole.characters[0].playbook !== playbookType
+      !!character?.playbook &&
+      character?.playbook !== playbookType
     ) {
       setShowSwitchWarning(playbookType);
     } else {

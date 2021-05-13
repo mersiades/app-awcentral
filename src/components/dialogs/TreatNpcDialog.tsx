@@ -22,15 +22,14 @@ const TreatNpcDialog: FC<TreatNpcDialogProps> = ({ move, handleClose }) => {
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole } = useGame();
+  const { userGameRole, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performStockMove, { loading: performingStockMove }] = useMutation<PerformStockMoveData, PerformStockMoveVars>(
-    PERFORM_STOCK_MOVE
-  );
+  const [performStockMove, { loading: performingStockMove }] =
+    useMutation<PerformStockMoveData, PerformStockMoveVars>(PERFORM_STOCK_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const currentStock = userGameRole?.characters[0].playbookUniques?.angelKit?.stock || 0;
+  const currentStock = character?.playbookUniques?.angelKit?.stock || 0;
 
   const handleStockMove = () => {
     const stockSpent = 1;
@@ -38,13 +37,13 @@ const TreatNpcDialog: FC<TreatNpcDialogProps> = ({ move, handleClose }) => {
       console.warn("You don't have enough stock");
       return;
     }
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingStockMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingStockMove) {
       try {
         performStockMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveName: move.name,
             stockSpent,
           },

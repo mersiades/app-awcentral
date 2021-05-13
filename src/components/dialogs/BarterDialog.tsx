@@ -23,28 +23,27 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole } = useGame();
+  const { userGameRole, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performBarterMove, { loading: performingBarterMove }] = useMutation<PerformBarterMoveData, PerformBarterMoveVars>(
-    PERFORM_BARTER_MOVE
-  );
+  const [performBarterMove, { loading: performingBarterMove }] =
+    useMutation<PerformBarterMoveData, PerformBarterMoveVars>(PERFORM_BARTER_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const currentBarter = userGameRole?.characters[0].barter || 0;
+  const currentBarter = character?.barter || 0;
 
   const handleBarterMove = (move: Move | CharacterMove, barter: number) => {
     if (currentBarter - barter < 0) {
       console.warn("You don't have enough barter");
       return;
     }
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingBarterMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingBarterMove) {
       try {
         performBarterMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveId: move.id,
             barter,
           },

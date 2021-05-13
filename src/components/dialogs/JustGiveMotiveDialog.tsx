@@ -29,7 +29,7 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({ move, handleClose
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole, otherPlayerGameRoles } = useGame();
+  const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const [performJustGiveMotivationMove, { loading: performingJustGiveMotivationMove }] = useMutation<
@@ -41,13 +41,13 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({ move, handleClose
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
 
   const handleJustGiveMotivationMove = () => {
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingJustGiveMotivationMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingJustGiveMotivationMove) {
       try {
         performJustGiveMotivationMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             targetId,
           },
         });

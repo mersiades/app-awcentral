@@ -26,23 +26,21 @@ const VHarmDialog: FC<VHarmDialogProps> = ({ move, handleClose }) => {
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole } = useGame();
+  const { userGameRole, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performSufferVHarmMove, { loading: performingSufferVHarmMove }] = useMutation<
-    PerformSufferVHarmMoveData,
-    PerformSufferVHarmMoveVars
-  >(PERFORM_SUFFER_V_HARM_MOVE);
+  const [performSufferVHarmMove, { loading: performingSufferVHarmMove }] =
+    useMutation<PerformSufferVHarmMoveData, PerformSufferVHarmMoveVars>(PERFORM_SUFFER_V_HARM_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const handleSufferVHarmMove = () => {
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingSufferVHarmMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingSufferVHarmMove) {
       try {
         performSufferVHarmMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             vHarm: harm,
           },
         });

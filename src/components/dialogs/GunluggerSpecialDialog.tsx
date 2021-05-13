@@ -28,20 +28,19 @@ const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({ move, handleC
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole, otherPlayerGameRoles } = useGame();
+  const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performGunluggerSpecialMove, { loading: performingGunluggerSpecialMove }] = useMutation<
-    PerformGunluggerSpecialMoveData,
-    PerformGunluggerSpecialMoveVars
-  >(PERFORM_GUNLUGGER_SPECIAL_MOVE);
+  const [performGunluggerSpecialMove, { loading: performingGunluggerSpecialMove }] =
+    useMutation<PerformGunluggerSpecialMoveData, PerformGunluggerSpecialMoveVars>(PERFORM_GUNLUGGER_SPECIAL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleGunluggerSpecialMove = () => {
     if (
       !!userGameRole &&
-      userGameRole.characters.length === 1 &&
+      !!character &&
+      !character.isDead &&
       !performingGunluggerSpecialMove &&
       !!otherCharacterId &&
       !!addPlus1Forward
@@ -62,7 +61,7 @@ const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({ move, handleC
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             otherCharacterId,
             addPlus1Forward: addPlus1Forward === 'Yes' ? true : false,
           },

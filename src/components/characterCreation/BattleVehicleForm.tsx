@@ -121,9 +121,8 @@ const BattleVehicleForm: FC<BattleVehicleFormProps> = ({ navigateOnSet, existing
   const carCreator = vehicleCreatorData?.vehicleCreator.carCreator;
   const bikeCreator = vehicleCreatorData?.vehicleCreator.bikeCreator;
   const battleVehicleCreator = vehicleCreatorData?.vehicleCreator.battleVehicleCreator;
-  const [setBattleVehicle, { loading: settingBattleVehicle }] = useMutation<SetBattleVehicleData, SetBattleVehicleVars>(
-    SET_BATTLE_VEHICLE
-  );
+  const [setBattleVehicle, { loading: settingBattleVehicle }] =
+    useMutation<SetBattleVehicleData, SetBattleVehicleVars>(SET_BATTLE_VEHICLE);
   // ------------------------------------------------- Component functions -------------------------------------------------- //
 
   const introText =
@@ -258,7 +257,7 @@ const BattleVehicleForm: FC<BattleVehicleFormProps> = ({ navigateOnSet, existing
   };
 
   const handleSetVehicle = async () => {
-    if (!!userGameRole && !!character && vehicleFrame) {
+    if (!!userGameRole && !!character && !character.isDead && vehicleFrame) {
       const battleVehicleInput: BattleVehicleInput = {
         id: !!existingVehicle ? existingVehicle.id : undefined,
         vehicleType,

@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Box } from 'grommet';
 import styled from 'styled-components';
 import { brandColor } from '../config/grommetConfig';
+import { useGame } from '../contexts/gameContext';
 
 interface IncreaseDecreaseButtonsProps {
   loading: boolean;
@@ -33,9 +34,14 @@ const ArrowSpacer = styled.div`
 `;
 
 const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({ loading, onIncrease, onDecrease }) => {
+  // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [showUp, setShowUp] = useState(true);
   const [showDown, setShowDown] = useState(true);
 
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { character } = useGame();
+
+  // ------------------------------------------------------ Effects -------------------------------------------------------- //
   useEffect(() => {
     let timeout: number;
 
@@ -51,6 +57,7 @@ const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({ loading, on
     return () => window.clearTimeout(timeout);
   }, [loading]);
 
+  // ------------------------------------------------------- Render -------------------------------------------------------- //
   return (
     <Box align="center" justify="center">
       {showUp ? (
@@ -58,8 +65,8 @@ const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({ loading, on
           <UpArrow
             data-testid="increase-caret"
             onClick={() => {
-              onIncrease();
-              setShowUp(false);
+              !!character && !character.isDead && onIncrease();
+              !!character && !character.isDead && setShowUp(false);
             }}
           />
         </Box>
@@ -71,8 +78,8 @@ const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({ loading, on
           <DownArrow
             data-testid="decrease-caret"
             onClick={() => {
-              onDecrease();
-              setShowDown(false);
+              !!character && !character.isDead && onDecrease();
+              !!character && !character.isDead && setShowDown(false);
             }}
           />
         </Box>

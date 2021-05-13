@@ -25,14 +25,13 @@ const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
   const hxStats = character?.hxBlock;
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [adjustCharacterHx, { loading: adjustingHx }] = useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(
-    ADJUST_CHARACTER_HX
-  );
+  const [adjustCharacterHx, { loading: adjustingHx }] =
+    useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(ADJUST_CHARACTER_HX);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
 
   const handleAdjustHx = async (hxInput: HxInput) => {
-    if (!!userGameRole && !!character) {
+    if (!!userGameRole && !!character && !character.isDead) {
       try {
         await adjustCharacterHx({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, hxStat: hxInput },
@@ -55,11 +54,13 @@ const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
     handleAdjustHx({ ...hxStat, hxValue: hxStat.hxValue - 1 });
   };
 
+  // ------------------------------------------------------ Effects -------------------------------------------------------- //
   // Remove hxMessage after 10 seconds
   useEffect(() => {
     !!hxMessage && setTimeout(() => setHxMessage(''), 10000);
   }, [hxMessage]);
 
+  // ------------------------------------------------------- Render -------------------------------------------------------- //
   return (
     <CollapsiblePanelBox
       open

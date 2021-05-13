@@ -69,9 +69,8 @@ const CharacterMovesForm: FC = () => {
   const optionalMoves = pbCreatorData?.playbookCreator.optionalMoves;
   const defaultMoves = pbCreatorData?.playbookCreator.defaultMoves;
   const moveChoiceCount = pbCreatorData?.playbookCreator.moveChoiceCount;
-  const [setCharacterMoves, { loading: settingMoves }] = useMutation<SetCharacterMovesData, SetCharacterMovesVars>(
-    SET_CHARACTER_MOVES
-  );
+  const [setCharacterMoves, { loading: settingMoves }] =
+    useMutation<SetCharacterMovesData, SetCharacterMovesVars>(SET_CHARACTER_MOVES);
 
   // ------------------------------------------ Component functions and variables ------------------------------------------ //
 
@@ -119,7 +118,7 @@ const CharacterMovesForm: FC = () => {
   };
 
   const handleSubmitCharacterMoves = async () => {
-    if (!!userGameRole && !!character && !!game) {
+    if (!!userGameRole && !!character && !character.isDead && !!game) {
       try {
         await setCharacterMoves({
           variables: {

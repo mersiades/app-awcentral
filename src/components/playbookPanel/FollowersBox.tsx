@@ -20,15 +20,14 @@ const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) =>
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
 
-  const [updateFollowers, { loading: updatingFollowers }] = useMutation<UpdateFollowersData, UpdateFollowersVars>(
-    UPDATE_FOLLOWERS
-  );
+  const [updateFollowers, { loading: updatingFollowers }] =
+    useMutation<UpdateFollowersData, UpdateFollowersVars>(UPDATE_FOLLOWERS);
   // ------------------------------------------------- Component functions -------------------------------------------------- //
 
   const followers = character?.playbookUniques?.followers;
 
   const adjustBarter = (type: 'increase' | 'decrease') => {
-    if (!!userGameRole && !!character && !!character.playbookUniques && !!followers) {
+    if (!!userGameRole && !!character && !character.isDead && !!character.playbookUniques && !!followers) {
       const barter = type === 'increase' ? followers.barter + 1 : followers.barter - 1;
       try {
         updateFollowers({
@@ -61,7 +60,7 @@ const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) =>
   };
 
   const adjustFollowers = (type: 'increase' | 'decrease') => {
-    if (!!userGameRole && !!character && !!character.playbookUniques && !!followers) {
+    if (!!userGameRole && !!character && !character.isDead && !!character.playbookUniques && !!followers) {
       const newFollowers = type === 'increase' ? followers.followers + 1 : followers.followers - 1;
       const description = getFollowersDescription(followers.characterization, newFollowers, followers.travelOption) || '';
       try {

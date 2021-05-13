@@ -39,13 +39,10 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
 
-  const [performPrintMove, { loading: performingPrintMove }] = useMutation<PerformPrintMoveData, PerformPrintMoveVars>(
-    PERFORM_PRINT_MOVE
-  );
-  const [performStatRollMove, { loading: performingStatRollMove }] = useMutation<
-    PerformStatRollMoveData,
-    PerformStatRollMoveVars
-  >(PERFORM_STAT_ROLL_MOVE);
+  const [performPrintMove, { loading: performingPrintMove }] =
+    useMutation<PerformPrintMoveData, PerformPrintMoveVars>(PERFORM_PRINT_MOVE);
+  const [performStatRollMove, { loading: performingStatRollMove }] =
+    useMutation<PerformStatRollMoveData, PerformStatRollMoveVars>(PERFORM_STAT_ROLL_MOVE);
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const moveStyle = {
     cursor: 'pointer',
@@ -55,13 +52,19 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
   };
 
   const handleStatRollMove = (move: Move | CharacterMove) => {
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingStatRollMove) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      userGameRole.characters.length === 1 &&
+      !performingStatRollMove
+    ) {
       try {
         performStatRollMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveId: move.id,
             isGangMove: true,
           },
@@ -82,13 +85,13 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
   };
 
   const handlePrintMove = (move: Move | CharacterMove) => {
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingPrintMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingPrintMove) {
       try {
         performPrintMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveId: move.id,
             isGangMove: true,
           },
@@ -100,7 +103,6 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
   };
 
   const handleMoveClick = (move: Move | CharacterMove) => {
-    console.log('move.moveAction?.actionType', move.moveAction?.actionType);
     switch (move.moveAction?.actionType) {
       case MoveActionType.roll:
         handleRollClick(move);

@@ -52,13 +52,10 @@ const CharacterHxForm: FC = () => {
     { variables: { playbookType: character?.playbook }, skip: !character?.playbook }
   );
   const hxInstructions = pbCreatorData?.playbookCreator.hxInstructions;
-  const [adjustCharacterHx, { loading: adjustingHx }] = useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(
-    ADJUST_CHARACTER_HX
-  );
-  const [finishCharacterCreation, { loading: finishingCreation }] = useMutation<
-    FinishCharacterCreationData,
-    FinishCharacterCreationVars
-  >(FINISH_CHARACTER_CREATION);
+  const [adjustCharacterHx, { loading: adjustingHx }] =
+    useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(ADJUST_CHARACTER_HX);
+  const [finishCharacterCreation, { loading: finishingCreation }] =
+    useMutation<FinishCharacterCreationData, FinishCharacterCreationVars>(FINISH_CHARACTER_CREATION);
 
   // ------------------------------------------ Component functions and variables ------------------------------------------ //
   let characters: Character[] = [];
@@ -69,7 +66,7 @@ const CharacterHxForm: FC = () => {
   });
 
   const handleAdjustHx = async (hxInput: HxInput) => {
-    if (!!userGameRole && !!character) {
+    if (!!userGameRole && !!character && !character.isDead) {
       try {
         await adjustCharacterHx({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, hxStat: hxInput },

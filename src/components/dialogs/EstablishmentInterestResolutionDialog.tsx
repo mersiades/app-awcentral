@@ -40,10 +40,8 @@ const EstablishmentInterestResolutionDialog: FC<EstablishmentInterestResolutionD
   const { userGameRole, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [resolveInterest, { loading: resolvingInterest }] = useMutation<
-    ResolveEstablishmentInterestData,
-    ResolveEstablishmentInterestVars
-  >(RESOLVE_ESTABLISHMENT_INTEREST);
+  const [resolveInterest, { loading: resolvingInterest }] =
+    useMutation<ResolveEstablishmentInterestData, ResolveEstablishmentInterestVars>(RESOLVE_ESTABLISHMENT_INTEREST);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const options: { label: string; value: string }[] = [
@@ -78,7 +76,7 @@ const EstablishmentInterestResolutionDialog: FC<EstablishmentInterestResolutionD
   };
 
   const handleResolve = async () => {
-    if (!!userGameRole && !!character) {
+    if (!!userGameRole && !!character && !character.isDead) {
       try {
         await resolveInterest({
           variables: {

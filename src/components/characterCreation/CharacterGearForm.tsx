@@ -48,13 +48,11 @@ const CharacterGearForm: FC = () => {
   );
   const pbCreator = pbCreatorData?.playbookCreator;
 
-  const [setCharacterGear, { loading: settingGear }] = useMutation<SetCharacterGearData, SetCharacterGearVars>(
-    SET_CHARACTER_GEAR
-  );
+  const [setCharacterGear, { loading: settingGear }] =
+    useMutation<SetCharacterGearData, SetCharacterGearVars>(SET_CHARACTER_GEAR);
 
-  const [setCharacterBarter, { loading: settingBarter }] = useMutation<SetCharacterBarterData, SetCharacterBarterVars>(
-    SET_CHARACTER_BARTER
-  );
+  const [setCharacterBarter, { loading: settingBarter }] =
+    useMutation<SetCharacterBarterData, SetCharacterBarterVars>(SET_CHARACTER_BARTER);
 
   // ------------------------------------------ Component functions and variables ------------------------------------------ //
 
@@ -79,7 +77,7 @@ const CharacterGearForm: FC = () => {
   };
 
   const handleSubmitGear = async (gear: string[], amount: number) => {
-    if (!!userGameRole && !!character && !!game) {
+    if (!!userGameRole && !!character && !character.isDead && !!game) {
       try {
         await setCharacterGear({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, gear },

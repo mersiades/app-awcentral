@@ -22,6 +22,7 @@ import VehiclesFormContainer from '../components/characterCreation/VehiclesFormC
 import BattleVehiclesFormContainer from '../components/characterCreation/BattleVehiclesFormContainer';
 import { useQuery } from '@apollo/client';
 import PLAYBOOKS, { PlaybooksData } from '../queries/playbooks';
+import RipSign from '../components/RipSign';
 
 export const background = {
   color: 'black',
@@ -142,6 +143,7 @@ const CharacterCreationPage: FC = () => {
       background={background}
       overflow={{ vertical: 'auto' }}
     >
+      {character?.isDead && <RipSign />}
       {!game && (
         <div style={{ position: 'absolute', top: 'calc(50vh - 12px)', left: 'calc(50vw - 12px)' }}>
           <Spinner />

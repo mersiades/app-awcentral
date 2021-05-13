@@ -26,29 +26,27 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({ move, handleClose }
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole } = useGame();
+  const { userGameRole, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performMakeWantKnownMove, { loading: performingMakeWantKnownMove }] = useMutation<
-    PerformMakeWantKnownMoveData,
-    PerformMakeWantKnownMoveVars
-  >(PERFORM_MAKE_WANT_KNOWN_MOVE);
+  const [performMakeWantKnownMove, { loading: performingMakeWantKnownMove }] =
+    useMutation<PerformMakeWantKnownMoveData, PerformMakeWantKnownMoveVars>(PERFORM_MAKE_WANT_KNOWN_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const currentBarter = userGameRole?.characters[0].barter || 0;
+  const currentBarter = character?.barter || 0;
 
   const handleMakeWantKnownMove = (move: Move | CharacterMove, barter: number) => {
     if (currentBarter - barter < 0) {
       console.warn("You don't have enough barter");
       return;
     }
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingMakeWantKnownMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingMakeWantKnownMove) {
       try {
         performMakeWantKnownMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveId: move.id,
             barter,
           },
