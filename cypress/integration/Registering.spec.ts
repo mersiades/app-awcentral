@@ -28,7 +28,7 @@ describe('Registering as a new user', () => {
     cy.get('#password').type('password');
     cy.get('#password-confirm').type('password');
     cy.get('#kc-form-buttons').click();
-    cy.contains(`Welcome, ${username}`);
+    expect(cy.contains(`Welcome, ${username}`)).to.exist;
   });
 });
 

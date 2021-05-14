@@ -46,7 +46,7 @@ describe('Testing MenuPage', () => {
       cy.contains('No invitations yet').should('exist');
     });
 
-    it('should initialize a game as MC and navigate to CreateGamePage', () => {
+    it.skip('should initialize a game as MC and navigate to CreateGamePage', () => {
       const mockGameName = 'mock-game-name';
       cy.contains('CREATE GAME').click();
 
@@ -68,7 +68,7 @@ describe('Testing MenuPage', () => {
       });
     });
 
-    it('should navigate to game as MC', () => {
+    it.skip('should navigate to game as MC', () => {
       cy.contains('RETURN TO GAME').click();
       cy.contains(gameRolesByUserId_1McGameRole[0].gameName).should('exist');
       cy.contains('li', gameRolesByUserId_1McGameRole[0].gameName).click();
@@ -86,7 +86,7 @@ describe('Testing MenuPage', () => {
       });
     });
 
-    it('should navigate to game as Player', () => {
+    it.skip('should navigate to game as Player', () => {
       cy.contains('RETURN TO GAME').click();
       cy.contains(gameRolesByUserId_1McGameRole_1PlayerGameRole[0].gameName).should('exist');
       cy.contains(gameRolesByUserId_1McGameRole_1PlayerGameRole[1].gameName).should('exist');
@@ -106,7 +106,7 @@ describe('Testing MenuPage', () => {
       });
     });
 
-    it('should accept invitation and join game', () => {
+    it.skip('should accept invitation and join game', () => {
       cy.contains('JOIN GAME').click();
       cy.contains('JOIN').click();
       cy.url().should('contain', `character-creation/${game_withMC_1Player.id}`);
