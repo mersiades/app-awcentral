@@ -1,8 +1,6 @@
 import { Game } from '../../../src/@types/dataInterfaces';
-import ahmad from '../users/ahmad';
 import dave from '../users/dave';
 import john from '../users/john';
-import maya from '../users/maya';
 
 export const MOCK_GAME_3_ID = 'mock-game-3-id';
 
@@ -10,8 +8,8 @@ export const MOCK_GAME_3_ID = 'mock-game-3-id';
 const game5: Game = {
   id: 'mock-game-5-id',
   name: 'Mock Game 5',
-  commsApp: 'Zoom', // Should these be null or undefined?
-  commsUrl: 'https://www.zoom.com/meeting-id', // Should these be null or undefined?
+  commsApp: 'Zoom',
+  commsUrl: 'https://www.zoom.com/meeting-id',
   hasFinishedPreGame: false,
   showFirstSession: true,
   mc: { displayName: dave.username as string, id: dave.id as string },
