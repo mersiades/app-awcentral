@@ -6,8 +6,9 @@ import { UniqueTypes } from '../../../@types/enums';
 import { decapitalize } from '../../../helpers/decapitalize';
 import { mockAngel_fresh, mockAngel_readyToAddMoves } from '../../../tests/fixtures/characterFixtures';
 import { mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
-import { renderWithRouter, waitOneTick } from '../../../tests/test-utils';
-import CharacterCreationStepper, {
+import { renderWithRouter } from '../../../tests/test-utils';
+import CharacterCreationStepper from '../CharacterCreationStepper';
+import {
   BATTLE_VEHICLES_TITLE,
   GEAR_TITLE,
   LOOKS_TITLE,
@@ -16,7 +17,7 @@ import CharacterCreationStepper, {
   PLAYBOOK_TITLE,
   STATS_TITLE,
   VEHICLES_TITLE,
-} from '../CharacterCreationStepper';
+} from '../../../config/constants';
 
 const generateGame = (character: Character): Game => ({
   ...mockGame5,
