@@ -16,7 +16,7 @@ interface RootProps {
   children: JSX.Element;
 }
 
-// @ts-ignore
+// @ts-ignore istanbul ignore else
 const checkLoginIframe = window.Cypress ? false : true;
 
 /**

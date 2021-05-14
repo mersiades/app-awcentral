@@ -84,5 +84,10 @@
     "printWidth": 125,
     "singleQuote": true,
     "arrowParens": "always"
+  },
+  "nyc": {
+    "exclude": [
+      "src/serviceWorker.js"
+    ]
   }
 }
