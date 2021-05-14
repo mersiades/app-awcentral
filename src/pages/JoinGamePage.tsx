@@ -10,6 +10,7 @@ import { HeadingWS, StyledClose } from '../config/grommetConfig';
 import '../assets/styles/transitions.css';
 import Spinner from '../components/Spinner';
 import { useFonts } from '../contexts/fontContext';
+import { YOUR_INVITATIONS_TITLE } from '../config/constants';
 
 const background = {
   color: 'black',
@@ -85,7 +86,7 @@ const MenuPage: FC = () => {
                       <StyledClose color="accent-1" onClick={() => history.push('/')} cursor="pointer" />
                     </Box>
                     <HeadingWS vtksReady={vtksReady} level={1} margin={{ vertical: 'small' }} size="small" textAlign="end">
-                      YOUR INVITATIONS
+                      {YOUR_INVITATIONS_TITLE}
                     </HeadingWS>
                   </Box>
                   <InvitationsList games={games} />

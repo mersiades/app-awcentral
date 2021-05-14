@@ -13,6 +13,7 @@ import { background, ButtonWS, HeadingWS, StyledClose } from '../config/grommetC
 import '../assets/styles/transitions.css';
 import { useFonts } from '../contexts/fontContext';
 import { useGame } from '../contexts/gameContext';
+import { RETURN_TO_GAME_TEXT, JOIN_GAME_TEXT, CREATE_GAME_TEXT, YOUR_GAMES_TITLE } from '../config/constants';
 
 const MenuPage: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -54,7 +55,7 @@ const MenuPage: FC = () => {
           <Box gap="small">
             {gameRoles.length > 0 && (
               <ButtonWS
-                label="RETURN TO GAME"
+                label={RETURN_TO_GAME_TEXT}
                 primary
                 size="large"
                 alignSelf="center"
@@ -63,7 +64,7 @@ const MenuPage: FC = () => {
               />
             )}
             <ButtonWS
-              label="JOIN GAME"
+              label={JOIN_GAME_TEXT}
               secondary
               size="large"
               alignSelf="center"
@@ -71,7 +72,7 @@ const MenuPage: FC = () => {
               onClick={() => history.push('/join-game')}
             />
             <ButtonWS
-              label="CREATE GAME"
+              label={CREATE_GAME_TEXT}
               secondary
               size="large"
               alignSelf="center"
@@ -135,10 +136,10 @@ const MenuPage: FC = () => {
                       <StyledClose color="accent-1" onClick={() => setButtonsContainer(0)} />
                     </Box>
                     <HeadingWS vtksReady={vtksReady} level={1} margin={{ vertical: 'small' }} size="small" textAlign="end">
-                      YOUR GAMES
+                      {YOUR_GAMES_TITLE}
                     </HeadingWS>
                   </Box>
-                  {!!gameRoles ? <GamesList gameRoles={gameRoles} /> : null}
+                  {!!gameRoles && <GamesList gameRoles={gameRoles} />}
                 </Box>
               )}
               {buttonsContainer === 2 && (
@@ -153,7 +154,7 @@ const MenuPage: FC = () => {
                       />
                     </Box>
                     <HeadingWS vtksReady={vtksReady} level={1} margin={{ vertical: 'small' }} size="small" textAlign="end">
-                      CREATE GAME
+                      {CREATE_GAME_TEXT}
                     </HeadingWS>
                   </Box>
                   <CreateGameForm />

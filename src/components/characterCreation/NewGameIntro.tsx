@@ -8,6 +8,7 @@ import { ButtonWS, HeadingWS, ParagraphWS } from '../../config/grommetConfig';
 import CREATE_CHARACTER, { CreateCharacterData, CreateCharacterVars } from '../../mutations/createCharacter';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { NEW_GAME_TEXT, WELCOME_JUNGLE_TEXT, GET_STARTED_TEXT } from '../../config/constants';
 
 const NewGameIntro: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -18,9 +19,8 @@ const NewGameIntro: FC = () => {
   const history = useHistory();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [createCharacter, { loading: creatingCharacter }] = useMutation<CreateCharacterData, CreateCharacterVars>(
-    CREATE_CHARACTER
-  );
+  const [createCharacter, { loading: creatingCharacter }] =
+    useMutation<CreateCharacterData, CreateCharacterVars>(CREATE_CHARACTER);
 
   // ---------------------------------------- Component functions and variables ------------------------------------------ //
   const handleInitilializeCharacter = async () => {
@@ -77,7 +77,7 @@ const NewGameIntro: FC = () => {
       <Box width="85vw" align="center" style={{ maxWidth: '763px' }}>
         <Box direction="row" fill="horizontal" justify="between" align="center">
           <HeadingWS crustReady={crustReady} textAlign="center" level={2} style={{ maxWidth: 'unset' }}>
-            NEW GAME
+            {NEW_GAME_TEXT}
           </HeadingWS>
           <ButtonWS
             label={creatingCharacter ? <Spinner fillColor="#FFF" width="52px" height="36px" /> : 'NEXT'}
@@ -88,11 +88,11 @@ const NewGameIntro: FC = () => {
           />
         </Box>
         <ParagraphWS textAlign="center" size="large">
-          Welcome to the jungle, baby.
+          {WELCOME_JUNGLE_TEXT}
         </ParagraphWS>
         {renderComms()}
         <ParagraphWS textAlign="center" size="medium">
-          Once everyone's ready, punch NEXT to get started.
+          {GET_STARTED_TEXT}
         </ParagraphWS>
       </Box>
     </Box>

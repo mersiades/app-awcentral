@@ -203,3 +203,17 @@ export const LIFE_SUPPORT_TEXT = 'a life support unit';
 export const HOLDING_SOULS_SMALL = '50-60 souls';
 export const HOLDING_SOULS_MEDIUM = '75-150 souls';
 export const HOLDING_SOULS_LARGE = '200-300 souls';
+
+export const JOIN_GAME_TEXT = 'JOIN GAME';
+export const RETURN_TO_GAME_TEXT = 'RETURN TO GAME';
+export const CREATE_GAME_TEXT = 'CREATE GAME';
+export const YOUR_GAMES_TITLE = 'YOUR GAMES';
+
+export const YOUR_INVITATIONS_TITLE = 'YOUR INVITATIONS';
+
+export const NO_INVITATIONS_TEXT = 'No invitations yet';
+export const JOIN_TEXT = 'JOIN';
+
+export const NEW_GAME_TEXT = 'NEW GAME';
+export const WELCOME_JUNGLE_TEXT = 'Welcome to the jungle, baby.';
+export const GET_STARTED_TEXT = "Once everyone's ready, punch NEXT to get started.";
