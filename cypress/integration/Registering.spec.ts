@@ -22,14 +22,12 @@ describe('Registering as a new user', () => {
   it('should register a new user and log in to MainMenu', () => {
     const timestamp = moment.now().toString();
     const uniqueEmail = `${timestamp}@email.com`;
-    const username = `${timestamp}_user`;
-    cy.get('#username').type(username);
+    const uniqueUsername = `${timestamp}_user`;
+    cy.get('#username').type(uniqueUsername);
     cy.get('#email').type(uniqueEmail);
     cy.get('#password').type('password');
     cy.get('#password-confirm').type('password');
     cy.get('#kc-form-buttons').click();
-    expect(cy.contains(`Welcome, ${username}`)).to.exist;
+    cy.contains(`Welcome, ${uniqueUsername}`).should('exist');
   });
 });
-
-export default {};
