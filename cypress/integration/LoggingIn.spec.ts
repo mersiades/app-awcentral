@@ -1,4 +1,4 @@
-import dave from '../fixtures/keycloakUsers/dave.json';
+import dave from '../fixtures/users/dave.json';
 describe('Logging in as existing user', () => {
   beforeEach(() => {
     cy.visit('/');

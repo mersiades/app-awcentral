@@ -33,15 +33,15 @@ describe('Testing MenuPage', () => {
         }),
       });
     });
-    it('should NOT render RETURN TO GAME', () => {
+    it.skip('should NOT render RETURN TO GAME', () => {
       cy.contains('RETURN').should('not.exist');
     });
 
-    it('should log out', () => {
+    it.skip('should log out', () => {
       cy.contains('LOG OUT').click();
       cy.url().should('include', 'auth/realms/awc-realm/protocol/openid-connect/auth');
     });
-    it('should show no invitations', () => {
+    it.skip('should show no invitations', () => {
       cy.contains('JOIN GAME').click();
       cy.contains('No invitations yet').should('exist');
     });
