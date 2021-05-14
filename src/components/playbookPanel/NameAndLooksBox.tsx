@@ -1,28 +1,42 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Box } from 'grommet';
 import { FormUp, FormDown, Edit } from 'grommet-icons';
 
 import { StyledMarkdown } from '../styledComponents';
 import { HeadingWS, TextWS } from '../../config/grommetConfig';
-import { Look } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
+import { useGame } from '../../contexts/gameContext';
+import { getCharacterNameString } from '../../helpers/getCharacterNameString';
 
 interface NameAndLooksBoxProps {
-  playbook: string;
-  name: string;
   description?: string;
-  looks: Look[];
   navigateToCharacterCreation: (step: string) => void;
 }
 
-const NameAndLooksBox: FC<NameAndLooksBoxProps> = ({ name, playbook, description, looks, navigateToCharacterCreation }) => {
+const NameAndLooksBox: FC<NameAndLooksBoxProps> = ({ description, navigateToCharacterCreation }) => {
+  // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [showDescription, setShowDescription] = useState(false);
+  const [looksString, setLooksString] = useState('');
+  const [name, setName] = useState('');
+
+  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
+  const { character } = useGame();
 
-  const looksLooks = looks.map((look) => look.look);
+  // ------------------------------------------------ Component functions -------------------------------------------------- //
 
-  let looksString = looksLooks.join(', ');
+  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+  useEffect(() => {
+    if (!!character) {
+      const looksLooks = character?.looks.map((look) => look.look) || [];
+      setLooksString(looksLooks.join(', '));
+      let nameString = getCharacterNameString(character);
 
+      setName(nameString);
+    }
+  }, [character]);
+
+  // ------------------------------------------------------- Render -------------------------------------------------------- //
   return (
     <Box
       data-testid="name-looks-box"
@@ -33,7 +47,9 @@ const NameAndLooksBox: FC<NameAndLooksBoxProps> = ({ name, playbook, description
     >
       <Box fill="horizontal" direction="row" justify="between" align="center" pad={{ vertical: '12px' }}>
         <Box justify="center" pad={{ vertical: '12px' }}>
-          <HeadingWS crustReady={crustReady} level="2" margin="0px">{`${name + ' '}the ${playbook}`}</HeadingWS>
+          <HeadingWS crustReady={crustReady} level="2" margin="0px">
+            {name}
+          </HeadingWS>
           <TextWS>{looksString}</TextWS>
         </Box>
         <Box direction="row" align="center" gap="12px">

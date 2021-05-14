@@ -88,10 +88,8 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
   });
 
   const improvementBlock = pbCreatorData?.playbookCreator.improvementBlock;
-  const [adjustImprovements, { loading: adjustingImprovements }] = useMutation<
-    AdjustImprovementsData,
-    AdjustImprovementsVars
-  >(ADJUST_IMPROVEMENTS);
+  const [adjustImprovements, { loading: adjustingImprovements }] =
+    useMutation<AdjustImprovementsData, AdjustImprovementsVars>(ADJUST_IMPROVEMENTS);
 
   // ------------------------------------------------ Component functions -------------------------------------------------- //
   const handleSelectImprovement = (move: Move) => {
@@ -117,7 +115,7 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
   };
 
   const handleSetImprovements = async () => {
-    if (!!character && !!userGameRole && !!game) {
+    if (!!character && !character.isDead && !!userGameRole && !!game) {
       const to = getNavDestinationForNewImprovement(
         character?.improvementMoves.map((imp) => imp.name),
         selectedImprovements.map((imp) => imp.name),

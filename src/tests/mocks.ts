@@ -64,10 +64,10 @@ import {
   dummyWorkspaceCreator,
 } from './fixtures/dummyData';
 import {
-  mockCharacterMoveAngel1,
-  mockCharacterMoveAngel2,
-  mockCharacterMoveAngel3,
-  mockCharacterMoveAngel4,
+  mockAngelSpecialCM,
+  mockSixthSenseCM,
+  mockInfirmaryCM,
+  mockProfessionalCompassionCM,
 } from './fixtures/characterMovesFixtures';
 import { mockImprovementBlockAngel } from './fixtures/improvementBlockFixtures';
 import {
@@ -109,6 +109,8 @@ interface MockCharacter {
   allowedImprovements: number;
   allowedPlaybookMoves: number;
   allowedOtherPlaybookMoves: number;
+  isDead: boolean;
+  mustChangePlaybook: boolean;
   battleVehicles: BattleVehicle[];
   vehicles: Vehicle[];
   hxBlock: HxStat[];
@@ -117,6 +119,7 @@ interface MockCharacter {
   characterMoves: CharacterMove[];
   improvementMoves: CharacterMove[];
   futureImprovementMoves: CharacterMove[];
+  deathMoves: CharacterMove[];
   holds: Hold[];
   __typename?: 'Character';
 }
@@ -189,20 +192,19 @@ export const mockCharacter1: MockCharacter = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 2,
   allowedOtherPlaybookMoves: 0,
+  isDead: false,
+  mustChangePlaybook: false,
   harm: mockCharacterHarm,
   statsBlock: mockStatsBlock1,
   hxBlock: [],
   looks: [mockLookBattleBabe1, mockLookBattlebabe2],
-  characterMoves: [
-    mockCharacterMoveAngel1,
-    { ...mockCharacterMoveAngel2, isSelected: true },
-    { ...mockCharacterMoveAngel3, isSelected: true },
-  ], // TODO: change to battlebabe moves
+  characterMoves: [mockAngelSpecialCM, { ...mockSixthSenseCM, isSelected: true }, { ...mockInfirmaryCM, isSelected: true }], // TODO: change to battlebabe moves
   playbookUniques: mockPlaybookUniqueBattlebabe_withDummyUniques,
   vehicles: [],
   battleVehicles: [],
   improvementMoves: [],
   futureImprovementMoves: [],
+  deathMoves: [],
 };
 
 export const mockCharacter2: MockCharacter = {
@@ -220,6 +222,8 @@ export const mockCharacter2: MockCharacter = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 2,
   allowedOtherPlaybookMoves: 0,
+  isDead: false,
+  mustChangePlaybook: false,
   hxBlock: [
     {
       id: 'hx-stat-id-1',
@@ -231,9 +235,9 @@ export const mockCharacter2: MockCharacter = {
   harm: { ...mockCharacterHarm, id: 'mock-character-harm-id-2' },
   looks: [mockLookAngel1, mockLookAngel3, mockLookAngel5, mockLookAngel7, mockLookAngel9],
   characterMoves: [
-    { ...mockCharacterMoveAngel1, isSelected: true },
-    { ...mockCharacterMoveAngel2, isSelected: true },
-    { ...mockCharacterMoveAngel3, isSelected: true },
+    { ...mockAngelSpecialCM, isSelected: true },
+    { ...mockSixthSenseCM, isSelected: true },
+    { ...mockInfirmaryCM, isSelected: true },
   ],
   playbookUniques: mockPlaybookUniqueAngel_withDummyUniques,
   vehicleCount: 0,
@@ -242,6 +246,7 @@ export const mockCharacter2: MockCharacter = {
   battleVehicles: [],
   improvementMoves: [],
   futureImprovementMoves: [],
+  deathMoves: [],
 };
 
 export const mockGame1: Game = {
@@ -848,8 +853,8 @@ export const mockPlaybookCreatorAngel: PlaybookCreator = {
   ],
   statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2, mockStatsOptionsAngel3],
   playbookUniqueCreator: mockUniqueCreatorAngel,
-  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3, mockCharacterMoveAngel4],
-  defaultMoves: [mockCharacterMoveAngel1],
+  optionalMoves: [mockSixthSenseCM, mockInfirmaryCM, mockProfessionalCompassionCM],
+  defaultMoves: [mockAngelSpecialCM],
   defaultMoveCount: 1,
   moveChoiceCount: 2,
   defaultVehicleCount: 0,
@@ -972,8 +977,8 @@ export const mockPlaybookCreatorBattlebabe: PlaybookCreator = {
   names: [mockBattlebabeName],
   looks: [mockBattlebabeLook],
   statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2],
-  defaultMoves: [mockCharacterMoveAngel1],
-  optionalMoves: [mockCharacterMoveAngel2, mockCharacterMoveAngel3],
+  defaultMoves: [mockAngelSpecialCM],
+  optionalMoves: [mockSixthSenseCM, mockInfirmaryCM],
   defaultMoveCount: 1,
   moveChoiceCount: 2,
   playbookUniqueCreator: mockUniqueCreatorBattlebabe,
@@ -1186,6 +1191,8 @@ export const blankCharacter: MockCharacter = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 0,
   allowedOtherPlaybookMoves: 0,
+  isDead: false,
+  mustChangePlaybook: false,
   hasCompletedCharacterCreation: false,
   hasPlusOneForward: false,
   holds: [],
@@ -1194,6 +1201,7 @@ export const blankCharacter: MockCharacter = {
   battleVehicles: [],
   improvementMoves: [],
   futureImprovementMoves: [],
+  deathMoves: [],
   __typename: 'Character',
 };
 

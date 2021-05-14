@@ -27,18 +27,16 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({ move, handleClose }) 
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole, otherPlayerGameRoles } = useGame();
+  const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performAngelSpecialMove, { loading: performingAngelSpecialMove }] = useMutation<
-    PerformAngelSpecialMoveData,
-    PerformAngelSpecialMoveVars
-  >(PERFORM_ANGEL_SPECIAL_MOVE);
+  const [performAngelSpecialMove, { loading: performingAngelSpecialMove }] =
+    useMutation<PerformAngelSpecialMoveData, PerformAngelSpecialMoveVars>(PERFORM_ANGEL_SPECIAL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleAngelSpecialMove = () => {
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingAngelSpecialMove && !!otherCharacterId) {
+    if (!!userGameRole && !!character && !character.isDead && !performingAngelSpecialMove && !!otherCharacterId) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
         gameRole.characters.forEach((character) => {
@@ -55,7 +53,7 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({ move, handleClose }) 
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             otherCharacterId,
           },
         });

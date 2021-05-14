@@ -45,7 +45,7 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
   };
 
   const handleAddProject = async () => {
-    if (!!character && !!userGameRole && !!projectName && !!workspace) {
+    if (!!character && !!userGameRole && !!projectName && !!workspace && !character.isDead) {
       const projectInput: ProjectInput = {
         id: !!projectId ? projectId : undefined,
         name: projectName,
@@ -82,7 +82,15 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
   };
 
   const handleRemoveProject = async () => {
-    if (!!character && !!userGameRole && !!projectName && !!projectId && !!workspace && !removingProject) {
+    if (
+      !!character &&
+      !!userGameRole &&
+      !!projectName &&
+      !!projectId &&
+      !!workspace &&
+      !removingProject &&
+      !character.isDead
+    ) {
       const projectInput: ProjectInput = {
         id: projectId,
         name: projectName,

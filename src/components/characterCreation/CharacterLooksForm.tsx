@@ -70,13 +70,12 @@ const CharacterLooksForm: FC = () => {
     { variables: { playbookType: character?.playbook }, skip: !character?.playbook }
   );
   const looks = pbCreatorData?.playbookCreator.looks;
-  const [setCharacterLook, { loading: settingLooks }] = useMutation<SetCharacterLookData, SetCharacterLookVars>(
-    SET_CHARACTER_LOOK
-  );
+  const [setCharacterLook, { loading: settingLooks }] =
+    useMutation<SetCharacterLookData, SetCharacterLookVars>(SET_CHARACTER_LOOK);
 
   // ------------------------------------------ Component functions and variables ------------------------------------------ //
   const handleSubmitLook = async (look: Look) => {
-    if (!!userGameRole && !!character && !!game) {
+    if (!!userGameRole && !!character && !character.isDead && !!game) {
       // Prepare LookInput
       const lookInput: LookInput = omit(look, ['__typename']);
 

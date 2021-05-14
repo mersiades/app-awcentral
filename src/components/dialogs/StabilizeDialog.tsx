@@ -27,29 +27,27 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole } = useGame();
+  const { userGameRole, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performStabilizeAndHealMove, { loading: performingStabilizeAndHealMove }] = useMutation<
-    PerformStabilizeAndHealMoveData,
-    PerformStabilizeAndHealMoveVars
-  >(PERFORM_STABILIZE_AND_HEAL_MOVE);
+  const [performStabilizeAndHealMove, { loading: performingStabilizeAndHealMove }] =
+    useMutation<PerformStabilizeAndHealMoveData, PerformStabilizeAndHealMoveVars>(PERFORM_STABILIZE_AND_HEAL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const currentStock = userGameRole?.characters[0].playbookUniques?.angelKit?.stock || 0;
+  const currentStock = character?.playbookUniques?.angelKit?.stock || 0;
 
   const handleStabilizeAndHealMove = () => {
     if (currentStock - stockSpent < 0) {
       console.warn("You don't have enough stock");
       return;
     }
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingStabilizeAndHealMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingStabilizeAndHealMove) {
       try {
         performStabilizeAndHealMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             stockSpent,
           },
         });

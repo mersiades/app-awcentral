@@ -18,6 +18,17 @@ import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import '../../assets/styles/transitions.css';
 import { useHistory } from 'react-router-dom';
+import CHANGE_PLAYBOOK, {
+  ChangePlaybookData,
+  ChangePlaybookVars,
+  getChangePlaybookOR,
+} from '../../mutations/changePlaybook';
+
+export const CHOOSE_YOUR_PLAYBOOK_TEXT = 'Choose your playbook';
+export const NEW_PLAYER_INTRO_TEXT =
+  'You should probably wait for your MC and the rest of your crew, tho. No headstarts for nobody in Apocalypse World.';
+export const CHANGED_PLAYBOOK_INTRO_TEXT =
+  "You've chosen to change your playbook. Do it now, before continuing... you don't wanna throw yourself back out there half-cocked.";
 
 const CharacterPlaybookForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -39,10 +50,11 @@ const CharacterPlaybookForm: FC = () => {
   const { data: playbooksData } = useQuery<PlaybooksData>(PLAYBOOKS);
   const playbooks = playbooksData?.playbooks;
 
-  const [setCharacterPlaybook, { loading: settingPlaybook }] = useMutation<
-    SetCharacterPlaybookData,
-    SetCharacterPlaybookVars
-  >(SET_CHARACTER_PLAYBOOK);
+  const [setCharacterPlaybook, { loading: settingPlaybook }] =
+    useMutation<SetCharacterPlaybookData, SetCharacterPlaybookVars>(SET_CHARACTER_PLAYBOOK);
+
+  const [changePlaybook, { loading: changingPlaybook }] =
+    useMutation<ChangePlaybookData, ChangePlaybookVars>(CHANGE_PLAYBOOK);
 
   // ---------------------------------------- Component functions and variables ------------------------------------------ //
   const handlePlaybookClick = (playbook: Playbook) => {
@@ -56,8 +68,8 @@ const CharacterPlaybookForm: FC = () => {
       !!userGameRole &&
       !!userGameRole.characters &&
       userGameRole.characters.length > 0 &&
-      !!userGameRole.characters[0].playbook &&
-      userGameRole.characters[0].playbook !== playbookType
+      !!character?.playbook &&
+      character?.playbook !== playbookType
     ) {
       setShowSwitchWarning(playbookType);
     } else {
@@ -66,16 +78,28 @@ const CharacterPlaybookForm: FC = () => {
   };
 
   const handlePlaybookSelect = async (playbookType: PlaybookType) => {
-    if (!!userGameRole && !!game && userGameRole.characters?.length === 1) {
-      try {
-        await setCharacterPlaybook({
-          variables: { gameRoleId: userGameRole.id, characterId: userGameRole.characters[0].id, playbookType },
-        });
-        setShowSwitchWarning(undefined);
-        history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-      } catch (error) {
-        console.error(error);
+    if (!!userGameRole && !!game && !!character) {
+      if (!!character.mustChangePlaybook) {
+        try {
+          await changePlaybook({
+            variables: { gameRoleId: userGameRole.id, characterId: character.id, playbookType },
+            optimisticResponse: getChangePlaybookOR(character, playbookType),
+          });
+          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectStats}`);
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        try {
+          await setCharacterPlaybook({
+            variables: { gameRoleId: userGameRole.id, characterId: character.id, playbookType },
+          });
+          setShowSwitchWarning(undefined);
+          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
+          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   };
@@ -134,13 +158,10 @@ const CharacterPlaybookForm: FC = () => {
         <Box width="85vw" align="center" style={{ maxWidth: '763px' }}>
           <Box direction="row" fill="horizontal" justify="start" align="center">
             <HeadingWS crustReady={crustReady} level={2}>
-              Choose your playbook
+              {CHOOSE_YOUR_PLAYBOOK_TEXT}
             </HeadingWS>
           </Box>
-          <ParagraphWS>
-            You should probably wait for your MC and the rest of your crew, tho. No headstarts for nobody in Apocalypse
-            World.
-          </ParagraphWS>
+          <ParagraphWS>{character?.mustChangePlaybook ? CHANGED_PLAYBOOK_INTRO_TEXT : NEW_PLAYER_INTRO_TEXT}</ParagraphWS>
         </Box>
       )}
       {!!selectedPlaybook && (
@@ -160,7 +181,7 @@ const CharacterPlaybookForm: FC = () => {
               {selectedPlaybook.playbookType !== character?.playbook ? (
                 <ButtonWS
                   label={
-                    settingPlaybook ? (
+                    settingPlaybook || changingPlaybook ? (
                       <Spinner fillColor="#FFF" width="230px" height="36px" />
                     ) : (
                       `SELECT ${decapitalize(selectedPlaybook.playbookType)}`
@@ -169,20 +190,25 @@ const CharacterPlaybookForm: FC = () => {
                   primary
                   size="large"
                   onClick={() => {
-                    setStartFadeOut(true);
-                    checkPlaybookReset(selectedPlaybook.playbookType);
+                    if (!settingPlaybook && !changingPlaybook) {
+                      setStartFadeOut(true);
+                      checkPlaybookReset(selectedPlaybook.playbookType);
+                    }
                   }}
                   style={{ width: '295px' }}
                 />
               ) : (
                 <ButtonWS
-                  label={settingPlaybook ? <Spinner fillColor="#FFF" width="230px" height="36px" /> : 'RESET'}
+                  label={
+                    settingPlaybook || changingPlaybook ? <Spinner fillColor="#FFF" width="230px" height="36px" /> : 'RESET'
+                  }
                   secondary
                   size="large"
                   onClick={() => {
-                    setStartFadeOut(true);
-                    setShowResetWarning(selectedPlaybook.playbookType);
-                    // checkPlaybookReset(selectedPlaybook.playbookType);
+                    if (!settingPlaybook && !changingPlaybook) {
+                      setStartFadeOut(true);
+                      setShowResetWarning(selectedPlaybook.playbookType);
+                    }
                   }}
                   style={{ width: '295px' }}
                 />

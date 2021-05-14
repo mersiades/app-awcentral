@@ -593,6 +593,8 @@ const GAME = gql`
           allowedImprovements
           allowedPlaybookMoves
           allowedOtherPlaybookMoves
+          isDead
+          mustChangePlaybook
           vehicleCount
           battleVehicleCount
           holds {
@@ -646,6 +648,12 @@ const GAME = gql`
               rollType
               statToRollWith
             }
+            statModifier {
+              id
+            }
+            rollModifier {
+              id
+            }
           }
           improvementMoves {
             id
@@ -656,6 +664,14 @@ const GAME = gql`
             playbook
           }
           futureImprovementMoves {
+            id
+            isSelected
+            name
+            kind
+            description
+            playbook
+          }
+          deathMoves {
             id
             isSelected
             name

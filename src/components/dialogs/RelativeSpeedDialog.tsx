@@ -36,10 +36,8 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
   const { userGameRole, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performSpeedRollMove, { loading: performingSpeedRollMove }] = useMutation<
-    PerformSpeedRollMoveData,
-    PerformSpeedRollMoveVars
-  >(PERFORM_SPEED_ROLL_MOVE);
+  const [performSpeedRollMove, { loading: performingSpeedRollMove }] =
+    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(PERFORM_SPEED_ROLL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const otherVehicle: Vehicle = {
@@ -58,14 +56,14 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
   };
 
   const handleSpeedRollMove = () => {
-    if (!!userGameRole && !!character && !performingSpeedRollMove && !!mySpeed && !!theirSpeed) {
+    if (!!userGameRole && !!character && !character.isDead && !performingSpeedRollMove && !!mySpeed && !!theirSpeed) {
       const modifier = parseInt(mySpeed) - parseInt(theirSpeed);
       try {
         performSpeedRollMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveId: move.id,
             modifier,
           },

@@ -23,14 +23,12 @@ const StatsBox: FC<StatsBoxProps> = ({ navigateToCharacterCreation }) => {
   const stats = character?.statsBlock?.stats;
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [toggleStatHighlight, { loading: togglingHighlight }] = useMutation<
-    ToggleStatHighlightData,
-    ToggleStatHighlightVars
-  >(TOGGLE_STAT_HIGHLIGHT);
+  const [toggleStatHighlight, { loading: togglingHighlight }] =
+    useMutation<ToggleStatHighlightData, ToggleStatHighlightVars>(TOGGLE_STAT_HIGHLIGHT);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const handleToggleHighlight = async (stat: StatType) => {
-    if (!!userGameRole && !!character) {
+    if (!!userGameRole && !!character && !character.isDead) {
       try {
         await toggleStatHighlight({
           variables: { gameRoleId: userGameRole.id, characterId: character.id, stat },

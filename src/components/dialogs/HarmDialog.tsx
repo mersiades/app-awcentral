@@ -27,29 +27,27 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole } = useGame();
+  const { userGameRole, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performSufferHarmMove, { loading: performingSufferHarmMove }] = useMutation<
-    PerformSufferHarmMoveData,
-    PerformSufferHarmMoveVars
-  >(PERFORM_SUFFER_HARM_MOVE);
+  const [performSufferHarmMove, { loading: performingSufferHarmMove }] =
+    useMutation<PerformSufferHarmMoveData, PerformSufferHarmMoveVars>(PERFORM_SUFFER_HARM_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const currentHarm = userGameRole?.characters[0].harm;
+  const currentHarm = character?.harm;
 
   const handleSufferHarmMove = (move: Move | CharacterMove) => {
     if ((currentHarm?.value || 0) + harm >= 6) {
       console.warn("You're dead");
       return;
     }
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingSufferHarmMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingSufferHarmMove) {
       try {
         performSufferHarmMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveId: move.id,
             harm,
           },

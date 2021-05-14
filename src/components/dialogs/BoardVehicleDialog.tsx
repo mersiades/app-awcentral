@@ -35,10 +35,8 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
   const { userGameRole, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performSpeedRollMove, { loading: performingSpeedRollMove }] = useMutation<
-    PerformSpeedRollMoveData,
-    PerformSpeedRollMoveVars
-  >(PERFORM_SPEED_ROLL_MOVE);
+  const [performSpeedRollMove, { loading: performingSpeedRollMove }] =
+    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(PERFORM_SPEED_ROLL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const otherVehicle: Vehicle = {
@@ -72,7 +70,7 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
   };
 
   const handleSpeedRollMove = () => {
-    if (!!userGameRole && !!character && !performingSpeedRollMove && !!mySpeed && !!theirSpeed) {
+    if (!!userGameRole && !!character && !character.isDead && !performingSpeedRollMove && !!mySpeed && !!theirSpeed) {
       let modifier = parseInt(theirSpeed) - parseInt(mySpeed);
       if (modifier > 0) {
         modifier = -Math.abs(modifier);
@@ -82,7 +80,7 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveId: move.id,
             modifier,
           },

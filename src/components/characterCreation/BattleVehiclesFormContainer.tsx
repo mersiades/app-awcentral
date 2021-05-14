@@ -29,15 +29,13 @@ const BattleVehiclesFormContainer: FC = () => {
   const history = useHistory();
 
   // --------------------------------------------------- Graphql hooks ----------------------------------------------------- //
-  const [setBattleVehicleCount, { loading: settingBattleVehicleCount }] = useMutation<
-    SetBattleVehicleCountData,
-    SetBattleVehicleCountVars
-  >(SET_BATTLE_VEHICLE_COUNT);
+  const [setBattleVehicleCount, { loading: settingBattleVehicleCount }] =
+    useMutation<SetBattleVehicleCountData, SetBattleVehicleCountVars>(SET_BATTLE_VEHICLE_COUNT);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
 
   const handleAddVehicle = async () => {
-    if (!!userGameRole && !!character && !!game) {
+    if (!!userGameRole && !!character && !character.isDead && !!game) {
       const battleVehicleCount = character.battleVehicleCount + 1;
       try {
         await setBattleVehicleCount({

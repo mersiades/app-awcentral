@@ -634,6 +634,7 @@ export const HeadingWS = styled(
 export const ParagraphWS = styled(Paragraph as FC<ParagraphProps & JSX.IntrinsicElements['p']>)(() => {
   return css`
     text-shadow: 0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000;
+    cursor: default;
   `;
 });
 
@@ -821,4 +822,10 @@ export const improvementDialogBackground = {
   ...backgroundBase,
   size: 'contain',
   image: 'url(/images/background-image-32.jpg)',
+};
+
+export const deathDialogBackground = {
+  ...backgroundBase,
+  size: 'cover',
+  image: 'url(/images/background-image-33.jpg)',
 };

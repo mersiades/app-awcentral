@@ -27,18 +27,16 @@ const HocusSpecialDialog: FC<HocusSpecialDialogProps> = ({ move, handleClose }) 
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole, otherPlayerGameRoles } = useGame();
+  const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performHocusSpecialMove, { loading: performingHocusSpecialMove }] = useMutation<
-    PerformHocusSpecialMoveData,
-    PerformHocusSpecialMoveVars
-  >(PERFORM_HOCUS_SPECIAL_MOVE);
+  const [performHocusSpecialMove, { loading: performingHocusSpecialMove }] =
+    useMutation<PerformHocusSpecialMoveData, PerformHocusSpecialMoveVars>(PERFORM_HOCUS_SPECIAL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleHocusSpecialMove = () => {
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingHocusSpecialMove && !!otherCharacterId) {
+    if (!!userGameRole && !!character && !character.isDead && !performingHocusSpecialMove && !!otherCharacterId) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
         gameRole.characters.forEach((character) => {
@@ -55,7 +53,7 @@ const HocusSpecialDialog: FC<HocusSpecialDialogProps> = ({ move, handleClose }) 
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             otherCharacterId,
           },
         });

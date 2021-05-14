@@ -34,13 +34,12 @@ const CharacterStatsForm: FC = () => {
 
   const statsOptions = pbCreatorData?.playbookCreator.statsOptions;
 
-  const [setCharacterStats, { loading: settingStats }] = useMutation<SetCharacterStatsData, SetCharacterStatsVars>(
-    SET_CHARACTER_STATS
-  );
+  const [setCharacterStats, { loading: settingStats }] =
+    useMutation<SetCharacterStatsData, SetCharacterStatsVars>(SET_CHARACTER_STATS);
 
   // ---------------------------------------- Component functions and variables ------------------------------------------ //
   const handleSubmitStats = async (statsOption: StatsOption) => {
-    if (!!userGameRole && !!character && !!game) {
+    if (!!userGameRole && !!character && !character.isDead && !!game) {
       // Optimistic response is not working
       const optimisticStatsBlock: StatsBlock = {
         id: 'temp-id',

@@ -110,10 +110,8 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
   };
 
   // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [
-    { frame, name, strengths, weaknesses, looks, speed, handling, massive, armor, battleOptions },
-    dispatch,
-  ] = useReducer(vehicleFormReducer, initialState);
+  const [{ frame, name, strengths, weaknesses, looks, speed, handling, massive, armor, battleOptions }, dispatch] =
+    useReducer(vehicleFormReducer, initialState);
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { character, userGameRole } = useGame();
 
@@ -231,7 +229,7 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
   };
 
   const handleSetVehicle = async () => {
-    if (!!userGameRole && !!character) {
+    if (!!userGameRole && !!character && !character.isDead) {
       const vehicleInput: VehicleInput = {
         id: !!existingVehicle ? existingVehicle.id : undefined,
         name,

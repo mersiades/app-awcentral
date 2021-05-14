@@ -40,27 +40,21 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
   const { gameId } = useParams<{ gameId: string }>();
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
-  const { userGameRole } = useGame();
+  const { userGameRole, character } = useGame();
   const { crustReady } = useFonts();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
 
-  const [performPrintMove, { loading: performingPrintMove }] = useMutation<PerformPrintMoveData, PerformPrintMoveVars>(
-    PERFORM_PRINT_MOVE
-  );
-  const [performWealthMove, { loading: performingWealthMove }] = useMutation<PerformWealthMoveData, PerformWealthMoveVars>(
-    PERFORM_WEALTH_MOVE
-  );
+  const [performPrintMove, { loading: performingPrintMove }] =
+    useMutation<PerformPrintMoveData, PerformPrintMoveVars>(PERFORM_PRINT_MOVE);
+  const [performWealthMove, { loading: performingWealthMove }] =
+    useMutation<PerformWealthMoveData, PerformWealthMoveVars>(PERFORM_WEALTH_MOVE);
 
-  const [performFortunesMove, { loading: performingFortunesMove }] = useMutation<
-    PerformFortunesMoveData,
-    PerformFortunesMoveVars
-  >(PERFORM_FORTUNES_MOVE);
+  const [performFortunesMove, { loading: performingFortunesMove }] =
+    useMutation<PerformFortunesMoveData, PerformFortunesMoveVars>(PERFORM_FORTUNES_MOVE);
 
-  const [performStatRollMove, { loading: performingStatRollMove }] = useMutation<
-    PerformStatRollMoveData,
-    PerformStatRollMoveVars
-  >(PERFORM_STAT_ROLL_MOVE);
+  const [performStatRollMove, { loading: performingStatRollMove }] =
+    useMutation<PerformStatRollMoveData, PerformStatRollMoveVars>(PERFORM_STAT_ROLL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const toggleShowMoves = () => setShowMoves(!showMoves);
@@ -85,13 +79,13 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
   };
 
   const handlePrintMove = (move: Move | CharacterMove) => {
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingPrintMove) {
+    if (!!userGameRole && !!character && !character.isDead && !performingPrintMove) {
       try {
         performPrintMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             moveId: move.id,
             isGangMove: false,
           },
@@ -103,11 +97,11 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
   };
 
   const handleStatRollMove = (move: Move | CharacterMove) => {
-    if (!!userGameRole && userGameRole.characters.length === 1) {
+    if (!!userGameRole && !!character && !character.isDead) {
       const commonVariables = {
         gameId,
         gameRoleId: userGameRole.id,
-        characterId: userGameRole.characters[0].id,
+        characterId: character.id,
       };
       if (move.name === WEALTH_NAME) {
         if (!performingWealthMove) {
@@ -138,11 +132,11 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
   };
 
   const handleFortuneRollMove = () => {
-    if (!!userGameRole && userGameRole.characters.length === 1) {
+    if (!!userGameRole && !!character && !character.isDead) {
       if (!performingFortunesMove) {
         try {
           performFortunesMove({
-            variables: { gameId, gameRoleId: userGameRole.id, characterId: userGameRole.characters[0].id },
+            variables: { gameId, gameRoleId: userGameRole.id, characterId: character.id },
           });
         } catch (error) {
           console.error(error);

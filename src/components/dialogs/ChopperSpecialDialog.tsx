@@ -28,20 +28,19 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole, otherPlayerGameRoles } = useGame();
+  const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performChopperSpecialMove, { loading: performingChopperSpecialMove }] = useMutation<
-    PerformChopperSpecialMoveData,
-    PerformChopperSpecialMoveVars
-  >(PERFORM_CHOPPER_SPECIAL_MOVE);
+  const [performChopperSpecialMove, { loading: performingChopperSpecialMove }] =
+    useMutation<PerformChopperSpecialMoveData, PerformChopperSpecialMoveVars>(PERFORM_CHOPPER_SPECIAL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleChopperSpecialMove = () => {
     if (
       !!userGameRole &&
-      userGameRole.characters.length === 1 &&
+      !!character &&
+      !character.isDead &&
       !performingChopperSpecialMove &&
       !!otherCharacterId &&
       !!hxChange
@@ -62,7 +61,7 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             otherCharacterId,
             hxChange: parseInt(hxChange),
           },

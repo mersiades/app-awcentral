@@ -27,13 +27,11 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
 
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { crustReady } = useFonts();
-  const { userGameRole, otherPlayerGameRoles } = useGame();
+  const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performSkinnerSpecialMove, { loading: performingSkinnerSpecialMove }] = useMutation<
-    PerformSkinnerSpecialMoveData,
-    PerformSkinnerSpecialMoveVars
-  >(PERFORM_SKINNER_SPECIAL_MOVE);
+  const [performSkinnerSpecialMove, { loading: performingSkinnerSpecialMove }] =
+    useMutation<PerformSkinnerSpecialMoveData, PerformSkinnerSpecialMoveVars>(PERFORM_SKINNER_SPECIAL_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
@@ -44,7 +42,7 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
     "You can hypnotize them as though you'd rolled a 10+, even if you haven't chosen the move.",
   ];
   const handleSkinnerSpecialMove = () => {
-    if (!!userGameRole && userGameRole.characters.length === 1 && !performingSkinnerSpecialMove && !!otherCharacterId) {
+    if (!!userGameRole && !!character && !character.isDead && !performingSkinnerSpecialMove && !!otherCharacterId) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
         gameRole.characters.forEach((character) => {
@@ -61,7 +59,7 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
-            characterId: userGameRole.characters[0].id,
+            characterId: character.id,
             otherCharacterId,
             plus1ForUser: option.includes('You take +1forward'),
             plus1ForOther: option.includes('and so do they'),

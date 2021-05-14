@@ -40,7 +40,7 @@ const Holds: FC<HoldsProps> = ({ holds }) => {
   // ------------------------------------------------- Component functions -------------------------------------------------- /
 
   const handleHoldLeftClick = (hold: Hold) => {
-    if (!!gameId && !!userGameRole && !!character) {
+    if (!!gameId && !!userGameRole && !!character && !character.isDead) {
       const holdNoTypename = omit(hold, ['__typename']) as HoldInput;
       try {
         spendHold({ variables: { gameId, gameRoleId: userGameRole.id, characterId: character.id, hold: holdNoTypename } });
@@ -51,7 +51,7 @@ const Holds: FC<HoldsProps> = ({ holds }) => {
   };
 
   const handleHoldRightClick = (hold: Hold) => {
-    if (!!userGameRole && !!character) {
+    if (!!userGameRole && !!character && !character.isDead) {
       const holdNoTypename = omit(hold, ['__typename']) as HoldInput;
       try {
         removeHold({ variables: { gameRoleId: userGameRole.id, characterId: character.id, hold: holdNoTypename } });

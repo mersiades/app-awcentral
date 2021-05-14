@@ -13,6 +13,7 @@ import SET_CHARACTER_HARM, {
   SetCharacterHarmData,
   SetCharacterHarmVars,
 } from '../../mutations/setCharacterHarm';
+import DeathMovesBox from './DeathMovesBox';
 
 const HarmBox: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -20,15 +21,14 @@ const HarmBox: FC = () => {
   const harm = character?.harm;
 
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [setCharacterHarm, { loading: settingHarm }] = useMutation<SetCharacterHarmData, SetCharacterHarmVars>(
-    SET_CHARACTER_HARM
-  );
+  const [setCharacterHarm, { loading: settingHarm }] =
+    useMutation<SetCharacterHarmData, SetCharacterHarmVars>(SET_CHARACTER_HARM);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const circle = getCircle(200);
 
   const handleSetHarm = async (harmInput: HarmInput) => {
-    if (!!userGameRole && !!character) {
+    if (!!userGameRole && !!character && !character.isDead) {
       try {
         // @ts-ignore
         delete harmInput.__typename;
@@ -56,6 +56,7 @@ const HarmBox: FC = () => {
     }
   };
 
+  // ------------------------------------------------------- Render -------------------------------------------------------- //
   return (
     <CollapsiblePanelBox open title="Harm">
       <Box
@@ -122,34 +123,18 @@ const HarmBox: FC = () => {
         </Box>
         <Box flex="grow" pad="12px" gap="12px" justify="center">
           {!!harm ? (
-            <>
-              <CheckBox
-                label="Stabilized"
-                checked={harm.isStabilized}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })}
-              />
-              <TextWS>When life becomes untenable:</TextWS>
-              <CheckBox
-                label="Come back with -1hard"
-                checked={harm.hasComeBackHard}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasComeBackHard: !harm.hasComeBackHard })}
-              />
-              <CheckBox
-                label="Come back with +1weird (max+3)"
-                checked={harm.hasComeBackWeird}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasComeBackWeird: !harm.hasComeBackWeird })}
-              />
-              <CheckBox
-                label="Change to a new playbook"
-                checked={harm.hasChangedPlaybook}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasChangedPlaybook: !harm.hasChangedPlaybook })}
-              />
-              <CheckBox
-                label="Die"
-                checked={harm.hasDied}
-                onClick={() => !settingHarm && handleSetHarm({ ...harm, hasDied: !harm.hasDied })}
-              />
-            </>
+            <Box gap="12px">
+              <Box>
+                <CheckBox
+                  label="Stabilized"
+                  checked={harm.isStabilized}
+                  onClick={() => !settingHarm && handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })}
+                />
+              </Box>
+              <Box margin={{ top: '12px' }} fill>
+                <DeathMovesBox />
+              </Box>
+            </Box>
           ) : (
             <Spinner width="200px" />
           )}

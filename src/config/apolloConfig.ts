@@ -66,6 +66,12 @@ export const apolloClient = new ApolloClient({
               return [...incoming];
             },
           },
+          deathMoves: {
+            // @ts-ignore
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
           vehicles: {
             // @ts-ignore
             merge(existing = [], incoming: any[]) {
