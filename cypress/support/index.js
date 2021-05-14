@@ -20,3 +20,4 @@ import './commands';
 // require('./commands')
 
 import 'cypress-graphql-mock-network';
+import '@cypress/code-coverage/support';
