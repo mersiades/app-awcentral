@@ -88,6 +88,8 @@ const MCPage: FC = () => {
   const { id: userId } = useKeycloakUser();
   const { tickerData } = useMcContent();
 
+  console.log(`game`, game);
+
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
   const allMoves = allMovesData?.allMoves;

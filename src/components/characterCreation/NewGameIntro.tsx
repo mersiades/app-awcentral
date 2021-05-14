@@ -8,7 +8,7 @@ import { ButtonWS, HeadingWS, ParagraphWS } from '../../config/grommetConfig';
 import CREATE_CHARACTER, { CreateCharacterData, CreateCharacterVars } from '../../mutations/createCharacter';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
-import { NEW_GAME_TEXT, WELCOME_JUNGLE_TEXT, GET_STARTED_TEXT } from '../../config/constants';
+import { NEW_GAME_TEXT, WELCOME_JUNGLE_TEXT, GET_STARTED_TEXT, NEXT_TEXT } from '../../config/constants';
 
 const NewGameIntro: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -80,7 +80,7 @@ const NewGameIntro: FC = () => {
             {NEW_GAME_TEXT}
           </HeadingWS>
           <ButtonWS
-            label={creatingCharacter ? <Spinner fillColor="#FFF" width="52px" height="36px" /> : 'NEXT'}
+            label={creatingCharacter ? <Spinner fillColor="#FFF" width="52px" height="36px" /> : NEXT_TEXT}
             primary
             size="large"
             disabled={creatingCharacter}

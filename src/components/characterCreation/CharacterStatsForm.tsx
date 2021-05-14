@@ -12,6 +12,7 @@ import { StatsOption } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StatsBlock } from '../../@types/dataInterfaces';
+import { CHOOSE_STAT_SET_TEXT } from '../../config/constants';
 
 const CharacterStatsForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -123,13 +124,13 @@ const CharacterStatsForm: FC = () => {
           />
         </Box>
         <HeadingWS level={4} textAlign="start" margin={{ vertical: '6px' }}>
-          Choose a set:
+          {CHOOSE_STAT_SET_TEXT}
         </HeadingWS>
         <Box fill="horizontal" margin={{ bottom: '12px' }} gap="6px">
           {!!statsOptions &&
-            statsOptions.map((opt) => (
+            statsOptions.map((opt, index) => (
               <Box
-                data-testid={`${opt.id}-stats-option-box`}
+                data-testid={`stats-option-box-${index}`}
                 key={opt.id}
                 direction="row"
                 justify="around"

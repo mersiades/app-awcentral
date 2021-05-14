@@ -213,7 +213,28 @@ export const YOUR_INVITATIONS_TITLE = 'YOUR INVITATIONS';
 
 export const NO_INVITATIONS_TEXT = 'No invitations yet';
 export const JOIN_TEXT = 'JOIN';
+export const NEXT_TEXT = 'NEXT';
 
 export const NEW_GAME_TEXT = 'NEW GAME';
 export const WELCOME_JUNGLE_TEXT = 'Welcome to the jungle, baby.';
 export const GET_STARTED_TEXT = "Once everyone's ready, punch NEXT to get started.";
+
+export const PLAYBOOK_TITLE = 'Playbook';
+export const NAME_TITLE = 'Name';
+export const LOOKS_TITLE = 'Looks';
+export const STATS_TITLE = 'Stats';
+export const GEAR_TITLE = 'Gear';
+export const MOVES_TITLE = 'Moves';
+export const VEHICLES_TITLE = 'Vehicles';
+export const BATTLE_VEHICLES_TITLE = 'Battle Vehicles';
+
+export const CHOOSE_YOUR_PLAYBOOK_TEXT = 'Choose your playbook';
+export const NEW_PLAYER_INTRO_TEXT =
+  'You should probably wait for your MC and the rest of your crew, tho. No headstarts for nobody in Apocalypse World.';
+export const CHANGED_PLAYBOOK_INTRO_TEXT =
+  "You've chosen to change your playbook. Do it now, before continuing... you don't wanna throw yourself back out there half-cocked.";
+
+export const CHOOSE_STAT_SET_TEXT = 'Choose a set:';
+
+export const GEAR_FORM_INSTRUCTIONS = 'Select an item to add, edit or delete it, or just type your own.';
+export const OPTIONS_TITLE = 'Options';
