@@ -12,7 +12,23 @@ To run this app locally, for development purposes, you'll need to take the follo
 
 ### Running tests
 
-`yarn test --coverage --watchAll=false`
+#### Jest unit tests
+
+To run the unit tests: `yarn test`.
+
+For unit test coverage: `yarn test --coverage --watchAll=false`
+
+#### Cypress E2E tests
+
+These tests interact with the backend and the database, so before running the tests you'll need to run `awcentral-api` server with the `cypress` Spring Boot profile.
+
+Many of the E2E tests will require you to restart `awcentral-api` before each test run, to reset the database.
+
+To open the Cypress console: `yarn run cypress:open`
+
+To run all the Cypress tests and generate code ocverage: `yarn run cypress:all`
+
+To open the test coverage in your browser: `open coverage/lcov-report/index.html`
 
 ### Production deployment
 
