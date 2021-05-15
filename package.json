@@ -27,7 +27,7 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts -r @cypress/instrument-cra start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject",
@@ -55,6 +55,8 @@
     ]
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.9.5",
+    "@cypress/instrument-cra": "^1.4.0",
     "@testing-library/jest-dom": "^5.11.1",
     "@testing-library/react": "^11.2.2",
     "@types/fontfaceobserver": "^0.0.6",
@@ -82,5 +84,10 @@
     "printWidth": 125,
     "singleQuote": true,
     "arrowParens": "always"
+  },
+  "nyc": {
+    "exclude": [
+      "src/serviceWorker.js"
+    ]
   }
 }

@@ -14,6 +14,7 @@ import { VehicleInput } from '../../@types';
 import { Vehicle } from '../../@types/dataInterfaces';
 import { VehicleBattleOption, VehicleFrame } from '../../@types/staticDataInterfaces';
 import { useGame } from '../../contexts/gameContext';
+import { GIVE_VEHICLE_NAME_TEXT, GIVE_VEHICLE_NAME_EXAMPLES_TEXT } from '../../config/constants';
 
 interface VehicleTagsBoxProps {
   tags: string[];
@@ -390,7 +391,8 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
         </Box>
         <Box flex="grow">
           <TextWS>
-            <strong>Give your vehicle a name</strong> (make/model, nickname, whatever):
+            <strong>{GIVE_VEHICLE_NAME_TEXT}</strong>
+            {` ${GIVE_VEHICLE_NAME_EXAMPLES_TEXT}:`}
           </TextWS>
           <FormField>
             <TextInput

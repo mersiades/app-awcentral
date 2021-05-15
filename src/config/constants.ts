@@ -41,6 +41,8 @@ export const ARTFUL_NAME = 'ARTFUL & GRACIOUS';
 export const HYPNOTIC_NAME = 'HYPNOTIC';
 export const JUST_GIVE_MOTIVE_NAME = 'JUST GIVE ME A MOTIVE';
 export const SUFFER_V_HARM = 'SUFFER V-HARM';
+export const SIXTH_SENSE_NAME = 'SIXTH SENSE';
+export const INFIRMARY_NAME = 'INFIRMARY';
 
 // IMPROVE_STAT move names
 export const SHARP_2_MAX_NAME = 'SHARP MAX 2';
@@ -193,6 +195,12 @@ export const GAME_PAGE_BOTTOM_NAVBAR_HEIGHT = 80;
 
 // Text
 export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
+export const START_PLAY_WITH_VEHICLE_TEXT = 'If you’d like to start play with a vehicle, get with the MC.';
+export const PASS_TEXT = 'PASS';
+export const ADD_VEHICLE_TEXT = 'ADD VEHICLE';
+export const GIVE_VEHICLE_NAME_TEXT = 'Give your vehicle a name';
+export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT = '(make/model, nickname, whatever)';
+export const START_PLAY_WITH_BATTLE_VEHICLE_TEXT = 'If you’d like to start play with a battle vehicle, get with the MC.';
 
 export const INCREASED_BY_IMPROVEMENT_TEXT = '(increased by improvement)';
 export const INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT = '(increased by improvement, life support already included)';
@@ -203,3 +211,53 @@ export const LIFE_SUPPORT_TEXT = 'a life support unit';
 export const HOLDING_SOULS_SMALL = '50-60 souls';
 export const HOLDING_SOULS_MEDIUM = '75-150 souls';
 export const HOLDING_SOULS_LARGE = '200-300 souls';
+
+export const JOIN_GAME_TEXT = 'JOIN GAME';
+export const RETURN_TO_GAME_TEXT = 'RETURN TO GAME';
+export const CREATE_GAME_TEXT = 'CREATE GAME';
+export const YOUR_GAMES_TITLE = 'YOUR GAMES';
+
+export const YOUR_INVITATIONS_TITLE = 'YOUR INVITATIONS';
+
+export const NO_INVITATIONS_TEXT = 'No invitations yet';
+export const JOIN_TEXT = 'JOIN';
+export const NEXT_TEXT = 'NEXT';
+export const ADD_TEXT = 'ADD';
+export const SET_TEXT = 'SET';
+export const REMOVE_TEXT = 'REMOVE';
+export const COOL_TEXT = 'COOL';
+export const HARD_TEXT = 'HARD';
+export const HOT_TEXT = 'HOT';
+export const SHARP_TEXT = 'SHARP';
+export const WEIRD_TEXT = 'WEIRD';
+
+export const NEW_GAME_TEXT = 'NEW GAME';
+export const WELCOME_JUNGLE_TEXT = 'Welcome to the jungle, baby.';
+export const GET_STARTED_TEXT = "Once everyone's ready, punch NEXT to get started.";
+
+export const PLAYBOOK_TITLE = 'Playbook';
+export const NAME_TITLE = 'Name';
+export const LOOKS_TITLE = 'Looks';
+export const STATS_TITLE = 'Stats';
+export const GEAR_TITLE = 'Gear';
+export const MOVES_TITLE = 'Moves';
+export const VEHICLES_TITLE = 'Vehicles';
+export const BATTLE_VEHICLES_TITLE = 'Battle Vehicles';
+export const HX_TITLE = 'Hx';
+
+export const CHOOSE_YOUR_PLAYBOOK_TEXT = 'Choose your playbook';
+export const NEW_PLAYER_INTRO_TEXT =
+  'You should probably wait for your MC and the rest of your crew, tho. No headstarts for nobody in Apocalypse World.';
+export const CHANGED_PLAYBOOK_INTRO_TEXT =
+  "You've chosen to change your playbook. Do it now, before continuing... you don't wanna throw yourself back out there half-cocked.";
+
+export const CHOOSE_STAT_SET_TEXT = 'Choose a set:';
+
+export const GEAR_FORM_INSTRUCTIONS = 'Select an item to add, edit or delete it, or just type your own.';
+export const OPTIONS_TITLE = 'Options';
+
+export const DEFAULT_MOVES_TITLE = 'Default moves';
+
+export const HX_VALIDATION_TEXT = 'Enter digits from -2 to 3';
+
+export const GO_TO_GAME_TEXT = 'GO TO GAME';

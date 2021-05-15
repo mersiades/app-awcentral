@@ -70,9 +70,9 @@ describe('Rendering CharacterStatsForm', () => {
     screen.getByRole('heading', { name: `WHAT ARE ${mockCharacter2.name?.toUpperCase()}'S STRENGTHS AND WEAKNESSES?` });
     screen.getByRole('heading', { name: 'Choose a set:' });
     screen.getByRole('button', { name: 'SET' });
-    await screen.findByTestId(`${mockPlaybookCreatorAngel.statsOptions[0].id}-stats-option-box`);
-    screen.getByTestId(`${mockPlaybookCreatorAngel.statsOptions[1].id}-stats-option-box`);
-    screen.getByTestId(`${mockPlaybookCreatorAngel.statsOptions[2].id}-stats-option-box`);
+    await screen.findByTestId(`stats-option-box-0`);
+    screen.getByTestId(`stats-option-box-1`);
+    screen.getByTestId(`stats-option-box-2`);
   });
 
   test('should select StatsOption and click SET button', async () => {
@@ -86,7 +86,7 @@ describe('Rendering CharacterStatsForm', () => {
 
     const setButton = (await screen.findByRole('button', { name: 'SET' })) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(true);
-    const statsOption1 = screen.getByTestId(`${mockPlaybookCreatorAngel.statsOptions[0].id}-stats-option-box`);
+    const statsOption1 = screen.getByTestId(`stats-option-box-0`);
     userEvent.click(statsOption1);
     expect(setButton.disabled).toEqual(false);
     userEvent.click(setButton);

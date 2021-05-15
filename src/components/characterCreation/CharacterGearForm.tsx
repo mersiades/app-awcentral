@@ -16,6 +16,7 @@ import SET_CHARACTER_GEAR, { SetCharacterGearData, SetCharacterGearVars } from '
 import { CharacterCreationSteps, PlaybookType } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { ADD_TEXT, GEAR_FORM_INSTRUCTIONS, GEAR_TITLE, OPTIONS_TITLE, REMOVE_TEXT } from '../../config/constants';
 
 const GearUL = styled.ul`
   margin: unset;
@@ -225,7 +226,7 @@ const CharacterGearForm: FC = () => {
           />
         </Box>
 
-        <TextWS>Select an item to add, edit or delete it, or just type your own.</TextWS>
+        <TextWS>{GEAR_FORM_INSTRUCTIONS}</TextWS>
 
         <Box direction="row" fill="horizontal" justify="center">
           <Box
@@ -238,7 +239,7 @@ const CharacterGearForm: FC = () => {
             pad="6px"
           >
             <HeadingWS level={4} alignSelf="center" margin={{ vertical: '6px' }}>
-              Options
+              {OPTIONS_TITLE}
             </HeadingWS>
             {renderGearIntro()}
             {renderYouGetItem()}
@@ -252,7 +253,7 @@ const CharacterGearForm: FC = () => {
           <Box fill gridArea="gear-box" pad="6px">
             <Box fill="horizontal">
               <HeadingWS level={4} alignSelf="center" margin={{ vertical: '6px' }}>
-                Gear
+                {GEAR_TITLE}
               </HeadingWS>
             </Box>
             <Box style={{ minHeight: '150px' }} margin={{ bottom: ' 6px' }}>
@@ -285,7 +286,7 @@ const CharacterGearForm: FC = () => {
             <Box direction="row" fill="horizontal" gap="6px" margin={{ top: '6px' }}>
               <ButtonWS
                 secondary
-                label="ADD"
+                label={ADD_TEXT}
                 disabled={!value || gear.includes(value)}
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none' }}
@@ -296,7 +297,7 @@ const CharacterGearForm: FC = () => {
                 }}
               />
               <ButtonWS
-                label="REMOVE"
+                label={REMOVE_TEXT}
                 disabled={!gear.includes(value)}
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none' }}

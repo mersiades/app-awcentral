@@ -25,6 +25,7 @@ import { Character } from '../../@types/dataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
+import { GO_TO_GAME_TEXT, HX_VALIDATION_TEXT } from '../../config/constants';
 
 const StyledMarkdown = styled(ReactMarkdown)`
   & p {
@@ -111,7 +112,7 @@ const CharacterHxForm: FC = () => {
           >{`WHAT HISTORY DOES ${!!character?.name ? character.name.toUpperCase() : '...'} HAVE?`}</HeadingWS>
           <ButtonWS
             primary
-            label={finishingCreation ? <Spinner fillColor="#FFF" width="138px" height="36px" /> : 'GO TO GAME'}
+            label={finishingCreation ? <Spinner fillColor="#FFF" width="138px" height="36px" /> : GO_TO_GAME_TEXT}
             style={{ minHeight: '52px' }}
             disabled={
               character?.hxBlock.length !== otherPlayerGameRoles?.length ||
@@ -182,7 +183,7 @@ const CharacterHxForm: FC = () => {
                     {!!looks && <TextWS size="small">{looks.join(', ')}</TextWS>}
                     {errorIds.includes(char.id) && (
                       <TextWS color="accent-3" size="small">
-                        Enter digits from -2 to 3
+                        {HX_VALIDATION_TEXT}
                       </TextWS>
                     )}
                   </Box>

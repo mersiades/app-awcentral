@@ -12,6 +12,7 @@ import { CharacterCreationSteps } from '../../@types/enums';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import { useFonts } from '../../contexts/fontContext';
+import { ADD_VEHICLE_TEXT, PASS_TEXT, START_PLAY_WITH_VEHICLE_TEXT } from '../../config/constants';
 
 const VehiclesFormContainer: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -91,15 +92,15 @@ const VehiclesFormContainer: FC = () => {
             </HeadingWS>
             <ButtonWS
               primary
-              label="PASS"
+              label={PASS_TEXT}
               onClick={() =>
                 !!game && history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.setBattleVehicle}`)
               }
             />
           </Box>
           <ParagraphWS>By default, the {decapitalize(character.playbook)} has no vehicles.</ParagraphWS>
-          <ParagraphWS>If you’d like to start play with a vehicle, get with the MC.</ParagraphWS>
-          <ButtonWS label="ADD VEHICLE" secondary onClick={() => handleAddVehicle()} />
+          <ParagraphWS>{START_PLAY_WITH_VEHICLE_TEXT}</ParagraphWS>
+          <ButtonWS label={ADD_VEHICLE_TEXT} secondary onClick={() => handleAddVehicle()} />
         </Box>
       </Box>
     );

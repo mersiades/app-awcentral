@@ -9,15 +9,17 @@ import { CustomUL } from '../../config/grommetConfig';
 import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../@types/enums';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
-
-export const PLAYBOOK_TITLE = 'Playbook';
-export const NAME_TITLE = 'Name';
-export const LOOKS_TITLE = 'Looks';
-export const STATS_TITLE = 'Stats';
-export const GEAR_TITLE = 'Gear';
-export const MOVES_TITLE = 'Moves';
-export const VEHICLES_TITLE = 'Vehicles';
-export const BATTLE_VEHICLES_TITLE = 'Battle Vehicles';
+import {
+  PLAYBOOK_TITLE,
+  NAME_TITLE,
+  LOOKS_TITLE,
+  STATS_TITLE,
+  GEAR_TITLE,
+  MOVES_TITLE,
+  VEHICLES_TITLE,
+  BATTLE_VEHICLES_TITLE,
+  HX_TITLE,
+} from '../../config/constants';
 
 const NextWithHover = styled(Next as React.FC<IconProps & JSX.IntrinsicElements['svg']>)(() => {
   return css`
@@ -37,12 +39,13 @@ const PreviousWithHover = styled(Previous as React.FC<IconProps & JSX.IntrinsicE
 
 interface UniqueBoxProps {
   uniqueType: UniqueTypes;
+  testId: string;
   children: JSX.Element | JSX.Element[];
 }
 
-const UniqueBox: FC<UniqueBoxProps> = ({ uniqueType, children }) => {
+const UniqueBox: FC<UniqueBoxProps> = ({ uniqueType, testId, children }) => {
   return (
-    <Box margin={{ bottom: '6px' }}>
+    <Box data-testid={testId} margin={{ bottom: '6px' }}>
       <Text color="white" weight="bold" textAlign="center">
         {decapitalize(uniqueType)}
       </Text>
@@ -264,13 +267,13 @@ const CharacterCreationStepper: FC = () => {
       return (
         <CustomUL>
           {!!angelKit && (
-            <UniqueBox uniqueType={angelKit.uniqueType}>
+            <UniqueBox uniqueType={angelKit.uniqueType} testId="angel-kit-box">
               <li key={1}>{`Stock: ${angelKit.stock}`}</li>
               <li key={2}>{angelKit.hasSupplier ? 'Has supplier' : 'No supplier yet'}</li>
             </UniqueBox>
           )}
           {!!brainerGear && (
-            <UniqueBox uniqueType={brainerGear.uniqueType}>
+            <UniqueBox uniqueType={brainerGear.uniqueType} testId="brainer-gear-box">
               {concatGear.map((item, index) => (
                 <li key={index} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {item[0]}
@@ -279,7 +282,7 @@ const CharacterCreationStepper: FC = () => {
             </UniqueBox>
           )}
           {!!customWeapons && (
-            <UniqueBox uniqueType={customWeapons.uniqueType}>
+            <UniqueBox uniqueType={customWeapons.uniqueType} testId="custom-weapons-box">
               {weaponsBB.map((weapon, index) => (
                 <li key={index} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {weapon}
@@ -288,7 +291,7 @@ const CharacterCreationStepper: FC = () => {
             </UniqueBox>
           )}
           {!!gang && (
-            <UniqueBox uniqueType={gang.uniqueType}>
+            <UniqueBox uniqueType={gang.uniqueType} testId="gang-box">
               <li>Size: {gang.size}</li>
               <li>Harm: {gang.harm}</li>
               <li>Armor: {gang.armor}</li>
@@ -296,7 +299,7 @@ const CharacterCreationStepper: FC = () => {
             </UniqueBox>
           )}
           {!!weapons && (
-            <UniqueBox uniqueType={weapons.uniqueType}>
+            <UniqueBox uniqueType={weapons.uniqueType} testId="weapons-box">
               {weapons.weapons.map((weapon) => {
                 const weaponName = weapon.substring(0, weapon.indexOf(' ('));
                 return <li key={weapon}>{weaponName}</li>;
@@ -304,7 +307,7 @@ const CharacterCreationStepper: FC = () => {
             </UniqueBox>
           )}
           {!!holding && (
-            <UniqueBox uniqueType={holding.uniqueType}>
+            <UniqueBox uniqueType={holding.uniqueType} testId="holding-box">
               <li>Holding size: {decapitalize(holding.holdingSize)}</li>
               <li>Gang size: {decapitalize(holding.gangSize)}</li>
               <li>Barter: {holding.barter}</li>
@@ -312,26 +315,26 @@ const CharacterCreationStepper: FC = () => {
             </UniqueBox>
           )}
           {!!followers && (
-            <UniqueBox uniqueType={followers.uniqueType}>
+            <UniqueBox uniqueType={followers.uniqueType} testId="followers-box">
               <li>{followers.description}</li>
             </UniqueBox>
           )}
           {!!establishment && (
-            <UniqueBox uniqueType={establishment.uniqueType}>
+            <UniqueBox uniqueType={establishment.uniqueType} testId="establishment-box">
               <li>Main: {establishment.mainAttraction}</li>
               <li>Sides: {establishment.sideAttractions.join(', ')}</li>
               <li>Atmosphere: {establishment.atmospheres.join(', ')}</li>
             </UniqueBox>
           )}
           {!!workspace && (
-            <UniqueBox uniqueType={workspace.uniqueType}>
+            <UniqueBox uniqueType={workspace.uniqueType} testId="workspace-box">
               {workspace.workspaceItems.map((item) => {
                 return <li key={item}>{item}</li>;
               })}
             </UniqueBox>
           )}
           {!!skinnerGear && (
-            <UniqueBox uniqueType={skinnerGear.uniqueType}>
+            <UniqueBox uniqueType={skinnerGear.uniqueType} testId="skinner-gear-box">
               <>
                 <li>{!!skinnerGear.graciousWeapon && splitItem(skinnerGear.graciousWeapon.item)}</li>
                 {skinnerGear.luxeGear.map((item) => (
@@ -495,6 +498,7 @@ const CharacterCreationStepper: FC = () => {
 
   const box8Step10 = (
     <Box
+      data-testid="hx-box"
       margin={{ left: 'xsmall', right: 'xsmall' }}
       justify="start"
       width="11rem"
@@ -511,7 +515,7 @@ const CharacterCreationStepper: FC = () => {
       style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
-        Hx
+        {HX_TITLE}
       </Text>
       {!!character && !!character.hxBlock && character.hxBlock.length > 0 ? (
         <CustomUL>

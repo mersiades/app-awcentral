@@ -24,6 +24,7 @@ import {
   ADD_GANG_LEADERSHIP_NAME,
   ADD_GANG_PACK_ALPHA_NAME,
   ADD_HOLDING_NAME,
+  DEFAULT_MOVES_TITLE,
   FORTUNES_NAME,
   INCREASED_BY_IMPROVEMENT_TEXT,
   LEADERSHIP_NAME,
@@ -207,27 +208,6 @@ const CharacterMovesForm: FC = () => {
         </Box>
       );
     }
-    // else if (movesFromUniques.length === 1 && !!allowedOtherPlaybookMoves) {
-    //   return (
-    //     <Box direction="row" align="center" gap="12px">
-    //       <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
-    //         {`Select ${allowedOtherPlaybookMoves - 1}`}
-    //       </Text>
-    //       <TextWS color={accentColors[0]}>{`(Already includes ${decapitalize(movesFromUniques[0])})`}</TextWS>
-    //     </Box>
-    //   );
-    // } else if (movesFromUniques.length === 2 && !!allowedOtherPlaybookMoves) {
-    //   return (
-    //     <Box direction="row" align="center" gap="12px">
-    //       <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
-    //         {`Select ${allowedOtherPlaybookMoves - 2}`}
-    //       </Text>
-    //       <TextWS color={accentColors[0]}>{`(Already includes ${decapitalize(movesFromUniques[0])} and ${decapitalize(
-    //         movesFromUniques[1]
-    //       )})`}</TextWS>
-    //     </Box>
-    //   );
-    // }
   };
 
   const playbookMovesList = (
@@ -336,7 +316,7 @@ const CharacterMovesForm: FC = () => {
         </StyledMarkdown>
 
         <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
-          Default moves
+          {DEFAULT_MOVES_TITLE}
         </Text>
         {!!defaultMoves &&
           defaultMoves.map((move) => {

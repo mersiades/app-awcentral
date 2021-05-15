@@ -9,6 +9,7 @@ import { GameForInviteeGame } from '../queries/gamesForInvitee';
 import ADD_USER_TO_GAME, { AddUserToGameData, AddUserToGameVars } from '../mutations/addUserToGame';
 import { RoleType } from '../@types/enums';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
+import { JOIN_TEXT, NO_INVITATIONS_TEXT } from '../config/constants';
 
 interface InvitationsListProps {
   games: GameForInviteeGame[];
@@ -52,7 +53,7 @@ const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
         <Box direction="row" justify="between" align="center">
           <Box direction="column" fill="horizontal">
             <TextWS weight="bold" size="xlarge" truncate>
-              No invitations yet
+              {NO_INVITATIONS_TEXT}
             </TextWS>
           </Box>
         </Box>
@@ -78,7 +79,7 @@ const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
               onClick={() => handleJoinGame(game.id)}
               disabled={loading}
               focusIndicator={false}
-              label={loading ? <Spinner fillColor={brandColor} /> : 'JOIN'}
+              label={loading ? <Spinner fillColor={brandColor} /> : JOIN_TEXT}
             />
           </Box>
         );
