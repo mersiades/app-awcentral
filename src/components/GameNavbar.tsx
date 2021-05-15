@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { Menu, Tip, Button, Header } from 'grommet';
 
 import CharacterPreview from './CharacterPreview';
+import UnderConstructionDialog from '../components/dialogs/UnderConstructionDialog';
 import { ThemeContext } from 'styled-components';
 import { Character, GameRole } from '../@types/dataInterfaces';
 import { accentColors, customDefaultButtonStyles } from '../config/grommetConfig';
@@ -15,6 +16,8 @@ interface GameNavbarProps {
 }
 
 const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
+  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  const [showConstructionDialog, setShowConstructionDialog] = useState(false);
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
   const history = useHistory();
   const { keycloak } = useKeycloak();
@@ -42,6 +45,7 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
       style={{ borderBottom: `1px solid ${accentColors[0]}` }}
       height={`${GAME_PAGE_TOP_NAVBAR_HEIGHT}px`}
     >
+      {showConstructionDialog && <UnderConstructionDialog handleClose={() => setShowConstructionDialog(false)} />}
       {/*
         // @ts-ignore */}
       <ThemeContext.Extend value={customDefaultButtonStyles}>
@@ -60,7 +64,13 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
         {isMc
           ? allPlayerGameRoles && renderCharacterPreviews(allPlayerGameRoles)
           : otherPlayerGameRoles && renderCharacterPreviews(otherPlayerGameRoles)}
-        {isMc && <Button label="Threat map" style={{ backgroundColor: 'transparent', height: '4vh', lineHeight: '16px' }} />}
+        {isMc && (
+          <Button
+            label="Threat map"
+            style={{ backgroundColor: 'transparent', height: '4vh', lineHeight: '16px' }}
+            onClick={() => setShowConstructionDialog(true)}
+          />
+        )}
         {!!game && !game?.hasFinishedPreGame && (
           <Button
             label="Pre-game"

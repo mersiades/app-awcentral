@@ -24,6 +24,7 @@ import {
   ADJUST_UNIQUE_IMPROVEMENT_NAMES,
   IMPROVE_STAT_IMPROVEMENT_NAMES,
 } from '../../config/constants';
+import UnderConstructionDialog from './UnderConstructionDialog';
 
 const getNavDestinationForNewImprovement = (
   oldImprovementNames: string[],
@@ -70,6 +71,7 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [selectedImprovements, setSelectedImprovements] = useState<{ id: string; name: string }[]>([]);
   const [selectedFutureImprovements, setSelectedFutureImprovements] = useState<{ id: string; name: string }[]>([]);
+  const [showConstructionDialog, setShowConstructionDialog] = useState(false);
 
   let hasInitialised = useRef(false);
 
@@ -103,16 +105,16 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
     }
   };
 
-  const handleSelectFutureImprovement = (move: Move) => {
-    if (selectedFutureImprovements.some((item) => item.name === move.name)) {
-      setSelectedFutureImprovements(selectedFutureImprovements.filter((item) => item.name !== move.name));
-    } else {
-      if (!!character) {
-        selectedFutureImprovements.length < character?.allowedImprovements - 5 &&
-          setSelectedFutureImprovements([...selectedFutureImprovements, { id: move.id, name: move.name }]);
-      }
-    }
-  };
+  // const handleSelectFutureImprovement = (move: Move) => {
+  //   if (selectedFutureImprovements.some((item) => item.name === move.name)) {
+  //     setSelectedFutureImprovements(selectedFutureImprovements.filter((item) => item.name !== move.name));
+  //   } else {
+  //     if (!!character) {
+  //       selectedFutureImprovements.length < character?.allowedImprovements - 5 &&
+  //         setSelectedFutureImprovements([...selectedFutureImprovements, { id: move.id, name: move.name }]);
+  //     }
+  //   }
+  // };
 
   const handleSetImprovements = async () => {
     if (!!character && !character.isDead && !!userGameRole && !!game) {
@@ -165,6 +167,7 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
   return (
     <DialogWrapper background={improvementDialogBackground} handleClose={handleClose}>
       <Box gap="12px" overflow="auto">
+        {showConstructionDialog && <UnderConstructionDialog handleClose={() => setShowConstructionDialog(false)} />}
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           Improvements
         </HeadingWS>
@@ -215,7 +218,8 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({ handl
                   }
                   disabled={selectedImprovements.length < 5}
                   checked={selectedFutureImprovements.map((item) => item.name).includes(move.name)}
-                  onClick={() => handleSelectFutureImprovement(move)}
+                  // onClick={() => handleSelectFutureImprovement(move)}
+                  onClick={() => setShowConstructionDialog(true)}
                 />
               ))
             ) : (
