@@ -16,7 +16,7 @@ import SET_CHARACTER_GEAR, { SetCharacterGearData, SetCharacterGearVars } from '
 import { CharacterCreationSteps, PlaybookType } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
-import { GEAR_FORM_INSTRUCTIONS, GEAR_TITLE, OPTIONS_TITLE } from '../../config/constants';
+import { ADD_TEXT, GEAR_FORM_INSTRUCTIONS, GEAR_TITLE, OPTIONS_TITLE, REMOVE_TEXT } from '../../config/constants';
 
 const GearUL = styled.ul`
   margin: unset;
@@ -286,7 +286,7 @@ const CharacterGearForm: FC = () => {
             <Box direction="row" fill="horizontal" gap="6px" margin={{ top: '6px' }}>
               <ButtonWS
                 secondary
-                label="ADD"
+                label={ADD_TEXT}
                 disabled={!value || gear.includes(value)}
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none' }}
@@ -297,7 +297,7 @@ const CharacterGearForm: FC = () => {
                 }}
               />
               <ButtonWS
-                label="REMOVE"
+                label={REMOVE_TEXT}
                 disabled={!gear.includes(value)}
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none' }}

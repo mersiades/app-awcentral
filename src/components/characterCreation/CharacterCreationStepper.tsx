@@ -18,6 +18,7 @@ import {
   MOVES_TITLE,
   VEHICLES_TITLE,
   BATTLE_VEHICLES_TITLE,
+  HX_TITLE,
 } from '../../config/constants';
 
 const NextWithHover = styled(Next as React.FC<IconProps & JSX.IntrinsicElements['svg']>)(() => {
@@ -497,6 +498,7 @@ const CharacterCreationStepper: FC = () => {
 
   const box8Step10 = (
     <Box
+      data-testid="hx-box"
       margin={{ left: 'xsmall', right: 'xsmall' }}
       justify="start"
       width="11rem"
@@ -513,7 +515,7 @@ const CharacterCreationStepper: FC = () => {
       style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
     >
       <Text color="white" weight="bold" alignSelf="center">
-        Hx
+        {HX_TITLE}
       </Text>
       {!!character && !!character.hxBlock && character.hxBlock.length > 0 ? (
         <CustomUL>

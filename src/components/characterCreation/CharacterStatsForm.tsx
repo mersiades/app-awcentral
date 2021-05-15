@@ -12,7 +12,7 @@ import { StatsOption } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StatsBlock } from '../../@types/dataInterfaces';
-import { CHOOSE_STAT_SET_TEXT } from '../../config/constants';
+import { CHOOSE_STAT_SET_TEXT, COOL_TEXT, HARD_TEXT, HOT_TEXT, SHARP_TEXT, WEIRD_TEXT } from '../../config/constants';
 
 const CharacterStatsForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -144,7 +144,7 @@ const CharacterStatsForm: FC = () => {
               >
                 <Box direction="row" align="center" gap="12px">
                   <HeadingWS level={4} margin={{ vertical: '6px' }}>
-                    COOL:
+                    {`${COOL_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
                     {opt.COOL}
@@ -152,7 +152,7 @@ const CharacterStatsForm: FC = () => {
                 </Box>
                 <Box direction="row" align="center" gap="12px">
                   <HeadingWS level={4} margin={{ vertical: '6px' }}>
-                    HARD:
+                    {`${HARD_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
                     {opt.HARD}
@@ -160,7 +160,7 @@ const CharacterStatsForm: FC = () => {
                 </Box>
                 <Box direction="row" align="center" gap="12px">
                   <HeadingWS level={4} margin={{ vertical: '6px' }}>
-                    HOT:
+                    {`${HOT_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
                     {opt.HOT}
@@ -168,7 +168,7 @@ const CharacterStatsForm: FC = () => {
                 </Box>
                 <Box direction="row" align="center" gap="12px">
                   <HeadingWS level={4} margin={{ vertical: '6px' }}>
-                    SHARP:
+                    {`${SHARP_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
                     {opt.SHARP}
@@ -176,7 +176,7 @@ const CharacterStatsForm: FC = () => {
                 </Box>
                 <Box direction="row" align="center" gap="12px">
                   <HeadingWS level={4} margin={{ vertical: '6px' }}>
-                    WEIRD:
+                    {`${WEIRD_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
                     {opt.WEIRD}
