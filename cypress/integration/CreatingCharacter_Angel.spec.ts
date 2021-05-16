@@ -55,7 +55,7 @@ describe('Creating a new Angel Character', () => {
     cy.visit(`character-creation/${game6.id}?step=0`);
   });
 
-  it('should create an Angel and navigate to PreGamePage', () => {
+  it('should create an Angel and stop at CharacterHxPage', () => {
     // ------------------------------------------ NewGameIntro ------------------------------------------ //
     // Check form content
     cy.contains(NEW_GAME_TEXT).should('exist');
@@ -179,7 +179,7 @@ describe('Creating a new Angel Character', () => {
     // Submit form
     cy.contains(SET_TEXT).click();
 
-    // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
+    // ------------------------------------------ CharacterGearForm ------------------------------------------ //
     const angelClothes = 'disheveled paramedic uniform';
     const angelWeapon1 = '.38 revolver (2-harm close reload loud)';
     const angelWeapon2 = '9mm (2-harm close loud)';

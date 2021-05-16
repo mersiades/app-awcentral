@@ -17,6 +17,7 @@ import { CharacterCreationSteps } from '../../../@types/enums';
 import { ItemCharacteristic, TaggedItem } from '../../../@types';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
+import { ADD_TEXT, MIX_AND_MATCH_TEXT, RESET_TEXT } from '../../../config/constants';
 
 export const CUSTOM_WEAPONS_FORM_TEST_ID = 'custom-weapons-form';
 
@@ -68,9 +69,8 @@ const CustomWeaponsForm: FC = () => {
     handOptionsOptions,
   } = pbCreatorData?.playbookCreator.playbookUniqueCreator?.customWeaponsCreator || {};
 
-  const [setCustomWeapons, { loading: settingCustomWeapons }] = useMutation<SetCustomWeaponsData, SetCustomWeaponsVars>(
-    SET_CUSTOM_WEAPONS
-  );
+  const [setCustomWeapons, { loading: settingCustomWeapons }] =
+    useMutation<SetCustomWeaponsData, SetCustomWeaponsVars>(SET_CUSTOM_WEAPONS);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const getParsedValue = useCallback(() => {
@@ -175,7 +175,6 @@ const CustomWeaponsForm: FC = () => {
 
   const removeOption = (option: ItemCharacteristic) => {
     const filteredOptions = characteristics.filter((char) => char.id !== option.id);
-    console.log('filteredOptions', filteredOptions);
     setCharacteristics(filteredOptions);
     getParsedValue();
   };
@@ -275,6 +274,7 @@ const CustomWeaponsForm: FC = () => {
       </Tip>
     );
   };
+  console.log(`settingCustomWeapons`, settingCustomWeapons);
 
   return (
     <Box data-testid={CUSTOM_WEAPONS_FORM_TEST_ID} justify="start" width="85vw" align="start" style={{ maxWidth: '763px' }}>
@@ -313,13 +313,13 @@ const CustomWeaponsForm: FC = () => {
         </WeaponsUL>
       </RedBox>
 
-      <TextWS margin={{ top: '12px' }}>Mix'n'match. Edit directly if necessary.</TextWS>
+      <TextWS margin={{ top: '12px' }}>{MIX_AND_MATCH_TEXT}</TextWS>
 
       <TextArea aria-label="weapon-input" size="large" value={value} onChange={(e) => setValue(e.target.value)} />
       <Box direction="row" fill="horizontal" gap="12px" margin={{ top: '12px' }}>
         <ButtonWS
           fill="horizontal"
-          label="RESET"
+          label={RESET_TEXT}
           disabled={!value}
           onClick={() => {
             setBaseValue(undefined);
@@ -331,7 +331,7 @@ const CustomWeaponsForm: FC = () => {
         <ButtonWS
           fill="horizontal"
           secondary
-          label="ADD"
+          label={ADD_TEXT}
           disabled={!value || !baseValue || characteristics.length === 0 || characteristics.length > 2}
           onClick={() => {
             setWeapons([...weapons, value]);

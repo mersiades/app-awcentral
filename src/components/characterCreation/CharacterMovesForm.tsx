@@ -43,8 +43,10 @@ const CharacterMovesForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   // Used for form submission
   const [selectedMoves, setSelectedMoves] = useState<string[]>([]);
+  console.log(`selectedMoves`, selectedMoves);
   // Used for counting and setting limit. Contains moves selected from character's own playbook. Doesn't include default moves.
   const [selectedPBMoves, setSelectedPBMoves] = useState<string[]>([]);
+  console.log(`selectedPBMoves`, selectedPBMoves);
   // Used for counting and setting limit. Contains moves selected from other playbooks. Doesn't include default moves.
   const [selectedOtherPBMoves, setSelectedOtherPBMoves] = useState<string[]>([]);
 
@@ -76,6 +78,7 @@ const CharacterMovesForm: FC = () => {
 
   const optionalMoves = pbCreatorData?.playbookCreator.optionalMoves;
   const defaultMoves = pbCreatorData?.playbookCreator.defaultMoves;
+  console.log(`defaultMoves`, defaultMoves);
   const moveChoiceCount = pbCreatorData?.playbookCreator.moveChoiceCount;
   const [setCharacterMoves, { loading: settingMoves }] =
     useMutation<SetCharacterMovesData, SetCharacterMovesVars>(SET_CHARACTER_MOVES);
@@ -133,36 +136,52 @@ const CharacterMovesForm: FC = () => {
     }
   };
 
+  const checkForDupesAndSetState = (prevState: string[], newName: string) => {
+    if (!prevState.some((name) => name === newName)) {
+      return [...prevState, newName];
+    } else {
+      return prevState;
+    }
+  };
+
   // ------------------------------------------------------ Effects -------------------------------------------------------- /
   // load in existing moves
   useEffect(() => {
     if (!!character && !!defaultMoves && !!optionalMoves) {
       setSelectedMoves(character.characterMoves.map((move) => move.name));
+      console.log(
+        `optionalMoves.map((om) => om.name)`,
+        optionalMoves.map((om) => om.name)
+      );
+      console.log(
+        `defaultMoves.map((om) => om.name)`,
+        defaultMoves.map((om) => om.name)
+      );
       character.characterMoves.forEach((cm) => {
         if (optionalMoves.map((om) => om.name).includes(cm.name) || defaultMoves.map((om) => om.name).includes(cm.name)) {
-          setSelectedPBMoves((prevState) => [...prevState, cm.name]);
+          console.log(`cm.name`, cm.name);
+          setSelectedPBMoves((prevState) => checkForDupesAndSetState(prevState, cm.name));
         } else {
-          setSelectedOtherPBMoves((prevState) => [...prevState, cm.name]);
+          setSelectedOtherPBMoves((prevState) => checkForDupesAndSetState(prevState, cm.name));
           if (!cm.rollModifier && !cm.moveAction) {
-            setMovesNotInOtherPBList((prevState) => [...prevState, cm.name]);
+            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, cm.name));
           }
         }
       });
       character.improvementMoves.forEach((move) => {
         switch (move.name) {
           case ADD_GANG_LEADERSHIP_NAME:
-            setMovesNotInOtherPBList((prevState) => [...prevState, LEADERSHIP_NAME]);
+            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, LEADERSHIP_NAME));
             break;
           case ADD_GANG_PACK_ALPHA_NAME:
-            setMovesNotInOtherPBList((prevState) => [...prevState, PACK_ALPHA_NAME]);
+            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, PACK_ALPHA_NAME));
             break;
           case ADD_HOLDING_NAME:
-            setMovesNotInOtherPBList((prevState) => [...prevState, WEALTH_NAME]);
+            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, WEALTH_NAME));
             break;
           case ADD_FOLLOWERS_NAME:
-            setMovesNotInOtherPBList((prevState) => [...prevState, FORTUNES_NAME]);
+            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, FORTUNES_NAME));
             break;
-
           default:
           // Do nothing
         }
