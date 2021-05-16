@@ -31,6 +31,8 @@ interface ScriptChangeDialogProps {
   handleClose: () => void;
 }
 
+export const SCRIPT_CHANGE_COMMENT_INPUT_ID = 'script-change-comment-input';
+
 const RedBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(() => {
   return css`
     border-color: ${brandColor};
@@ -74,7 +76,14 @@ const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
 
   // ------------------------------------------------------- Render -------------------------------------------------------- //
   const generateTile = (title: string, content: string, scriptChangeType: ScriptChangeType) => (
-    <RedBox align="center" border pad="12px" flex="grow" onClick={() => !changingScript && handleSubmit(scriptChangeType)}>
+    <RedBox
+      data-testid={`${scriptChangeType}-tile`}
+      align="center"
+      border
+      pad="12px"
+      flex="grow"
+      onClick={() => !changingScript && handleSubmit(scriptChangeType)}
+    >
       <HeadingWS crustReady={crustReady} level={3} margin={{ bottom: '0px' }}>
         {title}
       </HeadingWS>
@@ -94,7 +103,7 @@ const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
           <FormField width="100%" label="Add a comment to your call (optional), then click a box below">
             <TextInput
               placeholder="Type comment"
-              aria-label="script-change-comment-input"
+              aria-label={SCRIPT_CHANGE_COMMENT_INPUT_ID}
               size="large"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
