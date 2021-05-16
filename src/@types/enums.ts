@@ -126,7 +126,6 @@ export enum MessageType {
   rollStockMove = 'ROLL_STOCK_MOVE',
   stockMove = 'STOCK_MOVE',
   sufferVHarmMove = 'SUFFER_V_HARM_MOVE',
-  xCard = 'X_CARD',
   sciptChange = 'SCRIPT_CHANGE',
 }
 
