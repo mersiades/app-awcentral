@@ -162,3 +162,12 @@ export enum HoldingSize {
   medium = 'MEDIUM',
   large = 'LARGE',
 }
+
+export enum ScriptChangeType {
+  rewind = 'REWIND',
+  forward = 'FAST_FORWARD',
+  pause = 'PAUSE',
+  frame = 'FRAME_BY_FRAME',
+  replay = 'INSTANT_REPLAY',
+  resume = 'RESUME',
+}

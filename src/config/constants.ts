@@ -263,3 +263,23 @@ export const DEFAULT_MOVES_TITLE = 'Default moves';
 export const HX_VALIDATION_TEXT = 'Enter digits from -2 to 3';
 
 export const GO_TO_GAME_TEXT = 'GO TO GAME';
+
+export const SCRIPT_CHANGE_TITLE = 'Script Change';
+export const SCRIPT_CHANGE_FAST_FORWARD_TITLE = 'Fast forward';
+export const SCRIPT_CHANGE_PAUSE_TITLE = 'Pause';
+export const SCRIPT_CHANGE_FRAME_TITLE = 'Frame by frame';
+export const SCRIPT_CHANGE_RESUME_TITLE = 'Resume';
+export const SCRIPT_CHANGE_REPLAY_TITLE = 'Instant replay';
+export const SCRIPT_CHANGE_REWIND_TITLE = 'Rewind';
+export const SCRIPT_CHANGE_FAST_FORWARD_CONTENT =
+  'When you fast forward, you fade to black and advance time as needed to avoid content or elements of play, or just to move forward in time.';
+export const SCRIPT_CHANGE_PAUSE_CONTENT =
+  "Call a pause if you need a break from an intense scene, to take a bio beak, or if you're seeking clarity or a discussion about the game or content.";
+export const SCRIPT_CHANGE_FRAME_CONTENT =
+  'Call frame-by-frame before scenes with content you want to play through with care. During the scene, players will call occasional pauses to check in, and take the scene slow.';
+export const SCRIPT_CHANGE_RESUME_CONTENT =
+  'Use resume to return to normal play at any time, as the player who called the original Script Change in effect.';
+export const SCRIPT_CHANGE_REPLAY_CONTENT =
+  'Call an instant replay right after a scene to share enthusiasm about what happened, or to clarify details of the narrative.';
+export const SCRIPT_CHANGE_REWIND_CONTENT =
+  'When you rewind, you back up to a specific point in a scene and do the scene over again avoiding whatever issue led to the rewind, and trying in a different way.';
