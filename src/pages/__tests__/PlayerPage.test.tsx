@@ -2,16 +2,13 @@ import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import PlayerPage from '../PlayerPage';
-import { customRenderForComponent } from '../../tests/test-utils';
+import { customRenderForComponent, waitOneTick } from '../../tests/test-utils';
 import { mockKeycloakStub } from '../../../__mocks__/@react-keycloak/web';
 import { mockGame7, mockKeycloakUserInfo1 } from '../../tests/mocks';
 import { mockAllMoves, mockPlaybook } from '../../tests/mockQueries';
 import { MockedResponse } from '@apollo/client/testing';
 import GAME, { GameData } from '../../queries/game';
-import wait from 'waait';
-import { X_CARD_CONTENT } from '../../components/XCard';
-import PLAY_X_CARD, { PlayXCardData } from '../../mutations/playXCard';
-import { MessageType } from '../../@types/enums';
+import { CANCEL_TEXT, SCRIPT_CHANGE_TITLE } from '../../config/constants';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
@@ -29,32 +26,6 @@ const mockGameQuery: MockedResponse<GameData> = {
   result: {
     data: {
       game: mockGame7,
-    },
-  },
-};
-
-const mockPlayXCardMutation: MockedResponse<PlayXCardData> = {
-  request: {
-    query: PLAY_X_CARD,
-    variables: { gameId: mockGame7.id },
-  },
-  result: {
-    data: {
-      playXCard: {
-        id: mockGame7.id,
-        gameMessages: [
-          {
-            id: 'dummy-id',
-            gameId: mockGame7.id,
-            messageType: MessageType.xCard,
-            title: 'AN X-CARD HAS BEEN PLAYED',
-            content: X_CARD_CONTENT,
-            sentOn: 'dummy',
-            __typename: 'GameMessage',
-          },
-        ],
-        __typename: 'Game',
-      },
     },
   },
 };
@@ -77,9 +48,10 @@ describe('Rendering PlayerPage', () => {
       injectedGame: mockGame7,
       injectedUserId: mockKeycloakUserInfo1.sub,
     });
+    await waitOneTick();
 
     // Check base roles are rendered
-    await screen.findByTestId('player-page');
+    screen.getByTestId('player-page');
     screen.getByRole('button', { name: 'Open Menu' });
     screen.getByRole('tablist');
     screen.getByRole('banner');
@@ -98,21 +70,19 @@ describe('Rendering PlayerPage', () => {
     screen.getByRole('tabpanel', { name: 'Moves Tab Contents' });
   });
 
-  test('should play an X-Card', async () => {
+  test('should open and close ScriptChangeDialog', async () => {
     const screen = customRenderForComponent(<PlayerPage />, {
       isAuthenticated: true,
-      apolloMocks: [mockGameQuery, mockAllMoves, mockPlaybook, mockPlayXCardMutation],
+      apolloMocks: [mockGameQuery, mockAllMoves, mockPlaybook],
       injectedGameId: mockGame7.id,
     });
 
-    await act(async () => await wait());
-    const xCardButton = screen.getByRole('img', { name: 'X-Card icon' });
-    userEvent.click(xCardButton);
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
-    await act(async () => await wait());
-    expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
+    await waitOneTick();
+    const scriptChangeIcon = screen.getByRole('img', { name: 'Script Change icon' });
+    userEvent.click(scriptChangeIcon);
+    expect(screen.getByRole('heading', { name: SCRIPT_CHANGE_TITLE })).toBeInTheDocument();
 
-    // Unable to land the mutation
-    // screen.getByText('AN X-CARD HAS BEEN PLAYED');
+    userEvent.click(screen.getByRole('button', { name: CANCEL_TEXT }));
+    expect(screen.queryByRole('heading', { name: SCRIPT_CHANGE_TITLE })).not.toBeInTheDocument();
   });
 });

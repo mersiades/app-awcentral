@@ -126,7 +126,7 @@ export enum MessageType {
   rollStockMove = 'ROLL_STOCK_MOVE',
   stockMove = 'STOCK_MOVE',
   sufferVHarmMove = 'SUFFER_V_HARM_MOVE',
-  xCard = 'X_CARD',
+  sciptChange = 'SCRIPT_CHANGE',
 }
 
 export enum VehicleFrameType {
@@ -160,4 +160,13 @@ export enum HoldingSize {
   small = 'SMALL',
   medium = 'MEDIUM',
   large = 'LARGE',
+}
+
+export enum ScriptChangeType {
+  rewind = 'REWIND',
+  forward = 'FAST_FORWARD',
+  pause = 'PAUSE',
+  frame = 'FRAME_BY_FRAME',
+  replay = 'INSTANT_REPLAY',
+  resume = 'RESUME',
 }

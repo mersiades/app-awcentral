@@ -2,19 +2,18 @@ import React, { FC, useState, useEffect } from 'react';
 import { Box, Heading } from 'grommet';
 import { FormUp, FormDown } from 'grommet-icons';
 
+import ScriptChangeAttribution from '../ScriptChangeAttribution';
+import { StyledMarkdown } from '../styledComponents';
 import { accentColors } from '../../config/grommetConfig';
 import { GameMessage } from '../../@types/dataInterfaces';
-import { StyledMarkdown } from '../styledComponents';
 
-export interface XCardMessageProps {
+export interface ScriptChangeMessageProps {
   message: GameMessage;
   messagesLength: number;
   index: number;
 }
 
-// This components wraps around specific move message type components,
-// providing standardised layout, styling and functionality for all move message components
-const XCardMessage: FC<XCardMessageProps> = ({ message, messagesLength, index }) => {
+const ScriptChangeMessage: FC<ScriptChangeMessageProps> = ({ message, messagesLength, index }) => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [showDetails, setShowDetails] = useState(messagesLength - 1 === index);
 
@@ -52,9 +51,10 @@ const XCardMessage: FC<XCardMessageProps> = ({ message, messagesLength, index })
       {showDetails && (
         <Box animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }} pad={{ top: '12px' }}>
           <StyledMarkdown>{message.content}</StyledMarkdown>
+          <ScriptChangeAttribution />
         </Box>
       )}
     </>
   );
 };
-export default XCardMessage;
+export default ScriptChangeMessage;

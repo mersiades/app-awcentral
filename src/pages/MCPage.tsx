@@ -12,6 +12,8 @@ import MessagesPanel from '../components/messagesPanel/MessagesPanel';
 import InvitationForm from '../components/InvitationForm';
 import GameForm from '../components/GameForm';
 import WarningDialog from '../components/dialogs/WarningDialog';
+import FirstSessionDialog from '../components/dialogs/FirstSessionDialog';
+import ScriptChange from '../components/ScriptChange';
 import {
   Footer,
   LeftMainContainer,
@@ -27,12 +29,10 @@ import REMOVE_INVITEE, { RemoveInviteeData, RemoveInviteeVars } from '../mutatio
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { useGame } from '../contexts/gameContext';
 import { customTabStyles } from '../config/grommetConfig';
-import '../assets/styles/transitions.css';
 import GameNavbar from '../components/GameNavbar';
-import { GAME_PAGE_BOTTOM_NAVBAR_HEIGHT } from '../config/constants';
 import { useMcContent } from '../contexts/mcContentContext';
-import FirstSessionDialog from '../components/dialogs/FirstSessionDialog';
-import XCard from '../components/XCard';
+import { GAME_PAGE_BOTTOM_NAVBAR_HEIGHT } from '../config/constants';
+import '../assets/styles/transitions.css';
 
 export const background = {
   color: 'black',
@@ -224,7 +224,7 @@ const MCPage: FC = () => {
               <Tab title="Threats" />
               <Tab title="NPCs" />
             </Tabs>
-            <XCard isMC />
+            <ScriptChange />
           </Box>
         </ThemeContext.Extend>
       </Footer>
