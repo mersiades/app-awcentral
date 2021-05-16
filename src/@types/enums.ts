@@ -127,6 +127,7 @@ export enum MessageType {
   stockMove = 'STOCK_MOVE',
   sufferVHarmMove = 'SUFFER_V_HARM_MOVE',
   xCard = 'X_CARD',
+  sciptChange = 'SCRIPT_CHANGE',
 }
 
 export enum VehicleFrameType {

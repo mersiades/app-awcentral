@@ -225,6 +225,8 @@ export const NEXT_TEXT = 'NEXT';
 export const ADD_TEXT = 'ADD';
 export const SET_TEXT = 'SET';
 export const REMOVE_TEXT = 'REMOVE';
+export const CANCEL_TEXT = 'CANCEL';
+
 export const COOL_TEXT = 'COOL';
 export const HARD_TEXT = 'HARD';
 export const HOT_TEXT = 'HOT';

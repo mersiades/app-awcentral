@@ -14,6 +14,19 @@ import SpeedRecoveryDialog from '../components/dialogs/SpeedRecoveryDialog';
 import ReviveDialog from '../components/dialogs/ReviveDialog';
 import TreatNpcDialog from '../components/dialogs/TreatNpcDialog';
 import ChopperSpecialDialog from '../components/dialogs/ChopperSpecialDialog';
+import GameNavbar from '../components/GameNavbar';
+import Plus1ForwardPill from '../components/Plus1ForwardPill';
+import GunluggerSpecialDialog from '../components/dialogs/GunluggerSpecialDialog';
+import RelativeSpeedDialog from '../components/dialogs/RelativeSpeedDialog';
+import BoardVehicleDialog from '../components/dialogs/BoardVehicleDialog';
+import DealTerrainDialog from '../components/dialogs/DealTerrainDialog';
+import Holds from '../components/Holds';
+import HocusSpecialDialog from '../components/dialogs/HocusSpecialDialog';
+import SkinnerSpecialDialog from '../components/dialogs/SkinnerSpecialDialog';
+import JustGiveMotiveDialog from '../components/dialogs/JustGiveMotiveDialog';
+import VHarmDialog from '../components/dialogs/VHarmDialog';
+import RipSign from '../components/RipSign';
+import ScriptChange from '../components/ScriptChange';
 import { Footer, MainContainer, SidePanel } from '../components/styledComponents';
 import ALL_MOVES from '../queries/allMoves';
 import { MoveActionType, RollType } from '../@types/enums';
@@ -48,19 +61,6 @@ import {
   SUFFER_V_HARM,
   TREAT_NPC_NAME,
 } from '../config/constants';
-import GameNavbar from '../components/GameNavbar';
-import Plus1ForwardPill from '../components/Plus1ForwardPill';
-import GunluggerSpecialDialog from '../components/dialogs/GunluggerSpecialDialog';
-import RelativeSpeedDialog from '../components/dialogs/RelativeSpeedDialog';
-import BoardVehicleDialog from '../components/dialogs/BoardVehicleDialog';
-import DealTerrainDialog from '../components/dialogs/DealTerrainDialog';
-import Holds from '../components/Holds';
-import HocusSpecialDialog from '../components/dialogs/HocusSpecialDialog';
-import SkinnerSpecialDialog from '../components/dialogs/SkinnerSpecialDialog';
-import JustGiveMotiveDialog from '../components/dialogs/JustGiveMotiveDialog';
-import VHarmDialog from '../components/dialogs/VHarmDialog';
-import XCard from '../components/XCard';
-import RipSign from '../components/RipSign';
 
 interface AllMovesData {
   allMoves: Move[];
@@ -237,7 +237,7 @@ const PlayerPage: FC = () => {
         <Box direction="row" gap="12px" align="center">
           {character?.hasPlusOneForward && <Plus1ForwardPill />}
           {!!character && character.holds.length > 0 && <Holds holds={character.holds} />}
-          <XCard isMC={false} />
+          <ScriptChange />
         </Box>
       </Footer>
     </Box>

@@ -98,7 +98,7 @@ describe('Rendering PlayerPage', () => {
     screen.getByRole('tabpanel', { name: 'Moves Tab Contents' });
   });
 
-  test('should play an X-Card', async () => {
+  test.skip('should play an X-Card', async () => {
     const screen = customRenderForComponent(<PlayerPage />, {
       isAuthenticated: true,
       apolloMocks: [mockGameQuery, mockAllMoves, mockPlaybook, mockPlayXCardMutation],
