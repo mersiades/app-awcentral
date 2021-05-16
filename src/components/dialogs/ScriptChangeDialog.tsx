@@ -1,10 +1,15 @@
 import React, { FC, useState } from 'react';
+import { useMutation } from '@apollo/client';
 import styled, { css } from 'styled-components';
-import { Anchor, Box, BoxProps, FormField, TextInput } from 'grommet';
+import { Box, BoxProps, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
-import { warningDialogBackground, HeadingWS, ButtonWS, ParagraphWS, brandColor, TextWS } from '../../config/grommetConfig';
+import ScriptChangeAttribution from '../ScriptChangeAttribution';
+import { warningDialogBackground, HeadingWS, ButtonWS, ParagraphWS, brandColor } from '../../config/grommetConfig';
+import CHANGE_SCRIPT, { ChangeScriptData, ChangeScriptVars } from '../../mutations/changeScript';
+import { useGame } from '../../contexts/gameContext';
 import { useFonts } from '../../contexts/fontContext';
+import { ScriptChangeType } from '../../@types/enums';
 import {
   CANCEL_TEXT,
   SCRIPT_CHANGE_FAST_FORWARD_CONTENT,
@@ -21,10 +26,6 @@ import {
   SCRIPT_CHANGE_REWIND_TITLE,
   SCRIPT_CHANGE_TITLE,
 } from '../../config/constants';
-import { ScriptChangeType } from '../../@types/enums';
-import { useMutation } from '@apollo/client';
-import CHANGE_SCRIPT, { ChangeScriptData, ChangeScriptVars } from '../../mutations/changeScript';
-import { useGame } from '../../contexts/gameContext';
 
 interface ScriptChangeDialogProps {
   handleClose: () => void;
@@ -60,7 +61,6 @@ const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
   const [changeScript, { loading: changingScript }] = useMutation<ChangeScriptData, ChangeScriptVars>(CHANGE_SCRIPT);
 
   // ------------------------------------------------ Component functions -------------------------------------------------- //
-
   const handleSubmit = (scriptChangeType: ScriptChangeType) => {
     if (!!game) {
       try {
@@ -82,22 +82,6 @@ const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
         {content}
       </ParagraphWS>
     </RedBox>
-  );
-
-  const attribution = (
-    <Box>
-      <TextWS>
-        Script Change was created by{' '}
-        <strong>
-          <em>Beau Jágr Sheldon</em>
-        </strong>{' '}
-        and you can and should{' '}
-        <Anchor href="http://briebeau.com/scriptchange" target="_blank" rel="noopener noreferrer">
-          read more about it here
-        </Anchor>
-        .
-      </TextWS>
-    </Box>
   );
 
   return (
@@ -131,7 +115,7 @@ const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
             {generateTile(SCRIPT_CHANGE_FRAME_TITLE, SCRIPT_CHANGE_FRAME_CONTENT, ScriptChangeType.frame)}
           </Box>
         </Box>
-        <Box flex="grow">{attribution}</Box>
+        <ScriptChangeAttribution />
         <Box fill="horizontal" direction="row" justify="end" gap="small" flex="grow">
           <ButtonWS
             label={CANCEL_TEXT}

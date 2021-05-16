@@ -1,13 +1,14 @@
-import { Box } from 'grommet';
 import React, { FC, useState } from 'react';
+import { Box } from 'grommet';
 
 import ScriptChangeDialog from './dialogs/ScriptChangeDialog';
 import scriptChangeIcon from '../assets/script-change-icon.png';
 
 const ScriptChange: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [showDialog, setShowDialog] = useState(true);
+  const [showDialog, setShowDialog] = useState(false);
 
+  // ------------------------------------------------------- Render ------------------------------------------------------- //
   return (
     <Box height="64px" width="64px" align="center" justify="center" margin={{ horizontal: '12px' }}>
       {showDialog && <ScriptChangeDialog handleClose={() => setShowDialog(false)} />}

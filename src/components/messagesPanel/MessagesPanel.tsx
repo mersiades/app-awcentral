@@ -5,10 +5,6 @@ import PrintMessage from './PrintMessage';
 import StatRollMessage from './StatRollMessage';
 import HxRollMessage from './HxRollMessage';
 import BarterMessage from './BarterMessage';
-import { accentColors } from '../../config/grommetConfig';
-import { MessageType } from '../../@types/enums';
-import { GameMessage } from '../../@types/dataInterfaces';
-import { useGame } from '../../contexts/gameContext';
 import BarterRollMessage from './BarterRollMessage';
 import SufferHarmMessage from './SufferHarmMessage';
 import AdjustHxMessage from './AdjustsHxMessage';
@@ -16,6 +12,11 @@ import StabilizeMessage from './StabilizeMessage';
 import StockMessage from './StockMessage';
 import SufferVHarmMessage from './SufferVHarmMessage';
 import XCardMessage from './XCardMessage';
+import ScriptChangeMessage from './ScriptChangeMessage';
+import { accentColors } from '../../config/grommetConfig';
+import { MessageType } from '../../@types/enums';
+import { GameMessage } from '../../@types/dataInterfaces';
+import { useGame } from '../../contexts/gameContext';
 
 const MessagesPanel: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -82,6 +83,8 @@ const MessagesPanel: FC = () => {
         return <StockMessage messagesLength={limitMessages().length} index={index} message={message} ticker={ticker} />;
       case MessageType.xCard:
         return <XCardMessage messagesLength={limitMessages().length} index={index} message={message} />;
+      case MessageType.sciptChange:
+        return <ScriptChangeMessage messagesLength={limitMessages().length} index={index} message={message} />;
       default:
         return;
     }

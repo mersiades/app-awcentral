@@ -283,3 +283,8 @@ export const SCRIPT_CHANGE_REPLAY_CONTENT =
   'Call an instant replay right after a scene to share enthusiasm about what happened, or to clarify details of the narrative.';
 export const SCRIPT_CHANGE_REWIND_CONTENT =
   'When you rewind, you back up to a specific point in a scene and do the scene over again avoiding whatever issue led to the rewind, and trying in a different way.';
+
+export const SCRIPT_CHANGE_ATTRIBUTION_TEXT_1 = 'Script Change was created by ';
+export const SCRIPT_CHANGE_ATTRIBUTION_TEXT_2 = 'Beau Jágr Sheldon ';
+export const SCRIPT_CHANGE_ATTRIBUTION_TEXT_3 = 'and you can ';
+export const SCRIPT_CHANGE_ATTRIBUTION_TEXT_4 = 'read more about it here';
