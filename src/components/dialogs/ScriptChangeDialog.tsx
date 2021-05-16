@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Anchor, Box, BoxProps } from 'grommet';
+import { Anchor, Box, BoxProps, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
 import { warningDialogBackground, HeadingWS, ButtonWS, ParagraphWS, brandColor, TextWS } from '../../config/grommetConfig';
@@ -22,6 +22,9 @@ import {
   SCRIPT_CHANGE_TITLE,
 } from '../../config/constants';
 import { ScriptChangeType } from '../../@types/enums';
+import { useMutation } from '@apollo/client';
+import CHANGE_SCRIPT, { ChangeScriptData, ChangeScriptVars } from '../../mutations/changeScript';
+import { useGame } from '../../contexts/gameContext';
 
 interface ScriptChangeDialogProps {
   handleClose: () => void;
@@ -46,12 +49,32 @@ const RedBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(() => 
 });
 
 const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
+  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  const [comment, setComment] = useState<string>('');
+
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  const { game } = useGame();
   const { crustReady } = useFonts();
+
+  // ------------------------------------------------------ GraphQL -------------------------------------------------------- //
+  const [changeScript, { loading: changingScript }] = useMutation<ChangeScriptData, ChangeScriptVars>(CHANGE_SCRIPT);
+
+  // ------------------------------------------------ Component functions -------------------------------------------------- //
+
+  const handleSubmit = (scriptChangeType: ScriptChangeType) => {
+    if (!!game) {
+      try {
+        changeScript({ variables: { gameId: game.id, scriptChangeType, comment } });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    handleClose();
+  };
 
   // ------------------------------------------------------- Render -------------------------------------------------------- //
   const generateTile = (title: string, content: string, scriptChangeType: ScriptChangeType) => (
-    <RedBox align="center" border pad="12px" flex="grow" onClick={() => console.log(scriptChangeType)}>
+    <RedBox align="center" border pad="12px" flex="grow" onClick={() => !changingScript && handleSubmit(scriptChangeType)}>
       <HeadingWS crustReady={crustReady} level={3} margin={{ bottom: '0px' }}>
         {title}
       </HeadingWS>
@@ -69,7 +92,7 @@ const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
           <em>Beau Jágr Sheldon</em>
         </strong>{' '}
         and you can and should{' '}
-        <Anchor href="http://briebeau.com/scriptchange" rel="noopener noreferrer">
+        <Anchor href="http://briebeau.com/scriptchange" target="_blank" rel="noopener noreferrer">
           read more about it here
         </Anchor>
         .
@@ -83,6 +106,17 @@ const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {SCRIPT_CHANGE_TITLE}
         </HeadingWS>
+        <Box flex="grow">
+          <FormField width="100%" label="Add a comment to your call (optional), then click a box below">
+            <TextInput
+              placeholder="Type comment"
+              aria-label="script-change-comment-input"
+              size="large"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+          </FormField>
+        </Box>
         <Box fill="horizontal" direction="row" gap="small" flex="grow">
           <Box fill="horizontal" gap="small">
             {generateTile(SCRIPT_CHANGE_PAUSE_TITLE, SCRIPT_CHANGE_PAUSE_CONTENT, ScriptChangeType.pause)}
