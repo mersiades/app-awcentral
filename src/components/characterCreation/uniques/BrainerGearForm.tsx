@@ -95,6 +95,7 @@ const BrainerGearForm: FC = () => {
             return (
               <CheckBox
                 key={index}
+                aria-label={`option-${splitItem[0]})`}
                 label={
                   <div>
                     <Text weight="bold">{splitItem[0] + ') '}</Text>
