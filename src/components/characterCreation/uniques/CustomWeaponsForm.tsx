@@ -274,7 +274,6 @@ const CustomWeaponsForm: FC = () => {
       </Tip>
     );
   };
-  console.log(`settingCustomWeapons`, settingCustomWeapons);
 
   return (
     <Box data-testid={CUSTOM_WEAPONS_FORM_TEST_ID} justify="start" width="85vw" align="start" style={{ maxWidth: '763px' }}>

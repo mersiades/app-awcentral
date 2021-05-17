@@ -1,57 +1,28 @@
 import {
   ADD_TEXT,
-  ADD_VEHICLE_TEXT,
-  ANGEL_SPECIAL_NAME,
   BATTLEBABE_SPECIAL_NAME,
   BATTLE_VEHICLES_TITLE,
-  CHOOSE_STAT_SET_TEXT,
-  CHOOSE_YOUR_PLAYBOOK_TEXT,
-  COOL_TEXT,
   DANGEROUS_AND_SEXY_NAME,
-  DEFAULT_MOVES_TITLE,
-  GEAR_FORM_INSTRUCTIONS,
   GEAR_TITLE,
-  GET_STARTED_TEXT,
-  GIVE_VEHICLE_NAME_EXAMPLES_TEXT,
-  GIVE_VEHICLE_NAME_TEXT,
-  GO_TO_GAME_TEXT,
-  HARD_TEXT,
-  HOT_TEXT,
   HX_TITLE,
-  HX_VALIDATION_TEXT,
   ICE_COLD_NAME,
-  INFIRMARY_NAME,
   LOOKS_TITLE,
   MOVES_TITLE,
   NAME_TITLE,
   NEW_GAME_TEXT,
-  NEW_PLAYER_INTRO_TEXT,
   NEXT_TEXT,
-  OPTIONS_TITLE,
   PASS_TEXT,
   PLAYBOOK_TITLE,
   REMOVE_TEXT,
   RESET_TEXT,
   SET_TEXT,
-  SHARP_TEXT,
-  SIXTH_SENSE_NAME,
-  START_PLAY_WITH_BATTLE_VEHICLE_TEXT,
-  START_PLAY_WITH_VEHICLE_TEXT,
   STATS_TITLE,
   VEHICLES_TITLE,
-  WEIRD_TEXT,
-  WELCOME_JUNGLE_TEXT,
 } from '../../src/config/constants';
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
 
-/**
- * This test is the first of the character creation tests.
- * As such, it is longer and more thorough than the other character creation tests,
- * allowing the other character creation tests to focus on functionality
- * specific to their particular playbooks
- */
 describe('Creating a new Battlebabe Character', () => {
   beforeEach(() => {
     cy.kcLogout();

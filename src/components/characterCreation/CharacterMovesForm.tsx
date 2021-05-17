@@ -43,10 +43,8 @@ const CharacterMovesForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   // Used for form submission
   const [selectedMoves, setSelectedMoves] = useState<string[]>([]);
-  console.log(`selectedMoves`, selectedMoves);
   // Used for counting and setting limit. Contains moves selected from character's own playbook. Doesn't include default moves.
   const [selectedPBMoves, setSelectedPBMoves] = useState<string[]>([]);
-  console.log(`selectedPBMoves`, selectedPBMoves);
   // Used for counting and setting limit. Contains moves selected from other playbooks. Doesn't include default moves.
   const [selectedOtherPBMoves, setSelectedOtherPBMoves] = useState<string[]>([]);
 
@@ -78,7 +76,6 @@ const CharacterMovesForm: FC = () => {
 
   const optionalMoves = pbCreatorData?.playbookCreator.optionalMoves;
   const defaultMoves = pbCreatorData?.playbookCreator.defaultMoves;
-  console.log(`defaultMoves`, defaultMoves);
   const moveChoiceCount = pbCreatorData?.playbookCreator.moveChoiceCount;
   const [setCharacterMoves, { loading: settingMoves }] =
     useMutation<SetCharacterMovesData, SetCharacterMovesVars>(SET_CHARACTER_MOVES);
@@ -149,17 +146,8 @@ const CharacterMovesForm: FC = () => {
   useEffect(() => {
     if (!!character && !!defaultMoves && !!optionalMoves) {
       setSelectedMoves(character.characterMoves.map((move) => move.name));
-      console.log(
-        `optionalMoves.map((om) => om.name)`,
-        optionalMoves.map((om) => om.name)
-      );
-      console.log(
-        `defaultMoves.map((om) => om.name)`,
-        defaultMoves.map((om) => om.name)
-      );
       character.characterMoves.forEach((cm) => {
         if (optionalMoves.map((om) => om.name).includes(cm.name) || defaultMoves.map((om) => om.name).includes(cm.name)) {
-          console.log(`cm.name`, cm.name);
           setSelectedPBMoves((prevState) => checkForDupesAndSetState(prevState, cm.name));
         } else {
           setSelectedOtherPBMoves((prevState) => checkForDupesAndSetState(prevState, cm.name));
