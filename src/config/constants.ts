@@ -212,6 +212,7 @@ export const RETURN_TO_GAME_TEXT = 'RETURN TO GAME';
 export const CREATE_GAME_TEXT = 'CREATE GAME';
 export const PASS_TEXT = 'PASS';
 export const ADD_VEHICLE_TEXT = 'ADD VEHICLE';
+export const START_GAME_TEXT = 'START GAME';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -301,3 +302,23 @@ export const SCRIPT_CHANGE_ATTRIBUTION_TEXT_4 = 'read more about it here';
 
 // ----------------------------------------------- CUSTOM WEAPONS FORM --------------------------------------------- //
 export const MIX_AND_MATCH_TEXT = "Mix'n'match. Edit directly if necessary.";
+
+// ----------------------------------------------- PRE_GAME PAGE--------------------------------------------- //
+
+export const MC_INSTRUCTIONS_1 = 'Use this time to build the world you will play in.';
+export const MC_INSTRUCTIONS_2 = 'Ask your players lots of questions about their characters and the world.';
+export const MC_INSTRUCTIONS_3 = 'While the players are making their characters, here are some things to get out up-front:';
+export const CHARACTER_CREATION_TIP_1 = "Your characters don't have to be friends, but they should definitely be allies.";
+export const CHARACTER_CREATION_TIP_2 = 'Your characters are unique in Apocalypse World.';
+export const CHARACTER_CREATION_TIP_3 = '1-armor can be armor or clothing. 2-armor is armor.';
+export const CHARACTER_CREATION_TIP_4 = 'Is ';
+export const CHARACTER_CREATION_TIP_5 = 'barter';
+export const CHARACTER_CREATION_TIP_6 = ' a medium of exchange? What do you use?';
+export const CHARACTER_CREATION_TIP_7 = "I'm not out to get you. I'm here to find out what's going to happen. Same as you!";
+
+export const PRE_GAME_SCRIPT_CHANGE_INSTRUCTIONS =
+  'AW Central uses Script Change as a communication tool to help everyone feel safe and comfortable while they play. On AW Central, Script Change can be used via the Script Change icon (seen here), which sits in the bottom-right corner of the _**main game page**_. You can click the Script Change icon on _**this**_ page to get a preview of what Script Change is like.';
+export const PRE_GAME_SCRIPT_CHANGE_MC_INSTRUCTIONS =
+  'During character creation and world-building (ie, now) is a good time to tell your players about Script Change.';
+export const PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS =
+  'Once all the characters are created, your MC will start the game.';

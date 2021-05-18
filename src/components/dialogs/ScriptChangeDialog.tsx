@@ -28,6 +28,8 @@ import {
 } from '../../config/constants';
 
 interface ScriptChangeDialogProps {
+  // Sets the ScriptChangeDialog to be a non-functional preview of Script Change
+  isPreview: boolean;
   handleClose: () => void;
 }
 
@@ -51,7 +53,7 @@ const RedBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(() => 
   `;
 });
 
-const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
+const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ isPreview, handleClose }) => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [comment, setComment] = useState<string>('');
 
@@ -82,7 +84,9 @@ const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
       border
       pad="12px"
       flex="grow"
-      onClick={() => !changingScript && handleSubmit(scriptChangeType)}
+      onClick={() => {
+        !isPreview && !changingScript && handleSubmit(scriptChangeType);
+      }}
     >
       <HeadingWS crustReady={crustReady} level={3} margin={{ bottom: '0px' }}>
         {title}
@@ -106,7 +110,7 @@ const ScriptChangeDialog: FC<ScriptChangeDialogProps> = ({ handleClose }) => {
               aria-label={SCRIPT_CHANGE_COMMENT_INPUT_ID}
               size="large"
               value={comment}
-              onChange={(e) => setComment(e.target.value)}
+              onChange={(e) => !isPreview && setComment(e.target.value)}
             />
           </FormField>
         </Box>
