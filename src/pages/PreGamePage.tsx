@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router-dom';
 
 import { Box, Button } from 'grommet';
 import CloseButton from '../components/CloseButton';
-import { HeadingWS, RedBox, TextWS } from '../config/grommetConfig';
+import { HeadingWS, ParagraphWS, RedBox, TextWS } from '../config/grommetConfig';
 import FINISH_PRE_GAME, { FinishPreGameData, FinishPreGameVars, getFinishPreGameOR } from '../mutations/finishPreGame';
 import { useGame } from '../contexts/gameContext';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
@@ -15,6 +15,25 @@ import { Checkbox, Checkmark } from 'grommet-icons';
 import ScrollableIndicator from '../components/ScrollableIndicator';
 import Spinner from '../components/Spinner';
 import styled from 'styled-components';
+import {
+  CHARACTER_CREATION_TIP_1,
+  CHARACTER_CREATION_TIP_2,
+  CHARACTER_CREATION_TIP_3,
+  CHARACTER_CREATION_TIP_4,
+  CHARACTER_CREATION_TIP_5,
+  CHARACTER_CREATION_TIP_6,
+  CHARACTER_CREATION_TIP_7,
+  MC_INSTRUCTIONS_1,
+  MC_INSTRUCTIONS_2,
+  MC_INSTRUCTIONS_3,
+  PRE_GAME_SCRIPT_CHANGE_INSTRUCTIONS,
+  PRE_GAME_SCRIPT_CHANGE_MC_INSTRUCTIONS,
+  PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS,
+  START_GAME_TEXT,
+} from '../config/constants';
+import ScriptChangeAttribution from '../components/ScriptChangeAttribution';
+import ScriptChange from '../components/ScriptChange';
+import { StyledMarkdown } from '../components/styledComponents';
 
 export const background = {
   color: 'black',
@@ -80,7 +99,7 @@ const PreGamePage = () => {
       case PlaybookType.brainer:
         return 'Brainer gear';
       case PlaybookType.chopper:
-        return 'gang';
+        return 'Gang';
       case PlaybookType.gunlugger:
         return 'Weapons';
       case PlaybookType.hardholder:
@@ -264,6 +283,15 @@ const PreGamePage = () => {
     );
   };
 
+  const scriptChangeInstructions = (
+    <>
+      <Box direction="row" gap="24px" align="center">
+        <ScriptChange isPreview />
+        <StyledMarkdown>{PRE_GAME_SCRIPT_CHANGE_INSTRUCTIONS}</StyledMarkdown>
+      </Box>
+    </>
+  );
+
   return (
     <Box
       data-testid="pre-game-page"
@@ -278,29 +306,40 @@ const PreGamePage = () => {
       <CloseButton handleClose={() => history.push(pathToGame)} />
       <ScrollableIndicator show={showScrollable} />
       <HeadingWS level="2">PRE-GAME</HeadingWS>
-      {userGameRole?.role === RoleType.mc && (
+      {userGameRole?.role === RoleType.mc ? (
         <Box flex="grow" style={{ maxWidth: '812px' }} gap="3px">
-          <Button
-            alignSelf="center"
-            label={finishingPreGame ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'START GAME'}
-            primary
-            onClick={() => !finishingPreGame && handleStartGame()}
-            disabled={!havePlayersFinished}
-            size="large"
-            margin="12px"
-          />
-          <TextWS>Use this time to build the world you will play in.</TextWS>
-          <TextWS>Ask your players lots of questions about their characters and the world.</TextWS>
-          <TextWS>While the players are making their characters, here are some things to get out up-front:</TextWS>
+          <Box direction="row" align="start" justify="between" gap="12px">
+            <ParagraphWS
+              style={{ maxWidth: '550px' }}
+              margin={{ vertical: '0px' }}
+            >{`${MC_INSTRUCTIONS_1} ${MC_INSTRUCTIONS_2} ${MC_INSTRUCTIONS_3}`}</ParagraphWS>
+            <Button
+              label={finishingPreGame ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : START_GAME_TEXT}
+              primary
+              onClick={() => !finishingPreGame && handleStartGame()}
+              disabled={!havePlayersFinished}
+              size="large"
+            />
+          </Box>
           <ul>
-            <StyledLi>Your characters don't have to be friends, but they should definitely be allies.</StyledLi>
-            <StyledLi>Your characters are unique in Apocalypse World.</StyledLi>
-            <StyledLi>1-armor can be armor or clothing. 2-armor is armor.</StyledLi>
+            <StyledLi>{CHARACTER_CREATION_TIP_1}</StyledLi>
+            <StyledLi>{CHARACTER_CREATION_TIP_2}</StyledLi>
+            <StyledLi>{CHARACTER_CREATION_TIP_3}</StyledLi>
             <StyledLi>
-              Is <em>barter</em> a medium of exchange? What do you use?
+              {CHARACTER_CREATION_TIP_4}
+              <em>{CHARACTER_CREATION_TIP_5}</em>
+              {CHARACTER_CREATION_TIP_6}
             </StyledLi>
-            <StyledLi>I'm not out to get you. I'm here to find out what's going to happen. Same as you!</StyledLi>
+            <StyledLi>{CHARACTER_CREATION_TIP_7}</StyledLi>
           </ul>
+          {scriptChangeInstructions}
+          <TextWS>{PRE_GAME_SCRIPT_CHANGE_MC_INSTRUCTIONS}</TextWS>
+          <ScriptChangeAttribution />
+        </Box>
+      ) : (
+        <Box flex="grow" style={{ maxWidth: '812px' }} gap="3px">
+          {scriptChangeInstructions}
+          <TextWS margin={{ top: '12px' }}>{PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS}</TextWS>
         </Box>
       )}
       <Box direction="row" wrap justify="center" flex="shrink" margin={{ bottom: '12px' }}>
