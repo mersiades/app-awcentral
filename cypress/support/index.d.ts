@@ -10,5 +10,7 @@ declare namespace Cypress {
      */
     // dataCy(value: string): Chainable<Element>
     kcFakeLogin(user: string, redirectUrl?: string): any;
+    getToken(): Promise<any>; // Actually a response from Keycloak
+    resetDb(): Promise<any>; // Actually a graphql response
   }
 }

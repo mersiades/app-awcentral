@@ -31,3 +31,4 @@ discordConfig.ts
 /cypress/fixtures/users/
 /cypress/videos
 /cypress/screenshots
+cypress.env.json
