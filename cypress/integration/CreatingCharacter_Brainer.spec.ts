@@ -18,12 +18,6 @@ import { decapitalize } from '../../src/helpers/decapitalize';
 import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Brainer Character', () => {
-  before(() => {
-    cy.getToken().then(() => {
-      cy.resetDb();
-    });
-  });
-
   beforeEach(() => {
     cy.kcLogout();
     cy.kcLogin('maya');

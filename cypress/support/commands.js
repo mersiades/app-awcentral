@@ -69,5 +69,6 @@ Cypress.Commands.add('resetDb', () => {
     if (body.data.resetDb.successMessage) {
       console.info('Test database has been reset');
     }
+    cy.wait(1000);
   });
 });
