@@ -12,6 +12,7 @@ export const ANGEL_SPECIAL_NAME = 'ANGEL SPECIAL';
 export const BATTLEBABE_SPECIAL_NAME = 'BATTLEBABE SPECIAL';
 export const BRAINER_SPECIAL_NAME = 'BRAINER SPECIAL';
 export const CHOPPER_SPECIAL_NAME = 'CHOPPER SPECIAL';
+export const DRIVER_SPECIAL_NAME = 'DRIVER SPECIAL';
 export const GUNLUGGER_SPECIAL_NAME = 'GUNLUGGER SPECIAL';
 export const HARDHOLDER_SPECIAL_NAME = 'HARDHOLDER SPECIAL';
 export const HOCUS_SPECIAL_NAME = 'HOCUS SPECIAL';
@@ -30,6 +31,7 @@ export const GO_AGGRO_NAME = 'GO AGGRO ON SOMEONE';
 export const SUCKER_SOMEONE_NAME = 'SUCKER SOMEONE';
 export const CAT_OR_MOUSE_NAME = 'CAT OR MOUSE';
 export const REPUTATION_NAME = 'REPUTATION';
+export const COMBAT_DRIVER_NAME = 'COMBAT DRIVER';
 export const BOARD_VEHICLE_NAME = 'BOARD A MOVING VEHICLE';
 export const OUTDISTANCE_VEHICLE_NAME = 'OUTDISTANCE ANOTHER VEHICLE';
 export const OVERTAKE_VEHICLE_NAME = 'OVERTAKE ANOTHER VEHICLE';
@@ -226,6 +228,8 @@ export const MOVES_TITLE = 'Moves';
 export const VEHICLES_TITLE = 'Vehicles';
 export const BATTLE_VEHICLES_TITLE = 'Battle Vehicles';
 export const HX_TITLE = 'Hx';
+
+export const IMPROVE_DRIVER_FOR_WORKSPACE_TEXT = 'Improve Driver to get workspace';
 
 export const START_PLAY_WITH_VEHICLE_TEXT = 'If you’d like to start play with a vehicle, get with the MC.';
 

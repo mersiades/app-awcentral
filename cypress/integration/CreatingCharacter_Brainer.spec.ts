@@ -58,8 +58,6 @@ describe('Creating a new Brainer Character', () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
-    cy.get('div[data-testid="spinner"]').should('exist');
-    cy.get('div[data-testid="spinner"]').should('not.exist');
 
     // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
     const gender = 'concealed';
