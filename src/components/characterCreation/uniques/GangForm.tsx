@@ -286,6 +286,7 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
               return (
                 <CheckBox
                   key={option.id}
+                  aria-label={`option-${option.description}`}
                   checked={strengths.map((str: GangOption) => str.id).includes(option.id)}
                   label={option.description}
                   onChange={() => handleStrengthSelect(option)}
@@ -299,6 +300,7 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
               return (
                 <CheckBox
                   key={option.id}
+                  aria-label={`option-${option.description}`}
                   checked={weaknesses.map((wk: GangOption) => wk.id).includes(option.id)}
                   label={option.description}
                   onChange={() => handleWeaknessSelect(option)}

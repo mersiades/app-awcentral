@@ -47,6 +47,7 @@ export const SIXTH_SENSE_NAME = 'SIXTH SENSE';
 export const INFIRMARY_NAME = 'INFIRMARY';
 export const ICE_COLD_NAME = 'ICE COLD';
 export const BRAIN_RECEPTIVITY_NAME = 'CASUAL BRAIN RECEPTIVITY';
+export const FUCKING_THIEVES_NAME = 'FUCKING THIEVES';
 
 // IMPROVE_STAT move names
 export const SHARP_2_MAX_NAME = 'SHARP MAX 2';
@@ -226,11 +227,8 @@ export const VEHICLES_TITLE = 'Vehicles';
 export const BATTLE_VEHICLES_TITLE = 'Battle Vehicles';
 export const HX_TITLE = 'Hx';
 
-export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
 export const START_PLAY_WITH_VEHICLE_TEXT = 'If you’d like to start play with a vehicle, get with the MC.';
 
-export const GIVE_VEHICLE_NAME_TEXT = 'Give your vehicle a name';
-export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT = '(make/model, nickname, whatever)';
 export const START_PLAY_WITH_BATTLE_VEHICLE_TEXT = 'If you’d like to start play with a battle vehicle, get with the MC.';
 
 export const INCREASED_BY_IMPROVEMENT_TEXT = '(increased by improvement)';
@@ -322,3 +320,13 @@ export const PRE_GAME_SCRIPT_CHANGE_MC_INSTRUCTIONS =
   'During character creation and world-building (ie, now) is a good time to tell your players about Script Change.';
 export const PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS =
   'Once all the characters are created, your MC will start the game.';
+
+// ----------------------------------------------- VEHICLE FORM --------------------------------------------- //
+export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
+export const GIVE_VEHICLE_NAME_TEXT = 'Give your vehicle a name';
+export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT = '(make/model, nickname, whatever)';
+export const STRENGTHS_TEXT = 'Strengths';
+export const WEAKNESSES_TEXT = 'Weaknesses';
+export const LOOKS_TEXT = 'Looks';
+export const BATTLE_OPTIONS_TEXT = 'Battle options';
+export const CHOOSE_1_OR_2_TEXT = 'choose 1 or 2';
