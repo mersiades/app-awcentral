@@ -32,106 +32,48 @@ describe('Creating a new Battlebabe Character', () => {
 
   it('should create a Battlebabe and stop at CharacterHxPage', () => {
     // ------------------------------------------ NewGameIntro ------------------------------------------ //
-    // Check form content
-    cy.contains(NEW_GAME_TEXT).should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="playbook-box"]').should('contain', PLAYBOOK_TITLE).should('contain', '...');
-
     // Check can't navigate with CharacterCreationStepper
     cy.get('div[data-testid="name-box"]').click();
     cy.url().should('contain', 'step=0');
 
-    // Go to next
-    cy.contains(NEXT_TEXT).click();
+    cy.moveThroughNewGameIntro();
 
     // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
 
-    // Check form functionality
-    cy.get('div[data-testid="battlebabe-button"]').click();
-    cy.contains('SELECT Battlebabe').click(); // SELECT BATTLEBABE
+    cy.selectPlaybook(PlaybookType.battlebabe);
 
     // ------------------------------------------ CharacterNameForm ------------------------------------------ //
+    const battlebabeName = 'Snow';
+    const battlebabeNameUC = battlebabeName.toUpperCase();
     // Check form content
     cy.contains('WHAT IS THE BATTLEBABE CALLED?').should('exist');
-    cy.get('input[aria-label="name-input"]').as('nameInput');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="playbook-box"]')
       .should('contain', PLAYBOOK_TITLE)
       .should('contain', decapitalize(PlaybookType.battlebabe));
 
-    // Check form functionality
-    cy.contains('Snow').click();
-    cy.get('@nameInput').then((input) => {
-      // @ts-ignore
-      expect(input[0].value).to.equal('Snow');
-    });
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
+    cy.setCharacterName(battlebabeName);
 
     // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
-    // Check form content
-    cy.contains('WHAT DOES SNOW LOOK LIKE?').should('exist');
-    cy.contains('GENDER').should('exist');
-    cy.contains('CLOTHES').should('exist');
-    cy.contains('FACE').should('exist');
-    cy.contains('EYES').should('exist');
-    cy.contains('BODY').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="name-box"]').should('contain', NAME_TITLE).should('contain', 'Snow');
-
-    // Check form functionality
-    cy.contains('woman').click();
-    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE).should('contain', 'woman');
-
-    cy.contains('display wear').click();
-    cy.get('div[data-testid="looks-box"]').should('contain', 'display wear');
-
-    cy.contains('smooth face').click();
-    cy.get('div[data-testid="looks-box"]').should('contain', 'smooth face');
-
-    cy.contains('frosty eyes').click();
-    cy.get('div[data-testid="looks-box"]').should('contain', 'frosty eyes');
-
-    cy.contains('sweet body').click();
-    cy.get('div[data-testid="looks-box"]').should('contain', 'sweet body');
-
-    // Should automatically progress
+    const gender = 'woman';
+    const clothes = 'display wear';
+    const face = 'smooth face';
+    const eyes = 'frosty eyes';
+    const body = 'sweet body';
+    cy.completeLooksForm(battlebabeNameUC, battlebabeName, gender, clothes, face, eyes, body);
     // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
-    // Check form content
-    cy.contains("WHAT ARE SNOW'S STRENGTHS AND WEAKNESSES").should('exist');
-
-    // Check form functionality
-    cy.get('div[data-testid="stats-option-box-1"]').click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
+    cy.setCharacterStat(battlebabeNameUC);
 
     // ------------------------------------------ CharacterGearForm ------------------------------------------ //
     const battlebabeClothes = 'grubby tracksuit';
-
-    // Check form content
-    cy.contains("WHAT IS SNOW'S GEAR").should('exist');
-    cy.contains(ADD_TEXT).as('addButton');
-    cy.get('ul[aria-label="interim-gear-list"]').as('interimGearList');
-    cy.get('textarea[aria-label="item-input"]').as('itemInput');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
     cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
     cy.get('div[data-testid="custom-weapons-box"]').should('contain', decapitalize(UniqueTypes.customWeapons));
 
-    // Check form functionality
-    cy.get('@itemInput').type(battlebabeClothes);
-
-    cy.get('@addButton').click();
-    cy.get('@interimGearList').should('contain', battlebabeClothes);
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
+    cy.completeGearForm(battlebabeNameUC, battlebabeClothes, []);
 
     // ------------------------------------------ CustomWeaponsForm ------------------------------------------ //
     const handgun1 = 'handgun (2-harm, close, reload, loud)';

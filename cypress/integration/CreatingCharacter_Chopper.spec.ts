@@ -35,38 +35,24 @@ describe('Creating a new Chopper Character', () => {
 
   it('should create a Chopper and stop at BattleVehicleForm', () => {
     // ------------------------------------------ NewGameIntro ------------------------------------------ //
-    // Check form content
-    cy.contains(NEW_GAME_TEXT).should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="playbook-box"]').should('contain', PLAYBOOK_TITLE).should('contain', '...');
-
-    // Go to next
-    cy.contains(NEXT_TEXT).click();
+    cy.moveThroughNewGameIntro();
 
     // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
 
-    // Check form functionality
-    cy.get('div[data-testid="chopper-button"]').click();
-    cy.contains('SELECT Chopper').click(); // SELECT CHOPPER
+    cy.selectPlaybook(PlaybookType.chopper);
 
     // ------------------------------------------ CharacterNameForm ------------------------------------------ //
     const chopperName = 'Dog';
     const chopperNameUC = chopperName.toUpperCase();
     // Check form content
     cy.contains('WHAT IS THE CHOPPER CALLED?').should('exist');
-    cy.get('input[aria-label="name-input"]').as('nameInput');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="playbook-box"]')
       .should('contain', PLAYBOOK_TITLE)
       .should('contain', decapitalize(PlaybookType.chopper));
 
-    // Check form functionality
-    cy.contains(chopperName).click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
+    cy.setCharacterName(chopperName);
 
     // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
     const gender = 'transgressing';
@@ -74,71 +60,21 @@ describe('Creating a new Chopper Character', () => {
     const face = 'weathered face';
     const eyes = 'narrow eyes';
     const body = 'fat body';
-    // Check form content
-    cy.contains(`WHAT DOES ${chopperNameUC} LOOK LIKE?`).should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="name-box"]').should('contain', NAME_TITLE).should('contain', chopperName);
-
-    // Check form functionality
-    cy.contains(gender).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE).should('contain', gender);
-
-    cy.contains(clothes).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', clothes);
-
-    cy.contains(face).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', face);
-
-    cy.contains(eyes).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', eyes);
-
-    cy.contains(body).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', body);
-
-    // Should automatically progress
+    cy.completeLooksForm(chopperNameUC, chopperName, gender, clothes, face, eyes, body);
     // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
-    // Check form content
-    cy.contains(`WHAT ARE ${chopperNameUC}'S STRENGTHS AND WEAKNESSES`).should('exist');
-
-    // Check form functionality
-    cy.get('div[data-testid="stats-option-box-1"]').click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
+    cy.setCharacterStat(chopperNameUC);
 
     // ------------------------------------------ CharacterGearForm ------------------------------------------ //
     const chopperClothes = 'leather jacket';
     const chopperWeapon1 = 'magnum (3-harm close reload loud)';
     const chopperWeapon2 = 'machete (3-harm hand messy)';
 
-    // Check form content
-    cy.contains(`WHAT IS ${chopperNameUC}'S GEAR`).should('exist');
-    cy.contains(ADD_TEXT).as('addButton');
-    cy.get('ul[aria-label="interim-gear-list"]').as('interimGearList');
-    cy.get('textarea[aria-label="item-input"]').as('itemInput');
-
     // Check CharacterCreationStepper
     cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
     cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
     cy.get('div[data-testid="gang-box"]').should('contain', decapitalize(UniqueTypes.gang));
 
-    // Check form functionality
-    cy.get('@itemInput').type(chopperClothes);
-
-    cy.get('@addButton').click();
-    cy.get('@interimGearList').should('contain', chopperClothes);
-
-    cy.contains(chopperWeapon1).click();
-    cy.get('@addButton').click();
-    cy.get('@interimGearList').should('contain', chopperWeapon1);
-
-    cy.contains(chopperWeapon2).click();
-    cy.get('@addButton').click();
-    cy.get('@interimGearList').should('contain', chopperWeapon2);
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
+    cy.completeGearForm(chopperNameUC, chopperClothes, [chopperWeapon1, chopperWeapon2]);
 
     // ------------------------------------------ GangForm ------------------------------------------ //
     const strength1Text = 'your gang consists of 30 or so violent bastards. Medium instead of small.';
@@ -439,6 +375,6 @@ describe('Creating a new Chopper Character', () => {
     cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
     cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
 
-    // Finish test here because remainder of character creation process has ben tested elsewhere
+    // Finish test here because remainder of character creation process has been tested elsewhere
   });
 });
