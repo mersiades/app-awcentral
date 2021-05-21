@@ -33,6 +33,7 @@ import GameNavbar from '../components/GameNavbar';
 import { useMcContent } from '../contexts/mcContentContext';
 import { GAME_PAGE_BOTTOM_NAVBAR_HEIGHT } from '../config/constants';
 import '../assets/styles/transitions.css';
+import GoToPreGameDialog from '../components/dialogs/GoToPreGameDialog';
 
 export const background = {
   color: 'black',
@@ -76,6 +77,7 @@ const MCPage: FC = () => {
   const [sidePanel, setSidePanel] = useState<number>(0);
   const [leftPanel, setLeftPanel] = useState<LeftPanelState>({ type: 'MESSAGES' });
   const [showDeleteGameDialog, setShowDeleteGameDialog] = useState(false);
+  const [showGoToPreGameDialog, setShowGoToPreGameDialog] = useState(false);
 
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
 
@@ -126,6 +128,12 @@ const MCPage: FC = () => {
     }
   }, [gameId, userId, setGameContext]);
 
+  useEffect(() => {
+    if (!!game && !game.hasFinishedPreGame) {
+      setShowGoToPreGameDialog(true);
+    }
+  }, [game, game?.hasFinishedPreGame]);
+
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 
   const renderLeftPanel = () => {
@@ -158,6 +166,7 @@ const MCPage: FC = () => {
           handleConfirm={handleDeleteGame}
         />
       )}
+      {showGoToPreGameDialog && <GoToPreGameDialog handleClose={() => setShowGoToPreGameDialog(false)} />}
       <GameNavbar isMc={true} />
       <div data-testid="mc-page">
         <Collapsible direction="horizontal" open={sidePanel < 3}>

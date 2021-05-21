@@ -18,6 +18,7 @@ const ScriptChange: FC<ScriptChangeProps & BoxProps> = ({ isPreview = false, hei
     <Box height={height} width={width} align="center" justify="center" margin={{ horizontal: '12px' }}>
       {showDialog && <ScriptChangeDialog handleClose={() => setShowDialog(false)} isPreview={isPreview} />}
       <img
+        aria-label="script-change-button"
         src={scriptChangeIcon}
         style={{ height: height as string, width: width as string, cursor: 'pointer' }}
         onClick={() => setShowDialog(true)}

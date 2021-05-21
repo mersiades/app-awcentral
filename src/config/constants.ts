@@ -219,6 +219,8 @@ export const CREATE_GAME_TEXT = 'CREATE GAME';
 export const PASS_TEXT = 'PASS';
 export const ADD_VEHICLE_TEXT = 'ADD VEHICLE';
 export const START_GAME_TEXT = 'START GAME';
+export const YES_TEXT = 'YES';
+export const NO_TEXT = 'NO';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -278,6 +280,9 @@ export const OPTIONS_TITLE = 'Options';
 export const DEFAULT_MOVES_TITLE = 'Default moves';
 
 export const HX_VALIDATION_TEXT = 'Enter digits from -2 to 3';
+
+export const PRE_GAME_INCOMPLETE_TITLE = 'Game not started';
+export const PRE_GAME_INCOMPLETE_TEXT_MC = 'Pre-game stage is not complete. Go to pre-game page?';
 
 // ----------------------------------------------- SCRIPT CHANGE --------------------------------------------- //
 export const SCRIPT_CHANGE_TITLE = 'Script Change';
