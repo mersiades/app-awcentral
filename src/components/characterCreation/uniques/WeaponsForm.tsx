@@ -10,6 +10,7 @@ import SET_WEAPONS, { SetWeaponsData, SetWeaponsVars } from '../../../mutations/
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
+import { BACKUP_WEAPONS_TEXT, BIG_GUNS_TEXT, SERIOUS_GUNS_TEXT } from '../../../config/constants';
 
 export const WEAPONS_FORM_TEST_ID = 'weapons-form';
 
@@ -163,7 +164,7 @@ const WeaponsForm: FC = () => {
         <Box>
           <TextWS>
             <em>
-              <strong>Fuck-off big guns</strong>
+              <strong>{BIG_GUNS_TEXT}</strong>
             </em>
             {` (choose ${bfoGunOptionCount})`}
           </TextWS>
@@ -178,7 +179,7 @@ const WeaponsForm: FC = () => {
         <Box>
           <TextWS>
             <em>
-              <strong>Serious guns</strong>
+              <strong>{SERIOUS_GUNS_TEXT}</strong>
             </em>
             {` (choose ${seriousGunOptionCount})`}
           </TextWS>
@@ -189,7 +190,7 @@ const WeaponsForm: FC = () => {
         <Box>
           <TextWS>
             <em>
-              <strong>Backup weapons</strong>
+              <strong>{BACKUP_WEAPONS_TEXT}</strong>
             </em>
             {` (choose ${backupWeaponsOptionCount})`}
           </TextWS>

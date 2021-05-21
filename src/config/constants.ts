@@ -50,6 +50,9 @@ export const INFIRMARY_NAME = 'INFIRMARY';
 export const ICE_COLD_NAME = 'ICE COLD';
 export const BRAIN_RECEPTIVITY_NAME = 'CASUAL BRAIN RECEPTIVITY';
 export const FUCKING_THIEVES_NAME = 'FUCKING THIEVES';
+export const BATTLE_HARDENED_NAME = 'BATTLE-HARDENED';
+export const FUCK_THIS_SHIT_NAME = 'FUCK THIS SHIT';
+export const BATTLEFIELD_INSTINCTS_NAME = 'BATTLEFIELD INSTINCTS';
 
 // IMPROVE_STAT move names
 export const SHARP_2_MAX_NAME = 'SHARP MAX 2';
@@ -334,3 +337,8 @@ export const WEAKNESSES_TEXT = 'Weaknesses';
 export const LOOKS_TEXT = 'Looks';
 export const BATTLE_OPTIONS_TEXT = 'Battle options';
 export const CHOOSE_1_OR_2_TEXT = 'choose 1 or 2';
+
+// ----------------------------------------------- WEAPONS FORM --------------------------------------------- //
+export const BIG_GUNS_TEXT = 'Fuck-off big guns';
+export const SERIOUS_GUNS_TEXT = 'Serious guns';
+export const BACKUP_WEAPONS_TEXT = 'Backup weapons';
