@@ -3,18 +3,12 @@ import { PlaybookType } from '../../../src/@types/enums';
 import { genericHarm } from '../harm/genericHarm';
 import { statsBlockAngel_1 } from '../statsBlocks/statsBlockAngel_1';
 import { mockPlaybookUniqueAngel } from '../../../src/tests/fixtures/playBookUniquesFixtures';
-import { mockAngelSpecialCM, mockInfirmaryCM, mockSixthSenseCM } from '../../../src/tests/fixtures/characterMovesFixtures';
-import {
-  angel_sara_1_hxstat_1,
-  angel_sara_1_hxstat_2,
-  angel_sara_1_hxstat_3,
-  angel_sara_1_hxstat_4,
-} from '../hxStats/angel_sara_1_hxstats';
 import { mockLookAngel1, mockLookAngel2, mockLookAngel3, mockLookAngel4, mockLookAngel5 } from '../looks/angelLooks';
+import { mockAngelSpecialCM, mockInfirmaryCM, mockSixthSenseCM } from '../../../src/tests/fixtures/characterMovesFixtures';
 
-// Belongs on mock game 1
-// Freshly-created character, complete
-const angel_sara_1_complete: Character = {
+// Belongs on mock game 6.
+// Freshly created character, almost complete except for missing HxBlock
+const angel_sara_2_complete: Character = {
   id: 'angel-character-1-id',
   name: 'Doc',
   playbook: PlaybookType.angel,
@@ -34,7 +28,7 @@ const angel_sara_1_complete: Character = {
   mustChangePlaybook: false,
   battleVehicles: [],
   vehicles: [],
-  hxBlock: [angel_sara_1_hxstat_1, angel_sara_1_hxstat_2, angel_sara_1_hxstat_3, angel_sara_1_hxstat_4],
+  hxBlock: [],
   gear: ['Shotgun', 'Rusty screwdriver'],
   looks: [mockLookAngel1, mockLookAngel2, mockLookAngel3, mockLookAngel4, mockLookAngel5],
   characterMoves: [mockAngelSpecialCM, mockSixthSenseCM, mockInfirmaryCM],
@@ -44,4 +38,4 @@ const angel_sara_1_complete: Character = {
   holds: [],
 };
 
-export default angel_sara_1_complete;
+export default angel_sara_2_complete;
