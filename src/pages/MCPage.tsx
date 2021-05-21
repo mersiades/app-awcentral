@@ -13,6 +13,7 @@ import InvitationForm from '../components/InvitationForm';
 import GameForm from '../components/GameForm';
 import WarningDialog from '../components/dialogs/WarningDialog';
 import FirstSessionDialog from '../components/dialogs/FirstSessionDialog';
+import GoToPreGameDialog from '../components/dialogs/GoToPreGameDialog';
 import ScriptChange from '../components/ScriptChange';
 import {
   Footer,
@@ -33,7 +34,6 @@ import GameNavbar from '../components/GameNavbar';
 import { useMcContent } from '../contexts/mcContentContext';
 import { GAME_PAGE_BOTTOM_NAVBAR_HEIGHT } from '../config/constants';
 import '../assets/styles/transitions.css';
-import GoToPreGameDialog from '../components/dialogs/GoToPreGameDialog';
 
 export const background = {
   color: 'black',
@@ -128,6 +128,7 @@ const MCPage: FC = () => {
     }
   }, [gameId, userId, setGameContext]);
 
+  // Show GoToPreGameDialog if game hasn't finished pre-game
   useEffect(() => {
     if (!!game && !game.hasFinishedPreGame) {
       setShowGoToPreGameDialog(true);
