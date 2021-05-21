@@ -29,5 +29,6 @@ declare namespace Cypress {
     setCharacterStat(nameUC: string): void;
     completeGearForm(nameUC: string, clothes: string, items: string[]);
     setVehicleOptions(option1: string, option2: string, option3: string, targetBox: string);
+    deleteKeycloakUser(email: string): void;
   }
 }

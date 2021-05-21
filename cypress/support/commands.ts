@@ -203,3 +203,22 @@ Cypress.Commands.add('setVehicleOptions', (option1: string, option2: string, opt
   cy.get(`@${targetBox}Box`).should('not.contain', option2);
   cy.get(`@${targetBox}Box`).should('contain', option3);
 });
+
+Cypress.Commands.add('deleteKeycloakUser', (email: string) => {
+  cy.request({
+    method: 'GET',
+    url: `${Cypress.env('KEYCLOAK_HOST')}/auth/admin/realms/${Cypress.env('KEYCLOAK_REALM')}/users?email=${email}`,
+    headers: {
+      Authorization: `Bearer ${Cypress.env('access_token')}`,
+    },
+  }).then(({ body }) => {
+    const userId = body[0].id;
+    cy.request({
+      method: 'DELETE',
+      url: `${Cypress.env('KEYCLOAK_HOST')}/auth/admin/realms/${Cypress.env('KEYCLOAK_REALM')}/users/${userId}`,
+      headers: {
+        Authorization: `Bearer ${Cypress.env('access_token')}`,
+      },
+    });
+  });
+});
