@@ -74,7 +74,7 @@ describe('Creating a Game as MC', () => {
   });
 
   context('with 1 player, comms app and url', () => {
-    it.only('should create game, add 1 invitations, comms app and url, and navigate to McPage', () => {
+    it('should create game, add 1 invitations, comms app and url, and navigate to McPage', () => {
       cy.contains('CREATE GAME').click();
       cy.get('input').type(game5.name);
       cy.contains('SUBMIT').click();

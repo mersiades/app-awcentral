@@ -221,6 +221,9 @@ export const ADD_VEHICLE_TEXT = 'ADD VEHICLE';
 export const START_GAME_TEXT = 'START GAME';
 export const YES_TEXT = 'YES';
 export const NO_TEXT = 'NO';
+export const APPLY_TEXT = 'APPLY';
+export const DO_IT_TEXT = 'DO IT';
+export const STABILIZE_TEXT = 'STABILIZE';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -347,3 +350,42 @@ export const CHOOSE_1_OR_2_TEXT = 'choose 1 or 2';
 export const BIG_GUNS_TEXT = 'Fuck-off big guns';
 export const SERIOUS_GUNS_TEXT = 'Serious guns';
 export const BACKUP_WEAPONS_TEXT = 'Backup weapons';
+
+// ----------------------------------------------- ANGEL SPECIAL DIALOG --------------------------------------------- //
+export const WITH_WHO_QUESTION = 'Who did you have sex with?';
+
+// ----------------------------------------------- HARM BOX --------------------------------------------- //
+export const HARM_TITLE = 'Harm';
+export const STABILIZED_TEXT = 'Stabilized';
+export const LIFE_UNTENABLE_INSTRUCTIONS = 'When life becomes untenable:';
+
+// ----------------------------------------------- DEATH DIALOG --------------------------------------------- //
+export const MAKE_CHANGE_TEXT = 'Make this change?';
+export const ADD_HARD_MINUS_1_TEXT = 'reduce your HARD stat by 1';
+export const REMOVE_HARD_MINUS_1_TEXT = 'increase your HARD stat by 1';
+export const ADD_WEIRD_1_TEXT = 'increase your WEIRD stat by 1';
+export const REMOVE_WEIRD_1_TEXT = 'reduce to your WEIRD stat by 1';
+export const ADD_CHANGE_PLAYBOOK_TEXT_1 = 'change your playbook. You will lose your';
+export const ADD_CHANGE_PLAYBOOK_TEXT_2 =
+  "your default moves and your gear. You'll also lose your base stats, but you'll keep any stat bonus you might have. And you'll keep everything else, and will be able to add everything from a new playbook";
+export const REMOVE_CHANGE_PLAYBOOK_TEXT = "have no effect. You can't un-change a playbook";
+export const ADD_DIE_TEXT_1 = 'mark';
+export const ADD_DIE_TEXT_2 = 'as dead';
+export const REMOVE_DIE_TEXT_1 = 'bring';
+export const REMOVE_DIE_TEXT_2 = 'back to life!';
+
+// ----------------------------------------------- HX BOX --------------------------------------------- //
+export const HX_RESET_TEXT = 'Hx reset, experience added';
+
+// ----------------------------------------------- BARTER BOX --------------------------------------------- //
+export const BARTER_TEXT = 'Barter';
+
+// ----------------------------------------------- ANGEL KIT BOX --------------------------------------------- //
+export const ANGEL_KIT_TEXT = 'Angel kit';
+export const STOCK_TEXT = 'Stock';
+export const SUPPLIER_TEXT = 'Supplier';
+
+// ----------------------------------------------- STABILIZE DIALOG --------------------------------------------- //
+export const HOW_MUCH_STOCK_TEXT = 'How much stock do you use?';
+export const CURRENT_STOCK_1_TEXT = 'You currently have';
+export const CURRENT_STOCK_2_TEXT = 'stock';

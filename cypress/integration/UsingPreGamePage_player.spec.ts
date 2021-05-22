@@ -49,5 +49,3 @@ describe('Using the PreGamePage as a player', () => {
     });
   });
 });
-
-export default {};

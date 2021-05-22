@@ -13,6 +13,7 @@ import PERFORM_ANGEL_SPECIAL_MOVE, {
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { APPLY_TEXT, CANCEL_TEXT, WITH_WHO_QUESTION } from '../../config/constants';
 
 interface AngelSpecialDialogProps {
   move: Move | CharacterMove;
@@ -68,13 +69,13 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({ move, handleClose }) 
 
   return (
     <DialogWrapper background={angelSpecialBackground} handleClose={handleClose}>
-      <Box gap="12px">
+      <Box data-testid="angel-special-dialog" gap="12px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
         </HeadingWS>
         <StyledMarkdown>{move.description}</StyledMarkdown>
         <Box fill align="start" justify="start">
-          <ParagraphWS alignSelf="start">Who did you have sex with?</ParagraphWS>
+          <ParagraphWS alignSelf="start">{WITH_WHO_QUESTION}</ParagraphWS>
           <Select
             id="target-character-input"
             aria-label="target-character-input"
@@ -88,7 +89,7 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({ move, handleClose }) 
         </Box>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
@@ -96,7 +97,7 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({ move, handleClose }) 
             onClick={handleClose}
           />
           <ButtonWS
-            label="APPLY"
+            label={APPLY_TEXT}
             primary
             onClick={() => !performingAngelSpecialMove && !!otherCharacterId && handleAngelSpecialMove()}
             disabled={performingAngelSpecialMove || !otherCharacterId}

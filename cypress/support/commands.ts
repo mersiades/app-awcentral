@@ -80,7 +80,7 @@ Cypress.Commands.add('resetDb', () => {
     if (body.data.resetDb.successMessage) {
       console.info('Test database has been reset');
     }
-    cy.wait(1000);
+    // cy.wait(1000);
   });
 });
 
@@ -220,5 +220,11 @@ Cypress.Commands.add('deleteKeycloakUser', (email: string) => {
         Authorization: `Bearer ${Cypress.env('access_token')}`,
       },
     });
+  });
+});
+
+Cypress.Commands.add('openPlaybookPanel', () => {
+  cy.get('div[role="tablist"]').within(() => {
+    cy.contains('Playbook').click();
   });
 });

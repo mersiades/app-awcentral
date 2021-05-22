@@ -37,7 +37,7 @@ const MoveMessage: FC<MoveMessageProps> = ({ children, message, messagesLength, 
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
   return (
-    <>
+    <div data-testid={`${message.title}-message`}>
       <Box direction="row" justify="between" align="center">
         <Box direction="row" align="center" justify="between">
           {showDetails ? (
@@ -60,7 +60,7 @@ const MoveMessage: FC<MoveMessageProps> = ({ children, message, messagesLength, 
         <TextWS color="neutral-1">{date}</TextWS>
       </Box>
       {showDetails && <Box animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>{children}</Box>}
-    </>
+    </div>
   );
 };
 export default MoveMessage;

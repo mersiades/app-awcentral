@@ -11,14 +11,16 @@ import {
   angel_sara_1_hxstat_4,
 } from '../hxStats/angel_sara_1_hxstats';
 import { mockLookAngel1, mockLookAngel2, mockLookAngel3, mockLookAngel4, mockLookAngel5 } from '../looks/angelLooks';
+import { mockSixthSense, mockHealingTouch, mockAngelSpecial } from '../characterMoves/angelCharacterMoves';
+import { angel_sara_1_playbookUnique } from '../playbookUniques/angelPlaybookUniques';
 
-// Belongs on mock game 1
+// Belongs on mock game 1 & 7
 // Freshly-created character, complete
 const angel_sara_1_complete: Character = {
   id: 'angel-character-1-id',
   name: 'Doc',
   playbook: PlaybookType.angel,
-  playbookUniques: mockPlaybookUniqueAngel,
+  playbookUniques: angel_sara_1_playbookUnique,
   hasCompletedCharacterCreation: true,
   hasPlusOneForward: true,
   barter: 2,
@@ -37,7 +39,7 @@ const angel_sara_1_complete: Character = {
   hxBlock: [angel_sara_1_hxstat_1, angel_sara_1_hxstat_2, angel_sara_1_hxstat_3, angel_sara_1_hxstat_4],
   gear: ['Shotgun', 'Rusty screwdriver'],
   looks: [mockLookAngel1, mockLookAngel2, mockLookAngel3, mockLookAngel4, mockLookAngel5],
-  characterMoves: [mockAngelSpecialCM, mockSixthSenseCM, mockInfirmaryCM],
+  characterMoves: [mockSixthSense, mockHealingTouch, mockAngelSpecial],
   improvementMoves: [],
   futureImprovementMoves: [],
   deathMoves: [],

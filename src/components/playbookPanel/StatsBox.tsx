@@ -12,6 +12,7 @@ import TOGGLE_STAT_HIGHLIGHT, {
   getToggleStatHighlightOR,
 } from '../../mutations/toggleStatHighlight';
 import Spinner from '../Spinner';
+import { STATS_TITLE } from '../../config/constants';
 
 interface StatsBoxProps {
   navigateToCharacterCreation?: (step: string) => void;
@@ -41,7 +42,12 @@ const StatsBox: FC<StatsBoxProps> = ({ navigateToCharacterCreation }) => {
   };
 
   return (
-    <CollapsiblePanelBox open title="Stats" navigateToCharacterCreation={navigateToCharacterCreation} targetCreationStep="4">
+    <CollapsiblePanelBox
+      open
+      title={STATS_TITLE}
+      navigateToCharacterCreation={navigateToCharacterCreation}
+      targetCreationStep="4"
+    >
       <Box
         fill="horizontal"
         direction="row"

@@ -32,6 +32,7 @@ const CollapsiblePanelBox: FC<CollapsiblePanelBoxProps> = ({
 
   return (
     <Box
+      data-testid={`${title}-box`}
       fill="horizontal"
       align="center"
       justify="start"

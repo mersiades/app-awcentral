@@ -13,6 +13,7 @@ import ADJUST_CHARACTER_HX, {
 } from '../../mutations/adjustCharacterHx';
 import { useGame } from '../../contexts/gameContext';
 import { HxInput } from '../../@types';
+import { HX_RESET_TEXT, HX_TITLE } from '../../config/constants';
 
 interface HxBoxProps {
   navigateToCharacterCreation?: (step: string) => void;
@@ -38,7 +39,7 @@ const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
           optimisticResponse: getAdjustCharacterHxOR(character, hxInput),
         });
         if (hxInput.hxValue >= 4 || hxInput.hxValue <= -3) {
-          setHxMessage('Hx reset, experience added');
+          setHxMessage(HX_RESET_TEXT);
         }
       } catch (error) {
         console.error(error);
@@ -64,7 +65,7 @@ const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
   return (
     <CollapsiblePanelBox
       open
-      title="Hx"
+      title={HX_TITLE}
       navigateToCharacterCreation={navigateToCharacterCreation}
       targetCreationStep="10"
       message={hxMessage}

@@ -15,6 +15,7 @@ import SET_CHARACTER_BARTER, {
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { PlaybookType } from '../../@types/enums';
+import { BARTER_TEXT } from '../../config/constants';
 
 const BarterBox: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -59,11 +60,17 @@ const BarterBox: FC = () => {
   };
 
   return (
-    <Box fill="horizontal" align="center" justify="start" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.25)' }}>
+    <Box
+      data-testid="Barter-box"
+      fill="horizontal"
+      align="center"
+      justify="start"
+      style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.25)' }}
+    >
       <Box fill="horizontal" direction="row" justify="between" align="center" pad={{ vertical: '12px' }}>
         <Box direction="row" align="center" gap="12px" pad={{ vertical: '12px' }}>
           <HeadingWS crustReady={crustReady} level="3" margin="0px">
-            Barter
+            {BARTER_TEXT}
           </HeadingWS>
         </Box>
         <Box direction="row" align="center" gap="12px">

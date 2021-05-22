@@ -14,6 +14,7 @@ import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import { StyledMarkdown } from '../styledComponents';
 import SingleRedBox from '../SingleRedBox';
+import { ANGEL_KIT_TEXT, STOCK_TEXT, SUPPLIER_TEXT } from '../../config/constants';
 
 interface AngelKitBoxProps {
   angelKit: AngelKit;
@@ -72,7 +73,7 @@ const AngelKitBox: FC<AngelKitBoxProps> = ({ angelKit, navigateToCharacterCreati
   return (
     <CollapsiblePanelBox
       open
-      title="Angel kit"
+      title={ANGEL_KIT_TEXT}
       navigateToCharacterCreation={navigateToCharacterCreation}
       targetCreationStep="6"
     >
@@ -83,12 +84,12 @@ const AngelKitBox: FC<AngelKitBoxProps> = ({ angelKit, navigateToCharacterCreati
             <Box align="start" justify="start" gap="12px" margin={{ left: '12px' }}>
               <SingleRedBox
                 value={angelKit.stock.toString()}
-                label="Stock"
+                label={STOCK_TEXT}
                 loading={settingAngelKit}
                 onIncrease={() => handleSetAngelKit(angelKit.stock + 1, angelKit.hasSupplier)}
                 onDecrease={() => handleSetAngelKit(angelKit.stock - 1, angelKit.hasSupplier)}
               />
-              <SingleRedBox value={angelKit.hasSupplier ? 'Yes' : 'No'} label="Supplier" loading={settingAngelKit} />
+              <SingleRedBox value={angelKit.hasSupplier ? 'Yes' : 'No'} label={SUPPLIER_TEXT} loading={settingAngelKit} />
             </Box>
           </Box>
         </Box>

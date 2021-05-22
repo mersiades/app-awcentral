@@ -145,6 +145,7 @@ export interface RollModifier {
   id: string;
   movesToModify: Move[];
   statToRollWith: StatType;
+  __typename?: 'RollModifier';
 }
 
 export interface StatModifier {
