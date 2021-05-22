@@ -15,7 +15,7 @@ describe('Rendering MCPage', () => {
     customRenderForComponent(<MCPage />, {
       isAuthenticated: true,
       apolloMocks: [mockAllMoves],
-      injectedGame: mockGame7,
+      injectedGame: { ...mockGame7, hasFinishedPreGame: true, showFirstSession: false },
       injectedUserId: mockKeycloakUserInfo1.sub,
     });
   });
@@ -34,7 +34,6 @@ describe('Rendering MCPage', () => {
       }
     });
     screen.getByRole('button', { name: 'Threat map' });
-    screen.getByRole('button', { name: 'Pre-game' });
     screen.getByRole('tab', { name: 'Game' });
     screen.getByRole('tab', { name: 'MC' });
     screen.getByRole('tab', { name: 'Threats' });
@@ -91,7 +90,7 @@ describe('Rendering MCPage', () => {
     customRenderForComponent(<MCPage />, {
       isAuthenticated: true,
       apolloMocks: [mockAllMoves],
-      injectedGame: { ...mockGame7, invitees: ['john@email.com'] },
+      injectedGame: { ...mockGame7, hasFinishedPreGame: true, showFirstSession: false, invitees: ['john@email.com'] },
       injectedUserId: mockKeycloakUserInfo1.sub,
     });
     await screen.findByRole('tab', { name: 'Moves' });

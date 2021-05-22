@@ -6,5 +6,25 @@
     "auth_client_id": "app-awcentral"
   },
   "chromeWebSecurity": false,
-  "video": false
+  "video": false,
+  "retries": {
+    "runMode": 3,
+    "openMode": 0
+  },
+  "testFiles": [
+    "Registering.spec.ts",
+    "LoggingIn.spec.ts",
+    "UsingMenuPage.spec.ts",
+    "CreatingGame.spec.ts",
+    "JoiningGame.spec.ts",
+    "CreatingCharacter_Angel.spec.ts",
+    "CreatingCharacter_Battlebabe.spec.ts",
+    "CreatingCharacter_Brainer.spec.ts",
+    "CreatingCharacter_Chopper.spec.ts",
+    "CreatingCharacter_Driver.spec.ts",
+    "CreatingCharacter_Gunlugger.spec.ts",
+    "UsingPreGamePage_player.spec.ts",
+    "UsingPreGamePage_MC.spec.ts",
+    "UsingPlaybookPanel_Angel.spec.ts"
+  ]
 }

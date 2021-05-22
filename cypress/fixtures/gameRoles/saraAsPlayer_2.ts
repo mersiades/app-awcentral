@@ -1,6 +1,6 @@
 import { GameRole } from '../../../src/@types/dataInterfaces';
 import { RoleType } from '../../../src/@types/enums';
-import angel_sara_1_complete from '../characters/angel_sara_1_complete';
+import angel_sara_2_complete from '../characters/angel_sara_2_complete';
 import { MOCK_GAME_6_ID, MOCK_GAME_6_NAME } from '../games/game6';
 import sara from '../users/sara';
 
@@ -13,7 +13,7 @@ const saraAsPlayer_2: GameRole = {
   userId: sara.id as string,
   gameId: MOCK_GAME_6_ID,
   gameName: MOCK_GAME_6_NAME,
-  characters: [angel_sara_1_complete],
+  characters: [angel_sara_2_complete],
   npcs: [],
   threats: [],
 };

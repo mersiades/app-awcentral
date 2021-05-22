@@ -25,6 +25,7 @@ import HocusSpecialDialog from '../components/dialogs/HocusSpecialDialog';
 import SkinnerSpecialDialog from '../components/dialogs/SkinnerSpecialDialog';
 import JustGiveMotiveDialog from '../components/dialogs/JustGiveMotiveDialog';
 import VHarmDialog from '../components/dialogs/VHarmDialog';
+import GoToPreGameDialog from '../components/dialogs/GoToPreGameDialog';
 import RipSign from '../components/RipSign';
 import ScriptChange from '../components/ScriptChange';
 import { Footer, MainContainer, SidePanel } from '../components/styledComponents';
@@ -88,6 +89,7 @@ const PlayerPage: FC = () => {
   const [sidePanel, setSidePanel] = useState<number>(2);
   const [character, setCharacter] = useState<Character | undefined>();
   const [dialog, setDialog] = useState<Move | CharacterMove | undefined>();
+  const [showGoToPreGameDialog, setShowGoToPreGameDialog] = useState(false);
 
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
   const history = useHistory();
@@ -140,12 +142,20 @@ const PlayerPage: FC = () => {
     }
   }, [userGameRole]);
 
+  // Show GoToPreGameDialog if game hasn't finished pre-game
+  useEffect(() => {
+    if (!!game && !game.hasFinishedPreGame) {
+      setShowGoToPreGameDialog(true);
+    }
+  }, [game, game?.hasFinishedPreGame]);
+
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 
   return (
     <Box fill background={background}>
       <GameNavbar isMc={false} />
       {character?.isDead && <RipSign />}
+      {showGoToPreGameDialog && <GoToPreGameDialog handleClose={() => setShowGoToPreGameDialog(false)} />}
       {dialog?.moveAction?.rollType === RollType.harm && (
         <HarmDialog move={dialog} handleClose={() => setDialog(undefined)} />
       )}

@@ -84,6 +84,9 @@ describe('Creating a new Angel Character', () => {
     cy.contains('SELECT Angel').click(); // SELECT ANGEL
 
     // ------------------------------------------ CharacterNameForm ------------------------------------------ //
+    const angelName = 'Diana';
+    const angelNameUC = angelName.toUpperCase();
+
     // Check form content
     cy.contains('WHAT IS THE ANGEL CALLED?').should('exist');
     cy.get('input[aria-label="name-input"]').as('nameInput');
@@ -110,7 +113,7 @@ describe('Creating a new Angel Character', () => {
       .type('ana')
       .then((input) => {
         // @ts-ignore
-        expect(input[0].value).to.equal('Diana');
+        expect(input[0].value).to.equal(angelName);
       });
 
     // Submit form
@@ -127,7 +130,7 @@ describe('Creating a new Angel Character', () => {
     cy.contains('BODY').should('exist');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="name-box"]').should('contain', NAME_TITLE).should('contain', 'Diana');
+    cy.get('div[data-testid="name-box"]').should('contain', NAME_TITLE).should('contain', angelName);
 
     // Check form functionality
     cy.contains('man').click();
@@ -165,18 +168,8 @@ describe('Creating a new Angel Character', () => {
 
     // Should automatically progress
     // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
-    // Check form content
-    cy.contains("WHAT ARE DIANA'S STRENGTHS AND WEAKNESSES").should('exist');
     cy.contains(CHOOSE_STAT_SET_TEXT).should('exist');
-
-    // Check CharacterCreationStepper
-    // Should be no change
-
-    // Check form functionality
-    cy.get('div[data-testid="stats-option-box-0"]').click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
+    cy.setCharacterStat(angelNameUC);
 
     // ------------------------------------------ CharacterGearForm ------------------------------------------ //
     const angelClothes = 'disheveled paramedic uniform';

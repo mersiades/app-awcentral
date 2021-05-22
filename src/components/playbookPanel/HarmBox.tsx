@@ -14,6 +14,7 @@ import SET_CHARACTER_HARM, {
   SetCharacterHarmVars,
 } from '../../mutations/setCharacterHarm';
 import DeathMovesBox from './DeathMovesBox';
+import { HARM_TITLE, STABILIZED_TEXT } from '../../config/constants';
 
 const HarmBox: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -58,7 +59,7 @@ const HarmBox: FC = () => {
 
   // ------------------------------------------------------- Render -------------------------------------------------------- //
   return (
-    <CollapsiblePanelBox open title="Harm">
+    <CollapsiblePanelBox open title={HARM_TITLE}>
       <Box
         fill="horizontal"
         direction="row"
@@ -126,7 +127,7 @@ const HarmBox: FC = () => {
             <Box gap="12px">
               <Box>
                 <CheckBox
-                  label="Stabilized"
+                  label={STABILIZED_TEXT}
                   checked={harm.isStabilized}
                   onClick={() => !settingHarm && handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })}
                 />

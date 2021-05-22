@@ -13,6 +13,7 @@ import InvitationForm from '../components/InvitationForm';
 import GameForm from '../components/GameForm';
 import WarningDialog from '../components/dialogs/WarningDialog';
 import FirstSessionDialog from '../components/dialogs/FirstSessionDialog';
+import GoToPreGameDialog from '../components/dialogs/GoToPreGameDialog';
 import ScriptChange from '../components/ScriptChange';
 import {
   Footer,
@@ -76,6 +77,7 @@ const MCPage: FC = () => {
   const [sidePanel, setSidePanel] = useState<number>(0);
   const [leftPanel, setLeftPanel] = useState<LeftPanelState>({ type: 'MESSAGES' });
   const [showDeleteGameDialog, setShowDeleteGameDialog] = useState(false);
+  const [showGoToPreGameDialog, setShowGoToPreGameDialog] = useState(false);
 
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
 
@@ -126,6 +128,13 @@ const MCPage: FC = () => {
     }
   }, [gameId, userId, setGameContext]);
 
+  // Show GoToPreGameDialog if game hasn't finished pre-game
+  useEffect(() => {
+    if (!!game && !game.hasFinishedPreGame) {
+      setShowGoToPreGameDialog(true);
+    }
+  }, [game, game?.hasFinishedPreGame]);
+
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 
   const renderLeftPanel = () => {
@@ -158,6 +167,7 @@ const MCPage: FC = () => {
           handleConfirm={handleDeleteGame}
         />
       )}
+      {showGoToPreGameDialog && <GoToPreGameDialog handleClose={() => setShowGoToPreGameDialog(false)} />}
       <GameNavbar isMc={true} />
       <div data-testid="mc-page">
         <Collapsible direction="horizontal" open={sidePanel < 3}>

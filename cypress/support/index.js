@@ -21,3 +21,9 @@ import './commands';
 
 import 'cypress-graphql-mock-network';
 import '@cypress/code-coverage/support';
+
+before(() => {
+  cy.getToken().then(() => {
+    cy.resetDb();
+  });
+});

@@ -11,9 +11,7 @@ import DEATH_MOVES, { DeathMovesData } from '../../queries/deathMoves';
 import SET_DEATH_MOVES, { getSetDeathMovesOR, SetDeathMovesData, SetDeathMovesVars } from '../../mutations/setDeathMoves';
 import { useGame } from '../../contexts/gameContext';
 import { Move } from '../../@types/staticDataInterfaces';
-import { DEATH_CHANGE_PLAYBOOK_NAME } from '../../config/constants';
-
-export const LIFE_UNTENABLE_INSTRUCTIONS = 'When life becomes untenable:';
+import { DEATH_CHANGE_PLAYBOOK_NAME, LIFE_UNTENABLE_INSTRUCTIONS } from '../../config/constants';
 
 const DeathMovesBox = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //

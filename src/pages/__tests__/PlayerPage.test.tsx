@@ -25,7 +25,7 @@ const mockGameQuery: MockedResponse<GameData> = {
   },
   result: {
     data: {
-      game: mockGame7,
+      game: { ...mockGame7, hasFinishedPreGame: true, showFirstSession: false },
     },
   },
 };
@@ -45,7 +45,7 @@ describe('Rendering PlayerPage', () => {
     customRenderForComponent(<PlayerPage />, {
       isAuthenticated: true,
       apolloMocks: [mockAllMoves, mockPlaybook],
-      injectedGame: mockGame7,
+      injectedGame: { ...mockGame7, hasFinishedPreGame: true, showFirstSession: false },
       injectedUserId: mockKeycloakUserInfo1.sub,
     });
     await waitOneTick();
@@ -78,7 +78,7 @@ describe('Rendering PlayerPage', () => {
     });
 
     await waitOneTick();
-    const scriptChangeIcon = screen.getByRole('img', { name: 'Script Change icon' });
+    const scriptChangeIcon = screen.getByRole('img', { name: 'script-change-button' });
     userEvent.click(scriptChangeIcon);
     expect(screen.getByRole('heading', { name: SCRIPT_CHANGE_TITLE })).toBeInTheDocument();
 

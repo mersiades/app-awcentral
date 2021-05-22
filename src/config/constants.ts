@@ -12,6 +12,7 @@ export const ANGEL_SPECIAL_NAME = 'ANGEL SPECIAL';
 export const BATTLEBABE_SPECIAL_NAME = 'BATTLEBABE SPECIAL';
 export const BRAINER_SPECIAL_NAME = 'BRAINER SPECIAL';
 export const CHOPPER_SPECIAL_NAME = 'CHOPPER SPECIAL';
+export const DRIVER_SPECIAL_NAME = 'DRIVER SPECIAL';
 export const GUNLUGGER_SPECIAL_NAME = 'GUNLUGGER SPECIAL';
 export const HARDHOLDER_SPECIAL_NAME = 'HARDHOLDER SPECIAL';
 export const HOCUS_SPECIAL_NAME = 'HOCUS SPECIAL';
@@ -30,6 +31,7 @@ export const GO_AGGRO_NAME = 'GO AGGRO ON SOMEONE';
 export const SUCKER_SOMEONE_NAME = 'SUCKER SOMEONE';
 export const CAT_OR_MOUSE_NAME = 'CAT OR MOUSE';
 export const REPUTATION_NAME = 'REPUTATION';
+export const COMBAT_DRIVER_NAME = 'COMBAT DRIVER';
 export const BOARD_VEHICLE_NAME = 'BOARD A MOVING VEHICLE';
 export const OUTDISTANCE_VEHICLE_NAME = 'OUTDISTANCE ANOTHER VEHICLE';
 export const OVERTAKE_VEHICLE_NAME = 'OVERTAKE ANOTHER VEHICLE';
@@ -47,6 +49,10 @@ export const SIXTH_SENSE_NAME = 'SIXTH SENSE';
 export const INFIRMARY_NAME = 'INFIRMARY';
 export const ICE_COLD_NAME = 'ICE COLD';
 export const BRAIN_RECEPTIVITY_NAME = 'CASUAL BRAIN RECEPTIVITY';
+export const FUCKING_THIEVES_NAME = 'FUCKING THIEVES';
+export const BATTLE_HARDENED_NAME = 'BATTLE-HARDENED';
+export const FUCK_THIS_SHIT_NAME = 'FUCK THIS SHIT';
+export const BATTLEFIELD_INSTINCTS_NAME = 'BATTLEFIELD INSTINCTS';
 
 // IMPROVE_STAT move names
 export const SHARP_2_MAX_NAME = 'SHARP MAX 2';
@@ -213,6 +219,11 @@ export const CREATE_GAME_TEXT = 'CREATE GAME';
 export const PASS_TEXT = 'PASS';
 export const ADD_VEHICLE_TEXT = 'ADD VEHICLE';
 export const START_GAME_TEXT = 'START GAME';
+export const YES_TEXT = 'YES';
+export const NO_TEXT = 'NO';
+export const APPLY_TEXT = 'APPLY';
+export const DO_IT_TEXT = 'DO IT';
+export const STABILIZE_TEXT = 'STABILIZE';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -226,11 +237,10 @@ export const VEHICLES_TITLE = 'Vehicles';
 export const BATTLE_VEHICLES_TITLE = 'Battle Vehicles';
 export const HX_TITLE = 'Hx';
 
-export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
+export const IMPROVE_DRIVER_FOR_WORKSPACE_TEXT = 'Improve Driver to get workspace';
+
 export const START_PLAY_WITH_VEHICLE_TEXT = 'If you’d like to start play with a vehicle, get with the MC.';
 
-export const GIVE_VEHICLE_NAME_TEXT = 'Give your vehicle a name';
-export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT = '(make/model, nickname, whatever)';
 export const START_PLAY_WITH_BATTLE_VEHICLE_TEXT = 'If you’d like to start play with a battle vehicle, get with the MC.';
 
 export const INCREASED_BY_IMPROVEMENT_TEXT = '(increased by improvement)';
@@ -273,6 +283,9 @@ export const OPTIONS_TITLE = 'Options';
 export const DEFAULT_MOVES_TITLE = 'Default moves';
 
 export const HX_VALIDATION_TEXT = 'Enter digits from -2 to 3';
+
+export const PRE_GAME_INCOMPLETE_TITLE = 'Game not started';
+export const PRE_GAME_INCOMPLETE_TEXT_MC = 'Pre-game stage is not complete. Go to pre-game page?';
 
 // ----------------------------------------------- SCRIPT CHANGE --------------------------------------------- //
 export const SCRIPT_CHANGE_TITLE = 'Script Change';
@@ -322,3 +335,57 @@ export const PRE_GAME_SCRIPT_CHANGE_MC_INSTRUCTIONS =
   'During character creation and world-building (ie, now) is a good time to tell your players about Script Change.';
 export const PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS =
   'Once all the characters are created, your MC will start the game.';
+
+// ----------------------------------------------- VEHICLE FORM --------------------------------------------- //
+export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
+export const GIVE_VEHICLE_NAME_TEXT = 'Give your vehicle a name';
+export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT = '(make/model, nickname, whatever)';
+export const STRENGTHS_TEXT = 'Strengths';
+export const WEAKNESSES_TEXT = 'Weaknesses';
+export const LOOKS_TEXT = 'Looks';
+export const BATTLE_OPTIONS_TEXT = 'Battle options';
+export const CHOOSE_1_OR_2_TEXT = 'choose 1 or 2';
+
+// ----------------------------------------------- WEAPONS FORM --------------------------------------------- //
+export const BIG_GUNS_TEXT = 'Fuck-off big guns';
+export const SERIOUS_GUNS_TEXT = 'Serious guns';
+export const BACKUP_WEAPONS_TEXT = 'Backup weapons';
+
+// ----------------------------------------------- ANGEL SPECIAL DIALOG --------------------------------------------- //
+export const WITH_WHO_QUESTION = 'Who did you have sex with?';
+
+// ----------------------------------------------- HARM BOX --------------------------------------------- //
+export const HARM_TITLE = 'Harm';
+export const STABILIZED_TEXT = 'Stabilized';
+export const LIFE_UNTENABLE_INSTRUCTIONS = 'When life becomes untenable:';
+
+// ----------------------------------------------- DEATH DIALOG --------------------------------------------- //
+export const MAKE_CHANGE_TEXT = 'Make this change?';
+export const ADD_HARD_MINUS_1_TEXT = 'reduce your HARD stat by 1';
+export const REMOVE_HARD_MINUS_1_TEXT = 'increase your HARD stat by 1';
+export const ADD_WEIRD_1_TEXT = 'increase your WEIRD stat by 1';
+export const REMOVE_WEIRD_1_TEXT = 'reduce to your WEIRD stat by 1';
+export const ADD_CHANGE_PLAYBOOK_TEXT_1 = 'change your playbook. You will lose your';
+export const ADD_CHANGE_PLAYBOOK_TEXT_2 =
+  "your default moves and your gear. You'll also lose your base stats, but you'll keep any stat bonus you might have. And you'll keep everything else, and will be able to add everything from a new playbook";
+export const REMOVE_CHANGE_PLAYBOOK_TEXT = "have no effect. You can't un-change a playbook";
+export const ADD_DIE_TEXT_1 = 'mark';
+export const ADD_DIE_TEXT_2 = 'as dead';
+export const REMOVE_DIE_TEXT_1 = 'bring';
+export const REMOVE_DIE_TEXT_2 = 'back to life!';
+
+// ----------------------------------------------- HX BOX --------------------------------------------- //
+export const HX_RESET_TEXT = 'Hx reset, experience added';
+
+// ----------------------------------------------- BARTER BOX --------------------------------------------- //
+export const BARTER_TEXT = 'Barter';
+
+// ----------------------------------------------- ANGEL KIT BOX --------------------------------------------- //
+export const ANGEL_KIT_TEXT = 'Angel kit';
+export const STOCK_TEXT = 'Stock';
+export const SUPPLIER_TEXT = 'Supplier';
+
+// ----------------------------------------------- STABILIZE DIALOG --------------------------------------------- //
+export const HOW_MUCH_STOCK_TEXT = 'How much stock do you use?';
+export const CURRENT_STOCK_1_TEXT = 'You currently have';
+export const CURRENT_STOCK_2_TEXT = 'stock';

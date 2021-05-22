@@ -1,13 +1,8 @@
 import {
-  ADD_TEXT,
   BRAINER_SPECIAL_NAME,
   BRAINSCAN_NAME,
   BRAIN_RECEPTIVITY_NAME,
   GEAR_TITLE,
-  LOOKS_TITLE,
-  NAME_TITLE,
-  NEW_GAME_TEXT,
-  NEXT_TEXT,
   PLAYBOOK_TITLE,
   SET_TEXT,
   STATS_TITLE,
@@ -26,40 +21,25 @@ describe('Creating a new Brainer Character', () => {
 
   it('should create a Brainer and stop at VehicleForm', () => {
     // ------------------------------------------ NewGameIntro ------------------------------------------ //
-    // Check form content
-    cy.contains(NEW_GAME_TEXT).should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="playbook-box"]').should('contain', PLAYBOOK_TITLE).should('contain', '...');
-
-    // Go to next
-    cy.contains(NEXT_TEXT).click();
+    cy.moveThroughNewGameIntro();
 
     // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
 
-    // Check form functionality
-    cy.get('div[data-testid="brainer-button"]').click();
-    cy.contains('SELECT Brainer').click(); // SELECT BRAINER
+    cy.selectPlaybook(PlaybookType.brainer);
 
     // ------------------------------------------ CharacterNameForm ------------------------------------------ //
     const brainerName = 'Smith';
     const brainerNameUC = brainerName.toUpperCase();
+
     // Check form content
     cy.contains('WHAT IS THE BRAINER CALLED?').should('exist');
-    cy.get('input[aria-label="name-input"]').as('nameInput');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="playbook-box"]')
       .should('contain', PLAYBOOK_TITLE)
       .should('contain', decapitalize(PlaybookType.brainer));
 
-    // Check form functionality
-    cy.contains(brainerName).click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
-    cy.get('div[data-testid="spinner"]').should('exist');
-    cy.get('div[data-testid="spinner"]').should('not.exist');
+    cy.setCharacterName(brainerName);
 
     // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
     const gender = 'concealed';
@@ -67,66 +47,22 @@ describe('Creating a new Brainer Character', () => {
     const face = 'scarred face';
     const eyes = 'soft eyes';
     const body = 'soft body';
-    // Check form content
-    cy.contains(`WHAT DOES ${brainerNameUC} LOOK LIKE?`).should('exist');
 
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="name-box"]').should('contain', NAME_TITLE).should('contain', brainerName);
+    cy.completeLooksForm(brainerNameUC, brainerName, gender, clothes, face, eyes, body);
 
-    // Check form functionality
-    cy.contains(gender).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE).should('contain', gender);
-
-    cy.contains(clothes).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', clothes);
-
-    cy.contains(face).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', face);
-
-    cy.contains(eyes).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', eyes);
-
-    cy.contains(body).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', body);
-
-    // Should automatically progress
     // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
-    // Check form content
-    cy.contains(`WHAT ARE ${brainerNameUC}'S STRENGTHS AND WEAKNESSES`).should('exist');
-
-    // Check form functionality
-    cy.get('div[data-testid="stats-option-box-1"]').click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
+    cy.setCharacterStat(brainerNameUC);
 
     // ------------------------------------------ CharacterGearForm ------------------------------------------ //
     const brainerClothes = 'toga robes';
     const brainerWeapon = 'silenced 9mm (2-harm close hi-tech)';
-
-    // Check form content
-    cy.contains(`WHAT IS ${brainerNameUC}'S GEAR`).should('exist');
-    cy.contains(ADD_TEXT).as('addButton');
-    cy.get('ul[aria-label="interim-gear-list"]').as('interimGearList');
-    cy.get('textarea[aria-label="item-input"]').as('itemInput');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
     cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
     cy.get('div[data-testid="brainer-gear-box"]').should('contain', decapitalize(UniqueTypes.brainerGear));
 
-    // Check form functionality
-    cy.get('@itemInput').type(brainerClothes);
-
-    cy.get('@addButton').click();
-    cy.get('@interimGearList').should('contain', brainerClothes);
-
-    cy.contains(brainerWeapon).click();
-    cy.get('@addButton').click();
-    cy.get('@interimGearList').should('contain', brainerWeapon);
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
+    cy.completeGearForm(brainerNameUC, brainerClothes, [brainerWeapon]);
 
     // ------------------------------------------ BrainerGearForm ------------------------------------------ //
     const option1Text = 'implant syringe (tag hi-tech)';
@@ -189,6 +125,6 @@ describe('Creating a new Brainer Character', () => {
     // Check form content
     cy.contains('VEHICLES').should('exist');
 
-    // Finish test here because remainder of character creation process has ben tested elsewhere
+    // Finish test here because remainder of character creation process has been tested elsewhere
   });
 });

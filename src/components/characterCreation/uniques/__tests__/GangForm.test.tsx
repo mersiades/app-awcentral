@@ -95,9 +95,9 @@ describe('Rendering GangForm', () => {
 
     test('should enable SET button after completing form', async () => {
       let setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
-      const strength1 = screen.getByRole('checkbox', { name: mockGangCreator.strengths[0].description });
-      const strength2 = screen.getByRole('checkbox', { name: mockGangCreator.strengths[1].description });
-      const weakness = screen.getByRole('checkbox', { name: mockGangCreator.weaknesses[0].description });
+      const strength1 = screen.getByRole('checkbox', { name: `option-${mockGangCreator.strengths[0].description}` });
+      const strength2 = screen.getByRole('checkbox', { name: `option-${mockGangCreator.strengths[1].description}` });
+      const weakness = screen.getByRole('checkbox', { name: `option-${mockGangCreator.weaknesses[0].description}` });
       const harmValue = screen.getByRole('heading', { name: 'harm-value' });
       const tagsBox = screen.getByTestId('tags-tags-box');
 

@@ -13,6 +13,13 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StyledMarkdown } from '../styledComponents';
+import {
+  CANCEL_TEXT,
+  CURRENT_STOCK_1_TEXT,
+  CURRENT_STOCK_2_TEXT,
+  HOW_MUCH_STOCK_TEXT,
+  STABILIZE_TEXT,
+} from '../../config/constants';
 
 interface StabilizeDialogProps {
   move: Move | CharacterMove;
@@ -60,14 +67,15 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 
+  console.log(`stockSpent`, stockSpent);
   return (
     <DialogWrapper background={stabilizeBackground} handleClose={handleClose}>
-      <Box gap="12px">
+      <Box gap="12px" overflow="auto">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
         </HeadingWS>
         <StyledMarkdown>{move.description}</StyledMarkdown>
-        <Box direction="row" align="start" justify="start" gap="12px">
+        <Box direction="row" align="start" justify="start" gap="12px" flex="grow">
           <RedBox alignSelf="center" width="150px" align="center" justify="between" pad="24px">
             <FormField>
               <TextInput
@@ -80,13 +88,13 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
             </FormField>
           </RedBox>
           <Box>
-            <ParagraphWS alignSelf="start">{`How much stock do you use?`}</ParagraphWS>
-            <ParagraphWS alignSelf="start">{`You currently have ${currentStock} stock`}</ParagraphWS>
+            <ParagraphWS alignSelf="start">{HOW_MUCH_STOCK_TEXT}</ParagraphWS>
+            <ParagraphWS alignSelf="start">{`${CURRENT_STOCK_1_TEXT} ${currentStock} ${CURRENT_STOCK_2_TEXT}`}</ParagraphWS>
           </Box>
         </Box>
-        <Box fill="horizontal" direction="row" justify="end" gap="small">
+        <Box fill="horizontal" direction="row" justify="end" gap="small" flex="grow">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
@@ -94,7 +102,8 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
             onClick={handleClose}
           />
           <ButtonWS
-            label="STABILIZE"
+            label={STABILIZE_TEXT}
+            name="stabilize-button"
             primary
             onClick={() =>
               [0, 1, 2, 3].includes(stockSpent) && !performingStabilizeAndHealMove && handleStabilizeAndHealMove()

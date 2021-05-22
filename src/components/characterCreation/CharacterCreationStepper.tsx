@@ -19,6 +19,7 @@ import {
   VEHICLES_TITLE,
   BATTLE_VEHICLES_TITLE,
   HX_TITLE,
+  IMPROVE_DRIVER_FOR_WORKSPACE_TEXT,
 } from '../../config/constants';
 
 const NextWithHover = styled(Next as React.FC<IconProps & JSX.IntrinsicElements['svg']>)(() => {
@@ -349,7 +350,7 @@ const CharacterCreationStepper: FC = () => {
       if (character?.playbook === PlaybookType.driver) {
         return (
           <Text color="white" alignSelf="center">
-            Improve Driver to get workspace
+            {IMPROVE_DRIVER_FOR_WORKSPACE_TEXT}
           </Text>
         );
       }

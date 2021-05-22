@@ -22,7 +22,7 @@ For unit test coverage: `yarn test --coverage --watchAll=false`
 
 These tests interact with the backend and the database, so before running the tests you'll need to run `awcentral-api` server with the `cypress` Spring Boot profile.
 
-Many of the E2E tests will require you to restart `awcentral-api` before each test run, to reset the database.
+Cypress sends a request to the graphql server before each test run to reset and reseed the test db. But for that to work on your local machine, you'll need to add a `cypress.env.json` file to the root directory.
 
 To open the Cypress console: `yarn run cypress:open`
 

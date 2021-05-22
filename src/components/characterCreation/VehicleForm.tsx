@@ -14,7 +14,15 @@ import { VehicleInput } from '../../@types';
 import { Vehicle } from '../../@types/dataInterfaces';
 import { VehicleBattleOption, VehicleFrame } from '../../@types/staticDataInterfaces';
 import { useGame } from '../../contexts/gameContext';
-import { GIVE_VEHICLE_NAME_TEXT, GIVE_VEHICLE_NAME_EXAMPLES_TEXT } from '../../config/constants';
+import {
+  GIVE_VEHICLE_NAME_TEXT,
+  GIVE_VEHICLE_NAME_EXAMPLES_TEXT,
+  STRENGTHS_TEXT,
+  CHOOSE_1_OR_2_TEXT,
+  WEAKNESSES_TEXT,
+  LOOKS_TEXT,
+  BATTLE_OPTIONS_TEXT,
+} from '../../config/constants';
 
 interface VehicleTagsBoxProps {
   tags: string[];
@@ -415,7 +423,8 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
       </Box>
       <Box fill="horizontal" justify="between" margin={{ top: '6px' }}>
         <TextWS>
-          <strong>Strengths</strong> (choose 1 or 2):
+          <strong>{STRENGTHS_TEXT}</strong>
+          {` (${CHOOSE_1_OR_2_TEXT}):`}
         </TextWS>
         <Box direction="row" gap="12px">
           <Box direction="row" fill align="start" wrap>
@@ -429,7 +438,8 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
       </Box>
       <Box fill="horizontal" justify="between" margin={{ top: '6px' }}>
         <TextWS>
-          <strong>Weaknesses</strong> (choose 1 or 2):
+          <strong>{WEAKNESSES_TEXT}</strong>
+          {` (${CHOOSE_1_OR_2_TEXT}):`}
         </TextWS>
         <Box direction="row" gap="12px">
           <Box direction="row" fill align="start" wrap>
@@ -443,7 +453,8 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
       </Box>
       <Box fill="horizontal" justify="between" margin={{ top: '6px' }}>
         <TextWS>
-          <strong>Looks</strong> (choose 1 or 2):
+          <strong>{LOOKS_TEXT}</strong>
+          {` (${CHOOSE_1_OR_2_TEXT}):`}
         </TextWS>
         <Box direction="row" gap="12px">
           <Box direction="row" fill align="start" wrap>
@@ -457,7 +468,7 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
       </Box>
       <Box fill="horizontal" justify="between" margin={{ top: '6px' }}>
         <TextWS>
-          <strong>Battle options</strong> (choose {frame.battleOptionCount})
+          <strong>{BATTLE_OPTIONS_TEXT}</strong> (choose {frame.battleOptionCount})
         </TextWS>
         <Box direction="row" justify="between" gap="12px">
           <Box direction="row" fill align="start" wrap>
