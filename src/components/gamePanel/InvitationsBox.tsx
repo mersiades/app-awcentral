@@ -7,6 +7,7 @@ import { ButtonWS, TextWS } from '../../config/grommetConfig';
 import { useGame } from '../../contexts/gameContext';
 import { LeftPanelState } from '../../pages/MCPage';
 import styled, { css } from 'styled-components';
+import { INVITATIONS_TEXT, INVITE_PLAYER_TEXT, NO_PENDING_INVITATIONS_TEXT } from '../../config/constants';
 
 const StyledBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(() => {
   return css`
@@ -31,7 +32,7 @@ const InvitationsBox: FC<InvitationsBoxProps> = ({ handleShowInvitationForm, han
         return (
           <Box direction="row" align="center" alignContent="end" fill margin={{ vertical: 'small' }}>
             <Box align="start" fill>
-              <TextWS>No pending invitations</TextWS>
+              <TextWS>{NO_PENDING_INVITATIONS_TEXT}</TextWS>
             </Box>
           </Box>
         );
@@ -65,7 +66,7 @@ const InvitationsBox: FC<InvitationsBoxProps> = ({ handleShowInvitationForm, han
   };
 
   return (
-    <CollapsiblePanelBox open title="Invitations">
+    <CollapsiblePanelBox open title={INVITATIONS_TEXT}>
       <Box
         data-testid="invitations-box"
         fill="horizontal"
@@ -76,7 +77,7 @@ const InvitationsBox: FC<InvitationsBoxProps> = ({ handleShowInvitationForm, han
       >
         {renderInvitations()}
         <ButtonWS
-          label="INVITE PLAYER"
+          label={INVITE_PLAYER_TEXT}
           primary
           margin={{ top: '12px' }}
           size="large"

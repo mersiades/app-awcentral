@@ -224,6 +224,7 @@ export const NO_TEXT = 'NO';
 export const APPLY_TEXT = 'APPLY';
 export const DO_IT_TEXT = 'DO IT';
 export const STABILIZE_TEXT = 'STABILIZE';
+export const INVITE_PLAYER_TEXT = 'INVITE PLAYER';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -389,3 +390,27 @@ export const SUPPLIER_TEXT = 'Supplier';
 export const HOW_MUCH_STOCK_TEXT = 'How much stock do you use?';
 export const CURRENT_STOCK_1_TEXT = 'You currently have';
 export const CURRENT_STOCK_2_TEXT = 'stock';
+
+// ----------------------------------------------- GAME PANEL --------------------------------------------- //
+export const PLAYERS_TEXT = 'Players';
+export const INVITATIONS_TEXT = 'Invitations';
+export const DELETE_PLAYER_WARNING_TEXT = 'This cannot be undone. Their character will be deleted.';
+export const NO_PLAYER_TEXT = 'No players yet';
+export const WARNING_DIALOG_TITLE = 'Remove player?';
+export const NO_PENDING_INVITATIONS_TEXT = 'No pending invitations';
+
+// ----------------------------------------------- MC PANEL --------------------------------------------- //
+export const CORE_BOX_TITLE = 'The master of ceremonies';
+export const HARM_RULES_TITLE = 'Harm rules';
+export const SELECTED_MC_RULES_TEXT = 'Selected MC rules';
+export const FIRST_SESSION_TEXT = 'First session';
+
+// ----------------------------------------------- THREATS PANEL --------------------------------------------- //
+export const THREATS_TEXT = 'Threats';
+
+// ----------------------------------------------- NPCS PANEL --------------------------------------------- //
+export const NPCS_TEXT = 'NPCs';
+
+// ----------------------------------------------- CHARACTER PREVIEW --------------------------------------------- //
+export const HIGHLIGHTED_STATS_TEXT = 'Highlighted stats';
+export const NO_STATS_HIGHLIGHTED_TEXT = 'No stats highlighted';

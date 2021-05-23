@@ -6,6 +6,7 @@ import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import Spinner from '../Spinner';
 import { TextWS } from '../../config/grommetConfig';
 import { useMcContent } from '../../contexts/mcContentContext';
+import { FIRST_SESSION_TEXT } from '../../config/constants';
 
 const FirstSessionBox = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -13,7 +14,7 @@ const FirstSessionBox = () => {
 
   // ------------------------------------------------- Render component -------------------------------------------------- //
   return (
-    <CollapsiblePanelBox title="First session">
+    <CollapsiblePanelBox title={FIRST_SESSION_TEXT}>
       <Box fill="horizontal" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
         {!!firstSession ? (
           <>

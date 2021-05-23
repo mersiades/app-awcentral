@@ -8,6 +8,13 @@ import { HeadingWS, RedBox } from '../config/grommetConfig';
 import { useFonts } from '../contexts/fontContext';
 import StatBox from './StatBox';
 import { getCharacterNameString } from '../helpers/getCharacterNameString';
+import {
+  BARTER_TEXT,
+  GEAR_TITLE,
+  HIGHLIGHTED_STATS_TEXT,
+  MOVES_TITLE,
+  NO_STATS_HIGHLIGHTED_TEXT,
+} from '../config/constants';
 
 interface CharacterPreviewProps {
   character: Character;
@@ -51,19 +58,19 @@ const CharacterPreview: FC<CharacterPreviewProps> = ({ character, isMc }) => {
           <Box direction="row" justify="between" gap="24px">
             <Box align="center" justify="start" flex="grow">
               <HeadingWS level={4} margin={{ bottom: '6px' }}>
-                Highlighted stats
+                {HIGHLIGHTED_STATS_TEXT}
               </HeadingWS>
               <Box fill direction="row" gap="12px" justify="center">
                 {!!highlightedStats ? (
                   highlightedStats.map((stat) => <StatBox key={stat.id} stat={stat} />)
                 ) : (
-                  <Text>No stats highlighted</Text>
+                  <Text>{NO_STATS_HIGHLIGHTED_TEXT}</Text>
                 )}
               </Box>
             </Box>
             <Box align="center" justify="start" flex="grow">
               <HeadingWS level={4} margin={{ bottom: '6px' }}>
-                Barter
+                {BARTER_TEXT}
               </HeadingWS>
               <RedBox width="50px" align="center">
                 <HeadingWS
@@ -77,7 +84,7 @@ const CharacterPreview: FC<CharacterPreviewProps> = ({ character, isMc }) => {
             </Box>
             <Box align="center" justify="start" flex="grow">
               <HeadingWS level={4} margin={{ bottom: '6px' }}>
-                Moves
+                {MOVES_TITLE}
               </HeadingWS>
               <ul style={{ margin: 0, paddingInlineStart: '28px' }}>
                 {character.characterMoves.map((move) => (
@@ -89,7 +96,7 @@ const CharacterPreview: FC<CharacterPreviewProps> = ({ character, isMc }) => {
 
           <Box align="start" justify="start" flex="grow">
             <HeadingWS level={4} margin={{ bottom: '6px' }}>
-              Gear
+              {GEAR_TITLE}
             </HeadingWS>
             <ul style={{ margin: 0, paddingInlineStart: '28px' }}>
               {character.gear.map((item) => (

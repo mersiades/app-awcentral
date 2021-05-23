@@ -9,9 +9,13 @@ import { useMutation } from '@apollo/client';
 import REMOVE_PLAYER, { getRemovePlayerOR, RemovePlayerData, RemovePlayerVars } from '../../mutations/removePlayer';
 import Spinner from '../Spinner';
 import WarningDialog from '../dialogs/WarningDialog';
-
-export const noPlayerText = 'No players yet';
-export const warningDialogTitle = 'Remove player?';
+import {
+  DELETE_PLAYER_WARNING_TEXT,
+  NO_PLAYER_TEXT,
+  PLAYERS_TEXT,
+  REMOVE_TEXT,
+  WARNING_DIALOG_TITLE,
+} from '../../config/constants';
 
 const PlayersBox: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -43,7 +47,7 @@ const PlayersBox: FC = () => {
       return (
         <Box direction="row" align="center" alignContent="end" fill margin={{ vertical: 'small' }}>
           <Box align="start" fill>
-            <TextWS>{noPlayerText}</TextWS>
+            <TextWS>{NO_PLAYER_TEXT}</TextWS>
           </Box>
         </Box>
       );
@@ -83,14 +87,14 @@ const PlayersBox: FC = () => {
     <>
       {!!showRemovePlayerDialog && (
         <WarningDialog
-          title={warningDialogTitle}
-          text="This cannot be undone. Their character will be deleted."
-          buttonTitle="REMOVE"
+          title={WARNING_DIALOG_TITLE}
+          text={DELETE_PLAYER_WARNING_TEXT}
+          buttonTitle={REMOVE_TEXT}
           handleClose={() => setShowRemovePlayerDialog('')}
           handleConfirm={() => handleRemovePlayer(showRemovePlayerDialog)}
         />
       )}
-      <CollapsiblePanelBox open title="Players">
+      <CollapsiblePanelBox open title={PLAYERS_TEXT}>
         <Box
           fill="horizontal"
           justify="between"

@@ -33,6 +33,7 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
           <Button
             label={character.isDead ? `${character.name} [RIP]` : character.name}
             style={{ backgroundColor: 'transparent', height: '4vh', lineHeight: '16px' }}
+            name={`${character.name?.toLowerCase()}-preview-button`}
           />
         </Tip>
       ))

@@ -214,9 +214,9 @@ const MCPage: FC = () => {
               tab === sidePanel ? setSidePanel(3) : setSidePanel(tab);
             }}
           >
-            <Tab title="Game" />
-            {allMoves && <Tab title="Moves" />}
-            <Tab title="MC" />
+            <Tab title="Game" name="game" />
+            {allMoves && <Tab title="Moves" name="moves" />}
+            <Tab title="MC" name="mc" />
           </Tabs>
 
           {size !== 'small' && (
@@ -239,8 +239,8 @@ const MCPage: FC = () => {
           )}
           <Box direction="row" align="center" gap="12px">
             <Tabs activeIndex={rightPanel} onActive={(tab) => (tab === rightPanel ? setRightPanel(2) : setRightPanel(tab))}>
-              <Tab title="Threats" />
-              <Tab title="NPCs" />
+              <Tab title="Threats" name="threats" />
+              <Tab title="NPCs" name="npcs" />
             </Tabs>
             <ScriptChange />
           </Box>

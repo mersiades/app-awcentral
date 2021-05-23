@@ -25,7 +25,7 @@ const ScriptChangeMessage: FC<ScriptChangeMessageProps> = ({ message, messagesLe
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
   return (
-    <>
+    <div data-testid={`${message.title}-message`}>
       <Box direction="row" justify="between" align="center" background={{ color: accentColors[0] }}>
         <Box direction="row" align="center" justify="between">
           {showDetails ? (
@@ -54,7 +54,7 @@ const ScriptChangeMessage: FC<ScriptChangeMessageProps> = ({ message, messagesLe
           <ScriptChangeAttribution />
         </Box>
       )}
-    </>
+    </div>
   );
 };
 export default ScriptChangeMessage;

@@ -25,6 +25,7 @@
     "CreatingCharacter_Gunlugger.spec.ts",
     "UsingPreGamePage_player.spec.ts",
     "UsingPreGamePage_MC.spec.ts",
-    "UsingPlaybookPanel_Angel.spec.ts"
+    "UsingPlaybookPanel_Angel.spec.ts",
+    "UsingMcPage.spec.ts"
   ]
 }

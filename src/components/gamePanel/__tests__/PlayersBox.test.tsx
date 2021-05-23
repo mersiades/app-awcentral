@@ -1,12 +1,13 @@
 import { MockedResponse } from '@apollo/client/testing';
 import userEvent from '@testing-library/user-event';
 import wait from 'waait';
+import { NO_PLAYER_TEXT, WARNING_DIALOG_TITLE } from '../../../config/constants';
 import REMOVE_PLAYER, { RemovePlayerData } from '../../../mutations/removePlayer';
 import GAME, { GameData } from '../../../queries/game';
 import { mockGame7 } from '../../../tests/mocks';
 import { act, customRenderForComponent, RenderResult } from '../../../tests/test-utils';
 
-import PlayersBox, { noPlayerText, warningDialogTitle } from '../PlayersBox';
+import PlayersBox from '../PlayersBox';
 
 const mockGameQuery: MockedResponse<GameData> = {
   request: {
@@ -68,7 +69,7 @@ describe('Rendering PlayersBox', () => {
     });
 
     test('should render PlayersBox with no players', () => {
-      screen.getByText(noPlayerText);
+      screen.getByText(NO_PLAYER_TEXT);
       screen.getByRole('heading', { name: 'Players' });
     });
   });
@@ -94,19 +95,19 @@ describe('Rendering PlayersBox', () => {
     test('should open and close remove player dialog', () => {
       const removeButton = screen.getByTestId(`${mockGame7.players[0].displayName}-remove-button`);
       userEvent.click(removeButton);
-      screen.getByText(warningDialogTitle);
+      screen.getByText(WARNING_DIALOG_TITLE);
 
       // Close with CANCEL button
       const cancelButton = screen.getByRole('button', { name: 'CANCEL' });
       userEvent.click(cancelButton);
-      expect(screen.queryByText(warningDialogTitle)).not.toBeInTheDocument();
+      expect(screen.queryByText(WARNING_DIALOG_TITLE)).not.toBeInTheDocument();
 
       userEvent.click(removeButton);
-      screen.getByText(warningDialogTitle);
+      screen.getByText(WARNING_DIALOG_TITLE);
 
       // Close by clicking outside of dialog
       userEvent.click(screen.container);
-      expect(screen.queryByText(warningDialogTitle)).not.toBeInTheDocument();
+      expect(screen.queryByText(WARNING_DIALOG_TITLE)).not.toBeInTheDocument();
     });
 
     test('should remove player', async () => {

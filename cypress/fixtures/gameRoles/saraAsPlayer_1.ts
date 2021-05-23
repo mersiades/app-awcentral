@@ -1,6 +1,6 @@
 import { GameRole } from '../../../src/@types/dataInterfaces';
 import { RoleType } from '../../../src/@types/enums';
-import angel_sara_1_complete from '../characters/angel_sara_2_complete';
+import angel_sara_1_complete from '../characters/angel_sara_1_complete';
 import { MOCK_GAME_1_ID, MOCK_GAME_1_NAME } from '../games/game1';
 import sara from '../users/sara';
 

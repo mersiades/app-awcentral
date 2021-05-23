@@ -1,6 +1,7 @@
 import { Box } from 'grommet';
 import React, { useState } from 'react';
 import { Threat } from '../../@types/dataInterfaces';
+import { ADD_TEXT, THREATS_TEXT } from '../../config/constants';
 import { ButtonWS, HeadingWS } from '../../config/grommetConfig';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
@@ -34,9 +35,9 @@ const ThreatsPanel = () => {
         style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.25)' }}
       >
         <HeadingWS crustReady={crustReady} level={3}>
-          Threats
+          {THREATS_TEXT}
         </HeadingWS>
-        <ButtonWS primary label="ADD" onClick={() => setShowThreatDialog({ show: true })} />
+        <ButtonWS primary label={ADD_TEXT} onClick={() => setShowThreatDialog({ show: true })} />
       </Box>
       {!!threats &&
         threats.length > 0 &&
