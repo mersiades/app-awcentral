@@ -3,7 +3,6 @@ import amplitude from 'amplitude-js';
 const appName = process.env.REACT_APP_NAME;
 const appVersion = process.env.REACT_APP_VERSION;
 const amplitudeKey = process.env.REACT_APP_AMPLITUDE_KEY || 'Key unset';
-console.log(`amplitudeKey`, amplitudeKey);
 
 amplitude.getInstance().init(amplitudeKey, undefined, {
   platform: 'Web',

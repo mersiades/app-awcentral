@@ -144,10 +144,10 @@ const PlayerPage: FC = () => {
 
   // Show GoToPreGameDialog if game hasn't finished pre-game
   useEffect(() => {
-    if (!!game && !game.hasFinishedPreGame) {
+    if (!game?.hasFinishedPreGame) {
       setShowGoToPreGameDialog(true);
     }
-  }, [game, game?.hasFinishedPreGame]);
+  }, [game?.hasFinishedPreGame]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 
