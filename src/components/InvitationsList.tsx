@@ -10,6 +10,7 @@ import ADD_USER_TO_GAME, { AddUserToGameData, AddUserToGameVars } from '../mutat
 import { RoleType } from '../@types/enums';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { JOIN_TEXT, NO_INVITATIONS_TEXT } from '../config/constants';
+import { logAmpEvent } from '../config/amplitudeConfig';
 
 interface InvitationsListProps {
   games: GameForInviteeGame[];
@@ -23,6 +24,7 @@ const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
   const handleJoinGame = async (gameId: string) => {
     // @ts-ignore
     await addUserToGame({ variables: { userId, displayName, email, gameId }, skip: !userId });
+    logAmpEvent('join game');
     history.push(`/character-creation/${gameId}`, { role: RoleType.player });
   };
 

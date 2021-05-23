@@ -23,6 +23,7 @@ import {
   LOOKS_TEXT,
   BATTLE_OPTIONS_TEXT,
 } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface VehicleTagsBoxProps {
   tags: string[];
@@ -263,6 +264,7 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
             vehicleInput: omit(vehicleInput, ['__typename']),
           },
         });
+        !character.hasCompletedCharacterCreation && logAmpEvent('set vehicle');
         !!data && navigateOnSet(data.setVehicle.vehicles.length);
       } catch (error) {
         console.error(error);

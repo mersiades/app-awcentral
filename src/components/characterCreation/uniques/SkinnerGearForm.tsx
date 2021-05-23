@@ -17,6 +17,7 @@ import { SkinnerGearInput } from '../../../@types';
 import { SkinnerGearItem } from '../../../@types/staticDataInterfaces';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 const SkinnerGearForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -35,9 +36,8 @@ const SkinnerGearForm: FC = () => {
     variables: { playbookType: PlaybookType.skinner },
   });
   const gearCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.skinnerGearCreator;
-  const [setSkinnerGear, { loading: settingSkinnerGear }] = useMutation<SetSkinnerGearData, SetSkinnerGearVars>(
-    SET_SKINNER_GEAR
-  );
+  const [setSkinnerGear, { loading: settingSkinnerGear }] =
+    useMutation<SetSkinnerGearData, SetSkinnerGearVars>(SET_SKINNER_GEAR);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const handleSelectGear = (item: SkinnerGearItem) => {
@@ -63,6 +63,7 @@ const SkinnerGearForm: FC = () => {
           optimisticResponse: getSetSkinnerGearOR(character, skinnerGear),
         });
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set unique');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }

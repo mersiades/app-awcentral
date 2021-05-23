@@ -31,6 +31,7 @@ import {
   PACK_ALPHA_NAME,
   WEALTH_NAME,
 } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const StyledMarkdown = styled(ReactMarkdown)`
   & p {
@@ -124,6 +125,7 @@ const CharacterMovesForm: FC = () => {
           optimisticResponse: getSetCharacterMovesOR(character, selectedMoves),
         });
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set unique');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.setVehicle}`);
         }
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

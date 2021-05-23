@@ -11,6 +11,7 @@ import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { BACKUP_WEAPONS_TEXT, BIG_GUNS_TEXT, SERIOUS_GUNS_TEXT } from '../../../config/constants';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 export const WEAPONS_FORM_TEST_ID = 'weapons-form';
 
@@ -48,6 +49,7 @@ const WeaponsForm: FC = () => {
         });
 
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set unique');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }

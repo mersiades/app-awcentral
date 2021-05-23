@@ -25,6 +25,7 @@ import {
   HOLDING_SOULS_SMALL,
   INCREASED_BY_IMPROVEMENT_TEXT,
 } from '../../../config/constants';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 interface HoldingFormState {
   holdingSize: HoldingSize;
@@ -173,6 +174,7 @@ const HoldingForm: FC = () => {
         });
 
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set unique');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }

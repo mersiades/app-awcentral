@@ -19,6 +19,7 @@ import { useGame } from '../../../contexts/gameContext';
 import { updateTags, unUpdateTags } from '../../../helpers/updateTags';
 import { getFollowersDescription } from '../../../helpers/getFollowersDescription';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 interface FollowersFormState {
   description: string;
@@ -163,6 +164,7 @@ const FollowersForm: FC = () => {
           optimisticResponse: getSetFollowerOR(character, followersInput),
         });
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set unique');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }

@@ -17,6 +17,7 @@ import { CharacterCreationSteps, PlaybookType } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { ADD_TEXT, GEAR_FORM_INSTRUCTIONS, GEAR_TITLE, OPTIONS_TITLE, REMOVE_TEXT } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const GearUL = styled.ul`
   margin: unset;
@@ -103,6 +104,7 @@ const CharacterGearForm: FC = () => {
           character.playbook === PlaybookType.driver ? CharacterCreationSteps.selectMoves : CharacterCreationSteps.setUnique;
 
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set gear');
           history.push(`/character-creation/${game.id}?step=${nextStep}`);
         }
 

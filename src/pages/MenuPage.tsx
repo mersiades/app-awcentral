@@ -70,7 +70,10 @@ const MenuPage: FC = () => {
               size="large"
               alignSelf="center"
               fill
-              onClick={() => history.push('/join-game')}
+              onClick={() => {
+                logAmpEvent('click join game');
+                history.push('/join-game');
+              }}
             />
             <ButtonWS
               label={CREATE_GAME_TEXT}

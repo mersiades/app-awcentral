@@ -22,6 +22,7 @@ import { useGame } from '../../../contexts/gameContext';
 import { CastCrew } from '../../../@types/dataInterfaces';
 import { ADJUST_MAESTROD_UNIQUE_2_NAME, INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
 import EstablishmentInterestResolutionDialog from '../../dialogs/EstablishmentInterestResolutionDialog';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 const ATTRACTIONS_INSTRUCTIONS =
   'Your establishment features one main attraction supported by 2 side attractions (like a bar features drinks, supported by music and easy food). Choose one to be your main act and 2 for lube:';
@@ -323,9 +324,8 @@ const EstablishmentForm: FC = () => {
     variables: { playbookType: PlaybookType.maestroD },
   });
   const establishmentCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.establishmentCreator;
-  const [setEstablishment, { loading: settingEstablishment }] = useMutation<SetEstablishmentData, SetEstablishmentVars>(
-    SET_ESTABLISHMENT
-  );
+  const [setEstablishment, { loading: settingEstablishment }] =
+    useMutation<SetEstablishmentData, SetEstablishmentVars>(SET_ESTABLISHMENT);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const securityValues = securityOptions.map((opt: SecurityOption) => opt.value);
@@ -407,6 +407,7 @@ const EstablishmentForm: FC = () => {
           optimisticResponse: getSetEstablishmentOR(character, establishmentInput),
         });
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set unique');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }

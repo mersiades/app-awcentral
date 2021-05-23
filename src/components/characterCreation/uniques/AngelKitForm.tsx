@@ -11,6 +11,7 @@ import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { useHistory } from 'react-router-dom';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 export const ANGEL_KIT_FORM_TEST_ID = 'angel-kit-form';
 
@@ -41,6 +42,7 @@ const AngelKitForm: FC = () => {
         });
 
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set unique');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }

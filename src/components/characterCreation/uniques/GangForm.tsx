@@ -18,6 +18,7 @@ import DoubleRedBox from '../../DoubleRedBox';
 import SingleRedBox from '../../SingleRedBox';
 import RedTagsBox from '../../RedTagsBox';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 interface GangFormProps {
   existingGang?: Gang;
@@ -203,6 +204,7 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
         });
 
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set unique');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
