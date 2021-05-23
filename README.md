@@ -26,7 +26,9 @@ Cypress sends a request to the graphql server before each test run to reset and 
 
 To open the Cypress console: `yarn run cypress:open`
 
-To run all the Cypress tests and generate code ocverage: `yarn run cypress:all`
+To run all the Cypress tests and generate code coverage: `yarn run cypress:all`
+
+Through some quirk, `yarn run cypress:all` tests will fail unless you've run `yarn run cypress:open` at least once beforehand.
 
 To open the test coverage in your browser: `open coverage/lcov-report/index.html`
 
@@ -55,3 +57,7 @@ Therefore, the preferred deployment procedure is:
 - If good, merge pull request into `master`
 - Check staging environment for problems
 - If all good, approve deployment of `demo` version (and subsequently `prod` version) at CircleCI web interface (app.circleci.com)
+
+### Amplitude
+
+This app anonymously records some user events for analytics. Amplitude is the service used for this. Events form local development will not be sent to Amplitude, but event in staging and production will. Unfortunately, events from both environments will be sent to the same Amplitude project, so we're currently unable to differentiate between the environments when doing analytics.

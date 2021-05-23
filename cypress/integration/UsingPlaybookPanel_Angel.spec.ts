@@ -454,7 +454,7 @@ const checkHarmSectorAndClick = (sector: number, color: string) => {
     })
     .click({ force: true });
   cy.wait(500);
-  cy.get(`div[data-testid="harm-sector-${sector}"]`).then((element) => {
+  cy.get(`div[data-testid="harm-sector-${sector}"]`, { timeout: 20000 }).then((element) => {
     expect(element[0].getAttribute('style')).not.to.include(color);
   });
 };

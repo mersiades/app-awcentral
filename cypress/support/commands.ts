@@ -92,12 +92,12 @@ Cypress.Commands.add('moveThroughNewGameIntro', () => {
   cy.get('div[data-testid="playbook-box"]').should('contain', PLAYBOOK_TITLE).should('contain', '...');
 
   // Go to next
-  cy.contains(NEXT_TEXT).click();
+  cy.contains(NEXT_TEXT, { timeout: 20000 }).click();
 });
 
 Cypress.Commands.add('selectPlaybook', (playbookType: PlaybookType) => {
   // Check form content
-  cy.get(`div[data-testid="${playbookType.toLowerCase()}-button"]`).click();
+  cy.get(`div[data-testid="${playbookType.toLowerCase()}-button"]`, { timeout: 20000 }).click();
   cy.contains(`SELECT ${decapitalize(playbookType)}`).click();
 });
 
