@@ -10,6 +10,7 @@ amplitude.getInstance().init(amplitudeKey, undefined, {
 });
 
 amplitude.getInstance().setVersionName(`${appName}-${appVersion}`);
+amplitude.getInstance().setUserId(null);
 
 /** Same as 'amplitude.getInstance().logEvent()', but saves me from typing it each time
  * > Note: The server response code and response body from the event upload are passed to the callback function.
