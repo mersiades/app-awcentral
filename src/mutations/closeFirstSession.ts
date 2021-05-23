@@ -10,7 +10,6 @@ export interface CloseFirstSessionVars {
 }
 
 export const getCloseFirstSessionOR = (gameId: string) => {
-  console.log('getCloseFirstSessionOR');
   let optimisticGame = {
     id: gameId,
     showFirstSession: false,
