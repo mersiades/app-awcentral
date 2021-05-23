@@ -13,6 +13,7 @@ import PERFORM_GUNLUGGER_SPECIAL_MOVE, {
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface GunluggerSpecialDialogProps {
   move: Move | CharacterMove;
@@ -36,7 +37,7 @@ const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({ move, handleC
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
-  const handleGunluggerSpecialMove = () => {
+  const handleGunluggerSpecialMove = async () => {
     if (
       !!userGameRole &&
       !!character &&
@@ -56,7 +57,7 @@ const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({ move, handleC
       if (!otherGameroleId) return;
 
       try {
-        performGunluggerSpecialMove({
+        await performGunluggerSpecialMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -66,6 +67,7 @@ const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({ move, handleC
             addPlus1Forward: addPlus1Forward === 'Yes' ? true : false,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

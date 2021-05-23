@@ -125,7 +125,7 @@ const CharacterMovesForm: FC = () => {
           optimisticResponse: getSetCharacterMovesOR(character, selectedMoves),
         });
         if (!character.hasCompletedCharacterCreation) {
-          logAmpEvent('set unique');
+          logAmpEvent('set moves');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.setVehicle}`);
         }
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

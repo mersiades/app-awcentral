@@ -13,6 +13,7 @@ import PERFORM_HOCUS_SPECIAL_MOVE, {
   PerformHocusSpecialMoveData,
   PerformHocusSpecialMoveVars,
 } from '../../mutations/performHocusSpecialMove';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface HocusSpecialDialogProps {
   move: Move | CharacterMove;
@@ -35,7 +36,7 @@ const HocusSpecialDialog: FC<HocusSpecialDialogProps> = ({ move, handleClose }) 
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
-  const handleHocusSpecialMove = () => {
+  const handleHocusSpecialMove = async () => {
     if (!!userGameRole && !!character && !character.isDead && !performingHocusSpecialMove && !!otherCharacterId) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
@@ -57,6 +58,7 @@ const HocusSpecialDialog: FC<HocusSpecialDialogProps> = ({ move, handleClose }) 
             otherCharacterId,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

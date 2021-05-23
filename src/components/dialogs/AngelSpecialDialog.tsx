@@ -14,6 +14,7 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { APPLY_TEXT, CANCEL_TEXT, WITH_WHO_QUESTION } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface AngelSpecialDialogProps {
   move: Move | CharacterMove;
@@ -36,7 +37,7 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({ move, handleClose }) 
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
-  const handleAngelSpecialMove = () => {
+  const handleAngelSpecialMove = async () => {
     if (!!userGameRole && !!character && !character.isDead && !performingAngelSpecialMove && !!otherCharacterId) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
@@ -49,7 +50,7 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({ move, handleClose }) 
       if (!otherGameroleId) return;
 
       try {
-        performAngelSpecialMove({
+        await performAngelSpecialMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -58,6 +59,7 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({ move, handleClose }) 
             otherCharacterId,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

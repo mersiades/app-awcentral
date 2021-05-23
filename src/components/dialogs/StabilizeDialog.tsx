@@ -20,6 +20,7 @@ import {
   HOW_MUCH_STOCK_TEXT,
   STABILIZE_TEXT,
 } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface StabilizeDialogProps {
   move: Move | CharacterMove;
@@ -43,14 +44,14 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const currentStock = character?.playbookUniques?.angelKit?.stock || 0;
 
-  const handleStabilizeAndHealMove = () => {
+  const handleStabilizeAndHealMove = async () => {
     if (currentStock - stockSpent < 0) {
       console.warn("You don't have enough stock");
       return;
     }
     if (!!userGameRole && !!character && !character.isDead && !performingStabilizeAndHealMove) {
       try {
-        performStabilizeAndHealMove({
+        await performStabilizeAndHealMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -58,6 +59,7 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
             stockSpent,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

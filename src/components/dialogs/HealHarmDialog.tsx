@@ -13,6 +13,7 @@ import PERFORM_HEAL_HARM_MOVE, {
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface HealHarmDialogProps {
   move: Move | CharacterMove;
@@ -36,7 +37,7 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
-  const handleHealHarmMove = () => {
+  const handleHealHarmMove = async () => {
     if (!!userGameRole && !!character && !character.isDead && !performingHealHarmMove && harm > 0 && !!otherCharacterId) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
@@ -49,7 +50,7 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
       if (!otherGameroleId) return;
 
       try {
-        performHealHarmMove({
+        await performHealHarmMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -59,6 +60,7 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
             harm,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

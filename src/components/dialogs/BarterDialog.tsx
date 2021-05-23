@@ -9,6 +9,7 @@ import PERFORM_BARTER_MOVE, { PerformBarterMoveData, PerformBarterMoveVars } fro
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface BarterDialogProps {
   move: Move | CharacterMove;
@@ -32,14 +33,14 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const currentBarter = character?.barter || 0;
 
-  const handleBarterMove = (move: Move | CharacterMove, barter: number) => {
+  const handleBarterMove = async (move: Move | CharacterMove, barter: number) => {
     if (currentBarter - barter < 0) {
       console.warn("You don't have enough barter");
       return;
     }
     if (!!userGameRole && !!character && !character.isDead && !performingBarterMove) {
       try {
-        performBarterMove({
+        await performBarterMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -48,6 +49,7 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
             barter,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

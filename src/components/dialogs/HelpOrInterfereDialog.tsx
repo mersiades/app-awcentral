@@ -12,6 +12,7 @@ import PERFORM_HELP_OR_INTERFERE_MOVE, {
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface HelpOrInterfereDialogProps {
   move: Move | CharacterMove;
@@ -36,7 +37,7 @@ const HelpOrInterfereDialog: FC<HelpOrInterfereDialogProps> = ({ move, buttonTit
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
 
-  const handleHelpOrInterfereMove = (move: Move | CharacterMove, targetId: string) => {
+  const handleHelpOrInterfereMove = async (move: Move | CharacterMove, targetId: string) => {
     if (!!userGameRole && !!character && !character.isDead && !performingHelpOrInterfereMove) {
       try {
         performHelpOrInterfereMove({
@@ -48,6 +49,7 @@ const HelpOrInterfereDialog: FC<HelpOrInterfereDialogProps> = ({ move, buttonTit
             targetId,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

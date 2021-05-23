@@ -12,6 +12,7 @@ import PERFORM_SUFFER_V_HARM_MOVE, {
 } from '../../mutations/performSufferVHarmMove';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface VHarmDialogProps {
   move: Move | CharacterMove;
@@ -33,10 +34,10 @@ const VHarmDialog: FC<VHarmDialogProps> = ({ move, handleClose }) => {
     useMutation<PerformSufferVHarmMoveData, PerformSufferVHarmMoveVars>(PERFORM_SUFFER_V_HARM_MOVE);
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const handleSufferVHarmMove = () => {
+  const handleSufferVHarmMove = async () => {
     if (!!userGameRole && !!character && !character.isDead && !performingSufferVHarmMove) {
       try {
-        performSufferVHarmMove({
+        await performSufferVHarmMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -44,6 +45,7 @@ const VHarmDialog: FC<VHarmDialogProps> = ({ move, handleClose }) => {
             vHarm: harm,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);
