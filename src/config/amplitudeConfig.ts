@@ -4,13 +4,14 @@ const appName = process.env.REACT_APP_NAME;
 const appVersion = process.env.REACT_APP_VERSION;
 const amplitudeKey = process.env.REACT_APP_AMPLITUDE_KEY || 'Key unset';
 
-amplitude.getInstance().init(amplitudeKey, undefined, {
-  platform: 'Web',
-  sameSiteCookie: 'Lax',
-});
+amplitudeKey !== 'Key unset' &&
+  amplitude.getInstance().init(amplitudeKey, undefined, {
+    platform: 'Web',
+    sameSiteCookie: 'Lax',
+  });
 
-amplitude.getInstance().setVersionName(`${appName}-${appVersion}`);
-amplitude.getInstance().setUserId(null);
+amplitudeKey !== 'Key unset' && amplitude.getInstance().setVersionName(`${appName}-${appVersion}`);
+amplitudeKey !== 'Key unset' && amplitude.getInstance().setUserId(null);
 
 /** Same as 'amplitude.getInstance().logEvent()', but saves me from typing it each time
  * > Note: The server response code and response body from the event upload are passed to the callback function.

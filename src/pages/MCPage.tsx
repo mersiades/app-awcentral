@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Box, Tabs, Tab, ThemeContext, Collapsible, Carousel, ResponsiveContext } from 'grommet';
 import { useMutation, useQuery } from '@apollo/client';
@@ -78,6 +78,7 @@ const MCPage: FC = () => {
   const [leftPanel, setLeftPanel] = useState<LeftPanelState>({ type: 'MESSAGES' });
   const [showDeleteGameDialog, setShowDeleteGameDialog] = useState(false);
   const [showGoToPreGameDialog, setShowGoToPreGameDialog] = useState(false);
+  let hasShownGotToPreGameDialog = useRef(false);
 
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
 
@@ -130,10 +131,10 @@ const MCPage: FC = () => {
 
   // Show GoToPreGameDialog if game hasn't finished pre-game
   useEffect(() => {
-    if (!game?.hasFinishedPreGame) {
+    if (!!game && !game?.hasFinishedPreGame && !hasShownGotToPreGameDialog.current) {
       setShowGoToPreGameDialog(true);
     }
-  }, [game?.hasFinishedPreGame]);
+  }, [game, game?.hasFinishedPreGame]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 
@@ -167,7 +168,14 @@ const MCPage: FC = () => {
           handleConfirm={handleDeleteGame}
         />
       )}
-      {showGoToPreGameDialog && <GoToPreGameDialog handleClose={() => setShowGoToPreGameDialog(false)} />}
+      {showGoToPreGameDialog && (
+        <GoToPreGameDialog
+          handleClose={() => {
+            hasShownGotToPreGameDialog.current = true;
+            setShowGoToPreGameDialog(false);
+          }}
+        />
+      )}
       <GameNavbar isMc={true} />
       <div data-testid="mc-page">
         <Collapsible direction="horizontal" open={sidePanel < 3}>

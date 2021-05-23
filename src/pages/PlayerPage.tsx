@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 import { Box, Collapsible, Tab, Tabs, ThemeContext } from 'grommet';
@@ -90,6 +90,7 @@ const PlayerPage: FC = () => {
   const [character, setCharacter] = useState<Character | undefined>();
   const [dialog, setDialog] = useState<Move | CharacterMove | undefined>();
   const [showGoToPreGameDialog, setShowGoToPreGameDialog] = useState(false);
+  let hasShownGotToPreGameDialog = useRef(false);
 
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
   const history = useHistory();
@@ -144,10 +145,10 @@ const PlayerPage: FC = () => {
 
   // Show GoToPreGameDialog if game hasn't finished pre-game
   useEffect(() => {
-    if (!game?.hasFinishedPreGame) {
+    if (!!game && !game?.hasFinishedPreGame && !hasShownGotToPreGameDialog.current) {
       setShowGoToPreGameDialog(true);
     }
-  }, [game?.hasFinishedPreGame]);
+  }, [game, game?.hasFinishedPreGame]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 
@@ -155,7 +156,14 @@ const PlayerPage: FC = () => {
     <Box fill background={background}>
       <GameNavbar isMc={false} />
       {character?.isDead && <RipSign />}
-      {showGoToPreGameDialog && <GoToPreGameDialog handleClose={() => setShowGoToPreGameDialog(false)} />}
+      {showGoToPreGameDialog && (
+        <GoToPreGameDialog
+          handleClose={() => {
+            hasShownGotToPreGameDialog.current = true;
+            setShowGoToPreGameDialog(false);
+          }}
+        />
+      )}
       {dialog?.moveAction?.rollType === RollType.harm && (
         <HarmDialog move={dialog} handleClose={() => setDialog(undefined)} />
       )}
