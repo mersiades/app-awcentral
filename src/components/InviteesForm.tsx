@@ -10,6 +10,7 @@ import { useFonts } from '../contexts/fontContext';
 import { useGame } from '../contexts/gameContext';
 import { copyToClipboard } from '../helpers/copyToClipboard';
 import { validateEmail } from '../helpers/validateEmail';
+import { logAmpEvent } from '../config/amplitudeConfig';
 
 const baseUrl = process.env.REACT_APP_ROOT_URL;
 
@@ -43,12 +44,13 @@ const InviteesForm: FC = () => {
     );
   };
 
-  const handleAddInvitee = (email: string) => {
+  const handleAddInvitee = async (email: string) => {
     if (!!game && !game?.invitees.includes(email)) {
-      addInvitee({
+      await addInvitee({
         variables: { gameId: game.id, email },
         optimisticResponse: getAddInviteeOR(game, email),
       });
+      logAmpEvent('add invitee');
     }
   };
 

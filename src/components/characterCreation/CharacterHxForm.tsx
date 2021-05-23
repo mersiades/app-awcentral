@@ -26,6 +26,7 @@ import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import { GO_TO_GAME_TEXT, HX_VALIDATION_TEXT } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const StyledMarkdown = styled(ReactMarkdown)`
   & p {
@@ -87,6 +88,7 @@ const CharacterHxForm: FC = () => {
             variables: { gameRoleId: userGameRole.id, characterId: character.id },
             optimisticResponse: getFinishCharacterCreationOR(character) as FinishCharacterCreationData,
           });
+          logAmpEvent('complete character creation');
         }
         history.push(`/pre-game/${game.id}`);
       } catch (error) {

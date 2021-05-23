@@ -16,6 +16,7 @@ import SET_BRAINER_GEAR, {
 import { useHistory } from 'react-router-dom';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 const BrainerGearForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -56,6 +57,7 @@ const BrainerGearForm: FC = () => {
           variables: { gameRoleId: userGameRole.id, characterId: character.id, brainerGear },
           optimisticResponse: setBrainerGearOR(character, brainerGear),
         });
+        !character.hasCompletedCharacterCreation && logAmpEvent('set unique');
         history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {

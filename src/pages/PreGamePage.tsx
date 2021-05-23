@@ -34,6 +34,7 @@ import {
 import ScriptChangeAttribution from '../components/ScriptChangeAttribution';
 import ScriptChange from '../components/ScriptChange';
 import { StyledMarkdown } from '../components/styledComponents';
+import { logAmpEvent } from '../config/amplitudeConfig';
 
 export const background = {
   color: 'black',
@@ -124,6 +125,7 @@ const PreGamePage = () => {
           variables: { gameId: game.id },
           optimisticResponse: getFinishPreGameOR(game.id) as FinishPreGameData,
         });
+        logAmpEvent('start game');
         history.push(pathToGame);
       } catch (error) {
         console.error(error);

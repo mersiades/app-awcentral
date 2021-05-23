@@ -13,6 +13,7 @@ import PERFORM_INFLICT_HARM_MOVE, {
   PerformInflictHarmMoveData,
   PerformInflictHarmMoveVars,
 } from '../../mutations/performInflictHarmMove';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface InflictHarmDialogProps {
   move: Move | CharacterMove;
@@ -36,7 +37,7 @@ const InflictHarmDialog: FC<InflictHarmDialogProps> = ({ move, handleClose }) =>
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
-  const handleInflictHarmMove = () => {
+  const handleInflictHarmMove = async () => {
     if (!!userGameRole && !!character && !character.isDead && !performingInflictHarmMove && harm > 0 && !!otherCharacterId) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
@@ -49,7 +50,7 @@ const InflictHarmDialog: FC<InflictHarmDialogProps> = ({ move, handleClose }) =>
       if (!otherGameroleId) return;
 
       try {
-        performInflictHarmMove({
+        await performInflictHarmMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -59,6 +60,7 @@ const InflictHarmDialog: FC<InflictHarmDialogProps> = ({ move, handleClose }) =>
             harm,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

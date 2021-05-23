@@ -24,6 +24,7 @@ import CHANGE_PLAYBOOK, {
   getChangePlaybookOR,
 } from '../../mutations/changePlaybook';
 import { CHOOSE_YOUR_PLAYBOOK_TEXT, CHANGED_PLAYBOOK_INTRO_TEXT, NEW_PLAYER_INTRO_TEXT } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const CharacterPlaybookForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -89,6 +90,7 @@ const CharacterPlaybookForm: FC = () => {
           await setCharacterPlaybook({
             variables: { gameRoleId: userGameRole.id, characterId: character.id, playbookType },
           });
+          !character.hasCompletedCharacterCreation && logAmpEvent('choose playbook');
           setShowSwitchWarning(undefined);
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

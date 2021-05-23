@@ -10,6 +10,7 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StyledMarkdown } from '../styledComponents';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface SpeedRecoveryDialogProps {
   move: Move | CharacterMove;
@@ -33,7 +34,7 @@ const SpeedRecoveryDialog: FC<SpeedRecoveryDialogProps> = ({ move, handleClose }
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const currentStock = character?.playbookUniques?.angelKit?.stock || 0;
 
-  const handleStockMove = () => {
+  const handleStockMove = async () => {
     const stockSpent = option === 'Yes' ? 1 : 0;
     if (currentStock - stockSpent < 0) {
       console.warn("You don't have enough stock");
@@ -41,7 +42,7 @@ const SpeedRecoveryDialog: FC<SpeedRecoveryDialogProps> = ({ move, handleClose }
     }
     if (!!userGameRole && !!character && !character.isDead && !performingStockMove) {
       try {
-        performStockMove({
+        await performStockMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -50,6 +51,7 @@ const SpeedRecoveryDialog: FC<SpeedRecoveryDialogProps> = ({ move, handleClose }
             stockSpent,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

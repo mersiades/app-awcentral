@@ -18,6 +18,7 @@ import {
   LIFE_SUPPORT_TEXT,
 } from '../../../config/constants';
 import { omit } from 'lodash';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 const ITEMS_INSTRUCTIONS = 'Choose which of the following your workspace includes.';
 
@@ -56,6 +57,7 @@ const WorkspaceForm: FC = () => {
           optimisticResponse: getSetWorkspaceOR(character, workspaceInput),
         });
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set unique');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }

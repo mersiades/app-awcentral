@@ -13,6 +13,7 @@ import PERFORM_SUFFER_HARM_MOVE, {
   PerformSufferHarmMoveVars,
 } from '../../mutations/performSufferHarmMove';
 import HarmClock from '../HarmClock';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface HarmDialogProps {
   move: Move | CharacterMove;
@@ -36,14 +37,14 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const currentHarm = character?.harm;
 
-  const handleSufferHarmMove = (move: Move | CharacterMove) => {
+  const handleSufferHarmMove = async (move: Move | CharacterMove) => {
     if ((currentHarm?.value || 0) + harm >= 6) {
       console.warn("You're dead");
       return;
     }
     if (!!userGameRole && !!character && !character.isDead && !performingSufferHarmMove) {
       try {
-        performSufferHarmMove({
+        await performSufferHarmMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -52,6 +53,7 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
             harm,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

@@ -13,6 +13,7 @@ import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StatsBlock } from '../../@types/dataInterfaces';
 import { CHOOSE_STAT_SET_TEXT, COOL_TEXT, HARD_TEXT, HOT_TEXT, SHARP_TEXT, WEIRD_TEXT } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const CharacterStatsForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -90,6 +91,7 @@ const CharacterStatsForm: FC = () => {
             },
           },
         });
+        !character.hasCompletedCharacterCreation && logAmpEvent('set stats');
         history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectGear}`);
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {

@@ -21,7 +21,8 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useGame } from '../../contexts/gameContext';
 import { useFonts } from '../../contexts/fontContext';
 import { decapitalize } from '../../helpers/decapitalize';
-import { WEALTH_NAME } from '../../config/constants';
+import { FORTUNES_NAME, WEALTH_NAME } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface MovesBoxProps {
   moves: Array<CharacterMove | Move>;
@@ -78,10 +79,10 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
     }
   };
 
-  const handlePrintMove = (move: Move | CharacterMove) => {
+  const handlePrintMove = async (move: Move | CharacterMove) => {
     if (!!userGameRole && !!character && !character.isDead && !performingPrintMove) {
       try {
-        performPrintMove({
+        await performPrintMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -90,13 +91,14 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
             isGangMove: false,
           },
         });
+        logAmpEvent('make move', { move: move.name });
       } catch (error) {
         console.error(error);
       }
     }
   };
 
-  const handleStatRollMove = (move: Move | CharacterMove) => {
+  const handleStatRollMove = async (move: Move | CharacterMove) => {
     if (!!userGameRole && !!character && !character.isDead) {
       const commonVariables = {
         gameId,
@@ -106,9 +108,10 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
       if (move.name === WEALTH_NAME) {
         if (!performingWealthMove) {
           try {
-            performWealthMove({
+            await performWealthMove({
               variables: commonVariables,
             });
+            logAmpEvent('make move', { move: move.name });
           } catch (error) {
             console.error(error);
           }
@@ -116,13 +119,14 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
       } else {
         if (!performingStatRollMove) {
           try {
-            performStatRollMove({
+            await performStatRollMove({
               variables: {
                 ...commonVariables,
                 moveId: move.id,
                 isGangMove: false,
               },
             });
+            logAmpEvent('make move', { move: move.name });
           } catch (error) {
             console.error(error);
           }
@@ -131,13 +135,14 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
     }
   };
 
-  const handleFortuneRollMove = () => {
+  const handleFortuneRollMove = async () => {
     if (!!userGameRole && !!character && !character.isDead) {
       if (!performingFortunesMove) {
         try {
           performFortunesMove({
             variables: { gameId, gameRoleId: userGameRole.id, characterId: character.id },
           });
+          logAmpEvent('make move', { move: FORTUNES_NAME });
         } catch (error) {
           console.error(error);
         }

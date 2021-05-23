@@ -12,6 +12,7 @@ import PERFORM_MAKE_WANT_KNOWN_MOVE, {
 import { Move, CharacterMove } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface MakeWantKnownDialogProps {
   move: Move | CharacterMove;
@@ -35,14 +36,14 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({ move, handleClose }
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const currentBarter = character?.barter || 0;
 
-  const handleMakeWantKnownMove = (move: Move | CharacterMove, barter: number) => {
+  const handleMakeWantKnownMove = async (move: Move | CharacterMove, barter: number) => {
     if (currentBarter - barter < 0) {
       console.warn("You don't have enough barter");
       return;
     }
     if (!!userGameRole && !!character && !character.isDead && !performingMakeWantKnownMove) {
       try {
-        performMakeWantKnownMove({
+        await performMakeWantKnownMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -51,6 +52,7 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({ move, handleClose }
             barter,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

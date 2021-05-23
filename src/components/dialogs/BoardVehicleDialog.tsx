@@ -16,6 +16,7 @@ import { useGame } from '../../contexts/gameContext';
 import { Vehicle } from '../../@types/dataInterfaces';
 import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
 import { VehicleType } from '../../@types/enums';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface BoardVehicleDialogProps {
   move: Move | CharacterMove;
@@ -69,14 +70,14 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
     battleOptions: [],
   };
 
-  const handleSpeedRollMove = () => {
+  const handleSpeedRollMove = async () => {
     if (!!userGameRole && !!character && !character.isDead && !performingSpeedRollMove && !!mySpeed && !!theirSpeed) {
       let modifier = parseInt(theirSpeed) - parseInt(mySpeed);
       if (modifier > 0) {
         modifier = -Math.abs(modifier);
       }
       try {
-        performSpeedRollMove({
+        await performSpeedRollMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -85,6 +86,7 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
             modifier,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

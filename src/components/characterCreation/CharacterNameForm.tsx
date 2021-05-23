@@ -11,6 +11,7 @@ import { CharacterCreationSteps } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const CharacterNameForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -50,6 +51,7 @@ const CharacterNameForm: FC = () => {
         });
 
         if (!character.hasCompletedCharacterCreation) {
+          logAmpEvent('set name');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectLooks}`);
         }
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

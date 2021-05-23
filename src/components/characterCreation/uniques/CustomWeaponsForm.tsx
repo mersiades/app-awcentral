@@ -18,6 +18,7 @@ import { ItemCharacteristic, TaggedItem } from '../../../@types';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { ADD_TEXT, MIX_AND_MATCH_TEXT, RESET_TEXT } from '../../../config/constants';
+import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 export const CUSTOM_WEAPONS_FORM_TEST_ID = 'custom-weapons-form';
 
@@ -209,6 +210,7 @@ const CustomWeaponsForm: FC = () => {
           variables: { gameRoleId: userGameRole.id, characterId: character.id, weapons },
           optimisticResponse: getSetCustomWeaponsOR(character, weapons),
         });
+        !character.hasCompletedCharacterCreation && logAmpEvent('set unique');
         history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {

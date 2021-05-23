@@ -14,6 +14,7 @@ import '../assets/styles/transitions.css';
 import { useFonts } from '../contexts/fontContext';
 import { useGame } from '../contexts/gameContext';
 import { RETURN_TO_GAME_TEXT, JOIN_GAME_TEXT, CREATE_GAME_TEXT, YOUR_GAMES_TITLE } from '../config/constants';
+import { logAmpEvent } from '../config/amplitudeConfig';
 
 const MenuPage: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -69,7 +70,10 @@ const MenuPage: FC = () => {
               size="large"
               alignSelf="center"
               fill
-              onClick={() => history.push('/join-game')}
+              onClick={() => {
+                logAmpEvent('click join game');
+                history.push('/join-game');
+              }}
             />
             <ButtonWS
               label={CREATE_GAME_TEXT}
@@ -77,7 +81,10 @@ const MenuPage: FC = () => {
               size="large"
               alignSelf="center"
               fill
-              onClick={() => setButtonsContainer(2)}
+              onClick={() => {
+                logAmpEvent('click create game');
+                setButtonsContainer(2);
+              }}
             />
             <ButtonWS label="LOG OUT" size="large" alignSelf="center" fill onClick={() => keycloak.logout()} />
           </Box>

@@ -13,6 +13,7 @@ import PERFORM_CHOPPER_SPECIAL_MOVE, {
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface ChopperSpecialDialogProps {
   move: Move | CharacterMove;
@@ -36,7 +37,7 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
-  const handleChopperSpecialMove = () => {
+  const handleChopperSpecialMove = async () => {
     if (
       !!userGameRole &&
       !!character &&
@@ -56,7 +57,7 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose
       if (!otherGameroleId) return;
 
       try {
-        performChopperSpecialMove({
+        await performChopperSpecialMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -66,6 +67,7 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose
             hxChange: parseInt(hxChange),
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

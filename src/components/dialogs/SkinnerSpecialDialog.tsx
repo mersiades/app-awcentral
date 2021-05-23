@@ -12,6 +12,7 @@ import PERFORM_SKINNER_SPECIAL_MOVE, {
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface SkinnerSpecialDialogProps {
   move: Move | CharacterMove;
@@ -41,7 +42,7 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
     'They must give you a gift worth at least 1-barter.',
     "You can hypnotize them as though you'd rolled a 10+, even if you haven't chosen the move.",
   ];
-  const handleSkinnerSpecialMove = () => {
+  const handleSkinnerSpecialMove = async () => {
     if (!!userGameRole && !!character && !character.isDead && !performingSkinnerSpecialMove && !!otherCharacterId) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
@@ -54,7 +55,7 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
       if (!otherGameroleId) return;
 
       try {
-        performSkinnerSpecialMove({
+        await performSkinnerSpecialMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -65,6 +66,7 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
             plus1ForOther: option.includes('and so do they'),
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

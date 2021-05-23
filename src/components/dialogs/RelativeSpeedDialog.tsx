@@ -17,6 +17,7 @@ import { Vehicle } from '../../@types/dataInterfaces';
 import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
 import { OUTDISTANCE_VEHICLE_NAME } from '../../config/constants';
 import { VehicleType } from '../../@types/enums';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface RelativeSpeedDialogProps {
   move: Move | CharacterMove;
@@ -55,11 +56,11 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
     battleOptions: [],
   };
 
-  const handleSpeedRollMove = () => {
+  const handleSpeedRollMove = async () => {
     if (!!userGameRole && !!character && !character.isDead && !performingSpeedRollMove && !!mySpeed && !!theirSpeed) {
       const modifier = parseInt(mySpeed) - parseInt(theirSpeed);
       try {
-        performSpeedRollMove({
+        await performSpeedRollMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -68,6 +69,7 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
             modifier,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

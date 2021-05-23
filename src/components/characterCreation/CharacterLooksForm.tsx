@@ -17,6 +17,7 @@ import { Look } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { LookInput } from '../../@types';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface LooksFormState {
   gender?: Look;
@@ -87,6 +88,7 @@ const CharacterLooksForm: FC = () => {
         });
 
         if (data.data?.setCharacterLook.looks?.length === 5 && !character.hasCompletedCharacterCreation) {
+          logAmpEvent('set looks');
           history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectStats}`);
         }
       } catch (error) {

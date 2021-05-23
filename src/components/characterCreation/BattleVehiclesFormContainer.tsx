@@ -16,6 +16,7 @@ import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import { useFonts } from '../../contexts/fontContext';
 import { ADD_VEHICLE_TEXT, PASS_TEXT, START_PLAY_WITH_BATTLE_VEHICLE_TEXT } from '../../config/constants';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const BattleVehiclesFormContainer: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -50,6 +51,7 @@ const BattleVehiclesFormContainer: FC = () => {
             },
           },
         });
+        !character.hasCompletedCharacterCreation && logAmpEvent('set battle vehicle');
       } catch (error) {
         console.error(error);
       }

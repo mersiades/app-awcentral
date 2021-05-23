@@ -16,6 +16,7 @@ import { useGame } from '../../contexts/gameContext';
 import { Vehicle } from '../../@types/dataInterfaces';
 import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
 import { VehicleType } from '../../@types/enums';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface DealTerrainDialogProps {
   move: Move | CharacterMove;
@@ -53,11 +54,11 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
     battleOptions: [],
   };
 
-  const handleSpeedRollMove = () => {
+  const handleSpeedRollMove = async () => {
     if (!!userGameRole && !!character && !character.isDead && !performingSpeedRollMove && !!myHandling) {
       const modifier = parseInt(myHandling);
       try {
-        performSpeedRollMove({
+        await performSpeedRollMove({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -66,6 +67,7 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
             modifier,
           },
         });
+        logAmpEvent('make move', { move: move.name });
         handleClose();
       } catch (error) {
         console.error(error);

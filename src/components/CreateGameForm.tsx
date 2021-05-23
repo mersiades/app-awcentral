@@ -8,6 +8,7 @@ import { ButtonWS, TextWS } from '../config/grommetConfig';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import CREATE_GAME, { CreateGameData, CreateGameVars, getCreateGameOR } from '../mutations/createGame';
 import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
+import { logAmpEvent } from '../config/amplitudeConfig';
 
 const CreateGameForm: FC = () => {
   const [gameName, setGameName] = useState({ name: '' });
@@ -25,6 +26,7 @@ const CreateGameForm: FC = () => {
         optimisticResponse: getCreateGameOR(name, userId, displayName),
         refetchQueries: [{ query: GAMEROLES_BY_USER_ID, variables: { id: userId } }],
       });
+      logAmpEvent('give game name');
 
       const gameId = newGame?.createGame.id;
 
