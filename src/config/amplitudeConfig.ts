@@ -3,6 +3,7 @@ import amplitude from 'amplitude-js';
 const appName = process.env.REACT_APP_NAME;
 const appVersion = process.env.REACT_APP_VERSION;
 const amplitudeKey = process.env.REACT_APP_AMPLITUDE_KEY || 'Key unset';
+console.log(`amplitudeKey`, amplitudeKey);
 
 amplitude.getInstance().init(amplitudeKey, undefined, {
   platform: 'Web',
@@ -17,4 +18,4 @@ amplitude.getInstance().setUserId(null);
  * TODO: check that response code and response body are being passed properly
  */
 export const logAmpEvent = (eventType: string, eventProperties?: Object, callback?: () => any) =>
-  amplitude.getInstance().logEvent(eventType, eventProperties, callback);
+  amplitudeKey !== 'Key unset' && amplitude.getInstance().logEvent(eventType, eventProperties, callback);

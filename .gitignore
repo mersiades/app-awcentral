@@ -32,3 +32,5 @@ discordConfig.ts
 /cypress/videos
 /cypress/screenshots
 cypress.env.json
+
+/src/config/dev.env
