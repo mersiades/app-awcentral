@@ -112,7 +112,6 @@ describe('Using the MC Page', () => {
 
 /**
  * Other specs
- * - EditingGameOnMcPage
  * - InvitingPlayersOnMcPage
  * - UsingMcPanel
  * - UsingThreatsPanel

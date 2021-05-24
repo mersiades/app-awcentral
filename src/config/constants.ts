@@ -225,6 +225,7 @@ export const APPLY_TEXT = 'APPLY';
 export const DO_IT_TEXT = 'DO IT';
 export const STABILIZE_TEXT = 'STABILIZE';
 export const INVITE_PLAYER_TEXT = 'INVITE PLAYER';
+export const ADD_ANOTHER_TEXT = 'INVITE ANOTHER';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -416,3 +417,9 @@ export const NPCS_TEXT = 'NPCs';
 // ----------------------------------------------- CHARACTER PREVIEW --------------------------------------------- //
 export const HIGHLIGHTED_STATS_TEXT = 'Highlighted stats';
 export const NO_STATS_HIGHLIGHTED_TEXT = 'No stats highlighted';
+
+// ----------------------------------------------- INVITATION FORM --------------------------------------------- //
+export const INVITE_A_PLAYER_TO_TEXT = 'Invite a player to';
+export const ADD_EMAIL_ADDRESS_TEXT = "First, add the player's email address to the game";
+export const TELL_HOW_JOIN_GAME_TEXT =
+  'Let your player know how to join your game. You can edit the instructions below (if you want) and then copy and paste into an email, Discord chat etc.';
