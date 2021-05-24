@@ -15,7 +15,7 @@ import {
   THREATS_TEXT,
 } from '../../src/config/constants';
 import { decapitalize } from '../../src/helpers/decapitalize';
-import daveAsMC_1 from '../fixtures/gameRoles/daveAsMc_1';
+import daveAsMC_1 from '../fixtures/gameRoles/daveAsMC_1';
 import saraAsPlayer_1 from '../fixtures/gameRoles/saraAsPlayer_1';
 import game7 from '../fixtures/games/game7';
 

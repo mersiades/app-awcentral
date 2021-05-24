@@ -398,6 +398,8 @@ export const DELETE_PLAYER_WARNING_TEXT = 'This cannot be undone. Their characte
 export const NO_PLAYER_TEXT = 'No players yet';
 export const WARNING_DIALOG_TITLE = 'Remove player?';
 export const NO_PENDING_INVITATIONS_TEXT = 'No pending invitations';
+export const ALSO_PLAY_AT_TEXT = 'Also play at';
+export const ALSO_PLAY_ON_TEXT = 'Also play on';
 
 // ----------------------------------------------- MC PANEL --------------------------------------------- //
 export const CORE_BOX_TITLE = 'The master of ceremonies';

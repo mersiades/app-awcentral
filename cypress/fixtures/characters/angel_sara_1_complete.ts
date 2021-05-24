@@ -2,8 +2,6 @@ import { Character } from '../../../src/@types/dataInterfaces';
 import { PlaybookType } from '../../../src/@types/enums';
 import { genericHarm } from '../harm/genericHarm';
 import { statsBlockAngel_1 } from '../statsBlocks/statsBlockAngel_1';
-import { mockPlaybookUniqueAngel } from '../../../src/tests/fixtures/playBookUniquesFixtures';
-import { mockAngelSpecialCM, mockInfirmaryCM, mockSixthSenseCM } from '../../../src/tests/fixtures/characterMovesFixtures';
 import {
   angel_sara_1_hxstat_1,
   angel_sara_1_hxstat_2,

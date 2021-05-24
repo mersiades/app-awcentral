@@ -6,6 +6,7 @@ import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { ButtonWS, TextWS } from '../../config/grommetConfig';
 import { useGame } from '../../contexts/gameContext';
 import { copyToClipboard } from '../../helpers/copyToClipboard';
+import { ALSO_PLAY_AT_TEXT, ALSO_PLAY_ON_TEXT } from '../../config/constants';
 
 interface GameBoxProps {
   handleShowGameForm: () => void;
@@ -20,14 +21,14 @@ const GameBox: FC<GameBoxProps> = ({ handleShowGameForm: showGameForm, setShowDe
       if (!!game.commsApp) {
         return (
           <Box>
-            <TextWS>{`Also play on ${game.commsApp}`}</TextWS>
+            <TextWS>{`${ALSO_PLAY_ON_TEXT} ${game.commsApp}`}</TextWS>
             <TextWS truncate>{`at ${game.commsUrl}`}</TextWS>
           </Box>
         );
       } else {
         return (
           <Box>
-            <TextWS>{`Also play at:`}</TextWS>
+            <TextWS>{`${ALSO_PLAY_AT_TEXT}:`}</TextWS>
             <TextWS truncate>{game.commsUrl}</TextWS>
           </Box>
         );
@@ -35,7 +36,7 @@ const GameBox: FC<GameBoxProps> = ({ handleShowGameForm: showGameForm, setShowDe
     } else if (!!game?.commsApp) {
       return (
         <Box>
-          <TextWS>{`Also play on ${game.commsApp}`}</TextWS>
+          <TextWS>{`${ALSO_PLAY_ON_TEXT} ${game.commsApp}`}</TextWS>
         </Box>
       );
     }

@@ -26,6 +26,7 @@
     "UsingPreGamePage_player.spec.ts",
     "UsingPreGamePage_MC.spec.ts",
     "UsingPlaybookPanel_Angel.spec.ts",
-    "UsingMcPage.spec.ts"
+    "UsingMcPage.spec.ts",
+    "EditingGameOnMcPage.spec.ts"
   ]
 }
