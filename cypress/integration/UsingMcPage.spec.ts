@@ -109,9 +109,3 @@ describe('Using the MC Page', () => {
     });
   });
 });
-
-/**
- * Other specs
- * - UsingThreatsPanel
- * - UsingNpcPanel
- */

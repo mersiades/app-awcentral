@@ -413,6 +413,8 @@ export const THREATS_TEXT = 'Threats';
 
 // ----------------------------------------------- NPCS PANEL --------------------------------------------- //
 export const NPCS_TEXT = 'NPCs';
+export const ADD_NPC_TEXT = 'Add NPC';
+export const EDIT_TEXT = 'Edit';
 
 // ----------------------------------------------- CHARACTER PREVIEW --------------------------------------------- //
 export const HIGHLIGHTED_STATS_TEXT = 'Highlighted stats';

@@ -12,6 +12,7 @@ import { NpcInput } from '../../@types';
 import { Npc } from '../../@types/dataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { ADD_NPC_TEXT, EDIT_TEXT, SET_TEXT } from '../../config/constants';
 
 interface NpcDialogProps {
   handleClose: () => void;
@@ -96,11 +97,11 @@ const NpcDialog: FC<NpcDialogProps> = ({ handleClose, existingNpc }) => {
 
   const renderNameForm = () => (
     <Box flex="grow">
-      <FormField label="Name" name="threatName" width="100%">
+      <FormField label="Name" name="npcName" width="100%">
         {!!threatCreator && (
           <TextInputWS
             placeholder="Type or select name"
-            name="threatName"
+            name="npcName"
             value={name}
             size="xlarge"
             suggestions={name === '' ? shuffle(threatCreator.threatNames) : filteredNames}
@@ -132,7 +133,7 @@ const NpcDialog: FC<NpcDialogProps> = ({ handleClose, existingNpc }) => {
     <ButtonWS
       primary
       fill="horizontal"
-      label={addingNpc ? <Spinner fillColor="#FFF" width="100%" height="36px" /> : 'SET'}
+      label={addingNpc ? <Spinner fillColor="#FFF" width="100%" height="36px" /> : SET_TEXT}
       onClick={() => !addingNpc && !!name && handleSetNpc()}
       disabled={!!addingNpc || !name}
     />
@@ -142,7 +143,7 @@ const NpcDialog: FC<NpcDialogProps> = ({ handleClose, existingNpc }) => {
     <DialogWrapper background={npcDialogBackground} handleClose={handleClose}>
       <Box fill gap="18px" overflow="auto" style={{ minWidth: '400px' }}>
         <HeadingWS crustReady={crustReady} level="3">
-          {!!existingNpc ? `Edit ${existingNpc.name}` : 'Add npc'}
+          {!!existingNpc ? `${EDIT_TEXT} ${existingNpc.name}` : ADD_NPC_TEXT}
         </HeadingWS>
         {renderNameForm()}
         {renderDescriptionForm()}
