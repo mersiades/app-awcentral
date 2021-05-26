@@ -28,6 +28,7 @@
     "UsingPlaybookPanel_Angel.spec.ts",
     "UsingMcPage.spec.ts",
     "EditingGameOnMcPage.spec.ts",
-    "InvitingPlayersOnMcPage.spec.ts"
+    "InvitingPlayersOnMcPage.spec.ts",
+    "UsingMcPanel.spec.ts"
   ]
 }
