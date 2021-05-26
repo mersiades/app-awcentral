@@ -29,6 +29,7 @@
     "UsingMcPage.spec.ts",
     "EditingGameOnMcPage.spec.ts",
     "InvitingPlayersOnMcPage.spec.ts",
-    "UsingMcPanel.spec.ts"
+    "UsingMcPanel.spec.ts",
+    "UsingThreatsPanel.spec.ts"
   ]
 }
