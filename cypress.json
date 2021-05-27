@@ -24,6 +24,7 @@
     "CreatingCharacter_Driver.spec.ts",
     "CreatingCharacter_Gunlugger.spec.ts",
     "CreatingCharacter_Hardholder.spec.ts",
+    "CreatingCharacter_Hocus.spec.ts",
     "UsingPreGamePage_player.spec.ts",
     "UsingPreGamePage_MC.spec.ts",
     "UsingPlaybookPanel_Angel.spec.ts",

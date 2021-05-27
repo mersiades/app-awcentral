@@ -53,6 +53,9 @@ export const FUCKING_THIEVES_NAME = 'FUCKING THIEVES';
 export const BATTLE_HARDENED_NAME = 'BATTLE-HARDENED';
 export const FUCK_THIS_SHIT_NAME = 'FUCK THIS SHIT';
 export const BATTLEFIELD_INSTINCTS_NAME = 'BATTLEFIELD INSTINCTS';
+export const FRENZY_NAME = 'FRENZY';
+export const CHARISMATIC_NAME = 'CHARISMATIC';
+export const WACKNUT_NAME = 'FUCKING WACKNUT';
 
 // IMPROVE_STAT move names
 export const SHARP_2_MAX_NAME = 'SHARP MAX 2';
@@ -425,3 +428,7 @@ export const INVITE_A_PLAYER_TO_TEXT = 'Invite a player to';
 export const ADD_EMAIL_ADDRESS_TEXT = "First, add the player's email address to the game";
 export const TELL_HOW_JOIN_GAME_TEXT =
   'Let your player know how to join your game. You can edit the instructions below (if you want) and then copy and paste into an email, Discord chat etc.';
+
+// ----------------------------------------------- FOLLOWERS FORM --------------------------------------------- //
+export const CHARACTERIZE_THEM_TEXT = 'Characterize them';
+export const IF_YOU_TRAVEL_TEXT = 'If you travel, they';
