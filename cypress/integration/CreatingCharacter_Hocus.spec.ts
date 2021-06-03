@@ -5,17 +5,12 @@ import {
   FORTUNES_NAME,
   FRENZY_NAME,
   GEAR_TITLE,
-  HARDHOLDER_SPECIAL_NAME,
   HOCUS_SPECIAL_NAME,
-  HX_TITLE,
   IF_YOU_TRAVEL_TEXT,
-  LEADERSHIP_NAME,
   PLAYBOOK_TITLE,
   SET_TEXT,
   STATS_TITLE,
   VEHICLES_TITLE,
-  WACKNUT_NAME,
-  WEALTH_NAME,
 } from '../../src/config/constants';
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
@@ -24,7 +19,7 @@ import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
 describe('Creating a new Hocus Character', () => {
   beforeEach(() => {
     cy.kcLogout();
-    cy.kcLogin('olayinka');
+    cy.kcLogin('wilmer');
     cy.visit(`character-creation/${game6.id}?step=0`);
   });
 

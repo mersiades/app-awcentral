@@ -56,6 +56,7 @@ export const BATTLEFIELD_INSTINCTS_NAME = 'BATTLEFIELD INSTINCTS';
 export const FRENZY_NAME = 'FRENZY';
 export const CHARISMATIC_NAME = 'CHARISMATIC';
 export const WACKNUT_NAME = 'FUCKING WACKNUT';
+export const CALL_THIS_HOT_NAME = 'YOU CALL THIS HOT?';
 
 // IMPROVE_STAT move names
 export const SHARP_2_MAX_NAME = 'SHARP MAX 2';
@@ -432,3 +433,22 @@ export const TELL_HOW_JOIN_GAME_TEXT =
 // ----------------------------------------------- FOLLOWERS FORM --------------------------------------------- //
 export const CHARACTERIZE_THEM_TEXT = 'Characterize them';
 export const IF_YOU_TRAVEL_TEXT = 'If you travel, they';
+
+// ----------------------------------------------- ESTABLISHMENT FORM --------------------------------------------- //
+export const ATTRACTIONS_INSTRUCTIONS =
+  'Your establishment features one main attraction supported by 2 side attractions (like a bar features drinks, supported by music and easy food). Choose one to be your main act and 2 for lube:';
+
+export const CAST_CREW_INSTRUCTIONS =
+  "Your cast & crew can consist entirely of the other players' characters, with their agreement, or entirely of NPCs, or any mix. If it includes any NPCs, sketch them out - names and the 1-line descriptions - with the MC. Make sure they suit your establishment's scene.";
+
+export const REGULARS_INSTRUCTIONS =
+  '_**Your regulars**_ include these 5 NPCs (at least): Lamprey, Ba, Camo, Toyota and Lits.';
+
+export const ATMOSPHERE_INSTRUCTIONS = "_**For your establishment's atmosphere**_, choose 3 or 4:";
+
+export const INTERESTED_NPCS_INSTRUCTIONS =
+  'These 3 NPCs (at least) have an _**interest in your establishment**_: Been, Rolfball, Gams.';
+
+export const RESOLVED_INTEREST_TEXT = 'Interest resolved';
+
+export const SELECT_SIDE_ATTRACTIONS = 'Select side attractions';
