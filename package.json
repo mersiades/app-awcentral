@@ -34,7 +34,6 @@
     "eject": "react-scripts eject",
     "start:dev": "env-cmd -f ./src/config/dev.env yarn start",
     "build:staging": "env-cmd -f ./src/config/staging.env yarn run build",
-    "build:demo": "env-cmd -f ./src/config/demo.env yarn run build",
     "build:prod": "env-cmd -f ./src/config/prod.env yarn run build",
     "get-schema": "apollo client:download-schema --endpoint=http://localhost:8080/graphql introspection.schema.graphql",
     "cypress:open": "cypress open",
