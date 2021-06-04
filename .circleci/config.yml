@@ -137,4 +137,4 @@ workflows:
             - build_prod
       - deploy_prod:
           requires:
-            - build_prod
+            - hold
