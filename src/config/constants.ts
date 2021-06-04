@@ -457,3 +457,7 @@ export const SELECT_SIDE_ATTRACTIONS = 'Select side attractions';
 // ----------------------------------------------- WORKSPACE FORM --------------------------------------------- //
 export const ITEMS_INSTRUCTIONS = 'Choose which of the following your workspace includes.';
 export const PROJECTS_TITLE = 'Projects';
+
+// ----------------------------------------------- SKINNER GEAR FORM --------------------------------------------- //
+export const GRACIOUS_WEAPONS = 'Gracious weapons';
+export const LUXE_GEAR = 'Luxe gear';
