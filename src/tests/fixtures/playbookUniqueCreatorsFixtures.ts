@@ -169,13 +169,14 @@ export const mockFollowersCreator: FollowersCreator = {
   id: 'followers-creator-id',
   instructions: 'By default you have around 20 followers, loyal to you but not fanatical.',
   defaultNumberOfFollowers: 20,
-  defaultSurplusBarter: 1,
+  defaultSurplusBarterCount: 1,
   defaultFortune: 1,
   defaultStrengthsCount: 2,
   defaultWeaknessesCount: 2,
   travelOptions: ['travel with you', 'congregate'],
   characterizationOptions: ['your cult', 'your scene', 'your family', 'your staff'],
   defaultWants: ['desertion'],
+  defaultSurplus: ['1-barter'],
   strengthOptions: [strengthOption1, strengthOption2],
   weaknessOptions: [weaknessOption1, weaknessOption2],
   __typename: 'FollowersCreator',
@@ -394,8 +395,7 @@ export const mockLuxeItem1: SkinnerGearItem = {
 export const mockLuxeItem2: SkinnerGearItem = {
   id: 'skinner-gear-item-id-4',
   item: 'eyeglasses (worn valuable)',
-  note:
-    'You may use these for +1sharp when your eyesight matters, but if you do, without them you get -1sharp when your eyesight matters.',
+  note: 'You may use these for +1sharp when your eyesight matters, but if you do, without them you get -1sharp when your eyesight matters.',
 };
 
 export const mockSkinnerGearCreator: SkinnerGearCreator = {

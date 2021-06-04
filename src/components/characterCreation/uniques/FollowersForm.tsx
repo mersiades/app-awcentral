@@ -18,7 +18,7 @@ import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { updateTags, unUpdateTags } from '../../../helpers/updateTags';
 import { getFollowersDescription } from '../../../helpers/getFollowersDescription';
-import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import { CHARACTERIZE_THEM_TEXT, IF_YOU_TRAVEL_TEXT, INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 interface FollowersFormState {
@@ -284,10 +284,10 @@ const FollowersForm: FC = () => {
         followers: followersCreator.defaultNumberOfFollowers,
         fortune: followersCreator.defaultFortune,
         barter: 0,
-        surplusBarter: followersCreator.defaultSurplusBarter,
+        surplusBarter: followersCreator.defaultSurplusBarterCount,
         strengthsCount: followersCreator.defaultStrengthsCount,
         weaknessesCount: followersCreator.defaultWeaknessesCount,
-        surplus: ['1-barter'],
+        surplus: followersCreator.defaultSurplus,
         wants: followersCreator.defaultWants,
         selectedStrengths: [],
         selectedWeaknesses: [],
@@ -351,11 +351,11 @@ const FollowersForm: FC = () => {
       {!!followersCreator && <StyledMarkdown>{followersCreator.instructions}</StyledMarkdown>}
 
       <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
-        <ParagraphWS margin={{ bottom: '0px' }}>Characterize them:</ParagraphWS>
+        <ParagraphWS margin={{ bottom: '0px' }}>{`${CHARACTERIZE_THEM_TEXT}:`}</ParagraphWS>
         <Box direction="row" fill="horizontal" justify="between" gap="12px">
           <Box>
             {renderPills()}
-            <ParagraphWS margin={{ bottom: '0px' }}>If you travel, they:</ParagraphWS>
+            <ParagraphWS margin={{ bottom: '0px' }}>{`${IF_YOU_TRAVEL_TEXT}:`}</ParagraphWS>
             {!!followersCreator &&
               followersCreator.travelOptions.map((option) => {
                 return (

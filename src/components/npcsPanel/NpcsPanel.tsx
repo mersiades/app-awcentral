@@ -6,7 +6,7 @@ import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import NpcBox from './NpcBox';
 import NpcDialog from './NpcDialog';
-import { NPCS_TEXT } from '../../config/constants';
+import { ADD_TEXT, NPCS_TEXT } from '../../config/constants';
 
 const NpcsPanel = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -34,7 +34,7 @@ const NpcsPanel = () => {
         <HeadingWS crustReady={crustReady} level={3}>
           {NPCS_TEXT}
         </HeadingWS>
-        <ButtonWS primary label="ADD" onClick={() => setShowNpcDialog({ show: true })} />
+        <ButtonWS primary label={ADD_TEXT} onClick={() => setShowNpcDialog({ show: true })} />
       </Box>
       {!!npcs &&
         npcs.length > 0 &&

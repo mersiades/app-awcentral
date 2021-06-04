@@ -23,9 +23,19 @@
     "CreatingCharacter_Chopper.spec.ts",
     "CreatingCharacter_Driver.spec.ts",
     "CreatingCharacter_Gunlugger.spec.ts",
+    "CreatingCharacter_Hardholder.spec.ts",
+    "CreatingCharacter_Hocus.spec.ts",
+    "CreatingCharacter_MaestroD.spec.ts",
+    "CreatingCharacter_Savvyhead.spec.ts",
+    "CreatingCharacter_Skinner.spec.ts",
     "UsingPreGamePage_player.spec.ts",
     "UsingPreGamePage_MC.spec.ts",
     "UsingPlaybookPanel_Angel.spec.ts",
-    "UsingMcPage.spec.ts"
+    "UsingMcPage.spec.ts",
+    "EditingGameOnMcPage.spec.ts",
+    "InvitingPlayersOnMcPage.spec.ts",
+    "UsingMcPanel.spec.ts",
+    "UsingThreatsPanel.spec.ts",
+    "UsingNpcPanel.spec.ts"
   ]
 }

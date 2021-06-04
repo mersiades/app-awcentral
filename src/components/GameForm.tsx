@@ -10,6 +10,7 @@ import ADD_COMMS_APP, { AddCommsAppData, AddCommsAppVars, getAddCommsAppOR } fro
 import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars, getAddCommsUrlOR } from '../mutations/addCommsUrl';
 import SET_GAME_NAME, { SetGameNameData, SetGameNameVars } from '../mutations/setGameName';
 import { useGame } from '../contexts/gameContext';
+import { SET_TEXT } from '../config/constants';
 
 interface GameFormProps {
   handleClose: () => void;
@@ -101,7 +102,8 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
           onChange={(e) => setName(e.target.value)}
         />
         <ButtonWS
-          label="SET"
+          label={SET_TEXT}
+          name="set-name-button"
           primary
           size="large"
           alignSelf="center"
@@ -120,7 +122,8 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
           onChange={(e) => setApp(e.value)}
         />
         <ButtonWS
-          label="SET"
+          label={SET_TEXT}
+          name="set-app-button"
           primary
           size="large"
           alignSelf="center"
@@ -142,7 +145,8 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
 
         <ButtonWS
           alignSelf="end"
-          label="SET"
+          label={SET_TEXT}
+          name="set-url-button"
           primary
           size="large"
           onClick={() => handleSetUrl()}

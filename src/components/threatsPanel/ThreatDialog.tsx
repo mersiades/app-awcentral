@@ -14,6 +14,7 @@ import { ThreatInput } from '../../@types';
 import { Threat } from '../../@types/dataInterfaces';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
+import { SET_TEXT } from '../../config/constants';
 
 interface ThreatDialogProps {
   handleClose: () => void;
@@ -154,10 +155,10 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
 
   const renderTypeForm = () => (
     <Box flex="grow">
-      <FormField label="Kind" name="threatKype" width="100%">
+      <FormField label="Kind" name="threatType" width="100%">
         <Select
           placeholder="Select threat kind"
-          name="threatKype"
+          name="threatType"
           options={Object.values(ThreatType)}
           value={threatKind}
           onChange={({ option }) => dispatch({ type: 'SET_KIND', payload: option })}
@@ -223,7 +224,7 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
     <ButtonWS
       primary
       fill="horizontal"
-      label={addingThreat ? <Spinner fillColor="#FFF" width="100%" height="36px" /> : 'SET'}
+      label={addingThreat ? <Spinner fillColor="#FFF" width="100%" height="36px" /> : SET_TEXT}
       onClick={() => !addingThreat && !!name && !!threatKind && !!impulse && handleSetThreat()}
       disabled={!!addingThreat || !name || !threatKind || !impulse}
     />

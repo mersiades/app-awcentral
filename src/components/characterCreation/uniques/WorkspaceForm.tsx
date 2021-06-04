@@ -15,12 +15,13 @@ import { WorkspaceInput } from '../../../@types';
 import {
   INCREASED_BY_IMPROVEMENT_TEXT,
   INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT,
+  ITEMS_INSTRUCTIONS,
   LIFE_SUPPORT_TEXT,
+  PROJECTS_TITLE,
+  SET_TEXT,
 } from '../../../config/constants';
 import { omit } from 'lodash';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
-
-const ITEMS_INSTRUCTIONS = 'Choose which of the following your workspace includes.';
 
 const WorkspaceForm: FC = () => {
   // -------------------------------------------------- Component state ---------------------------------------------------- //
@@ -126,7 +127,7 @@ const WorkspaceForm: FC = () => {
         }'S WORKSPACE`}</HeadingWS>
         <ButtonWS
           primary
-          label={settingWorkspace ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+          label={settingWorkspace ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : SET_TEXT}
           onClick={() => !settingWorkspace && items.length === workspace.itemsCount && handleSubmitWorkspace()}
           disabled={settingWorkspace || items.length !== workspace.itemsCount}
           style={{ height: '45px' }}
@@ -157,7 +158,7 @@ const WorkspaceForm: FC = () => {
         {workspaceCreator?.workspaceInstructions ? workspaceCreator.workspaceInstructions : '...'}
       </StyledMarkdown>
       <HeadingWS crustReady={crustReady} level={3}>
-        Projects
+        {PROJECTS_TITLE}
       </HeadingWS>
       <StyledMarkdown>{workspaceCreator?.projectInstructions ? workspaceCreator.projectInstructions : '...'}</StyledMarkdown>
     </Box>

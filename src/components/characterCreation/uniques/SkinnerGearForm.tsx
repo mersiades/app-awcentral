@@ -18,6 +18,7 @@ import { SkinnerGearItem } from '../../../@types/staticDataInterfaces';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
+import { GRACIOUS_WEAPONS, LUXE_GEAR } from '../../../config/constants';
 
 const SkinnerGearForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -106,7 +107,7 @@ const SkinnerGearForm: FC = () => {
 
       <Box fill="horizontal">
         <ParagraphWS size="large" margin={{ bottom: '6px' }}>
-          Gracious weapons (choose {gearCreator?.graciousWeaponCount})
+          {`${GRACIOUS_WEAPONS} (choose ${gearCreator?.graciousWeaponCount})`}
         </ParagraphWS>
         <Box align="start" gap="12px">
           {!!gearCreator &&
@@ -126,7 +127,7 @@ const SkinnerGearForm: FC = () => {
             })}
         </Box>
         <ParagraphWS size="large" margin={{ bottom: '6px' }}>
-          Luxe gear (choose {gearCreator?.luxeGearCount})
+          {`${LUXE_GEAR} (choose ${gearCreator?.luxeGearCount})`}
         </ParagraphWS>
         <Box align="start" gap="12px">
           {!!gearCreator &&

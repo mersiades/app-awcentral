@@ -119,7 +119,7 @@ const VehiclesFormContainer: FC = () => {
             {/*
             // @ts-ignore */}
             {[...Array(character.vehicleCount).keys()].map((number) => (
-              <Tab key={number} title={`Vehicle ${number + 1}`}>
+              <Tab key={number} title={`Vehicle ${number + 1}`} name={`vehicle-${number + 1}-tab`}>
                 <VehicleForm navigateOnSet={navigateOnSet} existingVehicle={character.vehicles[number]} />
               </Tab>
             ))}

@@ -5,7 +5,7 @@ import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { InMemoryCache } from '@apollo/client';
 import userEvent from '@testing-library/user-event';
-import EstablishmentForm, { RESOLVED_INTEREST_TEXT } from '../EstablishmentForm';
+import EstablishmentForm from '../EstablishmentForm';
 import { mockPlayBookCreatorQueryMaestroD } from '../../../../tests/mockQueries';
 import { Game, PlaybookUniques } from '../../../../@types/dataInterfaces';
 import { mockEstablishmentCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
@@ -17,7 +17,11 @@ import {
   mockPlaybookUniqueMaestroD_needingInterestResolution,
   mockPlaybookUniqueMaestroD_withOneImprovement,
 } from '../../../../tests/fixtures/playBookUniquesFixtures';
-import { ADJUST_MAESTROD_UNIQUE_2_NAME, INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
+import {
+  ADJUST_MAESTROD_UNIQUE_2_NAME,
+  INCREASED_BY_IMPROVEMENT_TEXT,
+  RESOLVED_INTEREST_TEXT,
+} from '../../../../config/constants';
 import {
   RESOLVE_INTEREST_DIALOG_TITLE,
   RESOLVE_INTEREST_SELECT_LABEL,

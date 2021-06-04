@@ -700,13 +700,14 @@ const PLAYBOOK_CREATOR = gql`
           id
           instructions
           defaultNumberOfFollowers
-          defaultSurplusBarter
+          defaultSurplusBarterCount
           defaultFortune
           defaultStrengthsCount
           defaultWeaknessesCount
           travelOptions
           characterizationOptions
           defaultWants
+          defaultSurplus
           strengthOptions {
             id
             description

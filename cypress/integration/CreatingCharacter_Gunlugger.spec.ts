@@ -3,9 +3,6 @@ import {
   BATTLEFIELD_INSTINCTS_NAME,
   BATTLE_HARDENED_NAME,
   BIG_GUNS_TEXT,
-  BRAINER_SPECIAL_NAME,
-  BRAINSCAN_NAME,
-  BRAIN_RECEPTIVITY_NAME,
   FUCK_THIS_SHIT_NAME,
   GEAR_TITLE,
   GUNLUGGER_SPECIAL_NAME,
@@ -22,7 +19,7 @@ import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
 describe('Creating a new Gunlugger Character', () => {
   beforeEach(() => {
     cy.kcLogout();
-    cy.kcLogin('maya');
+    cy.kcLogin('marama');
     cy.visit(`character-creation/${game6.id}?step=0`);
   });
 

@@ -11,6 +11,13 @@ import { useGame } from '../contexts/gameContext';
 import { useFonts } from '../contexts/fontContext';
 import { copyToClipboard } from '../helpers/copyToClipboard';
 import { validateEmail } from '../helpers/validateEmail';
+import {
+  ADD_ANOTHER_TEXT,
+  ADD_EMAIL_ADDRESS_TEXT,
+  ADD_TEXT,
+  INVITE_A_PLAYER_TO_TEXT,
+  TELL_HOW_JOIN_GAME_TEXT,
+} from '../config/constants';
 
 interface InvitationFormProps {
   handleClose: () => void;
@@ -66,19 +73,18 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
         crustReady={crustReady}
         level={2}
         margin={{ horizontal: '0px', bottom: '6px', top: '12px' }}
-      >{`Invite a player to ${game?.name}`}</HeadingWS>
+      >{`${INVITE_A_PLAYER_TO_TEXT} ${game?.name}`}</HeadingWS>
       {hasSubmitted ? (
         <Box width="520px" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
           <ParagraphWS fill margin="6px">
-            Let your player know how to join your game. You can edit the instructions below (if you want) and then copy and
-            paste into an email, Discord chat etc.
+            {TELL_HOW_JOIN_GAME_TEXT}
           </ParagraphWS>
           <Box border={{ color: accentColors[0] }} pad="12px" background="transparent" gap="12px">
             {renderMessage()}
             <ButtonWS fill="horizontal" secondary label="COPY TO CLIPBOARD" onClick={() => copyToClipboard(message)} />
             <ButtonWS
               primary
-              label="INVITE ANOTHER"
+              label={ADD_ANOTHER_TEXT}
               onClick={() => {
                 setFormValues({ email: '' });
                 setHasSubmitted(false);
@@ -88,7 +94,7 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
         </Box>
       ) : (
         <Box animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
-          <ParagraphWS margin="6px">First, add the player's email address to the game</ParagraphWS>
+          <ParagraphWS margin="6px">{ADD_EMAIL_ADDRESS_TEXT}</ParagraphWS>
           <Form
             value={formValues}
             onChange={(nextValue: any) => setFormValues(nextValue)}
@@ -109,7 +115,7 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
                   icon={<Mail />}
                 />
               </FormField>
-              <ButtonWS type="submit" primary label="ADD" alignSelf="end" disabled={!formValues.email} />
+              <ButtonWS type="submit" primary label={ADD_TEXT} alignSelf="end" disabled={!formValues.email} />
             </Box>
           </Form>
         </Box>

@@ -20,24 +20,21 @@ import { SecurityOption } from '../../../@types/staticDataInterfaces';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { CastCrew } from '../../../@types/dataInterfaces';
-import { ADJUST_MAESTROD_UNIQUE_2_NAME, INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import {
+  ADD_TEXT,
+  ADJUST_MAESTROD_UNIQUE_2_NAME,
+  ATMOSPHERE_INSTRUCTIONS,
+  ATTRACTIONS_INSTRUCTIONS,
+  CAST_CREW_INSTRUCTIONS,
+  INCREASED_BY_IMPROVEMENT_TEXT,
+  INTERESTED_NPCS_INSTRUCTIONS,
+  REGULARS_INSTRUCTIONS,
+  RESOLVED_INTEREST_TEXT,
+  SELECT_SIDE_ATTRACTIONS,
+  SET_TEXT,
+} from '../../../config/constants';
 import EstablishmentInterestResolutionDialog from '../../dialogs/EstablishmentInterestResolutionDialog';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
-
-const ATTRACTIONS_INSTRUCTIONS =
-  'Your establishment features one main attraction supported by 2 side attractions (like a bar features drinks, supported by music and easy food). Choose one to be your main act and 2 for lube:';
-
-const CAST_CREW_INSTRUCTIONS =
-  "Your cast & crew can consist entirely of the other players' characters, with their agreement, or entirely of NPCs, or any mix. If it includes any NPCs, sketch them out - names and the 1-line descriptions - with the MC. Make sure they suit your establishment's scene.";
-
-const REGULARS_INSTRUCTIONS = '_**Your regulars**_ include these 5 NPCs (at least): Lamprey, Ba, Camo, Toyota and Lits.';
-
-const ATMOSPHERE_INSTRUCTIONS = "_**For your establishment's atmosphere**_, choose 3 or 4:";
-
-const INTERESTED_NPCS_INSTRUCTIONS =
-  'These 3 NPCs (at least) have an _**interest in your establishment**_: Been, Rolfball, Gams.';
-
-export const RESOLVED_INTEREST_TEXT = 'Interest resolved';
 
 interface EstablishmentBoxWrapperProps {
   children: JSX.Element;
@@ -563,7 +560,7 @@ const EstablishmentForm: FC = () => {
         >{`${!!character?.name ? character.name?.toUpperCase() : '...'}'S ESTABLISHMENT`}</HeadingWS>
         <ButtonWS
           primary
-          label={settingEstablishment ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
+          label={settingEstablishment ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : SET_TEXT}
           onClick={() => !settingEstablishment && handleSubmitEstablishment()}
           disabled={settingEstablishment || !isEstablishmentComplete()}
           style={{ height: '45px' }}
@@ -584,7 +581,7 @@ const EstablishmentForm: FC = () => {
             onChange={(e) => handleMainAttractionSelect(e.value)}
           />
 
-          <ParagraphWS margin={{ top: '12px', bottom: '3px' }}>Select side attractions:</ParagraphWS>
+          <ParagraphWS margin={{ top: '12px', bottom: '3px' }}>{SELECT_SIDE_ATTRACTIONS + ':'}</ParagraphWS>
           <Box direction="row" wrap gap="6px">
             {workingAttractions.map((attr, index) => (
               <CheckBox
@@ -624,7 +621,7 @@ const EstablishmentForm: FC = () => {
               <ButtonWS
                 id="add-additional-regular-button"
                 secondary
-                label="ADD"
+                label={ADD_TEXT}
                 disabled={!regularName || regulars.includes(regularName)}
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none', width: '100px' }}
@@ -669,7 +666,7 @@ const EstablishmentForm: FC = () => {
               <ButtonWS
                 secondary
                 id="add-additional-interest-npc-button"
-                label="ADD"
+                label={ADD_TEXT}
                 disabled={!interestedNpcName || interestedParties.includes(interestedNpcName)}
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none', width: '100px' }}
@@ -771,7 +768,7 @@ const EstablishmentForm: FC = () => {
               <ButtonWS
                 id="add-crew-member-button"
                 secondary
-                label="ADD"
+                label={ADD_TEXT}
                 disabled={!crewName}
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none', width: '100px' }}
