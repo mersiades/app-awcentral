@@ -1,21 +1,12 @@
 import {
-  ATMOSPHERE_INSTRUCTIONS,
   ATTRACTIONS_INSTRUCTIONS,
   BATTLE_VEHICLES_TITLE,
   CALL_THIS_HOT_NAME,
   CAST_CREW_INSTRUCTIONS,
-  CHARACTERIZE_THEM_TEXT,
-  CHARISMATIC_NAME,
-  FORTUNES_NAME,
-  FRENZY_NAME,
   GEAR_TITLE,
-  HOCUS_SPECIAL_NAME,
-  IF_YOU_TRAVEL_TEXT,
-  INTERESTED_NPCS_INSTRUCTIONS,
   JUST_GIVE_MOTIVE_NAME,
   MAESTROD_SPECIAL_NAME,
   PLAYBOOK_TITLE,
-  REGULARS_INSTRUCTIONS,
   SELECT_SIDE_ATTRACTIONS,
   SET_TEXT,
   STATS_TITLE,
@@ -118,10 +109,6 @@ describe("Creating a new Maestro D' Character", () => {
     cy.contains(CAST_CREW_INSTRUCTIONS).should('exist');
     cy.contains(SET_TEXT).should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 23);
-
-    // cy.get('div[data-testid="fortune-box"]').should('contain', '+1fortune');
-    // cy.get('div[data-testid="want-tags-box"]').should('contain', 'desertion');
-    // cy.get('div[data-testid="surplus-tags-box"]').should('contain', '1-barter');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]').should('contain', maestroDGearItem);

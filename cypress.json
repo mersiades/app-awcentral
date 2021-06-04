@@ -26,6 +26,7 @@
     "CreatingCharacter_Hardholder.spec.ts",
     "CreatingCharacter_Hocus.spec.ts",
     "CreatingCharacter_MaestroD.spec.ts",
+    "CreatingCharacter_Savvyhead.spec.ts",
     "UsingPreGamePage_player.spec.ts",
     "UsingPreGamePage_MC.spec.ts",
     "UsingPlaybookPanel_Angel.spec.ts",

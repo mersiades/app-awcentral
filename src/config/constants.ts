@@ -57,6 +57,7 @@ export const FRENZY_NAME = 'FRENZY';
 export const CHARISMATIC_NAME = 'CHARISMATIC';
 export const WACKNUT_NAME = 'FUCKING WACKNUT';
 export const CALL_THIS_HOT_NAME = 'YOU CALL THIS HOT?';
+export const THINGS_SPEAK_NAME = 'THINGS SPEAK';
 
 // IMPROVE_STAT move names
 export const SHARP_2_MAX_NAME = 'SHARP MAX 2';
@@ -452,3 +453,7 @@ export const INTERESTED_NPCS_INSTRUCTIONS =
 export const RESOLVED_INTEREST_TEXT = 'Interest resolved';
 
 export const SELECT_SIDE_ATTRACTIONS = 'Select side attractions';
+
+// ----------------------------------------------- WORKSPACE FORM --------------------------------------------- //
+export const ITEMS_INSTRUCTIONS = 'Choose which of the following your workspace includes.';
+export const PROJECTS_TITLE = 'Projects';
