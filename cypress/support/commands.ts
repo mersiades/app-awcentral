@@ -97,7 +97,7 @@ Cypress.Commands.add('moveThroughNewGameIntro', () => {
 
 Cypress.Commands.add('selectPlaybook', (playbookType: PlaybookType) => {
   // Check form content
-  cy.get(`div[data-testid="${playbookType.toLowerCase()}-button"]`, { timeout: 20000 }).click();
+  cy.get(`button[name="${playbookType}"]`, { timeout: 25000 }).click();
   cy.contains(`SELECT ${decapitalize(playbookType)}`).click();
 });
 

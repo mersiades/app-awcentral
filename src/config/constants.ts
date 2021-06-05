@@ -276,7 +276,7 @@ export const NEW_GAME_TEXT = 'NEW GAME';
 export const WELCOME_JUNGLE_TEXT = 'Welcome to the jungle, baby.';
 export const GET_STARTED_TEXT = "Once everyone's ready, punch NEXT to get started.";
 
-export const CHOOSE_YOUR_PLAYBOOK_TEXT = 'Choose your playbook';
+export const CHOOSE_YOUR_PLAYBOOK_TEXT = 'CHOOSE YOUR PLAYBOOK';
 export const NEW_PLAYER_INTRO_TEXT =
   'You should probably wait for your MC and the rest of your crew, tho. No headstarts for nobody in Apocalypse World.';
 export const CHANGED_PLAYBOOK_INTRO_TEXT =

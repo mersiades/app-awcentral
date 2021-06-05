@@ -80,8 +80,7 @@ describe('Creating a new Angel Character', () => {
     // Should be no change
 
     // Check form functionality
-    cy.get('div[data-testid="angel-button"]').click();
-    cy.contains('SELECT Angel').click(); // SELECT ANGEL
+    cy.selectPlaybook(PlaybookType.angel);
 
     // ------------------------------------------ CharacterNameForm ------------------------------------------ //
     const angelName = 'Diana';
