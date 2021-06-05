@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
-import { Box, Grid, Image, Spinner } from 'grommet';
+import { Box, Grid, Image } from 'grommet';
 
+import Spinner from './Spinner';
 import { background, HeadingWS } from '../config/grommetConfig';
 
 interface LandingPageLayoutProps {
