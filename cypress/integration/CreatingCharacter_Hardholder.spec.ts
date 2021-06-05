@@ -1,17 +1,10 @@
 import {
-  BACKUP_WEAPONS_TEXT,
-  BATTLEFIELD_INSTINCTS_NAME,
-  BATTLE_HARDENED_NAME,
   BATTLE_VEHICLES_TITLE,
-  BIG_GUNS_TEXT,
-  FUCK_THIS_SHIT_NAME,
   GEAR_TITLE,
-  GUNLUGGER_SPECIAL_NAME,
   HARDHOLDER_SPECIAL_NAME,
   HX_TITLE,
   LEADERSHIP_NAME,
   PLAYBOOK_TITLE,
-  SERIOUS_GUNS_TEXT,
   SET_TEXT,
   STATS_TITLE,
   VEHICLES_TITLE,
@@ -310,5 +303,6 @@ const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
     cy.contains('+1speed').click();
     cy.contains('+1handling').click();
   }
+  cy.wait(100);
   cy.contains(SET_TEXT).click();
 };

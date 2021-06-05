@@ -30,7 +30,13 @@ To run all the Cypress tests and generate code coverage: `yarn run cypress:all`
 
 Through some quirk, `yarn run cypress:all` tests will fail unless you've run `yarn run cypress:open` at least once beforehand.
 
-To open the test coverage in your browser: `open coverage/lcov-report/index.html`
+To open the test coverage in your browser: `open coverage-cypress/lcov-report/index.html`
+
+#### Combined coverage reports
+
+To run all Jest and Cypress tests and then generate a combined coverage report: `yarn test-coverage`.
+
+To open the combined test coverage report in your browser: `open coverage-combined/lcov-report/index.html`
 
 ### Production deployment
 
