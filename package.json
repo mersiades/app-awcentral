@@ -37,7 +37,8 @@
     "build:prod": "env-cmd -f ./src/config/prod.env yarn run build",
     "get-schema": "apollo client:download-schema --endpoint=http://localhost:8080/graphql introspection.schema.graphql",
     "cypress:open": "cypress open",
-    "cypress:all": "cypress run"
+    "cypress:all": "cypress run",
+    "test-coverage": "yarn test --coverage --watchAll=false && yarn cypress:all && node ./scripts/mergeCoverage.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -87,8 +88,14 @@
     "arrowParens": "always"
   },
   "nyc": {
+    "report-dir": "coverage-cypress",
     "exclude": [
       "**/LandingPage.tsx"
+    ]
+  },
+  "jest": {
+    "coverageReporters": [
+      "json"
     ]
   }
 }
