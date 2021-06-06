@@ -93,6 +93,7 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({ move, handleClose }
           />
           <ButtonWS
             label={'DROP'}
+            data-testid="drop-button"
             primary
             onClick={() => !!barter && !performingMakeWantKnownMove && handleMakeWantKnownMove(move, barter)}
             disabled={!barter || performingMakeWantKnownMove || barter > 3}

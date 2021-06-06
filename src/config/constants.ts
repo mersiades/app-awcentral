@@ -19,10 +19,16 @@ export const LIFESTYLE_GIGS_NAME = 'LIFESTYLE AND GIGS';
 export const SESSION_END_NAME = 'SESSION END';
 
 // Peripheral moves
+export const SUFFER_HARM_NAME = 'SUFFER HARM';
+export const SUFFER_V_HARM = 'SUFFER V-HARM';
 export const INFLICT_HARM_NAME = 'INFLICT HARM ON PC';
 export const HEAL_HARM_NAME = 'HEAL PC HARM';
+export const GIVE_BARTER_NAME = 'GIVE BARTER';
+export const GO_MARKET_NAME = 'GO TO THE MARKET';
 export const MAKE_WANT_KNOWN_NAME = 'MAKE WANT KNOWN';
-export const SUFFER_V_HARM = 'SUFFER V-HARM';
+export const INSIGHT_NAME = 'INSIGHT';
+export const AUGURY_NAME = 'AUGURY';
+export const CHANGE_HIGHLIGHTED_STAT_NAME = 'CHANGE HIGHLIGHTED STATS';
 
 // Battle moves
 export const CAT_OR_MOUSE_NAME = 'CAT OR MOUSE';

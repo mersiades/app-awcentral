@@ -23,7 +23,6 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-import { getTypenameFromResult } from '@apollo/client/utilities';
 import 'cypress-keycloak-commands';
 import { PlaybookType, StatType } from '../../src/@types/enums';
 import {
@@ -92,9 +91,10 @@ Cypress.Commands.add('moveThroughNewGameIntro', () => {
   // Check CharacterCreationStepper
   cy.get('div[data-testid="playbook-box"]').should('contain', PLAYBOOK_TITLE).should('contain', '...');
 
+  cy.url().then((url) => cy.log(url));
   // Go to next
-  cy.wait(4000);
-  cy.contains(NEXT_TEXT, { timeout: 20000 }).click();
+  cy.getSettled('button[data-testid="next-button"]').click();
+  // cy.contains(NEXT_TEXT, { timeout: 20000 }).click();
 });
 
 Cypress.Commands.add('selectPlaybook', (playbookType: PlaybookType) => {
@@ -240,10 +240,49 @@ Cypress.Commands.add('openBasicMovesPanel', () => {
   cy.contains('Basic moves').click();
 });
 
+Cypress.Commands.add('openPeripheralMovesPanel', () => {
+  cy.get('div[role="tablist"]').within(() => {
+    cy.contains('Playbook').should('be.visible'); // Wait for character to load
+    cy.contains('Moves').click();
+  });
+
+  cy.contains('Peripheral moves').click();
+});
+
 Cypress.Commands.add('checkMoveMessage', (messageTitle: string, snippet: string, stat?: StatType) => {
   cy.get('div[data-testid="messages-panel"]').within(() => {
     cy.contains(messageTitle).scrollIntoView().should('be.visible');
     cy.contains(snippet);
     !!stat && cy.contains(stat);
+  });
+});
+
+// recursively gets an element, returning only after it's determined to be attached to the DOM for good
+Cypress.Commands.add('getSettled', (selector, opts = {}) => {
+  const retries = opts.retries || 3;
+  const delay = opts.delay || 100;
+
+  const isAttached = (resolve: { (thenableOrResult?: unknown): void; (arg0: JQuery<any>): any }, count = 0) => {
+    const el = Cypress.$(selector);
+
+    // is element attached to the DOM?
+    count = Cypress.dom.isAttached(el) ? count + 1 : 0;
+
+    // hit our base case, return the element
+    if (count >= retries) {
+      return resolve(el);
+    }
+
+    // retry after a bit of a delay
+    setTimeout(() => isAttached(resolve, count), delay);
+  };
+
+  // wrap, so we can chain cypress commands off the result
+  return cy.wrap(null).then(() => {
+    return new Cypress.Promise((resolve) => {
+      return isAttached(resolve, 0);
+    }).then((el) => {
+      return cy.wrap(el);
+    });
   });
 });

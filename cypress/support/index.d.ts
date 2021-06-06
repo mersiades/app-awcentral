@@ -32,6 +32,8 @@ declare namespace Cypress {
     deleteKeycloakUser(email: string): void;
     openPlaybookPanel(): void;
     openBasicMovesPanel(): void;
+    openPeripheralMovesPanel(): void;
     checkMoveMessage(messageTitle: string, snippet: string, stat?: StatType): void;
+    getSettled(selector: string, opts?: { [key: string]: any });
   }
 }

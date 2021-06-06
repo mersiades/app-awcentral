@@ -28,7 +28,6 @@ const NewGameIntro: FC = () => {
       try {
         await createCharacter({ variables: { gameRoleId: userGameRole?.id } });
         history.push(`/character-creation/${game.id}?step=${1}`);
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {
         console.error(error);
       }
@@ -81,6 +80,7 @@ const NewGameIntro: FC = () => {
           </HeadingWS>
           <ButtonWS
             label={creatingCharacter ? <Spinner fillColor="#FFF" width="52px" height="36px" /> : NEXT_TEXT}
+            data-testid="next-button"
             primary
             size="large"
             disabled={creatingCharacter}
