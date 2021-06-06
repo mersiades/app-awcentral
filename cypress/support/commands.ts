@@ -23,8 +23,9 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import { getTypenameFromResult } from '@apollo/client/utilities';
 import 'cypress-keycloak-commands';
-import { PlaybookType } from '../../src/@types/enums';
+import { PlaybookType, StatType } from '../../src/@types/enums';
 import {
   ADD_TEXT,
   LOOKS_TITLE,
@@ -92,6 +93,7 @@ Cypress.Commands.add('moveThroughNewGameIntro', () => {
   cy.get('div[data-testid="playbook-box"]').should('contain', PLAYBOOK_TITLE).should('contain', '...');
 
   // Go to next
+  cy.wait(4000);
   cy.contains(NEXT_TEXT, { timeout: 20000 }).click();
 });
 
@@ -226,5 +228,22 @@ Cypress.Commands.add('deleteKeycloakUser', (email: string) => {
 Cypress.Commands.add('openPlaybookPanel', () => {
   cy.get('div[role="tablist"]').within(() => {
     cy.contains('Playbook').click();
+  });
+});
+
+Cypress.Commands.add('openBasicMovesPanel', () => {
+  cy.get('div[role="tablist"]').within(() => {
+    cy.contains('Playbook').should('be.visible'); // Wait for character to load
+    cy.contains('Moves').click();
+  });
+
+  cy.contains('Basic moves').click();
+});
+
+Cypress.Commands.add('checkMoveMessage', (messageTitle: string, snippet: string, stat?: StatType) => {
+  cy.get('div[data-testid="messages-panel"]').within(() => {
+    cy.contains(messageTitle).scrollIntoView().should('be.visible');
+    cy.contains(snippet);
+    !!stat && cy.contains(stat);
   });
 });
