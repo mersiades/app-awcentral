@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { Box } from 'grommet';
@@ -100,6 +100,15 @@ const CharacterStatsForm: FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (!!statsOptions && !!character && !!character.statsBlock?.statsOptionId) {
+      const existingStatsOption: StatsOption | undefined = statsOptions.find(
+        (so) => so.id === character.statsBlock?.statsOptionId
+      );
+      !!existingStatsOption && setSelectedStatsOption(existingStatsOption);
+    }
+  }, [character, statsOptions]);
+
   // -------------------------------------------------- Render component  ---------------------------------------------------- //
   return (
     <Box
@@ -137,15 +146,15 @@ const CharacterStatsForm: FC = () => {
                 direction="row"
                 justify="around"
                 align="center"
-                border={opt.id === existingStatsOptionId}
-                background={{ color: 'neutral-1', opacity: opt.id === existingStatsOptionId ? 0.5 : 0 }}
+                border={opt.id === selectedStatsOption?.id || opt.id === existingStatsOptionId}
+                background={{ color: 'neutral-1', opacity: opt.id === selectedStatsOption?.id ? 0.5 : 0 }}
                 hoverIndicator={{ color: 'neutral-1', opacity: 0.4 }}
                 onClick={() => setSelectedStatsOption(opt)}
                 gap="6px"
                 style={{ minHeight: '52px' }}
               >
                 <Box direction="row" align="center" gap="12px">
-                  <HeadingWS level={4} margin={{ vertical: '6px' }}>
+                  <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${COOL_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
@@ -153,7 +162,7 @@ const CharacterStatsForm: FC = () => {
                   </HeadingWS>
                 </Box>
                 <Box direction="row" align="center" gap="12px">
-                  <HeadingWS level={4} margin={{ vertical: '6px' }}>
+                  <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${HARD_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
@@ -161,7 +170,7 @@ const CharacterStatsForm: FC = () => {
                   </HeadingWS>
                 </Box>
                 <Box direction="row" align="center" gap="12px">
-                  <HeadingWS level={4} margin={{ vertical: '6px' }}>
+                  <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${HOT_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
@@ -169,7 +178,7 @@ const CharacterStatsForm: FC = () => {
                   </HeadingWS>
                 </Box>
                 <Box direction="row" align="center" gap="12px">
-                  <HeadingWS level={4} margin={{ vertical: '6px' }}>
+                  <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${SHARP_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
@@ -177,7 +186,7 @@ const CharacterStatsForm: FC = () => {
                   </HeadingWS>
                 </Box>
                 <Box direction="row" align="center" gap="12px">
-                  <HeadingWS level={4} margin={{ vertical: '6px' }}>
+                  <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${WEIRD_TEXT}:`}
                   </HeadingWS>
                   <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
