@@ -28,7 +28,7 @@ export const background = {
   color: 'black',
   dark: true,
   size: 'contain',
-  image: 'url(/images/landscape-smoke.jpg)',
+  image: 'url(/images/character-creation-background-image.jpg)',
   position: 'top center',
 };
 
