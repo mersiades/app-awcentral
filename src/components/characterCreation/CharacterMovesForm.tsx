@@ -29,6 +29,7 @@ import {
   INCREASED_BY_IMPROVEMENT_TEXT,
   LEADERSHIP_NAME,
   PACK_ALPHA_NAME,
+  SET_TEXT,
   WEALTH_NAME,
 } from '../../config/constants';
 import { logAmpEvent } from '../../config/amplitudeConfig';
@@ -314,7 +315,8 @@ const CharacterMovesForm: FC = () => {
           >{`WHAT ARE ${!!character?.name ? character.name.toUpperCase() : '...'}'S MOVES?`}</HeadingWS>
           <ButtonWS
             primary
-            label={settingMoves ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+            data-testid="set-moves-button"
+            label={settingMoves ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : SET_TEXT}
             disabled={selectedMoves.length !== getTotalAllowedMoves()}
             onClick={() => !settingMoves && handleSubmitCharacterMoves()}
           />

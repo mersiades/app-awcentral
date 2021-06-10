@@ -18,6 +18,7 @@ import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { LookInput } from '../../@types';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { SET_TEXT } from '../../config/constants';
 
 interface LooksFormState {
   gender?: Look;
@@ -229,7 +230,8 @@ const CharacterLooksForm: FC = () => {
 
               <ButtonWS
                 secondary
-                label={settingLooks ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+                data-testid="set-look-button"
+                label={settingLooks ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : SET_TEXT}
                 disabled={!gender || gender.look === '' || settingLooks}
                 onClick={() => handlePillOrSetClick(gender)}
               />

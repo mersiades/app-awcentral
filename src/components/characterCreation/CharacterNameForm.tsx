@@ -12,6 +12,7 @@ import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { SET_TEXT } from '../../config/constants';
 
 const CharacterNameForm: FC = () => {
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
@@ -95,7 +96,8 @@ const CharacterNameForm: FC = () => {
           } CALLED?`}</HeadingWS>
           <ButtonWS
             primary
-            label={settingName ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+            data-testid="set-name-button"
+            label={settingName ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : SET_TEXT}
             disabled={selectedName === '' || settingName}
             onClick={() => !settingName && handleSubmitName()}
           />

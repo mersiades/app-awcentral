@@ -33,6 +33,7 @@
     "UsingPlaybookPanel_Angel.spec.ts",
     "MakingBasicMoves_Battlebabe.spec.ts",
     "MakingPeripheralMoves_Battlebabe.spec.ts",
+    "MakingBattleMoves_Battlebabe.spec.ts",
     "UsingMcPage.spec.ts",
     "EditingGameOnMcPage.spec.ts",
     "InvitingPlayersOnMcPage.spec.ts",

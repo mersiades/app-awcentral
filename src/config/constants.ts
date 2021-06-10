@@ -31,6 +31,19 @@ export const AUGURY_NAME = 'AUGURY';
 export const CHANGE_HIGHLIGHTED_STAT_NAME = 'CHANGE HIGHLIGHTED STATS';
 
 // Battle moves
+export const EXCHANGE_HARM_NAME = 'EXCHANGE HARM';
+export const SEIZE_BY_FORCE_NAME = 'SEIZE BY FORCE';
+export const ASSAULT_POSITION_NAME = 'ASSAULT A POSITION';
+export const KEEP_HOLD_OF_SOMETHING_NAME = 'KEEP HOLD OF SOMETHING';
+export const FIGHT_FREE_NAME = 'FIGHT FREE';
+export const DEFEND_SOMEONE_NAME = 'DEFEND SOMEONE';
+export const DO_SINGLE_COMBAT_NAME = 'DO SINGLE COMBAT';
+export const LAY_DOWN_FIRE_NAME = 'LAY DOWN FIRE';
+export const STAND_OVERWATCH_NAME = 'STAND OVERWATCH';
+export const KEEP_EYE_OUT_NAME = 'KEEP AN EYE OUT'; // Earns holds
+export const BE_THE_BAIT_NAME = 'BE THE BAIT';
+export const BE_THE_CAT_NAME = 'BE THE CAT';
+export const BE_THE_MOUSE_NAME = 'BE THE MOUSE';
 export const CAT_OR_MOUSE_NAME = 'CAT OR MOUSE';
 
 // Road war moves
@@ -247,7 +260,6 @@ export const DIE_NAME = 'DIE';
 
 // Moves that can earn holds
 
-export const KEEP_EYE_OUT_NAME = 'KEEP AN EYE OUT';
 export const DANGEROUS_AND_SEXY_NAME = 'DANGEROUS & SEXY';
 export const BRAINSCAN_NAME = 'DEEP BRAIN SCAN';
 export const PUPPET_STRINGS_NAME = 'IN BRAIN PUPPET STRINGS';

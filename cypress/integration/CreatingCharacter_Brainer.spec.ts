@@ -70,7 +70,7 @@ describe('Creating a new Brainer Character', () => {
     const option3Text = 'receptivity drugs (tag hi-tech)';
 
     // Check form content
-    cy.contains(`WHAT SPECIAL BRAINER GEAR DOES ${brainerNameUC} HAVE?`).should('exist');
+    cy.contains(`WHAT SPECIAL BRAINER GEAR DOES ${brainerNameUC} HAVE?`, { timeout: 8000 }).should('exist');
     cy.contains(SET_TEXT).as('setButton');
     cy.contains('Select 2').should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 6);

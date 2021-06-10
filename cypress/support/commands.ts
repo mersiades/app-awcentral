@@ -93,13 +93,12 @@ Cypress.Commands.add('moveThroughNewGameIntro', () => {
 
   cy.url().then((url) => cy.log(url));
   // Go to next
-  cy.getSettled('button[data-testid="next-button"]').click();
-  // cy.contains(NEXT_TEXT, { timeout: 20000 }).click();
+  cy.get('button[data-testid="next-button"]', { timeout: 10000 }).click();
 });
 
 Cypress.Commands.add('selectPlaybook', (playbookType: PlaybookType) => {
   // Check form content
-  cy.get(`button[name="${playbookType}"]`, { timeout: 25000 }).click();
+  cy.get(`button[name="${playbookType}"]`, { timeout: 10000 }).click();
   cy.contains(`SELECT ${decapitalize(playbookType)}`).click();
 });
 
@@ -111,7 +110,7 @@ Cypress.Commands.add('setCharacterName', (name: string) => {
   cy.contains(name).click();
 
   // Submit form
-  cy.contains(SET_TEXT).click();
+  cy.get('button[data-testid="set-name-button"]', { timeout: 10000 }).click();
 });
 
 Cypress.Commands.add(
@@ -151,7 +150,7 @@ Cypress.Commands.add('setCharacterStat', (nameUC: string) => {
   cy.get('div[data-testid="stats-option-box-1"]').click();
 
   // Submit form
-  cy.contains(SET_TEXT).click();
+  cy.get('button[data-testid="set-stats-button"]', { timeout: 10000 }).click();
 });
 
 Cypress.Commands.add('completeGearForm', (nameUC: string, clothes: string, items: string[]) => {
@@ -174,7 +173,7 @@ Cypress.Commands.add('completeGearForm', (nameUC: string, clothes: string, items
   });
 
   // Submit form
-  cy.contains(SET_TEXT).click();
+  cy.get('button[data-testid="set-gear-button"]', { timeout: 10000 }).click();
 });
 
 Cypress.Commands.add('setVehicleOptions', (option1: string, option2: string, option3: string, targetBox: string) => {
@@ -225,64 +224,37 @@ Cypress.Commands.add('deleteKeycloakUser', (email: string) => {
   });
 });
 
+Cypress.Commands.add('openMovesPanelBox', (boxTitle: string) => {
+  cy.get('div[role="tablist"]').within(() => {
+    cy.contains('Playbook', { timeout: 8000 }).should('be.visible'); // Wait for character to load
+    cy.contains('Moves').click();
+  });
+
+  cy.contains(boxTitle).click();
+});
+
 Cypress.Commands.add('openPlaybookPanel', () => {
   cy.get('div[role="tablist"]').within(() => {
     cy.contains('Playbook').click();
   });
 });
 
-Cypress.Commands.add('openBasicMovesPanel', () => {
-  cy.get('div[role="tablist"]').within(() => {
-    cy.contains('Playbook').should('be.visible'); // Wait for character to load
-    cy.contains('Moves').click();
-  });
-
-  cy.contains('Basic moves').click();
-});
-
-Cypress.Commands.add('openPeripheralMovesPanel', () => {
-  cy.get('div[role="tablist"]').within(() => {
-    cy.contains('Playbook').should('be.visible'); // Wait for character to load
-    cy.contains('Moves').click();
-  });
-
-  cy.contains('Peripheral moves').click();
-});
-
 Cypress.Commands.add('checkMoveMessage', (messageTitle: string, snippet: string, stat?: StatType) => {
   cy.get('div[data-testid="messages-panel"]').within(() => {
-    cy.contains(messageTitle).scrollIntoView().should('be.visible');
+    cy.contains(messageTitle, { timeout: 6000 }).scrollIntoView().should('be.visible');
     cy.contains(snippet);
     !!stat && cy.contains(stat);
   });
 });
 
-// recursively gets an element, returning only after it's determined to be attached to the DOM for good
-Cypress.Commands.add('getSettled', (selector, opts = {}) => {
-  const retries = opts.retries || 3;
-  const delay = opts.delay || 100;
+Cypress.Commands.add('checkPrintMove', (characterName: string, moveName: string, moveSnippet: string) => {
+  const messageTitle = `${characterName?.toUpperCase()}: ${moveName}`;
+  cy.contains(decapitalize(moveName)).click();
+  cy.checkMoveMessage(messageTitle, moveSnippet);
+});
 
-  const isAttached = (resolve: { (thenableOrResult?: unknown): void; (arg0: JQuery<any>): any }, count = 0) => {
-    const el = Cypress.$(selector);
-
-    // is element attached to the DOM?
-    count = Cypress.dom.isAttached(el) ? count + 1 : 0;
-
-    // hit our base case, return the element
-    if (count >= retries) {
-      return resolve(el);
-    }
-
-    // retry after a bit of a delay
-    setTimeout(() => isAttached(resolve, count), delay);
-  };
-
-  // wrap, so we can chain cypress commands off the result
-  return cy.wrap(null).then(() => {
-    return new Cypress.Promise((resolve) => {
-      return isAttached(resolve, 0);
-    }).then((el) => {
-      return cy.wrap(el);
-    });
-  });
+Cypress.Commands.add('checkRollMove', (characterName: string, moveName: string, moveSnippet: string, rollStat: StatType) => {
+  const messageTitle = `${characterName?.toUpperCase()}: ${moveName}`;
+  cy.contains(decapitalize(moveName)).click();
+  cy.checkMoveMessage(messageTitle, moveSnippet, rollStat);
 });

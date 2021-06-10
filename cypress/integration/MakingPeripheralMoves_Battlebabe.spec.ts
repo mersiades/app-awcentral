@@ -22,7 +22,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     cy.kcLogout();
     cy.kcLogin('john');
     cy.visit(`/player-game/${game7.id}`);
-    cy.openPeripheralMovesPanel();
+    cy.openMovesPanelBox('Peripheral moves');
   });
 
   it(`should show a ${SUFFER_HARM_NAME} move message`, () => {
@@ -86,7 +86,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     // Make sure Scarlet has enough barter
     cy.openPlaybookPanel();
     cy.get('div[data-testid="Barter-box"]').within(() => cy.get('div[data-testid="increase-caret"]').click());
-    cy.openPeripheralMovesPanel();
+    cy.openMovesPanelBox('Peripheral moves');
     const moveDescSnippet = 'When you give 1-barter to someone, but with strings attached';
     const messageTitle = `${characterName?.toUpperCase()}: ${GIVE_BARTER_NAME}`;
     cy.contains(decapitalize(GIVE_BARTER_NAME)).click();
@@ -107,7 +107,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     // Make sure Scarlet has enough barter
     cy.openPlaybookPanel();
     cy.get('div[data-testid="Barter-box"]').within(() => cy.get('div[data-testid="increase-caret"]').click());
-    cy.openPeripheralMovesPanel();
+    cy.openMovesPanelBox('Peripheral moves');
     const moveDescSnippet = 'When you make known that you want a thing';
     const messageTitle = `${characterName?.toUpperCase()}: ${MAKE_WANT_KNOWN_NAME}`;
     cy.contains(decapitalize(MAKE_WANT_KNOWN_NAME)).click();
@@ -118,10 +118,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
   });
 
   it(`should show a ${INSIGHT_NAME} move message`, () => {
-    const moveDescSnippet = 'When you are able to go to someone for insight';
-    const messageTitle = `${characterName?.toUpperCase()}: ${INSIGHT_NAME}`;
-    cy.contains(decapitalize(INSIGHT_NAME)).click();
-    cy.checkMoveMessage(messageTitle, moveDescSnippet);
+    cy.checkPrintMove(characterName, INSIGHT_NAME, 'When you are able to go to someone for insight');
   });
 
   it(`should show a ${AUGURY_NAME} move message`, () => {
@@ -132,9 +129,6 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
   });
 
   it(`should show a ${CHANGE_HIGHLIGHTED_STAT_NAME} move message`, () => {
-    const moveDescSnippet = 'At the beginning of any session';
-    const messageTitle = `${characterName?.toUpperCase()}: ${CHANGE_HIGHLIGHTED_STAT_NAME}`;
-    cy.contains(decapitalize(CHANGE_HIGHLIGHTED_STAT_NAME)).click();
-    cy.checkMoveMessage(messageTitle, moveDescSnippet);
+    cy.checkPrintMove(characterName, CHANGE_HIGHLIGHTED_STAT_NAME, 'At the beginning of any session');
   });
 });

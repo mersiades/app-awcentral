@@ -304,5 +304,5 @@ const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
     cy.contains('+1handling').click();
   }
   cy.wait(100);
-  cy.contains(SET_TEXT).click();
+  cy.contains(SET_TEXT).click({ force: true });
 };
