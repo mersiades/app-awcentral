@@ -262,7 +262,7 @@ describe('Creating a new Angel Character', () => {
     const sixthSenseMoveName = decapitalize(SIXTH_SENSE_NAME);
     const infirmaryMoveName = decapitalize(INFIRMARY_NAME);
     // Check form content
-    cy.contains("WHAT ARE DIANA'S MOVES").should('exist');
+    cy.contains("WHAT ARE DIANA'S MOVES", { timeout: 8000 }).should('exist');
     cy.contains(DEFAULT_MOVES_TITLE).should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 7);
     cy.contains('Select 2').should('exist');
@@ -442,7 +442,10 @@ describe('Creating a new Angel Character', () => {
 
     cy.get('@docHxInput').type('{backspace}2');
     cy.contains(HX_VALIDATION_TEXT).should('not.exist');
-    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', 'Doc').should('contain', '2');
+    cy.get('div[data-testid="hx-box"]', { timeout: 10000 })
+      .should('contain', HX_TITLE)
+      .should('contain', 'Doc')
+      .should('contain', '2');
 
     cy.get('@hardBox').click();
     cy.get('@hotBox').click();

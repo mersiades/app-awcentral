@@ -2,101 +2,35 @@ import {
   BATTLE_OPTIONS_TEXT,
   BATTLE_VEHICLES_TITLE,
   CHOOSE_1_OR_2_TEXT,
-  COMBAT_DRIVER_NAME,
   DRIVER_SPECIAL_NAME,
-  GEAR_TITLE,
   GIVE_VEHICLE_NAME_EXAMPLES_TEXT,
   GIVE_VEHICLE_NAME_TEXT,
   HX_TITLE,
-  IMPROVE_DRIVER_FOR_WORKSPACE_TEXT,
   LOOKS_TEXT,
-  PLAYBOOK_TITLE,
-  REPUTATION_NAME,
   SET_TEXT,
-  STATS_TITLE,
   STRENGTHS_TEXT,
   VEHICLES_TITLE,
   WEAKNESSES_TEXT,
 } from '../../src/config/constants';
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
-import { PlaybookType } from '../../src/@types/enums';
 
 describe('Creating a new Driver Character', () => {
   beforeEach(() => {
     cy.kcLogout();
-    cy.kcLogin('takeshi');
-    cy.visit(`character-creation/${game6.id}?step=0`);
+    cy.kcLogin('ahmad');
+    cy.visit(`character-creation/${game6.id}?step=8`);
   });
 
-  it('should create a Driver and stop at BattleVehicleForm', () => {
-    // ------------------------------------------ NewGameIntro ------------------------------------------ //
-    cy.moveThroughNewGameIntro();
-
-    // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
-
-    cy.selectPlaybook(PlaybookType.driver);
-
-    // ------------------------------------------ CharacterNameForm ------------------------------------------ //
-    const driverName = 'Lauren';
-    const driverNameUC = driverName.toUpperCase();
-    // Check form content
-    cy.contains('WHAT IS THE DRIVER CALLED?').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="playbook-box"]')
-      .should('contain', PLAYBOOK_TITLE)
-      .should('contain', decapitalize(PlaybookType.driver));
-
-    cy.setCharacterName(driverName);
-
-    // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
-    const gender = 'man';
-    const clothes = 'vintage wear';
-    const face = 'handsome face';
-    const eyes = 'cool eyes';
-    const body = 'slim body';
-
-    cy.completeLooksForm(driverNameUC, driverName, gender, clothes, face, eyes, body);
-    // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
-    cy.setCharacterStat(driverNameUC);
-
-    // ------------------------------------------ CharacterGearForm ------------------------------------------ //
-    const driverClothes = 'leather jacket';
-    const driverWeapon = 'machete (3-harm hand messy)';
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
-    cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
-    cy.contains(IMPROVE_DRIVER_FOR_WORKSPACE_TEXT).should('exist');
-
-    cy.completeGearForm(driverNameUC, driverClothes, [driverWeapon]);
-
-    // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
-    const reputationMoveName = decapitalize(REPUTATION_NAME);
-    const combatDriverMoveName = decapitalize(COMBAT_DRIVER_NAME);
-    // Check form content
-    cy.contains(`WHAT ARE ${driverNameUC}'S MOVES`).should('exist');
-    cy.get('input[type="checkbox"]').should('have.length', 8);
-    cy.contains('Default moves').should('exist');
-    cy.contains('Select 2').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.contains(IMPROVE_DRIVER_FOR_WORKSPACE_TEXT).should('exist');
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(DRIVER_SPECIAL_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-
-    // Check form functionality
-    cy.contains(reputationMoveName).click();
-    cy.contains(combatDriverMoveName).click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
-
+  it('should create 3 Vehicles and stop at BattleVehicleForm', () => {
     // ------------------------------------------ VehiclesForm ------------------------------------------ //
-    const vehicleName = "Lauren's Jeep";
+    const vehicleName1 = "Phoenix's Jeep";
+    const vehicleName2 = 'V2';
+    const vehicleName3 = 'V3';
     // Check form content
     cy.contains('Vehicle 1').should('exist');
+    cy.contains('Vehicle 2').should('exist');
+    cy.contains('Vehicle 3').should('exist');
     cy.get('div[aria-label="Vehicle 1 Tab Contents"]').should('exist');
     cy.contains(GIVE_VEHICLE_NAME_TEXT).should('exist');
     cy.contains(GIVE_VEHICLE_NAME_EXAMPLES_TEXT).should('exist');
@@ -125,7 +59,7 @@ describe('Creating a new Driver Character', () => {
     cy.get('@handlingValue').should('include.text', '0');
     cy.get('@massiveValue').should('include.text', '2');
 
-    cy.get('@nameInput').type('{selectall}{backspace}').type(vehicleName);
+    cy.get('@nameInput').type('{selectall}{backspace}').type(vehicleName1);
 
     // Check strengths click combos
     cy.setVehicleOptions('aggressive', 'tight', 'huge', 'Strengths');
@@ -180,6 +114,9 @@ describe('Creating a new Driver Character', () => {
     // Submit form
     cy.contains(SET_TEXT).click();
 
+    makeQuickVehicle(vehicleName2);
+    makeQuickVehicle(vehicleName3);
+
     // ------------------------------------------ BattleVehiclesForm ------------------------------------------ //
 
     // Check form content
@@ -187,10 +124,34 @@ describe('Creating a new Driver Character', () => {
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(DRIVER_SPECIAL_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', vehicleName);
+    cy.get('div[data-testid="vehicles-box"]')
+      .should('contain', VEHICLES_TITLE)
+      .should('contain', vehicleName1)
+      .should('contain', vehicleName2)
+      .should('contain', vehicleName3);
     cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
     cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
 
     // Finish test here because remainder of character creation process has been tested elsewhere
   });
 });
+
+const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
+  cy.wait(100); // https://www.cypress.io/blog/2019/01/22/when-can-the-test-click/
+  cy.get('input[aria-label="name-input"]').clear();
+  cy.get('input[aria-label="name-input"]').type(name);
+  cy.contains('uncomplaining').click();
+  cy.contains('guzzler').click();
+  cy.contains('vintage').click();
+  cy.get('div[data-testid="Looks-tags-box"]').should('contain.text', 'vintage');
+  cy.contains('SPEED').click();
+  cy.get('h2[aria-label="speed-value"]').should('contain.text', '1');
+  cy.contains('HANDLING').click();
+  cy.get('h2[aria-label="handling-value"]').should('contain.text', '1');
+  if (isBattle) {
+    cy.contains('+1speed').click();
+    cy.contains('+1handling').click();
+  }
+  cy.wait(100);
+  cy.contains(SET_TEXT).click();
+};

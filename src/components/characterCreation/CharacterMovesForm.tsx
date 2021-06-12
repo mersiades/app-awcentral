@@ -237,6 +237,7 @@ const CharacterMovesForm: FC = () => {
           optionalMoves.map((move) => {
             return (
               <CheckBox
+                aria-label={`${decapitalize(move.name)}-checkbox`}
                 key={move.id}
                 label={
                   <div>

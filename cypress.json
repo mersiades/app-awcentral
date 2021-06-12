@@ -6,7 +6,7 @@
     "auth_client_id": "app-awcentral"
   },
   "chromeWebSecurity": false,
-  "video": false,
+  "video": true,
   "retries": {
     "runMode": 3,
     "openMode": 0

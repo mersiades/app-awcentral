@@ -1,69 +1,19 @@
-import {
-  BATTLE_VEHICLES_TITLE,
-  GEAR_TITLE,
-  HARDHOLDER_SPECIAL_NAME,
-  HX_TITLE,
-  LEADERSHIP_NAME,
-  PLAYBOOK_TITLE,
-  SET_TEXT,
-  STATS_TITLE,
-  VEHICLES_TITLE,
-  WEALTH_NAME,
-} from '../../src/config/constants';
+import { HARDHOLDER_SPECIAL_NAME, LEADERSHIP_NAME, SET_TEXT, VEHICLES_TITLE, WEALTH_NAME } from '../../src/config/constants';
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
-import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
+import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Hardholder Character', () => {
   beforeEach(() => {
     cy.kcLogout();
     cy.kcLogin('olayinka');
-    cy.visit(`character-creation/${game6.id}?step=0`);
+    cy.visit(`character-creation/${game6.id}?step=6`);
   });
 
-  it('should create a HardHolder and stop at HxForm', () => {
-    // ------------------------------------------ NewGameIntro ------------------------------------------ //
-    cy.moveThroughNewGameIntro();
-
-    // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
-
-    cy.selectPlaybook(PlaybookType.hardholder);
-
-    // ------------------------------------------ CharacterNameForm ------------------------------------------ //
+  it('should set a Holding and stop at MovesForm', () => {
     const hardholderName = 'Kobe';
     const hardholderNameUC = hardholderName.toUpperCase();
-
-    // Check form content
-    cy.contains('WHAT IS THE HARDHOLDER CALLED?').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="playbook-box"]')
-      .should('contain', PLAYBOOK_TITLE)
-      .should('contain', decapitalize(PlaybookType.hardholder));
-
-    cy.setCharacterName(hardholderName);
-
-    // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
-    const gender = 'man';
-    const clothes = 'junta wear';
-    const face = 'strong face';
-    const eyes = 'cool eyes';
-    const body = 'wiry body';
-
-    cy.completeLooksForm(hardholderNameUC, hardholderName, gender, clothes, face, eyes, body);
-
-    // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
-    cy.setCharacterStat(hardholderNameUC);
-
-    // ------------------------------------------ CharacterGearForm ------------------------------------------ //
     const hardholderWeapon = '9mm';
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
-    cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
-    cy.get('div[data-testid="holding-box"]').should('contain', decapitalize(UniqueTypes.holding));
-
-    cy.completeGearForm(hardholderNameUC, hardholderWeapon, []);
 
     // ------------------------------------------ HoldingForm ------------------------------------------ //
 
@@ -71,8 +21,9 @@ describe('Creating a new Hardholder Character', () => {
     const gig2 = 'protection tribute';
     const gig3 = 'manufactory';
     const gig4 = 'market commons';
+
     // Check form content
-    cy.contains(`${hardholderNameUC}'S HOLDING`).should('exist');
+    cy.contains(`${hardholderNameUC}'S HOLDING`, { timeout: 6000 }).should('exist');
     cy.contains('By default, your holding has:').should('exist');
     cy.contains('Then, choose 4:').should('exist');
     cy.contains('And choose 2:').should('exist');
@@ -208,70 +159,10 @@ describe('Creating a new Hardholder Character', () => {
     cy.contains('Default moves').should('exist');
 
     // Check CharacterCreationStepper
-
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(HARDHOLDER_SPECIAL_NAME));
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(LEADERSHIP_NAME));
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(WEALTH_NAME));
     cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-
-    // Check form functionality
-    // No optional moves for Hardholder to choose
-
-    // // Submit form
-    cy.contains(SET_TEXT).click();
-
-    // ------------------------------------------ VehiclesForm ------------------------------------------ //
-    const vehicleName1 = 'Vehicle Name 1';
-    const vehicleName2 = 'Vehicle Name 2';
-    const vehicleName3 = 'Vehicle Name 3';
-    const vehicleName4 = 'Vehicle Name 4';
-    // Check form content
-    for (let i = 1; i < 5; i++) {
-      cy.get(`button[name="vehicle-${i}-tab"]`).should('exist');
-    }
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(HARDHOLDER_SPECIAL_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(LEADERSHIP_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(WEALTH_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-
-    // Check form functionality
-    makeQuickVehicle(vehicleName1);
-    makeQuickVehicle(vehicleName2);
-    makeQuickVehicle(vehicleName3);
-    makeQuickVehicle(vehicleName4);
-
-    // ------------------------------------------ BattleVehiclesForm ------------------------------------------ //
-    const bVehicleName1 = 'Battle V Name 1';
-    const bVehicleName2 = 'Battle V Name 2';
-    const bVehicleName3 = 'Battle V Name 3';
-    const bVehicleName4 = 'Battle V Name 4';
-    // Check form content
-    for (let i = 1; i < 5; i++) {
-      cy.get(`button[name="battle-vehicle-${i}-tab"]`).should('exist');
-    }
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="vehicles-box"]').within(() => {
-      cy.contains(VEHICLES_TITLE).should('exist');
-      cy.contains(vehicleName1).should('exist');
-      cy.contains(vehicleName2).should('exist');
-      cy.contains(vehicleName3).should('exist');
-      cy.contains(vehicleName4).should('exist');
-    });
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
-
-    // Check form functionality
-    makeQuickVehicle(bVehicleName1, true);
-    makeQuickVehicle(bVehicleName2, true);
-    makeQuickVehicle(bVehicleName3, true);
-    makeQuickVehicle(bVehicleName4, true);
-
-    // ------------------------------------------ HxForm ------------------------------------------ //
-    cy.url().should('contain', 'step=10');
   });
 });
 
@@ -288,21 +179,4 @@ const deSelectItem = (item: string, checks: { box: string; expectedResult: strin
 const checkSelectionLimit = (item: string, checks: { box: string; expectedResult: string }[]) => {
   cy.contains(item).click();
   checks.forEach((check) => cy.get(`div[data-testid="${check.box}-box"]`).should('not.include.text', check.expectedResult));
-};
-
-const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
-  cy.wait(100); // https://www.cypress.io/blog/2019/01/22/when-can-the-test-click/
-  cy.get('input[aria-label="name-input"]').clear();
-  cy.get('input[aria-label="name-input"]').type(name);
-  cy.contains('uncomplaining').click();
-  cy.contains('guzzler').click();
-  cy.contains('vintage').click();
-  cy.contains('SPEED').click();
-  cy.contains('HANDLING').click();
-  if (isBattle) {
-    cy.contains('+1speed').click();
-    cy.contains('+1handling').click();
-  }
-  cy.wait(100);
-  cy.contains(SET_TEXT).click({ force: true });
 };

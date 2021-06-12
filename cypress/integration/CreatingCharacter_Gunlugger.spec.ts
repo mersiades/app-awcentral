@@ -1,71 +1,26 @@
 import {
   BACKUP_WEAPONS_TEXT,
-  BATTLEFIELD_INSTINCTS_NAME,
-  BATTLE_HARDENED_NAME,
   BIG_GUNS_TEXT,
-  FUCK_THIS_SHIT_NAME,
-  GEAR_TITLE,
   GUNLUGGER_SPECIAL_NAME,
-  PLAYBOOK_TITLE,
   SERIOUS_GUNS_TEXT,
   SET_TEXT,
-  STATS_TITLE,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
-import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
+import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Gunlugger Character', () => {
   beforeEach(() => {
     cy.kcLogout();
     cy.kcLogin('marama');
-    cy.visit(`character-creation/${game6.id}?step=0`);
+    cy.visit(`character-creation/${game6.id}?step=6`);
   });
 
-  it('should create a Gunlugger and stop at VehicleForm', () => {
-    // ------------------------------------------ NewGameIntro ------------------------------------------ //
-    cy.moveThroughNewGameIntro();
-
-    // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
-
-    cy.selectPlaybook(PlaybookType.gunlugger);
-
-    // ------------------------------------------ CharacterNameForm ------------------------------------------ //
+  it('should set Gunlugger Weapons and stop at MovesForm', () => {
     const gunluggerName = 'Batty';
     const gunluggerNameUC = gunluggerName.toUpperCase();
-
-    // Check form content
-    cy.contains('WHAT IS THE GUNLUGGER CALLED?').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="playbook-box"]')
-      .should('contain', PLAYBOOK_TITLE)
-      .should('contain', decapitalize(PlaybookType.gunlugger));
-
-    cy.setCharacterName(gunluggerName);
-
-    // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
-    const gender = 'ambiguous';
-    const clothes = 'battered old armor';
-    const face = 'blunt face';
-    const eyes = 'raging eyes';
-    const body = 'hard body';
-
-    cy.completeLooksForm(gunluggerNameUC, gunluggerName, gender, clothes, face, eyes, body);
-
-    // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
-    cy.setCharacterStat(gunluggerNameUC);
-
-    // ------------------------------------------ CharacterGearForm ------------------------------------------ //
     const gunluggerArmor = 'homemade chainmail';
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
-    cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
-    cy.get('div[data-testid="weapons-box"]').should('contain', decapitalize(UniqueTypes.weapons));
-
-    cy.completeGearForm(gunluggerNameUC, gunluggerArmor, []);
 
     // ------------------------------------------ WeaponsForm ------------------------------------------ //
     const bigOption1Text = 'silenced sniper rifle';
@@ -108,9 +63,6 @@ describe('Creating a new Gunlugger Character', () => {
     cy.contains(SET_TEXT).click();
 
     // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
-    const battleHardenedMoveName = decapitalize(BATTLE_HARDENED_NAME);
-    const fuckThisShitMoveName = decapitalize(FUCK_THIS_SHIT_NAME);
-    const battlefieldInstinctsMoveName = decapitalize(BATTLEFIELD_INSTINCTS_NAME);
     // Check form content
     cy.contains(`WHAT ARE ${gunluggerNameUC}'S MOVES`).should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 8);
@@ -125,19 +77,5 @@ describe('Creating a new Gunlugger Character', () => {
       .should('contain', backupOption1Text);
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(GUNLUGGER_SPECIAL_NAME));
     cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-
-    // Check form functionality
-    cy.contains(battleHardenedMoveName).click();
-    cy.contains(fuckThisShitMoveName).click();
-    cy.contains(battlefieldInstinctsMoveName).click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
-
-    // ------------------------------------------ VehiclesForm ------------------------------------------ //
-    // Check form content
-    cy.contains('VEHICLES').should('exist');
-
-    // Finish test here because remainder of character creation process has been tested elsewhere
   });
 });

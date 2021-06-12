@@ -35,6 +35,5 @@ declare namespace Cypress {
     checkMoveMessage(messageTitle: string, snippet: string, stat?: StatType): void;
     checkPrintMove(characterName: string, moveName: string, moveSnippet: string): void;
     checkRollMove(characterName: string, moveName: string, moveSnippet: string, rollStat: StatType): void;
-    getSettled(selector: string, opts?: { [key: string]: any });
   }
 }

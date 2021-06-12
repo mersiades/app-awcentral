@@ -1,39 +1,6 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import 'cypress-keycloak-commands';
 import { PlaybookType, StatType } from '../../src/@types/enums';
-import {
-  ADD_TEXT,
-  LOOKS_TITLE,
-  NAME_TITLE,
-  NEW_GAME_TEXT,
-  NEXT_TEXT,
-  PLAYBOOK_TITLE,
-  SET_TEXT,
-} from '../../src/config/constants';
+import { ADD_TEXT, LOOKS_TITLE, NAME_TITLE, NEW_GAME_TEXT, PLAYBOOK_TITLE } from '../../src/config/constants';
 import { decapitalize } from '../../src/helpers/decapitalize';
 
 const query = `
@@ -98,7 +65,7 @@ Cypress.Commands.add('moveThroughNewGameIntro', () => {
 
 Cypress.Commands.add('selectPlaybook', (playbookType: PlaybookType) => {
   // Check form content
-  cy.get(`button[name="${playbookType}"]`, { timeout: 10000 }).click();
+  cy.get(`button[name="${playbookType}"]`, { timeout: 20000 }).click();
   cy.contains(`SELECT ${decapitalize(playbookType)}`).click();
 });
 
@@ -124,19 +91,19 @@ Cypress.Commands.add(
 
     // Check form functionality
     cy.contains(gender).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE).should('contain', gender);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', LOOKS_TITLE).should('contain', gender);
 
     cy.contains(clothes).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', clothes);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', clothes);
 
     cy.contains(face).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', face);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', face);
 
     cy.contains(eyes).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', eyes);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', eyes);
 
     cy.contains(body).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', body);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', body);
 
     // Should automatically progress
   }

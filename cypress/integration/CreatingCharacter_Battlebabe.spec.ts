@@ -232,54 +232,5 @@ describe('Creating a new Battlebabe Character', () => {
     // Check CharacterCreationStepper
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(BATTLEBABE_SPECIAL_NAME));
     cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-
-    // Check form functionality
-    cy.contains(dangerousAndSexyMoveName).click();
-    cy.contains(iceColdMoveName).click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
-
-    // ------------------------------------------ VehiclesForm ------------------------------------------ //
-    // Check form content
-    cy.contains('VEHICLES').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]')
-      .should('contain', MOVES_TITLE)
-      .should('contain', decapitalize(BATTLEBABE_SPECIAL_NAME))
-      .should('contain', dangerousAndSexyMoveName)
-      .should('contain', iceColdMoveName);
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-
-    // Pass on creating a vehicle
-    cy.contains(PASS_TEXT).click();
-
-    // ------------------------------------------ BattleVehiclesForm ------------------------------------------ //
-    // Check form content
-    cy.contains('BATTLE VEHICLES').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
-
-    // Pass on creating a vehicle
-    cy.contains(PASS_TEXT).click();
-
-    // ------------------------------------------ CharacterHxForm ------------------------------------------ //
-    // Check form content
-    cy.contains('WHAT HISTORY DOES SNOW HAVE?').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
-
-    // Hx form functionality tests in CreatingCharacter_Angel
-
-    // Submit form
-    // Should not allow progress to PreGamePage because need Hx with all characters
   });
 });
