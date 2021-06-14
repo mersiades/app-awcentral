@@ -51,6 +51,7 @@ export const BOARD_VEHICLE_NAME = 'BOARD A MOVING VEHICLE';
 export const OUTDISTANCE_VEHICLE_NAME = 'OUTDISTANCE ANOTHER VEHICLE';
 export const OVERTAKE_VEHICLE_NAME = 'OVERTAKE ANOTHER VEHICLE';
 export const DEAL_WITH_TERRAIN_NAME = 'DEAL WITH BAD TERRAIN';
+export const SHOULDER_ANOTHER_VEHICLE_NAME = 'SHOULDER ANOTHER VEHICLE';
 
 // Angel moves
 export const ANGEL_SPECIAL_NAME = 'ANGEL SPECIAL';
@@ -292,6 +293,10 @@ export const DO_IT_TEXT = 'DO IT';
 export const STABILIZE_TEXT = 'STABILIZE';
 export const INVITE_PLAYER_TEXT = 'INVITE PLAYER';
 export const ADD_ANOTHER_TEXT = 'INVITE ANOTHER';
+export const BOARD_TEXT = 'BOARD';
+export const OUTDISTANCE_TEXT = 'OUTDISTANCE';
+export const OVERTAKE_TEXT = 'OVERTAKE';
+export const DRIVE_TEXT = 'DRIVE';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 

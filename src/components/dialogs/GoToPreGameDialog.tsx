@@ -34,6 +34,7 @@ const GoToPreGameDialog: FC<GoToPreGameDialogProps> = ({ handleClose }) => {
         <ParagraphWS>{PRE_GAME_INCOMPLETE_TEXT_MC}</ParagraphWS>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
+            data-testid="cancel-button"
             label={NO_TEXT}
             style={{
               background: 'transparent',

@@ -17,6 +17,7 @@ import { Vehicle } from '../../@types/dataInterfaces';
 import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
 import { VehicleType } from '../../@types/enums';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { BOARD_TEXT, CANCEL_TEXT } from '../../config/constants';
 
 interface BoardVehicleDialogProps {
   move: Move | CharacterMove;
@@ -102,9 +103,9 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
         <Box fill align="start" justify="start">
           <ParagraphWS alignSelf="start">What are you driving?</ParagraphWS>
           <Select
-            id="target-character-input"
-            aria-label="target-character-input"
-            name="target-character"
+            id="vehicle-input"
+            aria-label="my vehicle select"
+            name="vehicle"
             placeholder="My vehicle"
             options={[onFoot, ...character.vehicles, otherVehicle]}
             labelKey="name"
@@ -124,9 +125,9 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
           />
           {selectedVehicle?.id === 'other-vehicle-id' && (
             <Select
-              id="target-character-input"
-              aria-label="target-character-input"
-              name="target-character"
+              id="other-vehicle-speed-input"
+              aria-label="other vehicle speed input"
+              name="other-vehicle-speed"
               placeholder="My speed"
               options={['0', '1', '2', '3']}
               value={mySpeed}
@@ -141,9 +142,9 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
         <Box fill align="start" justify="start">
           <ParagraphWS alignSelf="start">What is the speed of your vehicle?</ParagraphWS>
           <Select
-            id="target-character-input"
-            aria-label="target-character-input"
-            name="target-character"
+            id="unknown-vehicle-speed-input"
+            aria-label="unknown vehicle speed"
+            name="unknown-vehicle"
             placeholder="My speed"
             options={['On foot (0)', '0', '1', '2', '3']}
             value={mySpeed}
@@ -166,9 +167,9 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
           <Box fill align="start" justify="start">
             <ParagraphWS alignSelf="start">What is the speed of their vehicle?</ParagraphWS>
             <Select
-              id="target-character-input"
-              aria-label="target-character-input"
-              name="target-character"
+              id="opposition-speed-input"
+              aria-label="opposition speed"
+              name="opposition-speed"
               placeholder="Their speed"
               options={['0', '1', '2', '3']}
               value={theirSpeed}
@@ -178,7 +179,7 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
         </Box>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
@@ -186,7 +187,7 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
             onClick={handleClose}
           />
           <ButtonWS
-            label="BOARD"
+            label={BOARD_TEXT}
             primary
             onClick={() => !performingSpeedRollMove && handleSpeedRollMove()}
             disabled={performingSpeedRollMove || !mySpeed || !theirSpeed}

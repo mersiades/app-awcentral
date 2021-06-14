@@ -34,6 +34,7 @@
     "MakingBasicMoves_Battlebabe.spec.ts",
     "MakingPeripheralMoves_Battlebabe.spec.ts",
     "MakingBattleMoves_Battlebabe.spec.ts",
+    "MakingRoadWarMoves_Driver.spec.ts",
     "UsingMcPage.spec.ts",
     "EditingGameOnMcPage.spec.ts",
     "InvitingPlayersOnMcPage.spec.ts",

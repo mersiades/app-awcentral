@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useReducer } from 'react';
+import React, { FC, useCallback, useEffect, useReducer } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { Box, TextInput, Text, Tip, FormField } from 'grommet';
@@ -50,6 +50,7 @@ export const VehicleTagsBox: FC<VehicleTagsBoxProps> = ({ tags, title, width = '
 
 interface VehicleFormProps {
   navigateOnSet: (numVehicles: number) => void;
+  activeTab: number;
   existingVehicle?: Vehicle;
 }
 
@@ -102,26 +103,26 @@ const vehicleFormReducer = (state: VehicleFormState, action: Action) => {
   }
 };
 
-const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) => {
-  const initialState: VehicleFormState = {
-    vehicleType: !!existingVehicle ? existingVehicle.vehicleType : VehicleType.car,
-    name: !!existingVehicle ? existingVehicle.name : 'Unnamed vehicle',
-    frame: !!existingVehicle ? omit(existingVehicle.vehicleFrame, ['__typename']) : undefined,
-    speed: !!existingVehicle ? existingVehicle.speed : 0,
-    handling: !!existingVehicle ? existingVehicle.handling : 0,
-    massive: !!existingVehicle ? existingVehicle.massive : 0,
-    armor: !!existingVehicle ? existingVehicle.armor : 0,
-    strengths: !!existingVehicle ? existingVehicle.strengths : [],
-    weaknesses: !!existingVehicle ? existingVehicle.weaknesses : [],
-    looks: !!existingVehicle ? existingVehicle.looks : [],
-    battleOptions: !!existingVehicle
-      ? (existingVehicle.battleOptions.map((bo) => omit(bo, ['__typename'])) as VehicleBattleOption[])
-      : [],
-  };
+const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle, activeTab }) => {
+  // const initialState: VehicleFormState = {
+  //   vehicleType: !!existingVehicle ? existingVehicle.vehicleType : VehicleType.car,
+  //   name: !!existingVehicle ? existingVehicle.name : 'Unnamed vehicle',
+  //   frame: !!existingVehicle ? omit(existingVehicle.vehicleFrame, ['__typename']) : undefined,
+  //   speed: !!existingVehicle ? existingVehicle.speed : 0,
+  //   handling: !!existingVehicle ? existingVehicle.handling : 0,
+  //   massive: !!existingVehicle ? existingVehicle.massive : 0,
+  //   armor: !!existingVehicle ? existingVehicle.armor : 0,
+  //   strengths: !!existingVehicle ? existingVehicle.strengths : [],
+  //   weaknesses: !!existingVehicle ? existingVehicle.weaknesses : [],
+  //   looks: !!existingVehicle ? existingVehicle.looks : [],
+  //   battleOptions: !!existingVehicle
+  //     ? (existingVehicle.battleOptions.map((bo) => omit(bo, ['__typename'])) as VehicleBattleOption[])
+  //     : [],
+  // };
 
   // -------------------------------------------------- Component state ---------------------------------------------------- //
   const [{ frame, name, strengths, weaknesses, looks, speed, handling, massive, armor, battleOptions }, dispatch] =
-    useReducer(vehicleFormReducer, initialState);
+    useReducer(vehicleFormReducer, {});
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { character, userGameRole } = useGame();
 
@@ -285,31 +286,42 @@ const VehicleForm: FC<VehicleFormProps> = ({ navigateOnSet, existingVehicle }) =
     }
   }, [character, existingVehicle, bikeCreator, carCreator]);
 
+  const getDefaultFrame = useCallback(() => {
+    if (!!character && !!bikeCreator && !!carCreator) {
+      return character.playbook === PlaybookType.chopper
+        ? omit(bikeCreator.frame, ['__typename'])
+        : omit(carCreator.frames[2], ['__typename']);
+    }
+  }, [character, bikeCreator, carCreator]);
+
   // Change component state if vehicle changes (ie, when user click on a tab for another vehicle)
   useEffect(() => {
-    if (!!character && !!bikeCreator && !!carCreator) {
-      const defaultFrame =
-        character.playbook === PlaybookType.chopper
-          ? omit(bikeCreator.frame, ['__typename'])
-          : omit(carCreator.frames[2], ['__typename']);
-      const payload: VehicleFormState = {
-        name: !!existingVehicle ? existingVehicle.name : 'Unnamed vehicle',
-        vehicleType: !!existingVehicle ? existingVehicle.vehicleType : VehicleType.car,
-        frame: !!existingVehicle ? omit(existingVehicle.vehicleFrame, ['__typename']) : defaultFrame,
-        strengths: !!existingVehicle ? existingVehicle.strengths : [],
-        weaknesses: !!existingVehicle ? existingVehicle.weaknesses : [],
-        looks: !!existingVehicle ? existingVehicle.looks : [],
-        speed: !!existingVehicle ? existingVehicle.speed : 0,
-        handling: !!existingVehicle ? existingVehicle.handling : 0,
-        massive: !!existingVehicle ? existingVehicle.massive : (defaultFrame.massive as number),
-        armor: !!existingVehicle ? existingVehicle.armor : 0,
-        battleOptions: !!existingVehicle
-          ? (existingVehicle.battleOptions.map((bo) => omit(bo, ['__typename'])) as VehicleBattleOption[])
-          : [],
+    const defaultFrame = getDefaultFrame();
+
+    if (!existingVehicle && !!defaultFrame) {
+      const defaultVehicle: VehicleFormState = {
+        name: 'Unnamed vehicle',
+        vehicleType: VehicleType.car,
+        frame: defaultFrame,
+        strengths: [],
+        weaknesses: [],
+        looks: [],
+        speed: 0,
+        handling: 0,
+        massive: defaultFrame.massive as number,
+        armor: 0,
+        battleOptions: [],
       };
-      dispatch({ type: 'REPLACE_VEHICLE', payload });
+      dispatch({ type: 'REPLACE_VEHICLE', payload: defaultVehicle });
+    } else if (!!existingVehicle) {
+      const vehicle: VehicleFormState = {
+        ...existingVehicle,
+        frame: omit(existingVehicle.vehicleFrame, ['__typename']),
+        battleOptions: existingVehicle.battleOptions.map((bo) => omit(bo, ['__typename'])) as VehicleBattleOption[],
+      };
+      dispatch({ type: 'REPLACE_VEHICLE', payload: vehicle });
     }
-  }, [existingVehicle, character, bikeCreator, carCreator]);
+  }, [activeTab, existingVehicle, bikeCreator, carCreator, getDefaultFrame]);
 
   // ------------------------------------------------------ Render -------------------------------------------------------- //
 

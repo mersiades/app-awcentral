@@ -28,7 +28,7 @@ describe('Creating a new Driver Character', () => {
     const vehicleName2 = 'V2';
     const vehicleName3 = 'V3';
     // Check form content
-    cy.contains('Vehicle 1').should('exist');
+    cy.contains('Vehicle 1', { timeout: 8000 }).should('exist');
     cy.contains('Vehicle 2').should('exist');
     cy.contains('Vehicle 3').should('exist');
     cy.get('div[aria-label="Vehicle 1 Tab Contents"]').should('exist');
@@ -112,6 +112,7 @@ describe('Creating a new Driver Character', () => {
     cy.get('@massiveValue').should('include.text', '3');
 
     // Submit form
+    cy.contains(SET_TEXT).should('not.be.disabled');
     cy.contains(SET_TEXT).click();
 
     makeQuickVehicle(vehicleName2);
@@ -124,11 +125,11 @@ describe('Creating a new Driver Character', () => {
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(DRIVER_SPECIAL_NAME));
-    cy.get('div[data-testid="vehicles-box"]')
-      .should('contain', VEHICLES_TITLE)
-      .should('contain', vehicleName1)
-      .should('contain', vehicleName2)
-      .should('contain', vehicleName3);
+    cy.get('div[data-testid="vehicles-box"]');
+    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE);
+    cy.get('div[data-testid="vehicles-box"]').should('contain', vehicleName1);
+    cy.get('div[data-testid="vehicles-box"]').should('contain', vehicleName2);
+    cy.get('div[data-testid="vehicles-box"]').should('contain', vehicleName3);
     cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
     cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
 
@@ -138,10 +139,18 @@ describe('Creating a new Driver Character', () => {
 
 const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
   cy.wait(100); // https://www.cypress.io/blog/2019/01/22/when-can-the-test-click/
-  cy.get('input[aria-label="name-input"]').clear();
+  cy.get('div[data-testid="Looks-tags-box"]').should('contain.text', '');
+  cy.get('div[data-testid="Strengths-tags-box"]').should('contain.text', '');
+  cy.get('div[data-testid="Weaknesses-tags-box"]').should('contain.text', '');
+  cy.get('div[data-testid="Looks-tags-box"]').should('contain.text', '');
+  cy.get('h2[aria-label="speed-value"]').should('contain.text', '0');
+  cy.get('h2[aria-label="handling-value"]').should('contain.text', '0');
+  cy.get('input[aria-label="name-input"]').type('{selectall}{backspace}');
   cy.get('input[aria-label="name-input"]').type(name);
   cy.contains('uncomplaining').click();
+  cy.get('div[data-testid="Strengths-tags-box"]').should('contain.text', 'uncomplaining');
   cy.contains('guzzler').click();
+  cy.get('div[data-testid="Weaknesses-tags-box"]').should('contain.text', 'guzzler');
   cy.contains('vintage').click();
   cy.get('div[data-testid="Looks-tags-box"]').should('contain.text', 'vintage');
   cy.contains('SPEED').click();
@@ -152,6 +161,6 @@ const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
     cy.contains('+1speed').click();
     cy.contains('+1handling').click();
   }
-  cy.wait(100);
+  cy.contains(SET_TEXT).should('not.be.disabled');
   cy.contains(SET_TEXT).click();
 };

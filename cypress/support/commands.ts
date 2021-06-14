@@ -202,7 +202,7 @@ Cypress.Commands.add('openMovesPanelBox', (boxTitle: string) => {
 
 Cypress.Commands.add('openPlaybookPanel', () => {
   cy.get('div[role="tablist"]').within(() => {
-    cy.contains('Playbook').click();
+    cy.contains('Playbook', { timeout: 8000 }).click();
   });
 });
 

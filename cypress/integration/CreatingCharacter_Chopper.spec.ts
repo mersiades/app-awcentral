@@ -46,7 +46,7 @@ describe('Creating a new Chopper Character', () => {
     const weakness5Text = 'your gang is filthy and unwell. Vulnerable: disease.';
 
     // Check form content
-    cy.contains(`${chopperNameUC}'S GANG`).should('exist');
+    cy.contains(`${chopperNameUC}'S GANG`, { timeout: 8000 }).should('exist');
     cy.contains(SET_TEXT).as('setButton');
     cy.contains('Then, choose 2:').should('exist');
     cy.contains('And choose 1:').should('exist');
@@ -305,17 +305,20 @@ describe('Creating a new Chopper Character', () => {
     cy.get('@speedValue').should('include.text', '0');
     cy.get('@handlingValue').should('include.text', '0');
 
+    cy.contains(SET_TEXT).should('be.disabled');
+
     cy.get('@handlingOption').click();
     cy.get('@speedValue').should('include.text', '0');
     cy.get('@handlingValue').should('include.text', '1');
 
     // Submit form
+    cy.contains(SET_TEXT).should('not.be.disabled');
     cy.contains(SET_TEXT).click();
 
     // ------------------------------------------ BattleVehiclesForm ------------------------------------------ //
 
     // Check form content
-    cy.contains('BATTLE VEHICLES', { timeout: 8000 }).should('exist');
+    cy.contains('BATTLE VEHICLES', { timeout: 16000 }).should('exist');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="moves-box"]')
