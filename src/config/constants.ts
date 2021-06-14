@@ -458,6 +458,18 @@ export const ANGEL_KIT_TEXT = 'Angel kit';
 export const STOCK_TEXT = 'Stock';
 export const SUPPLIER_TEXT = 'Supplier';
 
+// ----------------------------------------------- GANG BOX --------------------------------------------- //
+export const SIZE_TEXT = 'Size';
+export const HARM_TEXT = 'Harm';
+export const ARMOR_TEXT = 'Armor';
+export const TAGS_TEXT = 'Tags';
+export const GANG_MOVES = 'Gang moves';
+
+// ----------------------------------------------- VEHICLES BOX --------------------------------------------- //
+export const SPEED_TEXT = 'Speed';
+export const HANDLING_TEXT = 'Handling';
+export const MASSIVE_TEXT = 'Massive';
+
 // ----------------------------------------------- STABILIZE DIALOG --------------------------------------------- //
 export const HOW_MUCH_STOCK_TEXT = 'How much stock do you use?';
 export const CURRENT_STOCK_1_TEXT = 'You currently have';

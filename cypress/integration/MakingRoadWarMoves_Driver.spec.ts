@@ -1,15 +1,5 @@
 import { StatType } from '../../src/@types/enums';
 import {
-  SUFFER_HARM_NAME,
-  SUFFER_V_HARM,
-  INFLICT_HARM_NAME,
-  HEAL_HARM_NAME,
-  GIVE_BARTER_NAME,
-  GO_MARKET_NAME,
-  MAKE_WANT_KNOWN_NAME,
-  INSIGHT_NAME,
-  AUGURY_NAME,
-  CHANGE_HIGHLIGHTED_STAT_NAME,
   BOARD_VEHICLE_NAME,
   BOARD_TEXT,
   OUTDISTANCE_VEHICLE_NAME,
@@ -21,12 +11,9 @@ import {
   SHOULDER_ANOTHER_VEHICLE_NAME,
 } from '../../src/config/constants';
 import { decapitalize } from '../../src/helpers/decapitalize';
-import johnAsPlayer_1 from '../fixtures/gameRoles/johnAsPlayer_1';
 import game1 from '../fixtures/games/game1';
-import game7 from '../fixtures/games/game7';
 
 describe('Making road war moves from the MovesPanel as Driver', () => {
-  // const characterName = johnAsPlayer_1.characters[0].name as string;
   const characterName = 'Phoenix';
   const vehicle1 = 'Bess';
   const vehicle2 = 'Ducati Monster';
