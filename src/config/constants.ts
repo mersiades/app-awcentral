@@ -55,6 +55,7 @@ export const SHOULDER_ANOTHER_VEHICLE_NAME = 'SHOULDER ANOTHER VEHICLE';
 
 // Angel moves
 export const ANGEL_SPECIAL_NAME = 'ANGEL SPECIAL';
+export const HEALING_TOUCH_NAME = 'HEALING TOUCH';
 
 // Battlebabe moves
 export const BATTLEBABE_SPECIAL_NAME = 'BATTLEBABE SPECIAL';
@@ -297,6 +298,9 @@ export const BOARD_TEXT = 'BOARD';
 export const OUTDISTANCE_TEXT = 'OUTDISTANCE';
 export const OVERTAKE_TEXT = 'OVERTAKE';
 export const DRIVE_TEXT = 'DRIVE';
+export const SPEED_RECOVERY_TEXT = 'SPEED RECOVERY';
+export const REVIVE_TEXT = 'REVIVE';
+export const TREAT_TEXT = 'TREAT';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -474,6 +478,9 @@ export const MASSIVE_TEXT = 'Massive';
 export const HOW_MUCH_STOCK_TEXT = 'How much stock do you use?';
 export const CURRENT_STOCK_1_TEXT = 'You currently have';
 export const CURRENT_STOCK_2_TEXT = 'stock';
+
+// ----------------------------------------------- SPEED RECOVERY DIALOG ------------------------------------------- //
+export const USE_STOCK_TEXT = 'Do they want you to use any stock?';
 
 // ----------------------------------------------- GAME PANEL --------------------------------------------- //
 export const PLAYERS_TEXT = 'Players';

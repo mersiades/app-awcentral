@@ -11,6 +11,7 @@ import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StyledMarkdown } from '../styledComponents';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { CANCEL_TEXT, SPEED_RECOVERY_TEXT, USE_STOCK_TEXT } from '../../config/constants';
 
 interface SpeedRecoveryDialogProps {
   move: Move | CharacterMove;
@@ -70,7 +71,7 @@ const SpeedRecoveryDialog: FC<SpeedRecoveryDialogProps> = ({ move, handleClose }
         <StyledMarkdown>{move.description}</StyledMarkdown>
         <Box direction="column" align="center" justify="start" gap="12px" margin={{ bottom: '12px' }}>
           <Box align="start">
-            <ParagraphWS>Do they want you to use any stock?</ParagraphWS>
+            <ParagraphWS>{USE_STOCK_TEXT}</ParagraphWS>
             <RadioButtonGroup
               name="use-stock"
               options={['Yes', 'No']}
@@ -82,7 +83,7 @@ const SpeedRecoveryDialog: FC<SpeedRecoveryDialogProps> = ({ move, handleClose }
         </Box>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
@@ -90,7 +91,7 @@ const SpeedRecoveryDialog: FC<SpeedRecoveryDialogProps> = ({ move, handleClose }
             onClick={handleClose}
           />
           <ButtonWS
-            label="SPEED RECOVERY"
+            label={SPEED_RECOVERY_TEXT}
             primary
             onClick={() => !performingStockMove && handleStockMove()}
             disabled={performingStockMove}

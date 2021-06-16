@@ -32,6 +32,7 @@
     "UsingPreGamePage_MC.spec.ts",
     "UsingPlaybookPanel_Angel.spec.ts",
     "UsingPlaybookPanel_Chopper.spec.ts",
+    "MakingAngelAndAngelKitMoves.spec.ts",
     "MakingBasicMoves_Battlebabe.spec.ts",
     "MakingPeripheralMoves_Battlebabe.spec.ts",
     "MakingBattleMoves_Battlebabe.spec.ts",

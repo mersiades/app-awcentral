@@ -127,7 +127,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
     });
   });
 
-  it('should show character moves and roll them', () => {
+  it('should render the character moves box correctly', () => {
     cy.get('div[data-testid="moves-box"]').within(() => {
       // Check content
       cy.contains('Character moves').should('exist');
@@ -144,60 +144,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
       cy.contains('when you open your brain to the world’s psychic ').should('not.exist');
       cy.contains('when you put your hands skin-to-skin on a wounded ').should('not.exist');
       cy.contains('If you and another character have sex, your Hx ').should('not.exist');
-
-      // Make Healing touch move
-      cy.get('@healingTouch').click();
     });
-
-    // Check message delivery
-    cy.get(`div[data-testid="${healingTouchMessageTitle}-message"]`, { timeout: 8000 }).within(() => {
-      cy.contains(healingTouchMessageTitle).should('exist');
-      cy.contains(WEIRD_TEXT).should('exist');
-      // Doc the Angel starts the game with a +1forward
-      cy.contains('FWD').should('exist');
-      cy.contains('when you put your hands skin-to-skin on a wounded ').should('exist');
-      cy.contains('a few seconds ago').should('exist');
-
-      // Check minimising stats block
-      cy.get('svg[aria-label="FormUp"]').click();
-      cy.contains(WEIRD_TEXT).should('not.exist');
-    });
-
-    // Open AngelSpecialDialog
-    cy.contains(decapitalize(angel_sara_1_complete.characterMoves[2].name)).click();
-
-    cy.get('div[data-testid="angel-special-dialog"]').within(() => {
-      // Check AngelSpecialDialog content
-      cy.contains(angel_sara_1_complete.characterMoves[2].name).should('exist');
-      cy.contains('If you and another character have sex, your Hx ').should('exist');
-      cy.contains(CANCEL_TEXT).should('exist');
-      cy.contains(WITH_WHO_QUESTION).should('exist');
-      cy.contains(APPLY_TEXT).as('applyButton');
-
-      // Select partner and submit move
-
-      cy.get('input[aria-label="target-character-input"]').click();
-
-      // FAILING: Unable to click on the select options
-      // cy.get('#target-character-input__drop');
-
-      // cy.get('@applyButton').click();
-    });
-
-    // Check message delivery
-    // cy.get(`div[data-testid="${angelSpecialMessageTitle}-message"]`).within(() => {
-    //   cy.contains(angelSpecialMessageTitle).should('exist');
-    //   cy.contains('Doc and Scarlet shagged, and now ').should('exist');
-    //   // Check minimising stats block
-    //   cy.get('svg[aria-label="FormUp"]').click();
-    //   cy.contains(WEIRD_TEXT).should('be.hidden');
-    // });
-
-    // cy.get('div[data-testid="moves-box"]').within(() => {
-    //   // Check can navigate to edit page
-    //   cy.get('svg[aria-label="Edit"]').click();
-    //   cy.url().should('contain', `character-creation/${game7.id}?step=7`);
-    // });
   });
 
   it("should increase harm value to 12 o'clock", () => {
@@ -419,43 +366,19 @@ describe('Using the PlaybookPanel as an Angel', () => {
   });
 
   it('should increase/decrease Angel kit stock', () => {
+    let stockValue: number;
     cy.get('div[data-testid="Angel kit-box"]').within(() => {
       cy.contains(ANGEL_KIT_TEXT).should('exist');
       cy.contains(STOCK_TEXT).should('exist');
       cy.contains(SUPPLIER_TEXT).should('exist');
       cy.contains('Your angel kit has all kinds of crap').should('exist');
-      cy.get('h2[aria-label="stock-value"]').should('include.text', '2');
-      cy.get('div[data-testid="increase-caret"]').click();
-      cy.get('h2[aria-label="stock-value"]', { timeout: 8000 }).should('include.text', '3');
-      cy.get('div[data-testid="decrease-caret"]').click();
-      cy.get('h2[aria-label="stock-value"]', { timeout: 8000 }).should('include.text', '2');
-    });
-  });
-
-  it('should make Angel kit moves', () => {
-    cy.contains('Stabilize and heal someone').click();
-
-    // Check initial content of StabilizeDialog
-    cy.contains(STABILIZE_AND_HEAL_NAME).should('exist');
-    cy.contains('stabilize and heal someone at 9:00 or past').should('exist');
-    cy.contains(HOW_MUCH_STOCK_TEXT).should('exist');
-    cy.contains(
-      `${CURRENT_STOCK_1_TEXT} ${angel_sara_1_complete.playbookUniques?.angelKit?.stock} ${CURRENT_STOCK_2_TEXT}`
-    ).should('exist');
-    cy.get('button[name="stabilize-button"]').as('confirmButton');
-    cy.get('input[type=number]').as('stockInput');
-
-    cy.get('@stockInput').type('{uparrow}');
-
-    cy.get('@confirmButton').scrollIntoView().click();
-
-    // Check message delivery
-    cy.get(`div[data-testid="${stablizeMessageTitle}-message"]`).within(() => {
-      cy.contains(stablizeMessageTitle).should('exist');
-      cy.contains('STOCK').should('exist');
-      cy.contains('stabilize and heal someone at 9:00 or past').should('exist');
-      // Check minimising stats block
-      cy.get('svg[aria-label="FormUp"]').click();
+      cy.get('h2[aria-label="stock-value"]').then((elem) => {
+        stockValue = parseInt(elem[0].innerText);
+        cy.get('div[data-testid="increase-caret"]').click();
+        cy.get('h2[aria-label="stock-value"]').should('contain.text', stockValue + 1);
+        cy.get('div[data-testid="decrease-caret"]').click();
+        cy.get('h2[aria-label="stock-value"]', { timeout: 8000 }).should('contain.text', stockValue);
+      });
     });
   });
 });
