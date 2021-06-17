@@ -16,7 +16,7 @@ export const PillBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>
 });
 
 const Plus1ForwardPill: FC = () => (
-  <PillBox align="center" justify="center">
+  <PillBox aria-label="+1forward token" align="center" justify="center">
     <Text style={{ cursor: 'default' }}>
       <strong>+1forward</strong>
     </Text>

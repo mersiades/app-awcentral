@@ -121,7 +121,7 @@ describe('Creating a new Angel Character', () => {
     // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
     const customEyes = 'tired eyes';
     // Check form content
-    cy.contains('WHAT DOES DIANA LOOK LIKE?').should('exist');
+    cy.contains('WHAT DOES DIANA LOOK LIKE?', { timeout: 8000 }).should('exist');
     cy.contains('GENDER').should('exist');
     cy.contains('CLOTHES').should('exist');
     cy.contains('FACE').should('exist');
