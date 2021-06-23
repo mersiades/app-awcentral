@@ -14,6 +14,7 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { CANCEL_TEXT, ROLL_TEXT } from '../../config/constants';
 
 interface JustGiveMotiveDialogProps {
   move: Move | CharacterMove;
@@ -101,7 +102,7 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({ move, handleClose
         </Box>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
@@ -109,7 +110,7 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({ move, handleClose
             onClick={handleClose}
           />
           <ButtonWS
-            label="ROLL"
+            label={ROLL_TEXT}
             primary
             onClick={() => !performingJustGiveMotivationMove && handleJustGiveMotivationMove()}
             disabled={performingJustGiveMotivationMove || (target === 'PC' && !targetId)}

@@ -145,8 +145,11 @@ const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
   cy.get('div[data-testid="Looks-tags-box"]').should('contain.text', '');
   cy.get('h2[aria-label="speed-value"]').should('contain.text', '0');
   cy.get('h2[aria-label="handling-value"]').should('contain.text', '0');
-  cy.get('input[aria-label="name-input"]').type('{selectall}{backspace}');
+  cy.get('input[aria-label="name-input"]').should('have.value', 'Unnamed vehicle');
+  cy.get('input[aria-label="name-input"]').type('{selectall}');
+  cy.get('input[aria-label="name-input"]').type('{backspace}');
   cy.get('input[aria-label="name-input"]').type(name);
+  cy.get('input[aria-label="name-input"]').should('have.value', name);
   cy.contains('uncomplaining').click();
   cy.get('div[data-testid="Strengths-tags-box"]').should('contain.text', 'uncomplaining');
   cy.contains('guzzler').click();

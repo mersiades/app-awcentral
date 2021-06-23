@@ -34,6 +34,7 @@
     "UsingPlaybookPanel_Chopper.spec.ts",
     "UsingPlaybookPanel_Gunlugger.spec.ts",
     "UsingPlaybookPanel_Hocus.spec.ts",
+    "UsingPlaybookPanel_MaestroD.spec.ts",
     "MakingAngelAndAngelKitMoves.spec.ts",
     "MakingBasicMoves_Battlebabe.spec.ts",
     "MakingPeripheralMoves_Battlebabe.spec.ts",

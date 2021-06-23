@@ -40,7 +40,7 @@ const EstablishmentBox: FC<EstablishmentBoxProps> = ({ navigateToCharacterCreati
       >
         {!!establishment && (
           <Box fill="horizontal" align="start" justify="start" gap="12px" pad="12px">
-            <Box align="center" flex="grow" fill>
+            <Box aria-label="Cast & crew box" align="center" flex="grow" fill>
               <RedBox fill justify="center" pad="12px" gap="12px">
                 {establishment.castAndCrew.length > 0 &&
                   establishment.castAndCrew.map((crew: CastCrew) => {

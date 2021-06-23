@@ -301,6 +301,7 @@ export const DRIVE_TEXT = 'DRIVE';
 export const SPEED_RECOVERY_TEXT = 'SPEED RECOVERY';
 export const REVIVE_TEXT = 'REVIVE';
 export const TREAT_TEXT = 'TREAT';
+export const ROLL_TEXT = 'ROLL';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
