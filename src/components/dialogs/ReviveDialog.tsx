@@ -11,6 +11,7 @@ import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StyledMarkdown } from '../styledComponents';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { CANCEL_TEXT, REVIVE_TEXT } from '../../config/constants';
 
 interface ReviveDialogProps {
   move: Move | CharacterMove;
@@ -69,7 +70,7 @@ const ReviveDialog: FC<ReviveDialogProps> = ({ move, handleClose }) => {
         <ParagraphWS alignSelf="start">{`This will cost 2-stock. You currently have ${currentStock} stock.`}</ParagraphWS>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
@@ -77,7 +78,7 @@ const ReviveDialog: FC<ReviveDialogProps> = ({ move, handleClose }) => {
             onClick={handleClose}
           />
           <ButtonWS
-            label="REVIVE"
+            label={REVIVE_TEXT}
             primary
             onClick={() => !performingStockMove && handleStockMove()}
             disabled={performingStockMove || currentStock < 2}

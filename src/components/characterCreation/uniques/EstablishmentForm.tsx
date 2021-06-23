@@ -321,8 +321,9 @@ const EstablishmentForm: FC = () => {
     variables: { playbookType: PlaybookType.maestroD },
   });
   const establishmentCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.establishmentCreator;
-  const [setEstablishment, { loading: settingEstablishment }] =
-    useMutation<SetEstablishmentData, SetEstablishmentVars>(SET_ESTABLISHMENT);
+  const [setEstablishment, { loading: settingEstablishment }] = useMutation<SetEstablishmentData, SetEstablishmentVars>(
+    SET_ESTABLISHMENT
+  );
 
   // ------------------------------------------------- Component functions -------------------------------------------------- //
   const securityValues = securityOptions.map((opt: SecurityOption) => opt.value);

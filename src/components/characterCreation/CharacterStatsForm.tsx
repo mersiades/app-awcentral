@@ -12,7 +12,15 @@ import { StatsOption } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StatsBlock } from '../../@types/dataInterfaces';
-import { CHOOSE_STAT_SET_TEXT, COOL_TEXT, HARD_TEXT, HOT_TEXT, SHARP_TEXT, WEIRD_TEXT } from '../../config/constants';
+import {
+  CHOOSE_STAT_SET_TEXT,
+  COOL_TEXT,
+  HARD_TEXT,
+  HOT_TEXT,
+  SET_TEXT,
+  SHARP_TEXT,
+  WEIRD_TEXT,
+} from '../../config/constants';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const CharacterStatsForm: FC = () => {
@@ -128,7 +136,8 @@ const CharacterStatsForm: FC = () => {
           >{`WHAT ARE ${!!character?.name ? character.name.toUpperCase() : '...'}'S STRENGTHS AND WEAKNESSES?`}</HeadingWS>
           <ButtonWS
             primary
-            label={settingStats ? <Spinner fillColor="#FFF" width="37px" /> : 'SET'}
+            data-testid="set-stats-button"
+            label={settingStats ? <Spinner fillColor="#FFF" width="37px" /> : SET_TEXT}
             onClick={() => !!selectedStatsOption && !settingStats && handleSubmitStats(selectedStatsOption)}
             disabled={!selectedStatsOption || settingStats}
             style={{ minHeight: '52px' }}

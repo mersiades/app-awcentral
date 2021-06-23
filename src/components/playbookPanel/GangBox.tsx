@@ -17,7 +17,15 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
-import { GO_AGGRO_NAME, SUCKER_SOMEONE_NAME } from '../../config/constants';
+import {
+  ARMOR_TEXT,
+  GANG_MOVES,
+  GO_AGGRO_NAME,
+  HARM_TEXT,
+  SIZE_TEXT,
+  SUCKER_SOMEONE_NAME,
+  TAGS_TEXT,
+} from '../../config/constants';
 
 interface GangBoxProps {
   navigateToCharacterCreation: (step: string) => void;
@@ -127,40 +135,73 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
     <CollapsiblePanelBox open title="Gang" navigateToCharacterCreation={navigateToCharacterCreation} targetCreationStep="6">
       <Box fill="horizontal" align="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
         <Box fill="horizontal" direction="row" align="center" justify="start" wrap gap="12px" pad="12px">
-          <Box align="center" justify="between" height="90px" gap="6px" margin={{ bottom: '6px' }}>
+          <Box
+            data-testid="gang-size-box"
+            align="center"
+            justify="between"
+            height="90px"
+            gap="6px"
+            margin={{ bottom: '6px' }}
+          >
             <RedBox pad="12px" align="center" fill justify="center">
               <HeadingWS crustReady={crustReady} level={3} margin={{ horizontal: '9px', bottom: '-3px', top: '3px' }}>
                 {character?.playbookUniques?.gang?.size}
               </HeadingWS>
             </RedBox>
-            <TextWS style={{ fontWeight: 600 }}>Size</TextWS>
+            <TextWS style={{ fontWeight: 600 }}>{SIZE_TEXT}</TextWS>
           </Box>
-          <Box align="center" justify="between" height="90px" gap="6px" margin={{ bottom: '6px' }}>
+          <Box
+            data-testid="gang-harm-box"
+            align="center"
+            justify="between"
+            height="90px"
+            gap="6px"
+            margin={{ bottom: '6px' }}
+          >
             <RedBox align="center" width="50px" fill="vertical" justify="center">
               <HeadingWS crustReady={crustReady} level="2" margin={{ left: '9px', right: '9px', bottom: '3px', top: '9px' }}>
                 {character?.playbookUniques?.gang?.harm}
               </HeadingWS>
             </RedBox>
-            <TextWS style={{ fontWeight: 600 }}>Harm</TextWS>
+            <TextWS style={{ fontWeight: 600 }}>{HARM_TEXT}</TextWS>
           </Box>
-          <Box align="center" justify="between" height="90px" gap="6px" margin={{ bottom: '6px' }}>
+          <Box
+            data-testid="gang-armor-box"
+            align="center"
+            justify="between"
+            height="90px"
+            gap="6px"
+            margin={{ bottom: '6px' }}
+          >
             <RedBox align="center" width="50px" fill="vertical" justify="center">
               <HeadingWS crustReady={crustReady} level="2" margin={{ left: '9px', right: '9px', bottom: '3px', top: '9px' }}>
                 {character?.playbookUniques?.gang?.armor}
               </HeadingWS>
             </RedBox>
-            <TextWS style={{ fontWeight: 600 }}>Armor</TextWS>
+            <TextWS style={{ fontWeight: 600 }}>{ARMOR_TEXT}</TextWS>
           </Box>
-          <Box align="center" justify="between" height="90px" gap="6px" margin={{ bottom: '6px' }}>
+          <Box
+            data-testid="gang-tags-box"
+            align="center"
+            justify="between"
+            height="90px"
+            gap="6px"
+            margin={{ bottom: '6px' }}
+          >
             <RedBox pad="12px" fill justify="center">
               <TextWS>{character?.playbookUniques?.gang?.tags.join(', ')}</TextWS>
             </RedBox>
-            <TextWS style={{ fontWeight: 600 }}>Tags</TextWS>
+            <TextWS style={{ fontWeight: 600 }}>{TAGS_TEXT}</TextWS>
           </Box>
         </Box>
         <Box direction="row" justify="between" fill="horizontal" align="center" pad="12px">
-          <HeadingWS level="4" margin={{ vertical: '3px' }}>
-            Gang moves
+          <HeadingWS
+            level="4"
+            margin={{ vertical: '3px' }}
+            onClick={() => setShowMoves(!showMoves)}
+            style={{ cursor: 'pointer' }}
+          >
+            {GANG_MOVES}
           </HeadingWS>
           {showMoves ? (
             <FormUp data-testid="hide-gang-moves-icon" onClick={() => setShowMoves(false)} style={{ cursor: 'pointer' }} />

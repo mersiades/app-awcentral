@@ -1,39 +1,6 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import 'cypress-keycloak-commands';
-import { PlaybookType } from '../../src/@types/enums';
-import {
-  ADD_TEXT,
-  LOOKS_TITLE,
-  NAME_TITLE,
-  NEW_GAME_TEXT,
-  NEXT_TEXT,
-  PLAYBOOK_TITLE,
-  SET_TEXT,
-} from '../../src/config/constants';
+import { PlaybookType, StatType } from '../../src/@types/enums';
+import { ADD_TEXT, LOOKS_TITLE, NAME_TITLE, NEW_GAME_TEXT, PLAYBOOK_TITLE } from '../../src/config/constants';
 import { decapitalize } from '../../src/helpers/decapitalize';
 
 const query = `
@@ -91,13 +58,14 @@ Cypress.Commands.add('moveThroughNewGameIntro', () => {
   // Check CharacterCreationStepper
   cy.get('div[data-testid="playbook-box"]').should('contain', PLAYBOOK_TITLE).should('contain', '...');
 
+  cy.url().then((url) => cy.log(url));
   // Go to next
-  cy.contains(NEXT_TEXT, { timeout: 20000 }).click();
+  cy.get('button[data-testid="next-button"]', { timeout: 10000 }).click();
 });
 
 Cypress.Commands.add('selectPlaybook', (playbookType: PlaybookType) => {
   // Check form content
-  cy.get(`button[name="${playbookType}"]`, { timeout: 25000 }).click();
+  cy.get(`button[name="${playbookType}"]`, { timeout: 20000 }).click();
   cy.contains(`SELECT ${decapitalize(playbookType)}`).click();
 });
 
@@ -109,7 +77,7 @@ Cypress.Commands.add('setCharacterName', (name: string) => {
   cy.contains(name).click();
 
   // Submit form
-  cy.contains(SET_TEXT).click();
+  cy.get('button[data-testid="set-name-button"]', { timeout: 10000 }).click();
 });
 
 Cypress.Commands.add(
@@ -123,19 +91,19 @@ Cypress.Commands.add(
 
     // Check form functionality
     cy.contains(gender).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE).should('contain', gender);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', LOOKS_TITLE).should('contain', gender);
 
     cy.contains(clothes).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', clothes);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', clothes);
 
     cy.contains(face).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', face);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', face);
 
     cy.contains(eyes).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', eyes);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', eyes);
 
     cy.contains(body).click();
-    cy.get('div[data-testid="looks-box"]').should('contain', body);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', body);
 
     // Should automatically progress
   }
@@ -149,7 +117,7 @@ Cypress.Commands.add('setCharacterStat', (nameUC: string) => {
   cy.get('div[data-testid="stats-option-box-1"]').click();
 
   // Submit form
-  cy.contains(SET_TEXT).click();
+  cy.get('button[data-testid="set-stats-button"]', { timeout: 10000 }).click();
 });
 
 Cypress.Commands.add('completeGearForm', (nameUC: string, clothes: string, items: string[]) => {
@@ -172,7 +140,7 @@ Cypress.Commands.add('completeGearForm', (nameUC: string, clothes: string, items
   });
 
   // Submit form
-  cy.contains(SET_TEXT).click();
+  cy.get('button[data-testid="set-gear-button"]', { timeout: 10000 }).click();
 });
 
 Cypress.Commands.add('setVehicleOptions', (option1: string, option2: string, option3: string, targetBox: string) => {
@@ -223,8 +191,37 @@ Cypress.Commands.add('deleteKeycloakUser', (email: string) => {
   });
 });
 
+Cypress.Commands.add('openMovesPanelBox', (boxTitle: string) => {
+  cy.get('div[role="tablist"]').within(() => {
+    cy.contains('Playbook', { timeout: 8000 }).should('be.visible'); // Wait for character to load
+    cy.contains('Moves').click();
+  });
+
+  cy.contains(boxTitle).click();
+});
+
 Cypress.Commands.add('openPlaybookPanel', () => {
   cy.get('div[role="tablist"]').within(() => {
-    cy.contains('Playbook').click();
+    cy.contains('Playbook', { timeout: 8000 }).click();
   });
+});
+
+Cypress.Commands.add('checkMoveMessage', (messageTitle: string, snippet: string, stat?: StatType) => {
+  cy.get('div[data-testid="messages-panel"]').within(() => {
+    cy.contains(messageTitle, { timeout: 6000 }).scrollIntoView().should('be.visible');
+    cy.contains(snippet);
+    !!stat && cy.contains(stat);
+  });
+});
+
+Cypress.Commands.add('checkPrintMove', (characterName: string, moveName: string, moveSnippet: string) => {
+  const messageTitle = `${characterName?.toUpperCase()}: ${moveName}`;
+  cy.contains(decapitalize(moveName)).click();
+  cy.checkMoveMessage(messageTitle, moveSnippet);
+});
+
+Cypress.Commands.add('checkRollMove', (characterName: string, moveName: string, moveSnippet: string, rollStat: StatType) => {
+  const messageTitle = `${characterName?.toUpperCase()}: ${moveName}`;
+  cy.contains(decapitalize(moveName)).click();
+  cy.checkMoveMessage(messageTitle, moveSnippet, rollStat);
 });

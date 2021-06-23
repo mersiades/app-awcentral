@@ -32,7 +32,7 @@ describe('Rendering ScriptChangeDialog', () => {
 
   beforeEach(async () => {
     cache = new InMemoryCache();
-    screen = customRenderForComponent(<ScriptChangeDialog handleClose={mockHandleClose} />, {
+    screen = customRenderForComponent(<ScriptChangeDialog handleClose={mockHandleClose} isPreview={false} />, {
       isAuthenticated: true,
       apolloMocks: [],
       injectedGameId: mockGame7.id,

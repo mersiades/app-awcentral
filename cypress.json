@@ -6,7 +6,7 @@
     "auth_client_id": "app-awcentral"
   },
   "chromeWebSecurity": false,
-  "video": false,
+  "video": true,
   "retries": {
     "runMode": 3,
     "openMode": 0
@@ -31,6 +31,15 @@
     "UsingPreGamePage_player.spec.ts",
     "UsingPreGamePage_MC.spec.ts",
     "UsingPlaybookPanel_Angel.spec.ts",
+    "UsingPlaybookPanel_Chopper.spec.ts",
+    "UsingPlaybookPanel_Gunlugger.spec.ts",
+    "UsingPlaybookPanel_Hocus.spec.ts",
+    "UsingPlaybookPanel_MaestroD.spec.ts",
+    "MakingAngelAndAngelKitMoves.spec.ts",
+    "MakingBasicMoves_Battlebabe.spec.ts",
+    "MakingPeripheralMoves_Battlebabe.spec.ts",
+    "MakingBattleMoves_Battlebabe.spec.ts",
+    "MakingRoadWarMoves_Driver.spec.ts",
     "UsingMcPage.spec.ts",
     "EditingGameOnMcPage.spec.ts",
     "InvitingPlayersOnMcPage.spec.ts",

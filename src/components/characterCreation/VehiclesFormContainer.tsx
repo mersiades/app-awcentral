@@ -120,7 +120,11 @@ const VehiclesFormContainer: FC = () => {
             // @ts-ignore */}
             {[...Array(character.vehicleCount).keys()].map((number) => (
               <Tab key={number} title={`Vehicle ${number + 1}`} name={`vehicle-${number + 1}-tab`}>
-                <VehicleForm navigateOnSet={navigateOnSet} existingVehicle={character.vehicles[number]} />
+                <VehicleForm
+                  navigateOnSet={navigateOnSet}
+                  existingVehicle={character.vehicles[number]}
+                  activeTab={activeTab}
+                />
               </Tab>
             ))}
             {character.vehicleCount === character.vehicles.length && (

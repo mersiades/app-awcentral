@@ -87,7 +87,14 @@ const StatRollMessage: FC<StatRollMessageProps> = ({ message, messagesLength, in
               =
             </HeadingWS>
             <Box align="center" justify="between" pad={{ vertical: '12px', horizontal: '24px' }}>
-              <HeadingWS vtksReady={vtksReady} level={1} color="brand" margin="3px" style={{ fontSize: '80px' }}>
+              <HeadingWS
+                aria-label="final-roll-result"
+                vtksReady={vtksReady}
+                level={1}
+                color="brand"
+                margin="3px"
+                style={{ fontSize: '80px' }}
+              >
                 {message.rollResult}
               </HeadingWS>
             </Box>

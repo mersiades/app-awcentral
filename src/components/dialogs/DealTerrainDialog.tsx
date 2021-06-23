@@ -17,6 +17,7 @@ import { Vehicle } from '../../@types/dataInterfaces';
 import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
 import { VehicleType } from '../../@types/enums';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { CANCEL_TEXT, DRIVE_TEXT } from '../../config/constants';
 
 interface DealTerrainDialogProps {
   move: Move | CharacterMove;
@@ -82,9 +83,9 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
         <Box fill align="start" justify="start">
           <ParagraphWS alignSelf="start">What are you driving?</ParagraphWS>
           <Select
-            id="target-character-input"
-            aria-label="target-character-input"
-            name="target-character"
+            id="my=vehicle-input"
+            aria-label="my vehicle select"
+            name="my-vehicle"
             placeholder="My vehicle"
             options={[...character.vehicles, otherVehicle]}
             labelKey="name"
@@ -100,9 +101,9 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
           />
           {selectedVehicle?.id === 'other-vehicle-id' && (
             <Select
-              id="target-character-input"
-              aria-label="target-character-input"
-              name="target-character"
+              id="other-vehicle-input"
+              aria-label="other-vehicle-select"
+              name="my-handling"
               placeholder="My handling"
               options={['0', '1', '2', '3']}
               value={myHandling}
@@ -115,11 +116,11 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
     } else if (!!character) {
       return (
         <Box fill align="start" justify="start">
-          <ParagraphWS alignSelf="start">What is the speed of your vehicle?</ParagraphWS>
+          <ParagraphWS alignSelf="start">What is the handling of your vehicle?</ParagraphWS>
           <Select
-            id="target-character-input"
-            aria-label="target-character-input"
-            name="target-character"
+            id="unknown-vehicle-input"
+            aria-label="unknown vehicle handling select"
+            name="unknown-vehicle-handling"
             placeholder="My handling"
             options={['0', '1', '2', '3']}
             value={myHandling}
@@ -142,7 +143,7 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
         </Box>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
@@ -150,7 +151,7 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
             onClick={handleClose}
           />
           <ButtonWS
-            label={'DRIVE'}
+            label={DRIVE_TEXT}
             primary
             onClick={() => !performingSpeedRollMove && handleSpeedRollMove()}
             disabled={performingSpeedRollMove || !myHandling}

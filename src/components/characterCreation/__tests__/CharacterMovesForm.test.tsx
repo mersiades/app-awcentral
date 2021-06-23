@@ -163,7 +163,7 @@ describe('Rendering CharacterMovesForm', () => {
       }) as HTMLInputElement;
       expect(defaultMoveCheckbox.checked).toBeTruthy();
       mockPlaybookCreatorAngel.optionalMoves.forEach((move) => {
-        const checkbox = screen.getByRole('checkbox', { name: move.description }) as HTMLInputElement;
+        const checkbox = screen.getByRole('checkbox', { name: `${decapitalize(move.name)}-checkbox` }) as HTMLInputElement;
         expect(checkbox.checked).toBeFalsy();
       });
       expect(screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)).not.toBeInTheDocument();
@@ -174,10 +174,10 @@ describe('Rendering CharacterMovesForm', () => {
       const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
       expect(setButton.disabled).toBeTruthy();
       const checkbox1 = screen.getByRole('checkbox', {
-        name: mockPlaybookCreatorAngel.optionalMoves[0].description,
+        name: `${decapitalize(mockPlaybookCreatorAngel.optionalMoves[0].name)}-checkbox`,
       }) as HTMLInputElement;
       const checkbox2 = screen.getByRole('checkbox', {
-        name: mockPlaybookCreatorAngel.optionalMoves[1].description,
+        name: `${decapitalize(mockPlaybookCreatorAngel.optionalMoves[1].name)}-checkbox`,
       }) as HTMLInputElement;
 
       userEvent.click(checkbox1);
@@ -276,7 +276,7 @@ describe('Rendering CharacterMovesForm', () => {
       const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
       expect(setButton.disabled).toBeTruthy();
       const checkbox3 = screen.getByRole('checkbox', {
-        name: mockPlaybookCreatorAngel.optionalMoves[2].description,
+        name: `${decapitalize(mockPlaybookCreatorAngel.optionalMoves[2].name)}-checkbox`,
       }) as HTMLInputElement;
 
       userEvent.click(checkbox3);

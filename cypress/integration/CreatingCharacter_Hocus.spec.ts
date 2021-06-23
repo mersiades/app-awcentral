@@ -1,71 +1,26 @@
 import {
-  BATTLE_VEHICLES_TITLE,
   CHARACTERIZE_THEM_TEXT,
-  CHARISMATIC_NAME,
   FORTUNES_NAME,
-  FRENZY_NAME,
-  GEAR_TITLE,
   HOCUS_SPECIAL_NAME,
   IF_YOU_TRAVEL_TEXT,
-  PLAYBOOK_TITLE,
   SET_TEXT,
-  STATS_TITLE,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
-import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
+import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Hocus Character', () => {
   beforeEach(() => {
     cy.kcLogout();
     cy.kcLogin('wilmer');
-    cy.visit(`character-creation/${game6.id}?step=0`);
+    cy.visit(`character-creation/${game6.id}?step=6`);
   });
 
-  it('should create a Hocus and stop at VehicleForm', () => {
-    // ------------------------------------------ NewGameIntro ------------------------------------------ //
-    cy.moveThroughNewGameIntro();
-
-    // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
-
-    cy.selectPlaybook(PlaybookType.hocus);
-
-    // ------------------------------------------ CharacterNameForm ------------------------------------------ //
+  it('should set Followers and stop at MovesForm', () => {
     const hocusName = 'Vision';
     const hocusNameUC = hocusName.toUpperCase();
-
-    // Check form content
-    cy.contains('WHAT IS THE HOCUS CALLED?').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="playbook-box"]')
-      .should('contain', PLAYBOOK_TITLE)
-      .should('contain', decapitalize(PlaybookType.hocus));
-
-    cy.setCharacterName(hocusName);
-
-    // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
-    const gender = 'woman';
-    const clothes = 'tattered vestments';
-    const face = 'innocent face';
-    const eyes = 'dazed eyes';
-    const body = 'soft body';
-
-    cy.completeLooksForm(hocusNameUC, hocusName, gender, clothes, face, eyes, body);
-
-    // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
-    cy.setCharacterStat(hocusNameUC);
-
-    // ------------------------------------------ CharacterGearForm ------------------------------------------ //
     const hocusGearItem = 'tattered bible';
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
-    cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
-    cy.get('div[data-testid="followers-box"]').should('contain', decapitalize(UniqueTypes.followers));
-
-    cy.completeGearForm(hocusNameUC, hocusGearItem, []);
 
     // ------------------------------------------ FollowersForm ------------------------------------------ //
     const characterization1 = 'Your cult';
@@ -168,10 +123,6 @@ describe('Creating a new Hocus Character', () => {
     cy.contains(SET_TEXT).click();
 
     // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
-
-    const frenzyMoveName = decapitalize(FRENZY_NAME);
-    const charismaticMoveName = decapitalize(CHARISMATIC_NAME);
-
     // Check form content
     cy.contains(`WHAT ARE ${hocusNameUC}'S MOVES`).should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 7);
@@ -186,23 +137,6 @@ describe('Creating a new Hocus Character', () => {
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(HOCUS_SPECIAL_NAME));
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(FORTUNES_NAME));
     cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-
-    // Check form functionality
-    cy.contains(frenzyMoveName).click();
-    cy.contains(charismaticMoveName).click();
-
-    // // Submit form
-    cy.contains(SET_TEXT).click();
-
-    // ------------------------------------------ VehiclesForm ------------------------------------------ //
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(HOCUS_SPECIAL_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(FORTUNES_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(FRENZY_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(CHARISMATIC_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
   });
 });
 

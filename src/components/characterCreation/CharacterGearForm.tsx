@@ -16,7 +16,7 @@ import SET_CHARACTER_GEAR, { SetCharacterGearData, SetCharacterGearVars } from '
 import { CharacterCreationSteps, PlaybookType } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
-import { ADD_TEXT, GEAR_FORM_INSTRUCTIONS, GEAR_TITLE, OPTIONS_TITLE, REMOVE_TEXT } from '../../config/constants';
+import { ADD_TEXT, GEAR_FORM_INSTRUCTIONS, GEAR_TITLE, OPTIONS_TITLE, REMOVE_TEXT, SET_TEXT } from '../../config/constants';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const GearUL = styled.ul`
@@ -217,7 +217,8 @@ const CharacterGearForm: FC = () => {
           >{`WHAT IS ${!!character?.name ? character.name.toUpperCase() : '...'}'S GEAR?`}</HeadingWS>
           <ButtonWS
             primary
-            label={settingGear || settingBarter ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+            data-testid="set-gear-button"
+            label={settingGear || settingBarter ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : SET_TEXT}
             onClick={() =>
               !settingBarter &&
               !settingGear &&

@@ -160,12 +160,6 @@ export const mockKeycloakUser2: KeycloakUser = {
   email: 'mockUser2@email.com',
 };
 
-export const mockKeycloakUser3: KeycloakUser = {
-  id: 'mock-keycloak-id-3',
-  username: 'mock-user-3',
-  email: 'mockUser3@email.com',
-};
-
 export const mockCharacterHarm: CharacterHarm = {
   id: 'mock-character-harm-id-1',
   value: 0,
@@ -528,28 +522,6 @@ export const mockGameRole2: GameRole = {
   id: 'mock-gameRole-id-2',
   role: RoleType.player,
   userId: 'mock-keycloak-id-1',
-  gameId: mockGame2.id,
-  gameName: mockGame2.name,
-  characters: [],
-  npcs: [],
-  threats: [],
-};
-
-export const mockGameRole3: GameRole = {
-  id: 'mock-gameRole-id-3',
-  role: RoleType.player,
-  userId: 'mock-keycloak-id-2',
-  gameId: mockGame1.id,
-  gameName: mockGame1.name,
-  characters: [],
-  npcs: [],
-  threats: [],
-};
-
-export const mockGameRole4: GameRole = {
-  id: 'mock-gameRole-id-4',
-  role: RoleType.mc,
-  userId: 'mock-keycloak-id-2',
   gameId: mockGame2.id,
   gameName: mockGame2.name,
   characters: [],
@@ -1171,11 +1143,6 @@ export const mockVehicleInput: VehicleInput = {
   weaknesses: ['unreliable'],
   looks: ['sleek'],
   battleOptions: [mockBattleOption2, mockBattleOption4],
-};
-
-export const mockVehicle2: Vehicle = {
-  ...mockVehicleInput,
-  id: 'mock-vehicle-id-2',
 };
 
 export const blankCharacter: MockCharacter = {

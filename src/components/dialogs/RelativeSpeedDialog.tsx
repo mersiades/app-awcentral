@@ -15,7 +15,7 @@ import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { Vehicle } from '../../@types/dataInterfaces';
 import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
-import { OUTDISTANCE_VEHICLE_NAME } from '../../config/constants';
+import { CANCEL_TEXT, OUTDISTANCE_TEXT, OUTDISTANCE_VEHICLE_NAME, OVERTAKE_TEXT } from '../../config/constants';
 import { VehicleType } from '../../@types/enums';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 
@@ -85,7 +85,7 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
         <Box fill align="start" justify="start">
           <ParagraphWS alignSelf="start">What are you driving?</ParagraphWS>
           <Select
-            aria-label="my-vehicle-input"
+            aria-label="my vehicle select"
             name="my-vehicle"
             placeholder="My vehicle"
             options={[...character.vehicles, otherVehicle]}
@@ -102,8 +102,8 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
           />
           {selectedVehicle?.id === 'other-vehicle-id' && (
             <Select
-              aria-label="manual-vehicle-input"
-              name="manual-vehicle"
+              aria-label="other vehicle select"
+              name="other-vehicle"
               placeholder="My speed"
               options={['0', '1', '2', '3']}
               value={mySpeed}
@@ -118,7 +118,7 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
         <Box fill align="start" justify="start">
           <ParagraphWS alignSelf="start">What is the speed of your vehicle?</ParagraphWS>
           <Select
-            aria-label="my-speed-input"
+            aria-label="my speed select"
             name="my-speed"
             placeholder="My speed"
             options={['0', '1', '2', '3']}
@@ -143,8 +143,8 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
             <ParagraphWS alignSelf="start">What is the speed of their vehicle?</ParagraphWS>
             <Select
               id="target-character-input"
-              aria-label="target-character-input"
-              name="target-character"
+              aria-label="opposition speed select"
+              name="opposition-speed"
               placeholder="Their speed"
               options={['0', '1', '2', '3']}
               value={theirSpeed}
@@ -154,7 +154,7 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
         </Box>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
@@ -162,7 +162,7 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
             onClick={handleClose}
           />
           <ButtonWS
-            label={move.name === OUTDISTANCE_VEHICLE_NAME ? 'OUTDISTANCE' : 'OVERTAKE'}
+            label={move.name === OUTDISTANCE_VEHICLE_NAME ? OUTDISTANCE_TEXT : OVERTAKE_TEXT}
             primary
             onClick={() => !performingSpeedRollMove && handleSpeedRollMove()}
             disabled={performingSpeedRollMove || !mySpeed || !theirSpeed}

@@ -104,9 +104,10 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
           />
           <ButtonWS
             label={move.name === 'LIFESTYLE AND GIGS' ? 'SPEND' : 'GIVE'}
+            data-testid={move.name === 'LIFESTYLE AND GIGS' ? 'spend-button' : 'give-button'}
             primary
             onClick={() => !!barter && !performingBarterMove && handleBarterMove(move, barter)}
-            disabled={!barter || performingBarterMove}
+            disabled={!barter || performingBarterMove || (!!character?.barter && barter > character.barter)}
           />
         </Box>
       </Box>

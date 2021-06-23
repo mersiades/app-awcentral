@@ -5,51 +5,116 @@ export const EMAIL_REGEX = new RegExp(
 );
 
 // The names of specific moves
+// Basic moves
 export const UNDER_FIRE_NAME = 'DO SOMETHING UNDER FIRE';
-export const INFLICT_HARM_NAME = 'INFLICT HARM ON PC';
-export const HEAL_HARM_NAME = 'HEAL PC HARM';
-export const ANGEL_SPECIAL_NAME = 'ANGEL SPECIAL';
-export const BATTLEBABE_SPECIAL_NAME = 'BATTLEBABE SPECIAL';
-export const BRAINER_SPECIAL_NAME = 'BRAINER SPECIAL';
-export const CHOPPER_SPECIAL_NAME = 'CHOPPER SPECIAL';
-export const DRIVER_SPECIAL_NAME = 'DRIVER SPECIAL';
-export const GUNLUGGER_SPECIAL_NAME = 'GUNLUGGER SPECIAL';
-export const HARDHOLDER_SPECIAL_NAME = 'HARDHOLDER SPECIAL';
-export const HOCUS_SPECIAL_NAME = 'HOCUS SPECIAL';
-export const MAESTROD_SPECIAL_NAME = "MAESTRO D' SPECIAL";
-export const SAVVYHEAD_SPECIAL_NAME = 'SAVVYHEAD SPECIAL';
-export const SKINNER_SPECIAL_NAME = 'SKINNER SPECIAL';
-export const MAKE_WANT_KNOWN_NAME = 'MAKE WANT KNOWN';
-export const HELP_OR_INTERFERE_NAME = 'HELP OR INTERFERE WITH SOMEONE';
-export const STABILIZE_AND_HEAL_NAME = 'STABILIZE AND HEAL SOMEONE';
-export const SPEED_RECOVERY_NAME = 'SPEED THE RECOVERY OF SOMEONE';
-export const REVIVE_SOMEONE_NAME = 'REVIVE SOMEONE';
-export const TREAT_NPC_NAME = 'TREAT AN NPC';
-export const COLLECTOR_NAME = 'COLLECTOR';
-export const OTHER_CAR_TANK_NAME = 'MY OTHER CAR IS A TANK';
 export const GO_AGGRO_NAME = 'GO AGGRO ON SOMEONE';
 export const SUCKER_SOMEONE_NAME = 'SUCKER SOMEONE';
+export const DO_BATTLE_NAME = 'DO BATTLE';
+export const SEDUCE_OR_MANIP_NAME = 'SEDUCE OR MANIPULATE SOMEONE';
+export const HELP_OR_INTERFERE_NAME = 'HELP OR INTERFERE WITH SOMEONE';
+export const READ_A_SITCH_NAME = 'READ A SITCH';
+export const READ_PERSON_NAME = 'READ A PERSON'; // Can earn holds
+export const OPEN_BRAIN_NAME = 'OPEN YOUR BRAIN';
+export const LIFESTYLE_GIGS_NAME = 'LIFESTYLE AND GIGS';
+export const SESSION_END_NAME = 'SESSION END';
+
+// Peripheral moves
+export const SUFFER_HARM_NAME = 'SUFFER HARM';
+export const SUFFER_V_HARM = 'SUFFER V-HARM';
+export const INFLICT_HARM_NAME = 'INFLICT HARM ON PC';
+export const HEAL_HARM_NAME = 'HEAL PC HARM';
+export const GIVE_BARTER_NAME = 'GIVE BARTER';
+export const GO_MARKET_NAME = 'GO TO THE MARKET';
+export const MAKE_WANT_KNOWN_NAME = 'MAKE WANT KNOWN';
+export const INSIGHT_NAME = 'INSIGHT';
+export const AUGURY_NAME = 'AUGURY';
+export const CHANGE_HIGHLIGHTED_STAT_NAME = 'CHANGE HIGHLIGHTED STATS';
+
+// Battle moves
+export const EXCHANGE_HARM_NAME = 'EXCHANGE HARM';
+export const SEIZE_BY_FORCE_NAME = 'SEIZE BY FORCE';
+export const ASSAULT_POSITION_NAME = 'ASSAULT A POSITION';
+export const KEEP_HOLD_OF_SOMETHING_NAME = 'KEEP HOLD OF SOMETHING';
+export const FIGHT_FREE_NAME = 'FIGHT FREE';
+export const DEFEND_SOMEONE_NAME = 'DEFEND SOMEONE';
+export const DO_SINGLE_COMBAT_NAME = 'DO SINGLE COMBAT';
+export const LAY_DOWN_FIRE_NAME = 'LAY DOWN FIRE';
+export const STAND_OVERWATCH_NAME = 'STAND OVERWATCH';
+export const KEEP_EYE_OUT_NAME = 'KEEP AN EYE OUT'; // Earns holds
+export const BE_THE_BAIT_NAME = 'BE THE BAIT';
+export const BE_THE_CAT_NAME = 'BE THE CAT';
+export const BE_THE_MOUSE_NAME = 'BE THE MOUSE';
 export const CAT_OR_MOUSE_NAME = 'CAT OR MOUSE';
-export const REPUTATION_NAME = 'REPUTATION';
-export const COMBAT_DRIVER_NAME = 'COMBAT DRIVER';
+
+// Road war moves
 export const BOARD_VEHICLE_NAME = 'BOARD A MOVING VEHICLE';
 export const OUTDISTANCE_VEHICLE_NAME = 'OUTDISTANCE ANOTHER VEHICLE';
 export const OVERTAKE_VEHICLE_NAME = 'OVERTAKE ANOTHER VEHICLE';
 export const DEAL_WITH_TERRAIN_NAME = 'DEAL WITH BAD TERRAIN';
+export const SHOULDER_ANOTHER_VEHICLE_NAME = 'SHOULDER ANOTHER VEHICLE';
+
+// Angel moves
+export const ANGEL_SPECIAL_NAME = 'ANGEL SPECIAL';
+export const HEALING_TOUCH_NAME = 'HEALING TOUCH';
+
+// Battlebabe moves
+export const BATTLEBABE_SPECIAL_NAME = 'BATTLEBABE SPECIAL';
+
+// Brainer moves
+export const BRAINER_SPECIAL_NAME = 'BRAINER SPECIAL';
+export const BRAIN_RECEPTIVITY_NAME = 'CASUAL BRAIN RECEPTIVITY';
+
+// Chopper moves
+export const CHOPPER_SPECIAL_NAME = 'CHOPPER SPECIAL';
+export const FUCKING_THIEVES_NAME = 'FUCKING THIEVES';
+export const PACK_ALPHA_NAME = 'PACK ALPHA';
+
+// Driver moves
+export const DRIVER_SPECIAL_NAME = 'DRIVER SPECIAL';
+export const COLLECTOR_NAME = 'COLLECTOR';
+export const OTHER_CAR_TANK_NAME = 'MY OTHER CAR IS A TANK';
+
+// Gunlugger moves
+export const GUNLUGGER_SPECIAL_NAME = 'GUNLUGGER SPECIAL';
+
+// Hardholder moves
+export const HARDHOLDER_SPECIAL_NAME = 'HARDHOLDER SPECIAL';
 export const LEADERSHIP_NAME = 'LEADERSHIP';
 export const WEALTH_NAME = 'WEALTH';
+
+// Hocus moves
+export const HOCUS_SPECIAL_NAME = 'HOCUS SPECIAL';
 export const FORTUNES_NAME = 'FORTUNES';
-export const PACK_ALPHA_NAME = 'PACK ALPHA';
-export const LOST_NAME = 'LOST';
+
+// Maestro D' moves
+export const MAESTROD_SPECIAL_NAME = "MAESTRO D' SPECIAL";
+
+// Savvyhead moves
+export const SAVVYHEAD_SPECIAL_NAME = 'SAVVYHEAD SPECIAL';
+export const THINGS_SPEAK_NAME = 'THINGS SPEAK';
+
+// Skinner moves
+export const SKINNER_SPECIAL_NAME = 'SKINNER SPECIAL';
 export const ARTFUL_NAME = 'ARTFUL & GRACIOUS';
 export const HYPNOTIC_NAME = 'HYPNOTIC';
+
+// Angelkit moves
+export const STABILIZE_AND_HEAL_NAME = 'STABILIZE AND HEAL SOMEONE';
+export const SPEED_RECOVERY_NAME = 'SPEED THE RECOVERY OF SOMEONE';
+export const REVIVE_SOMEONE_NAME = 'REVIVE SOMEONE';
+export const TREAT_NPC_NAME = 'TREAT AN NPC';
+
+export const REPUTATION_NAME = 'REPUTATION';
+export const COMBAT_DRIVER_NAME = 'COMBAT DRIVER';
+
+export const LOST_NAME = 'LOST';
+
 export const JUST_GIVE_MOTIVE_NAME = 'JUST GIVE ME A MOTIVE';
-export const SUFFER_V_HARM = 'SUFFER V-HARM';
+
 export const SIXTH_SENSE_NAME = 'SIXTH SENSE';
 export const INFIRMARY_NAME = 'INFIRMARY';
 export const ICE_COLD_NAME = 'ICE COLD';
-export const BRAIN_RECEPTIVITY_NAME = 'CASUAL BRAIN RECEPTIVITY';
-export const FUCKING_THIEVES_NAME = 'FUCKING THIEVES';
+
 export const BATTLE_HARDENED_NAME = 'BATTLE-HARDENED';
 export const FUCK_THIS_SHIT_NAME = 'FUCK THIS SHIT';
 export const BATTLEFIELD_INSTINCTS_NAME = 'BATTLEFIELD INSTINCTS';
@@ -57,7 +122,6 @@ export const FRENZY_NAME = 'FRENZY';
 export const CHARISMATIC_NAME = 'CHARISMATIC';
 export const WACKNUT_NAME = 'FUCKING WACKNUT';
 export const CALL_THIS_HOT_NAME = 'YOU CALL THIS HOT?';
-export const THINGS_SPEAK_NAME = 'THINGS SPEAK';
 
 // IMPROVE_STAT move names
 export const SHARP_2_MAX_NAME = 'SHARP MAX 2';
@@ -197,8 +261,7 @@ export const DEATH_CHANGE_PLAYBOOK_NAME = 'DEATH CHANGE PLAYBOOK';
 export const DIE_NAME = 'DIE';
 
 // Moves that can earn holds
-export const READ_PERSON_NAME = 'READ A PERSON';
-export const KEEP_EYE_OUT_NAME = 'KEEP AN EYE OUT';
+
 export const DANGEROUS_AND_SEXY_NAME = 'DANGEROUS & SEXY';
 export const BRAINSCAN_NAME = 'DEEP BRAIN SCAN';
 export const PUPPET_STRINGS_NAME = 'IN BRAIN PUPPET STRINGS';
@@ -231,6 +294,14 @@ export const DO_IT_TEXT = 'DO IT';
 export const STABILIZE_TEXT = 'STABILIZE';
 export const INVITE_PLAYER_TEXT = 'INVITE PLAYER';
 export const ADD_ANOTHER_TEXT = 'INVITE ANOTHER';
+export const BOARD_TEXT = 'BOARD';
+export const OUTDISTANCE_TEXT = 'OUTDISTANCE';
+export const OVERTAKE_TEXT = 'OVERTAKE';
+export const DRIVE_TEXT = 'DRIVE';
+export const SPEED_RECOVERY_TEXT = 'SPEED RECOVERY';
+export const REVIVE_TEXT = 'REVIVE';
+export const TREAT_TEXT = 'TREAT';
+export const ROLL_TEXT = 'ROLL';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -392,10 +463,25 @@ export const ANGEL_KIT_TEXT = 'Angel kit';
 export const STOCK_TEXT = 'Stock';
 export const SUPPLIER_TEXT = 'Supplier';
 
+// ----------------------------------------------- GANG BOX --------------------------------------------- //
+export const SIZE_TEXT = 'Size';
+export const HARM_TEXT = 'Harm';
+export const ARMOR_TEXT = 'Armor';
+export const TAGS_TEXT = 'Tags';
+export const GANG_MOVES = 'Gang moves';
+
+// ----------------------------------------------- VEHICLES BOX --------------------------------------------- //
+export const SPEED_TEXT = 'Speed';
+export const HANDLING_TEXT = 'Handling';
+export const MASSIVE_TEXT = 'Massive';
+
 // ----------------------------------------------- STABILIZE DIALOG --------------------------------------------- //
 export const HOW_MUCH_STOCK_TEXT = 'How much stock do you use?';
 export const CURRENT_STOCK_1_TEXT = 'You currently have';
 export const CURRENT_STOCK_2_TEXT = 'stock';
+
+// ----------------------------------------------- SPEED RECOVERY DIALOG ------------------------------------------- //
+export const USE_STOCK_TEXT = 'Do they want you to use any stock?';
 
 // ----------------------------------------------- GAME PANEL --------------------------------------------- //
 export const PLAYERS_TEXT = 'Players';

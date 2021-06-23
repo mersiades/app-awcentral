@@ -1,71 +1,26 @@
 import {
   ATTRACTIONS_INSTRUCTIONS,
-  BATTLE_VEHICLES_TITLE,
-  CALL_THIS_HOT_NAME,
   CAST_CREW_INSTRUCTIONS,
-  GEAR_TITLE,
-  JUST_GIVE_MOTIVE_NAME,
   MAESTROD_SPECIAL_NAME,
-  PLAYBOOK_TITLE,
   SELECT_SIDE_ATTRACTIONS,
   SET_TEXT,
-  STATS_TITLE,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
-import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
+import { UniqueTypes } from '../../src/@types/enums';
 
 describe("Creating a new Maestro D' Character", () => {
   beforeEach(() => {
     cy.kcLogout();
     cy.kcLogin('ivette');
-    cy.visit(`character-creation/${game6.id}?step=0`);
+    cy.visit(`character-creation/${game6.id}?step=6`);
   });
 
-  it("should create a Maestro D' and stop at VehicleForm", () => {
-    // ------------------------------------------ NewGameIntro ------------------------------------------ //
-    cy.moveThroughNewGameIntro();
-
-    // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
-
-    cy.selectPlaybook(PlaybookType.maestroD);
-
-    // ------------------------------------------ CharacterNameForm ------------------------------------------ //
+  it('should set an Establishment and stop at MovesForm', () => {
     const maestroDName = 'Emmy';
     const maestroDNameUC = maestroDName.toUpperCase();
-
-    // Check form content
-    cy.contains("WHAT IS THE MAESTRO D' CALLED?").should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="playbook-box"]')
-      .should('contain', PLAYBOOK_TITLE)
-      .should('contain', decapitalize(PlaybookType.maestroD));
-
-    cy.setCharacterName(maestroDName);
-
-    // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
-    const gender = 'transgressing';
-    const clothes = 'vintage wear';
-    const face = 'boyish face';
-    const eyes = 'bright eyes';
-    const body = 'restless body';
-
-    cy.completeLooksForm(maestroDNameUC, maestroDName, gender, clothes, face, eyes, body);
-
-    // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
-    cy.setCharacterStat(maestroDNameUC);
-
-    // ------------------------------------------ CharacterGearForm ------------------------------------------ //
     const maestroDGearItem = 'rusty iron mic';
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
-    cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
-    cy.get('div[data-testid="establishment-box"]').should('contain', decapitalize(UniqueTypes.establishment));
-
-    cy.completeGearForm(maestroDNameUC, maestroDGearItem, []);
 
     // ------------------------------------------ EstablishmentForm ------------------------------------------ //
     const attraction1 = 'fashion';
@@ -202,9 +157,6 @@ describe("Creating a new Maestro D' Character", () => {
 
     // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
 
-    const motiveMoveName = decapitalize(JUST_GIVE_MOTIVE_NAME);
-    const callThisHotMoveName = decapitalize(CALL_THIS_HOT_NAME);
-
     // Check form content
     cy.contains(`WHAT ARE ${maestroDNameUC}'S MOVES`).should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 6);
@@ -219,22 +171,6 @@ describe("Creating a new Maestro D' Character", () => {
       .should('contain', attraction4);
     cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(MAESTROD_SPECIAL_NAME));
     cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-
-    // Check form functionality
-    cy.contains(motiveMoveName).click();
-    cy.contains(callThisHotMoveName).click();
-
-    // // Submit form
-    cy.contains(SET_TEXT).click();
-
-    // ------------------------------------------ VehiclesForm ------------------------------------------ //
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(MAESTROD_SPECIAL_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(JUST_GIVE_MOTIVE_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(CALL_THIS_HOT_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
   });
 });
 

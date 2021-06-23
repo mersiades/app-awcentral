@@ -73,7 +73,7 @@ describe('Creating a new Angel Character', () => {
 
     // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
     // Check form content
-    cy.contains(CHOOSE_YOUR_PLAYBOOK_TEXT).should('exist');
+    cy.contains(CHOOSE_YOUR_PLAYBOOK_TEXT, { timeout: 8000 }).should('exist');
     cy.contains(NEW_PLAYER_INTRO_TEXT).should('exist');
 
     // Check CharacterCreationStepper
@@ -121,7 +121,7 @@ describe('Creating a new Angel Character', () => {
     // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
     const customEyes = 'tired eyes';
     // Check form content
-    cy.contains('WHAT DOES DIANA LOOK LIKE?').should('exist');
+    cy.contains('WHAT DOES DIANA LOOK LIKE?', { timeout: 8000 }).should('exist');
     cy.contains('GENDER').should('exist');
     cy.contains('CLOTHES').should('exist');
     cy.contains('FACE').should('exist');
@@ -129,41 +129,43 @@ describe('Creating a new Angel Character', () => {
     cy.contains('BODY').should('exist');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="name-box"]').should('contain', NAME_TITLE).should('contain', angelName);
+    cy.get('div[data-testid="name-box"]').should('contain', NAME_TITLE);
+    cy.get('div[data-testid="name-box"]').should('contain', angelName);
 
     // Check form functionality
     cy.contains('man').click();
-    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE).should('contain', 'man');
+    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', 'man');
 
     cy.contains('utility wear').click();
-    cy.get('div[data-testid="looks-box"]')
-      .should('contain', LOOKS_TITLE)
-      .should('contain', 'man')
-      .should('contain', 'utility wear');
+    cy.get('div[data-testid="looks-box"]');
+    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
+    cy.get('div[data-testid="looks-box"]').should('contain', 'man');
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', 'utility wear');
 
     cy.contains('haggard face').click();
-    cy.get('div[data-testid="looks-box"]')
-      .should('contain', LOOKS_TITLE)
-      .should('contain', 'man')
-      .should('contain', 'utility wear')
-      .should('contain', 'haggard face');
+    cy.get('div[data-testid="looks-box"]');
+    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
+    cy.get('div[data-testid="looks-box"]').should('contain', 'man');
+    cy.get('div[data-testid="looks-box"]').should('contain', 'utility wear');
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', 'haggard face');
 
     cy.get('input[aria-label="eyes-input"]').type(customEyes); // Check that looks can also be typed
     cy.contains('SET').click();
-    cy.get('div[data-testid="looks-box"]')
-      .should('contain', LOOKS_TITLE)
-      .should('contain', 'man')
-      .should('contain', 'utility wear')
-      .should('contain', 'haggard face')
-      .should('contain', customEyes);
+    cy.get('div[data-testid="looks-box"]');
+    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
+    cy.get('div[data-testid="looks-box"]').should('contain', 'man');
+    cy.get('div[data-testid="looks-box"]').should('contain', 'utility wear');
+    cy.get('div[data-testid="looks-box"]').should('contain', 'haggard face');
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', customEyes);
 
     cy.contains('big body').click();
-    cy.get('div[data-testid="looks-box"]')
-      .should('contain', LOOKS_TITLE)
-      .should('contain', 'man')
-      .should('contain', 'utility wear')
-      .should('contain', 'haggard face')
-      .should('contain', 'big body');
+    cy.get('div[data-testid="looks-box"]');
+    cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
+    cy.get('div[data-testid="looks-box"]').should('contain', 'man');
+    cy.get('div[data-testid="looks-box"]').should('contain', 'utility wear');
+    cy.get('div[data-testid="looks-box"]').should('contain', 'haggard face');
+    cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should('contain', 'big body');
 
     // Should automatically progress
     // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
@@ -179,28 +181,26 @@ describe('Creating a new Angel Character', () => {
     cy.contains(GEAR_FORM_INSTRUCTIONS).should('exist');
     cy.contains(GEAR_TITLE).should('exist');
     cy.contains(OPTIONS_TITLE).should('exist');
-    cy.contains(ADD_TEXT).as('addButton');
-    cy.contains(REMOVE_TEXT).as('removeButton');
-    cy.get('ul[aria-label="interim-gear-list"]').as('interimGearList');
+    cy.contains(ADD_TEXT).should('exist');
+    cy.contains(REMOVE_TEXT).should('exist');
+    cy.get('ul[aria-label="interim-gear-list"]').should('exist');
     cy.get('textarea[aria-label="item-input"]').as('itemInput');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="stats-box"]')
-      .should('contain', STATS_TITLE)
-      .should('contain', COOL_TEXT)
-      .should('contain', HARD_TEXT)
-      .should('contain', HOT_TEXT)
-      .should('contain', SHARP_TEXT)
-      .should('contain', WEIRD_TEXT);
+    cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
+    cy.get('div[data-testid="stats-box"]').should('contain', COOL_TEXT);
+    cy.get('div[data-testid="stats-box"]').should('contain', HARD_TEXT);
+    cy.get('div[data-testid="stats-box"]').should('contain', HOT_TEXT);
+    cy.get('div[data-testid="stats-box"]').should('contain', SHARP_TEXT);
+    cy.get('div[data-testid="stats-box"]').should('contain', WEIRD_TEXT);
     cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
-    cy.get('div[data-testid="angel-kit-box"]')
-      .should('contain', decapitalize(UniqueTypes.angelKit))
-      .should('contain', 'Stock: 6')
-      .should('contain', 'No supplier yet');
+    cy.get('div[data-testid="angel-kit-box"]').should('contain', decapitalize(UniqueTypes.angelKit));
+    cy.get('div[data-testid="angel-kit-box"]').should('contain', 'Stock: 6');
+    cy.get('div[data-testid="angel-kit-box"]').should('contain', 'No supplier yet');
 
     // Check form functionality
     cy.contains('fashion suitable to your look').click();
-    cy.get('@itemInput')
+    cy.get('textarea[aria-label="item-input"]')
       .then((input) => {
         // @ts-ignore
         expect(input[0].value).to.contain('fashion suitable to your look');
@@ -208,27 +208,30 @@ describe('Creating a new Angel Character', () => {
       .type('{selectall}{backspace}')
       .type(angelClothes);
 
-    cy.get('@addButton').click();
-    cy.get('@interimGearList').should('contain', angelClothes);
+    cy.contains(ADD_TEXT).click();
+    cy.get('ul[aria-label="interim-gear-list"]').should('contain', angelClothes);
     cy.contains(angelWeapon1).click();
-    cy.get('@itemInput').then((input) => {
+    cy.get('textarea[aria-label="item-input"]').then((input) => {
       // @ts-ignore
       expect(input[0].value).to.contain(angelWeapon1);
     });
-    cy.get('@addButton').click();
-    cy.get('@interimGearList').should('contain', angelClothes).should('contain', angelWeapon1);
+    cy.contains(ADD_TEXT).click();
+    cy.get('ul[aria-label="interim-gear-list"]').should('contain', angelClothes);
+    cy.get('ul[aria-label="interim-gear-list"]').should('contain', angelWeapon1);
 
-    cy.get('@interimGearList').contains(angelWeapon1).click();
-    cy.get('@itemInput').then((input) => {
+    cy.get('ul[aria-label="interim-gear-list"]').contains(angelWeapon1).click();
+    cy.get('textarea[aria-label="item-input"]').then((input) => {
       // @ts-ignore
       expect(input[0].value).to.contain(angelWeapon1);
     });
-    cy.get('@removeButton').click();
-    cy.get('@interimGearList').should('contain', angelClothes).should('not.contain', angelWeapon1);
+    cy.contains(REMOVE_TEXT).click();
+    cy.get('ul[aria-label="interim-gear-list"]').should('contain', angelClothes);
+    cy.get('ul[aria-label="interim-gear-list"]').should('not.contain', angelWeapon1);
 
     cy.contains(angelWeapon2).click();
-    cy.get('@addButton').click();
-    cy.get('@interimGearList').should('contain', angelClothes).should('contain', angelWeapon2);
+    cy.contains(ADD_TEXT).click();
+    cy.get('ul[aria-label="interim-gear-list"]').should('contain', angelClothes);
+    cy.get('ul[aria-label="interim-gear-list"]').should('contain', angelWeapon2);
 
     // Submit form
     cy.contains(SET_TEXT).click();
@@ -240,17 +243,14 @@ describe('Creating a new Angel Character', () => {
     cy.get('h2[aria-label="supplier-status"]').should('include.text', 'No');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="gear-box"]')
-      .should('contain', GEAR_TITLE)
-      .should('contain', angelClothes)
-      .should('contain', angelWeapon2);
-    cy.get('div[data-testid="angel-kit-box"]')
-      .should('contain', decapitalize(UniqueTypes.angelKit))
-      .should('contain', 'Stock: 6')
-      .should('contain', 'No supplier yet');
-    cy.get('div[data-testid="moves-box"]')
-      .should('contain', MOVES_TITLE)
-      .should('contain', decapitalize(ANGEL_SPECIAL_NAME));
+    cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE);
+    cy.get('div[data-testid="gear-box"]').should('contain', angelClothes);
+    cy.get('div[data-testid="gear-box"]').should('contain', angelWeapon2);
+    cy.get('div[data-testid="angel-kit-box"]').should('contain', decapitalize(UniqueTypes.angelKit));
+    cy.get('div[data-testid="angel-kit-box"]').should('contain', 'Stock: 6');
+    cy.get('div[data-testid="angel-kit-box"]').should('contain', 'No supplier yet');
+    cy.get('div[data-testid="moves-box"]').should('contain', MOVES_TITLE);
+    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(ANGEL_SPECIAL_NAME));
 
     // Check form functionality
     // AngelKitForm has no functionality apart from the SET button
@@ -262,15 +262,14 @@ describe('Creating a new Angel Character', () => {
     const sixthSenseMoveName = decapitalize(SIXTH_SENSE_NAME);
     const infirmaryMoveName = decapitalize(INFIRMARY_NAME);
     // Check form content
-    cy.contains("WHAT ARE DIANA'S MOVES").should('exist');
+    cy.contains("WHAT ARE DIANA'S MOVES", { timeout: 8000 }).should('exist');
     cy.contains(DEFAULT_MOVES_TITLE).should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 7);
     cy.contains('Select 2').should('exist');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]')
-      .should('contain', MOVES_TITLE)
-      .should('contain', decapitalize(ANGEL_SPECIAL_NAME));
+    cy.get('div[data-testid="moves-box"]').should('contain', MOVES_TITLE);
+    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(ANGEL_SPECIAL_NAME));
     cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
 
     // Check form functionality
@@ -288,11 +287,10 @@ describe('Creating a new Angel Character', () => {
     cy.contains(START_PLAY_WITH_VEHICLE_TEXT).should('exist');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]')
-      .should('contain', MOVES_TITLE)
-      .should('contain', decapitalize(ANGEL_SPECIAL_NAME))
-      .should('contain', sixthSenseMoveName)
-      .should('contain', infirmaryMoveName);
+    cy.get('div[data-testid="moves-box"]').should('contain', MOVES_TITLE);
+    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(ANGEL_SPECIAL_NAME));
+    cy.get('div[data-testid="moves-box"]').should('contain', sixthSenseMoveName);
+    cy.get('div[data-testid="moves-box"]').should('contain', infirmaryMoveName);
     cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
     cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
 
@@ -420,32 +418,34 @@ describe('Creating a new Angel Character', () => {
     // Check form content
     cy.contains('WHAT HISTORY DOES DIANA HAVE?').should('exist');
     cy.get('div[data-testid="Doc-hx-box"]').should('exist');
-    cy.get('input[aria-label="Doc-hx-input"]').as('docHxInput');
     cy.contains('Diana the Angel').should('exist');
     cy.contains(STATS_TITLE).should('exist');
     cy.get('div[data-testid="COOL-stat-box"]').should('exist');
-    cy.get('div[data-testid="HARD-stat-box"]').as('hardBox');
-    cy.get('div[data-testid="HOT-stat-box"]').as('hotBox');
+    cy.get('div[data-testid="HARD-stat-box"]').should('exist');
+    cy.get('div[data-testid="HOT-stat-box"]').should('exist');
     cy.get('div[data-testid="SHARP-stat-box"]').should('exist');
     cy.get('div[data-testid="WEIRD-stat-box"]').should('exist');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', vehicleName);
-    cy.get('div[data-testid="battle-vehicles-box"]')
-      .should('contain', BATTLE_VEHICLES_TITLE)
-      .should('contain', battleVehicleName);
+    cy.get('div[data-testid="battle-vehicles-box"]');
+    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE);
+    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', battleVehicleName);
     cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
 
     // Check form functionality
-    cy.get('@docHxInput').type('{backspace}5');
+    cy.get('input[aria-label="Doc-hx-input"]').type('{backspace}5');
     cy.contains(HX_VALIDATION_TEXT).should('exist');
 
-    cy.get('@docHxInput').type('{backspace}2');
+    cy.get('input[aria-label="Doc-hx-input"]').type('{backspace}2');
     cy.contains(HX_VALIDATION_TEXT).should('not.exist');
-    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', 'Doc').should('contain', '2');
+    cy.get('div[data-testid="hx-box"]', { timeout: 10000 });
+    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE);
+    cy.get('div[data-testid="hx-box"]').should('contain', 'Doc');
+    cy.get('div[data-testid="hx-box"]').should('contain', '2');
 
-    cy.get('@hardBox').click();
-    cy.get('@hotBox').click();
+    cy.get('div[data-testid="HARD-stat-box"]').click();
+    cy.get('div[data-testid="HOT-stat-box"]').click();
 
     // Submit form
     // Should not allow progress to PreGamePage because need Hx with all characters
