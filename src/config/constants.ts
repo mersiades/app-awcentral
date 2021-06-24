@@ -302,6 +302,7 @@ export const SPEED_RECOVERY_TEXT = 'SPEED RECOVERY';
 export const REVIVE_TEXT = 'REVIVE';
 export const TREAT_TEXT = 'TREAT';
 export const ROLL_TEXT = 'ROLL';
+export const SUBMIT_TEXT = 'SUBMIT';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -547,3 +548,6 @@ export const PROJECTS_TITLE = 'Projects';
 // ----------------------------------------------- SKINNER GEAR FORM --------------------------------------------- //
 export const GRACIOUS_WEAPONS = 'Gracious weapons';
 export const LUXE_GEAR = 'Luxe gear';
+
+// ----------------------------------------------- CREATE GAME FORM --------------------------------------------- //
+export const CREATE_GAME_INSTRUCTIONS = 'Create a game with you as the MC';
