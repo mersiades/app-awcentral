@@ -9,6 +9,7 @@ import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import CREATE_GAME, { CreateGameData, CreateGameVars, getCreateGameOR } from '../mutations/createGame';
 import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
 import { logAmpEvent } from '../config/amplitudeConfig';
+import { CREATE_GAME_INSTRUCTIONS, SUBMIT_TEXT } from '../config/constants';
 
 const CreateGameForm: FC = () => {
   const [gameName, setGameName] = useState({ name: '' });
@@ -48,14 +49,15 @@ const CreateGameForm: FC = () => {
           <TextInput id="text-input-id" name="name" autoFocus size="xlarge" placeholder={`${displayName}'s game`} />
         </FormField>
         <TextWS color="accent-1" margin={{ top: 'xsmall' }}>
-          Create a game with you as the MC
+          {CREATE_GAME_INSTRUCTIONS}
         </TextWS>
         <ButtonWS
           type="submit"
-          label={loadingCreateGame ? <Spinner fillColor="#FFF" fillHorizontal /> : 'SUBMIT'}
+          label={loadingCreateGame ? <Spinner fillColor="#FFF" fillHorizontal /> : SUBMIT_TEXT}
           primary
           size="large"
           alignSelf="center"
+          disabled={!gameName.name}
           fill
         />
       </Box>

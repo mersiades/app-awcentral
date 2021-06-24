@@ -116,9 +116,11 @@ const DeathMovesBox = () => {
         deathMoves.map((move) => (
           <CheckBox
             key={move.id}
+            aria-label={`${move.description.trimEnd()} checkbox`}
             label={move.description}
             checked={selectedMoves.some((moveName) => moveName === move.name)}
             onClick={() => handleSelectMove(move)}
+            disabled={settingDeathMoves}
           />
         ))
       ) : (

@@ -4,18 +4,14 @@ import {
   ADD_HARD_MINUS_1_TEXT,
   ADD_WEIRD_1_TEXT,
   ANGEL_KIT_TEXT,
-  APPLY_TEXT,
   BARTER_TEXT,
   CANCEL_TEXT,
   COOL_TEXT,
-  CURRENT_STOCK_1_TEXT,
-  CURRENT_STOCK_2_TEXT,
   DO_IT_TEXT,
   GEAR_TITLE,
   HARD_TEXT,
   HARM_TITLE,
   HOT_TEXT,
-  HOW_MUCH_STOCK_TEXT,
   HX_RESET_TEXT,
   HX_TITLE,
   LIFE_UNTENABLE_INSTRUCTIONS,
@@ -26,20 +22,16 @@ import {
   REMOVE_WEIRD_1_TEXT,
   SHARP_TEXT,
   STABILIZED_TEXT,
-  STABILIZE_AND_HEAL_NAME,
   STATS_TITLE,
   STOCK_TEXT,
   SUPPLIER_TEXT,
   WEIRD_TEXT,
-  WITH_WHO_QUESTION,
 } from '../../src/config/constants';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import angel_sara_1_complete from '../fixtures/characters/angel_sara_1_complete';
 import game7 from '../fixtures/games/game7';
 
 describe('Using the PlaybookPanel as an Angel', () => {
-  const healingTouchMessageTitle = 'DOC: HEALING TOUCH';
-  const stablizeMessageTitle = 'DOC: STABILIZE AND HEAL SOMEONE';
   const whiteBackground = 'background-color: rgb(255, 255, 255)';
   const redBackground = 'background-color: rgb(205, 63, 62)';
   const greenBackground = 'background-color: rgb(105, 141, 112)';
@@ -147,7 +139,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
     });
   });
 
-  it("should increase harm value to 12 o'clock", () => {
+  it("should increase harm value to 9 o'clock", () => {
     cy.get('div[data-testid="Harm-box"]').within(() => {
       // Check initial harm box content
       cy.contains(HARM_TITLE).scrollIntoView().should('exist');
@@ -207,6 +199,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
 
     // Check HARD decreased
     cy.get('h2[aria-label="hard-value"]').should('include.text', '-1');
+    cy.get('input[aria-label="come back with -1hard checkbox"]').should('be.checked');
 
     // Uncheck -1hard option and check
     cy.contains('come back with -1hard').click();
@@ -214,6 +207,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
     cy.contains(DO_IT_TEXT).click();
     cy.contains(MAKE_CHANGE_TEXT).should('not.exist');
     cy.get('h2[aria-label="hard-value"]', { timeout: 8000 }).should('include.text', '0');
+    cy.get('input[aria-label="come back with -1hard checkbox"]').should('not.be.checked');
   });
 
   it('should increase WEIRD when life untenable, then restore WEIRD', () => {
@@ -226,13 +220,18 @@ describe('Using the PlaybookPanel as an Angel', () => {
 
     // Check WEIRD increases
     cy.contains(DO_IT_TEXT).click();
+    cy.contains(ADD_WEIRD_1_TEXT).should('not.exist');
     cy.get('h2[aria-label="weird-value"]').should('include.text', '0');
+    cy.get('input[aria-label="come back with +1weird (max+3) checkbox"]').should('be.checked');
 
     // Uncheck +1weird option and check
+    cy.contains('come back with +1weird').should('be.visible');
     cy.contains('come back with +1weird').click();
     cy.contains(REMOVE_WEIRD_1_TEXT).should('exist');
     cy.contains(DO_IT_TEXT).click();
+    cy.contains(REMOVE_WEIRD_1_TEXT).should('not.exist');
     cy.get('h2[aria-label="weird-value"]').should('include.text', '-1');
+    cy.get('input[aria-label="come back with +1weird (max+3) checkbox"]').should('not.be.checked');
   });
 
   it('should mark character as dead when life untenable, then unmark', () => {

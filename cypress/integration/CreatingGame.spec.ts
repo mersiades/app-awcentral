@@ -19,8 +19,10 @@ describe('Creating a Game as MC', () => {
       cy.contains('CREATE GAME').click();
       cy.contains('CREATE GAME').should('exist');
       cy.contains('Create a game with you as the MC').should('exist');
+      cy.contains('button', 'SUBMIT').should('be.disabled');
       cy.get('input').type(game4.name);
-      cy.contains('SUBMIT').click();
+      cy.contains('button', 'SUBMIT').should('not.be.disabled');
+      cy.contains('button', 'SUBMIT').click();
       cy.url().should('contain', 'create-game');
       cy.get('div[data-testid="name-box"]').should('include.text', 'Name').should('include.text', game4.name);
       cy.contains('LATER').click();
