@@ -308,6 +308,8 @@ export const REVIVE_TEXT = 'REVIVE';
 export const TREAT_TEXT = 'TREAT';
 export const ROLL_TEXT = 'ROLL';
 export const SUBMIT_TEXT = 'SUBMIT';
+export const LATER_TEXT = 'LATER';
+export const FINISH_TEXT = 'FINISH';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
