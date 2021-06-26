@@ -5,7 +5,7 @@ import { Mail } from 'grommet-icons';
 import { Box, Form, FormField, TextInput, TextArea } from 'grommet';
 
 import CloseButton from './CloseButton';
-import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../config/grommetConfig';
+import { accentColors, ButtonWS, HeadingWS, ParagraphWS, TextWS } from '../config/grommetConfig';
 import ADD_INVITEE, { AddInviteeData, AddInviteeVars, getAddInviteeOR } from '../mutations/addInvitee';
 import { useGame } from '../contexts/gameContext';
 import { useFonts } from '../contexts/fontContext';
@@ -16,8 +16,12 @@ import {
   ADD_EMAIL_ADDRESS_TEXT,
   ADD_TEXT,
   INVITE_A_PLAYER_TO_TEXT,
+  NO_MC_AS_PLAYER_TEXT,
+  PLAYER_ALREADY_INVITED_TEXT,
+  PLAYER_ALREADY_JOINED_GAME_TEXT,
   TELL_HOW_JOIN_GAME_TEXT,
 } from '../config/constants';
+import { useKeycloakUser } from '../contexts/keycloakUserContext';
 
 interface InvitationFormProps {
   handleClose: () => void;
@@ -32,17 +36,38 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
   const [formValues, setFormValues] = useState<{ email: string }>({ email: existingEmail });
   const [message, setMessage] = useState(existingEmail);
   const [hasSubmitted, setHasSubmitted] = useState(showMessageOnly);
+  const [errorMessage, setErrorMessage] = useState('');
   // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
   // ------------------------------------------------------- Hooks --------------------------------------------------------- //
   const { game } = useGame();
   const { crustReady } = useFonts();
+  const { email: mcEmail } = useKeycloakUser();
   // ------------------------------------------------------ graphQL -------------------------------------------------------- //
   const [addInvitee] = useMutation<AddInviteeData, AddInviteeVars>(ADD_INVITEE);
   // ------------------------------------------------ Component functions -------------------------------------------------- //
   const handleAddInvitee = async (email: string) => {
-    if (validateEmail(email) && !!game && !game?.invitees.includes(email)) {
-      await addInvitee({ variables: { gameId, email }, optimisticResponse: getAddInviteeOR(game, email) });
+    const lowercaseEmail = email.toLowerCase();
+    if (game?.invitees.includes(lowercaseEmail)) {
+      setErrorMessage(PLAYER_ALREADY_INVITED_TEXT);
+      return;
+    }
+
+    if (game?.players.map((player) => player.email).includes(lowercaseEmail)) {
+      setErrorMessage(PLAYER_ALREADY_JOINED_GAME_TEXT);
+      return;
+    }
+
+    if (lowercaseEmail === mcEmail) {
+      setErrorMessage(NO_MC_AS_PLAYER_TEXT);
+      return;
+    }
+    if (validateEmail(lowercaseEmail) && !!game) {
+      await addInvitee({
+        variables: { gameId, email: lowercaseEmail },
+        optimisticResponse: getAddInviteeOR(game, lowercaseEmail),
+      });
+      setHasSubmitted(true);
     }
   };
 
@@ -98,10 +123,12 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
           <Form
             value={formValues}
             onChange={(nextValue: any) => setFormValues(nextValue)}
-            onReset={() => setFormValues({ email: '' })}
+            onReset={() => {
+              setErrorMessage('');
+              setFormValues({ email: '' });
+            }}
             onSubmit={() => {
               handleAddInvitee(formValues.email);
-              setHasSubmitted(true);
             }}
           >
             <Box>
@@ -113,9 +140,19 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
                   name="email"
                   size="xlarge"
                   icon={<Mail />}
+                  onFocus={() => setErrorMessage('')}
                 />
               </FormField>
-              <ButtonWS type="submit" primary label={ADD_TEXT} alignSelf="end" disabled={!formValues.email} />
+              <Box direction="row" justify="between" align="center">
+                <TextWS color="accent-3">{errorMessage}</TextWS>
+                <ButtonWS
+                  type="submit"
+                  primary
+                  label={ADD_TEXT}
+                  alignSelf="end"
+                  disabled={!formValues.email || !!errorMessage}
+                />
+              </Box>
             </Box>
           </Form>
         </Box>

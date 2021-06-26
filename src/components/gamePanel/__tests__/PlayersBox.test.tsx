@@ -5,7 +5,7 @@ import { NO_PLAYER_TEXT, WARNING_DIALOG_TITLE } from '../../../config/constants'
 import REMOVE_PLAYER, { RemovePlayerData } from '../../../mutations/removePlayer';
 import GAME, { GameData } from '../../../queries/game';
 import { mockGame7 } from '../../../tests/mocks';
-import { act, customRenderForComponent, RenderResult } from '../../../tests/test-utils';
+import { act, customRenderForComponent, RenderResult, waitOneTick } from '../../../tests/test-utils';
 
 import PlayersBox from '../PlayersBox';
 
@@ -38,6 +38,7 @@ const mockRemovePlayerMutation: MockedResponse<RemovePlayerData> = {
     },
   },
 };
+
 describe('Rendering PlayersBox', () => {
   let screen: RenderResult<typeof import('@testing-library/dom/types/queries'), HTMLElement>;
   const originalWarn = console.warn.bind(console.warn);
@@ -116,7 +117,7 @@ describe('Rendering PlayersBox', () => {
 
       const confirmButton = screen.getByRole('button', { name: 'REMOVE' });
       userEvent.click(confirmButton);
-      await act(async () => await wait());
+      await waitOneTick();
       expect(screen.queryByText(mockGame7.players[0].displayName)).not.toBeInTheDocument();
     });
   });

@@ -4,7 +4,7 @@ import { Game } from '../@types/dataInterfaces';
 export interface RemovePlayerData {
   removePlayer: {
     id: string;
-    players: { id: string; displayName: string; __typename: 'User' }[];
+    players: { id: string; email: string; displayName: string; __typename: 'User' }[];
     __typename?: 'Game';
   };
 }
@@ -34,6 +34,7 @@ const REMOVE_PLAYER = gql`
       id
       players {
         id
+        email
         displayName
       }
     }

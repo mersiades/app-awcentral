@@ -539,6 +539,7 @@ const GAME = gql`
       }
       players {
         id
+        email
         displayName
       }
       gameMessages {
