@@ -1,5 +1,7 @@
+import { NO_MC_AS_PLAYER_TEXT } from '../../src/config/constants';
 import game4 from '../fixtures/games/game4';
 import game5 from '../fixtures/games/game5';
+import dave from '../fixtures/users/dave';
 
 describe('Creating a Game as MC', () => {
   // Importing these objects are coming out as undefined for some reason,
@@ -86,10 +88,16 @@ describe('Creating a Game as MC', () => {
       cy.get('div[data-testid="channel-box"]').should('contain', 'Channel').should('contain', game5.commsApp);
       cy.get('textarea[aria-label="comms-url-input"]').type(game5.commsUrl);
       cy.get('button[data-testid="set-url-button"]').click();
-      cy.get('div[data-testid="channel-box"]')
-        .should('contain', 'Channel')
-        .should('contain', game5.commsApp)
-        .should('contain', game5.commsUrl);
+      cy.get('div[data-testid="channel-box"]').should('contain', 'Channel');
+      cy.get('div[data-testid="channel-box"]').should('contain', game5.commsApp);
+      cy.get('div[data-testid="channel-box"]').should('contain', game5.commsUrl);
+
+      // Check MC can't invite themselves as a player
+      cy.get('input').type('dave@email.com');
+      cy.contains('ADD').click();
+      cy.contains(NO_MC_AS_PLAYER_TEXT).should('be.visible');
+
+      // Check can invite a player
       cy.get('input').type(emailJohn);
       cy.contains('ADD').click();
       cy.contains('FINISH').click();

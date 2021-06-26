@@ -251,7 +251,7 @@ export const mockGame1: Game = {
   hasFinishedPreGame: false,
   showFirstSession: false,
   mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1' },
-  players: [{ displayName: 'mock-user-2', id: 'mock-keycloak-id-2' }],
+  players: [{ displayName: 'mock-user-2', email: 'mockUser2@email.com', id: 'mock-keycloak-id-2' }],
   gameRoles: [
     {
       id: 'mock-gameRole-id-1',
@@ -286,7 +286,7 @@ export const mockGame2: Game = {
   hasFinishedPreGame: false,
   showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
-  players: [{ displayName: 'mock-user-1', id: 'mock-keycloak-id-1' }],
+  players: [{ displayName: 'mock-user-1', email: 'mockUser1@email.com', id: 'mock-keycloak-id-1' }],
   gameRoles: [
     {
       id: 'mock-gameRole-id-2',
@@ -349,7 +349,7 @@ export const mockGame4: Game = {
   hasFinishedPreGame: false,
   showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
-  players: [{ id: 'mock-keycloak-id-3', displayName: 'mock-user-3' }],
+  players: [{ id: 'mock-keycloak-id-3', email: 'mockUser3@email.com', displayName: 'mock-user-3' }],
   gameRoles: [
     {
       id: 'mock-gameRole-id-6',
@@ -388,8 +388,8 @@ export const mockGame5: Game = {
   gameMessages: [],
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
-    { id: 'mock-keycloak-id-3', displayName: 'mock-user-3' },
-    { id: 'mock-keycloak-id-1', displayName: 'mock-user-1' },
+    { id: 'mock-keycloak-id-3', email: 'mockUser3@email.com', displayName: 'mock-user-3' },
+    { id: 'mock-keycloak-id-1', email: 'mockUser1@email.com', displayName: 'mock-user-1' },
   ],
   gameRoles: [
     {
@@ -438,8 +438,8 @@ export const mockGame6: Game = {
   showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
-    { id: 'mock-keycloak-id-3', displayName: 'mock-user-3' },
-    { id: 'mock-keycloak-id-1', displayName: 'mock-user-1' },
+    { id: 'mock-keycloak-id-3', email: 'mockUser3@email.com', displayName: 'mock-user-3' },
+    { id: 'mock-keycloak-id-1', email: 'mockUser1@email.com', displayName: 'mock-user-1' },
   ],
   gameRoles: [
     {
@@ -469,8 +469,8 @@ export const mockGame7: Game = {
   gameMessages: [],
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
-    { id: 'mock-keycloak-id-3', displayName: 'mock-user-3' },
-    { id: 'mock-keycloak-id-1', displayName: 'mock-user-1' },
+    { id: 'mock-keycloak-id-3', email: 'mockUser3@email.com', displayName: 'mock-user-3' },
+    { id: 'mock-keycloak-id-1', email: 'mockUser1@email.com', displayName: 'mock-user-1' },
   ],
   gameRoles: [
     {
