@@ -24,7 +24,12 @@ import '../assets/styles/main.css';
 export const brandColor = '#CD3F3E'; // RGB: 205, 63, 62
 
 export const accentColors = ['#698D70', '#CFCBBC', '#D66667', '#E0C5B6'];
-export const neutralColors = ['#4C684C', '#B1BAA3', '#614134', '#967F6B'];
+export const neutralColors = [
+  '#4C684C', // RGB 76, 104, 76
+  '#B1BAA3',
+  '#614134',
+  '#967F6B',
+];
 const statusColors = {
   critical: '#FF4040',
   error: '#FF4040',

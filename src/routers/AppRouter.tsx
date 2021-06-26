@@ -11,6 +11,7 @@ import PlayerPage from '../pages/PlayerPage';
 import MCPage from '../pages/MCPage';
 import CreateGamePage from '../pages/CreateGamePage';
 import PreGamePage from '../pages/PreGamePage';
+import ThreatMapPage from '../pages/ThreatMapPage';
 
 const AppRouter = () => {
   return (
@@ -22,6 +23,7 @@ const AppRouter = () => {
       <PrivateRoute path="/pre-game/:gameId" component={PreGamePage} />
       <PrivateRoute path="/player-game/:gameId" component={PlayerPage} />
       <PrivateRoute path="/mc-game/:gameId" component={MCPage} />
+      <PrivateRoute path="/threat-map/:gameId" component={ThreatMapPage} />
       <PrivateRoute path="/character-creation/:gameId" component={CharacterCreationPage} />
     </Switch>
   );
