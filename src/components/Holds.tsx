@@ -9,8 +9,14 @@ import { Hold } from '../@types/dataInterfaces';
 import { accentColors, HeadingWS } from '../config/grommetConfig';
 import { useFonts } from '../contexts/fontContext';
 import { useGame } from '../contexts/gameContext';
-import REMOVE_HOLD, { RemoveHoldData, RemoveHoldVars } from '../mutations/removeHold';
-import SPEND_HOLD, { SpendHoldData, SpendHoldVars } from '../mutations/spendHold';
+import REMOVE_HOLD, {
+  RemoveHoldData,
+  RemoveHoldVars,
+} from '../mutations/removeHold';
+import SPEND_HOLD, {
+  SpendHoldData,
+  SpendHoldVars,
+} from '../mutations/spendHold';
 
 interface HoldsProps {
   holds: Hold[];
@@ -26,24 +32,36 @@ const StyledHold = styled.div`
 `;
 
 const Holds: FC<HoldsProps> = ({ holds }) => {
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { userGameRole, character } = useGame();
   const { crustReady } = useFonts();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [spendHold, { loading: spendingHold }] = useMutation<SpendHoldData, SpendHoldVars>(SPEND_HOLD);
-  const [removeHold, { loading: removingHold }] = useMutation<RemoveHoldData, RemoveHoldVars>(REMOVE_HOLD);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [spendHold, { loading: spendingHold }] = useMutation<
+    SpendHoldData,
+    SpendHoldVars
+  >(SPEND_HOLD);
+  const [removeHold, { loading: removingHold }] = useMutation<
+    RemoveHoldData,
+    RemoveHoldVars
+  >(REMOVE_HOLD);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- /
-
+  // ----------------------------- Component functions ------------------------- //
   const handleHoldLeftClick = (hold: Hold) => {
     if (!!gameId && !!userGameRole && !!character && !character.isDead) {
       const holdNoTypename = omit(hold, ['__typename']) as HoldInput;
       try {
-        spendHold({ variables: { gameId, gameRoleId: userGameRole.id, characterId: character.id, hold: holdNoTypename } });
+        spendHold({
+          variables: {
+            gameId,
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            hold: holdNoTypename,
+          },
+        });
       } catch (error) {
         console.error(error);
       }
@@ -54,14 +72,20 @@ const Holds: FC<HoldsProps> = ({ holds }) => {
     if (!!userGameRole && !!character && !character.isDead) {
       const holdNoTypename = omit(hold, ['__typename']) as HoldInput;
       try {
-        removeHold({ variables: { gameRoleId: userGameRole.id, characterId: character.id, hold: holdNoTypename } });
+        removeHold({
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            hold: holdNoTypename,
+          },
+        });
       } catch (error) {
         console.error(error);
       }
     }
   };
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   const renderTipContent = (hold: Hold) => (
     <Box>
       <Markdown>{hold.moveDescription}</Markdown>
@@ -73,13 +97,26 @@ const Holds: FC<HoldsProps> = ({ holds }) => {
   );
 
   return (
-    <Box direction="row" pad={{ horizontal: '24px' }} gap="12px" align="center" justify="start">
+    <Box
+      direction="row"
+      pad={{ horizontal: '24px' }}
+      gap="12px"
+      align="center"
+      justify="start"
+    >
       <HeadingWS crustReady={crustReady} level={2} margin={{ vertical: '3px' }}>
         Holds
       </HeadingWS>
       {holds.map((hold) => (
         <Tip key={hold.id} content={renderTipContent(hold)}>
-          <Box animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+          <Box
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
+          >
             <StyledHold
               data-testid="hold-circle"
               onClick={() => !spendingHold && handleHoldLeftClick(hold)}

@@ -4,7 +4,12 @@ import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
 import { mockPlaybookCreator } from '../../../tests/mockQueries';
-import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
+import {
+  blankCharacter,
+  mockCharacter2,
+  mockGame5,
+  mockKeycloakUserInfo1,
+} from '../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../tests/test-utils';
 import PlaybookUniqueRouter from '../PlaybookUniqueRouter';
 import { Game, PlaybookUniques } from '../../../@types/dataInterfaces';
@@ -57,13 +62,17 @@ describe('Rendering PlaybookUniqueRouter', () => {
 
   describe('with AngelKit', () => {
     beforeEach(async () => {
-      renderWithRouter(<PlaybookUniqueRouter />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(mockPlaybookUniqueAngel),
-        apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <PlaybookUniqueRouter />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(mockPlaybookUniqueAngel),
+          apolloMocks: [mockPlaybookCreator],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
@@ -77,19 +86,25 @@ describe('Rendering PlaybookUniqueRouter', () => {
 
   describe('with CustomWeapons', () => {
     beforeEach(async () => {
-      renderWithRouter(<PlaybookUniqueRouter />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(mockPlaybookUniqueBattlebabe),
-        apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <PlaybookUniqueRouter />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(mockPlaybookUniqueBattlebabe),
+          apolloMocks: [mockPlaybookCreator],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
 
     test('should render CustomWeaponsForm with no tabs', () => {
-      expect(screen.getByTestId(CUSTOM_WEAPONS_FORM_TEST_ID)).toBeInTheDocument();
+      expect(
+        screen.getByTestId(CUSTOM_WEAPONS_FORM_TEST_ID)
+      ).toBeInTheDocument();
       const tabs = screen.queryAllByRole('tab');
       expect(tabs).toHaveLength(0);
     });
@@ -101,13 +116,17 @@ describe('Rendering PlaybookUniqueRouter', () => {
 
   describe('with Weapons', () => {
     beforeEach(async () => {
-      renderWithRouter(<PlaybookUniqueRouter />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(mockPlaybookUniqueGunlugger),
-        apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <PlaybookUniqueRouter />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(mockPlaybookUniqueGunlugger),
+          apolloMocks: [mockPlaybookCreator],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
@@ -121,28 +140,42 @@ describe('Rendering PlaybookUniqueRouter', () => {
 
   describe('with Weapons and AngelKit', () => {
     beforeEach(async () => {
-      renderWithRouter(<PlaybookUniqueRouter />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(mockPlaybookUniqueGunlugger_withAngelKit),
-        apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <PlaybookUniqueRouter />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(mockPlaybookUniqueGunlugger_withAngelKit),
+          apolloMocks: [mockPlaybookCreator],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
 
     test('should render tabs for WeaponsForm and AngelKit', () => {
       expect(screen.getByTestId(WEAPONS_FORM_TEST_ID)).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: decapitalize(UniqueTypes.weapons) })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: decapitalize(UniqueTypes.angelKit) })).toBeInTheDocument();
       expect(
-        screen.getByRole('tabpanel', { name: `${decapitalize(UniqueTypes.weapons)} Tab Contents` })
+        screen.getByRole('tab', { name: decapitalize(UniqueTypes.weapons) })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('tab', { name: decapitalize(UniqueTypes.angelKit) })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('tabpanel', {
+          name: `${decapitalize(UniqueTypes.weapons)} Tab Contents`,
+        })
       ).toBeInTheDocument();
 
-      userEvent.click(screen.getByRole('tab', { name: decapitalize(UniqueTypes.angelKit) }));
+      userEvent.click(
+        screen.getByRole('tab', { name: decapitalize(UniqueTypes.angelKit) })
+      );
       expect(
-        screen.getByRole('tabpanel', { name: `${decapitalize(UniqueTypes.angelKit)} Tab Contents` })
+        screen.getByRole('tabpanel', {
+          name: `${decapitalize(UniqueTypes.angelKit)} Tab Contents`,
+        })
       ).toBeInTheDocument();
     });
   });

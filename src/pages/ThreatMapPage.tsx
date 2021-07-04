@@ -12,7 +12,9 @@ const background = {
   position: 'center center',
 };
 
-const ThreatMapContainer = styled(Box as React.FC<BoxProps & JSX.IntrinsicElements['div']>)(() => {
+const ThreatMapContainer = styled(
+  Box as React.FC<BoxProps & JSX.IntrinsicElements['div']>
+)(() => {
   return css`
     position: relative;
     @media screen and (orientation: landscape) {
@@ -26,7 +28,9 @@ const ThreatMapContainer = styled(Box as React.FC<BoxProps & JSX.IntrinsicElemen
   `;
 });
 
-const ThreatFormContainer = styled(Box as React.FC<BoxProps & JSX.IntrinsicElements['div']>)(() => {
+const ThreatFormContainer = styled(
+  Box as React.FC<BoxProps & JSX.IntrinsicElements['div']>
+)(() => {
   return css`
     @media screen and (orientation: landscape) {
       height: 100vh;
@@ -43,7 +47,12 @@ const ThreatMapPage = () => {
   const [width, height] = useWindowSize();
   const isLandscape = width > height;
   return (
-    <Box fill background="black" direction={isLandscape ? 'row' : 'column'} justify="center">
+    <Box
+      fill
+      background="black"
+      direction={isLandscape ? 'row' : 'column'}
+      justify="center"
+    >
       <ThreatFormContainer border fill justify="center" align="center">
         New threat form
       </ThreatFormContainer>

@@ -39,7 +39,13 @@ const CollapsiblePanelBox: FC<CollapsiblePanelBoxProps> = ({
       pad={{ vertical: '12px' }}
       style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.25)' }}
     >
-      <Box fill="horizontal" direction="row" align="center" justify="between" pad={{ vertical: '12px' }}>
+      <Box
+        fill="horizontal"
+        direction="row"
+        align="center"
+        justify="between"
+        pad={{ vertical: '12px' }}
+      >
         <HeadingWS
           crustReady={crustReady}
           level="3"
@@ -51,13 +57,24 @@ const CollapsiblePanelBox: FC<CollapsiblePanelBoxProps> = ({
           {title}
         </HeadingWS>
         {!!message && (
-          <Box animation={{ type: 'fadeIn', delay: 0, duration: 250, size: 'xsmall' }}>
+          <Box
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 250,
+              size: 'xsmall',
+            }}
+          >
             <TextWS color={accentColors[0]}>{message}</TextWS>
           </Box>
         )}
         <Box direction="row" align="center" gap="12px">
           {show ? (
-            <FormUp data-testid={`${title.toLowerCase()}-up-chevron`} onClick={toggleShow} style={{ cursor: 'pointer' }} />
+            <FormUp
+              data-testid={`${title.toLowerCase()}-up-chevron`}
+              onClick={toggleShow}
+              style={{ cursor: 'pointer' }}
+            />
           ) : (
             <FormDown
               data-testid={`${title.toLowerCase()}-down-chevron`}

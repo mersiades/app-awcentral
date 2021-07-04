@@ -8,11 +8,23 @@ interface PublicRootProps {
   exact?: boolean;
 }
 
-const PublicRoute: FC<PublicRootProps> = ({ component: Component, ...rest }) => {
+const PublicRoute: FC<PublicRootProps> = ({
+  component: Component,
+  ...rest
+}) => {
   const { keycloak } = useKeycloak();
 
   return (
-    <Route {...rest} render={(props) => (keycloak.authenticated ? <Redirect to="/menu" /> : <Component {...props} />)} />
+    <Route
+      {...rest}
+      render={(props) =>
+        keycloak.authenticated ? (
+          <Redirect to="/menu" />
+        ) : (
+          <Component {...props} />
+        )
+      }
+    />
   );
 };
 

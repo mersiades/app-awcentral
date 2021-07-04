@@ -11,11 +11,21 @@ interface LandingPageLayoutProps {
 }
 
 // Provides a common layout for LandingPage, MenuPage
-const LandingPageLayout: FC<LandingPageLayoutProps> = ({ children, welcomeMessage, isLoading }) => {
+const LandingPageLayout: FC<LandingPageLayoutProps> = ({
+  children,
+  welcomeMessage,
+  isLoading,
+}) => {
   return (
     <Box data-testid="landing-page-layout" fill background={background}>
       {isLoading && (
-        <div style={{ position: 'absolute', top: 'calc(50vh - 12px)', left: 'calc(50vw - 12px)' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(50vh - 12px)',
+            left: 'calc(50vw - 12px)',
+          }}
+        >
           <Spinner />
         </div>
       )}
@@ -34,7 +44,11 @@ const LandingPageLayout: FC<LandingPageLayoutProps> = ({ children, welcomeMessag
         ]}
       >
         <Box gridArea="leftMargin" />
-        <Box gridArea="centerTop">{!!welcomeMessage && <HeadingWS level="4">{welcomeMessage}</HeadingWS>}</Box>
+        <Box gridArea="centerTop">
+          {!!welcomeMessage && (
+            <HeadingWS level="4">{welcomeMessage}</HeadingWS>
+          )}
+        </Box>
         <Box gridArea="centerBottom">
           <Grid
             rows={['full']}

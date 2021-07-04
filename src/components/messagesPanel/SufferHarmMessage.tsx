@@ -17,21 +17,41 @@ export interface SufferHarmMessageProps {
   ticker: number;
 }
 
-const SufferHarmMessage: FC<SufferHarmMessageProps> = ({ message, messagesLength, index, ticker }) => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+const SufferHarmMessage: FC<SufferHarmMessageProps> = ({
+  message,
+  messagesLength,
+  index,
+  ticker,
+}) => {
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady, vtksReady } = useFonts();
 
   return (
-    <MoveMessage message={message} messagesLength={messagesLength} index={index} ticker={ticker}>
+    <MoveMessage
+      message={message}
+      messagesLength={messagesLength}
+      index={index}
+      ticker={ticker}
+    >
       <Box fill>
         <Box fill="horizontal" align="center" justify="center" pad="12px">
           <Box direction="row" align="center" justify="around" width="67%">
             {getDiceImage(message.roll1)}
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               +
             </HeadingWS>
             {getDiceImage(message.roll2)}
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               +
             </HeadingWS>
             <Box align="center" justify="between" pad="12px">
@@ -45,19 +65,48 @@ const SufferHarmMessage: FC<SufferHarmMessageProps> = ({ message, messagesLength
               </HeadingWS>
               <TextWS>HARM</TextWS>
             </Box>
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               =
             </HeadingWS>
-            <Box align="center" justify="between" pad={{ vertical: '12px', horizontal: '24px' }}>
-              <HeadingWS vtksReady={vtksReady} level={1} color="brand" margin="3px" style={{ fontSize: '80px' }}>
+            <Box
+              align="center"
+              justify="between"
+              pad={{ vertical: '12px', horizontal: '24px' }}
+            >
+              <HeadingWS
+                vtksReady={vtksReady}
+                level={1}
+                color="brand"
+                margin="3px"
+                style={{ fontSize: '80px' }}
+              >
                 {message.rollResult}
               </HeadingWS>
             </Box>
           </Box>
-          <Box direction="row" justify="around" align="center" pad="12px" width="67%">
-            <HarmClock harmValue={message.currentHarm - message.harmSuffered} isStabilized={false} diameter={100} />
+          <Box
+            direction="row"
+            justify="around"
+            align="center"
+            pad="12px"
+            width="67%"
+          >
+            <HarmClock
+              harmValue={message.currentHarm - message.harmSuffered}
+              isStabilized={false}
+              diameter={100}
+            />
             <Next color="#FFF" />
-            <HarmClock harmValue={message.currentHarm} isStabilized={false} diameter={100} />
+            <HarmClock
+              harmValue={message.currentHarm}
+              isStabilized={false}
+              diameter={100}
+            />
           </Box>
         </Box>
         <StyledMarkdown>{message.content}</StyledMarkdown>

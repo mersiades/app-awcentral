@@ -15,7 +15,11 @@ describe('Rendering MCPage', () => {
     customRenderForComponent(<MCPage />, {
       isAuthenticated: true,
       apolloMocks: [mockAllMoves],
-      injectedGame: { ...mockGame7, hasFinishedPreGame: true, showFirstSession: false },
+      injectedGame: {
+        ...mockGame7,
+        hasFinishedPreGame: true,
+        showFirstSession: false,
+      },
       injectedUserId: mockKeycloakUserInfo1.sub,
     });
   });
@@ -62,14 +66,18 @@ describe('Rendering MCPage', () => {
 
   test('should open delete-game dialog', async () => {
     await screen.findByRole('tab', { name: 'Moves' });
-    userEvent.click(screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`));
+    userEvent.click(
+      screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`)
+    );
     userEvent.click(screen.getByRole('button', { name: /DELETE GAME/ }));
     screen.getByTestId('delete game?-warning-dialog');
   });
 
   test('should open and close GameForm', async () => {
     await screen.findByRole('tab', { name: 'Moves' });
-    userEvent.click(screen.getByTestId(`${mockGame7.name.toLowerCase()}-edit-link`));
+    userEvent.click(
+      screen.getByTestId(`${mockGame7.name.toLowerCase()}-edit-link`)
+    );
     screen.getByTestId('game-form');
     userEvent.click(screen.getByTestId('close-icon-button'));
   });
@@ -90,7 +98,12 @@ describe('Rendering MCPage', () => {
     customRenderForComponent(<MCPage />, {
       isAuthenticated: true,
       apolloMocks: [mockAllMoves],
-      injectedGame: { ...mockGame7, hasFinishedPreGame: true, showFirstSession: false, invitees: ['john@email.com'] },
+      injectedGame: {
+        ...mockGame7,
+        hasFinishedPreGame: true,
+        showFirstSession: false,
+        invitees: ['john@email.com'],
+      },
       injectedUserId: mockKeycloakUserInfo1.sub,
     });
     await screen.findByRole('tab', { name: 'Moves' });

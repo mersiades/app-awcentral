@@ -14,9 +14,17 @@ describe('Rendering MovesPanel', () => {
       apolloMocks: [mockPlaybook],
     });
 
-    screen.getByRole('heading', { name: `${decapitalize(MoveType.basic)} moves` });
-    screen.getByRole('heading', { name: `${decapitalize(MoveType.peripheral)} moves` });
-    screen.getByRole('heading', { name: `${decapitalize(MoveType.battle)} moves` });
-    screen.getByRole('heading', { name: `${decapitalize(MoveType.roadWar)} moves` });
+    screen.getByRole('heading', {
+      name: `${decapitalize(MoveType.basic)} moves`,
+    });
+    screen.getByRole('heading', {
+      name: `${decapitalize(MoveType.peripheral)} moves`,
+    });
+    screen.getByRole('heading', {
+      name: `${decapitalize(MoveType.battle)} moves`,
+    });
+    screen.getByRole('heading', {
+      name: `${decapitalize(MoveType.roadWar)} moves`,
+    });
   });
 });

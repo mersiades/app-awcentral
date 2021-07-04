@@ -4,7 +4,13 @@ import { useMutation } from '@apollo/client';
 import { Box, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
-import { HeadingWS, ParagraphWS, ButtonWS, RedBox, sufferVHarmDialogBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  RedBox,
+  sufferVHarmDialogBackground,
+} from '../../config/grommetConfig';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import PERFORM_SUFFER_V_HARM_MOVE, {
   PerformSufferVHarmMoveData,
@@ -20,22 +26,29 @@ interface VHarmDialogProps {
 }
 
 const VHarmDialog: FC<VHarmDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [harm, setHarm] = useState(0);
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performSufferVHarmMove, { loading: performingSufferVHarmMove }] =
-    useMutation<PerformSufferVHarmMoveData, PerformSufferVHarmMoveVars>(PERFORM_SUFFER_V_HARM_MOVE);
+    useMutation<PerformSufferVHarmMoveData, PerformSufferVHarmMoveVars>(
+      PERFORM_SUFFER_V_HARM_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const handleSufferVHarmMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead && !performingSufferVHarmMove) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingSufferVHarmMove
+    ) {
       try {
         await performSufferVHarmMove({
           variables: {
@@ -53,17 +66,29 @@ const VHarmDialog: FC<VHarmDialogProps> = ({ move, handleClose }) => {
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
-    <DialogWrapper background={sufferVHarmDialogBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={sufferVHarmDialogBackground}
+      handleClose={handleClose}
+    >
       <Box gap="24px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
         </HeadingWS>
-        <Box fill direction="row" align="start" justify="between" pad="12px" gap="12px">
+        <Box
+          fill
+          direction="row"
+          align="start"
+          justify="between"
+          pad="12px"
+          gap="12px"
+        >
           <Box fill>
-            <ParagraphWS alignSelf="center">How much v-harm did your vehicle suffer?</ParagraphWS>
+            <ParagraphWS alignSelf="center">
+              How much v-harm did your vehicle suffer?
+            </ParagraphWS>
             <RedBox
               alignSelf="center"
               width="150px"
@@ -89,14 +114,17 @@ const VHarmDialog: FC<VHarmDialogProps> = ({ move, handleClose }) => {
             label="CANCEL"
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
             label="ROLL"
             primary
-            onClick={() => !!harm && !performingSufferVHarmMove && handleSufferVHarmMove()}
+            onClick={() =>
+              !!harm && !performingSufferVHarmMove && handleSufferVHarmMove()
+            }
             disabled={!harm || performingSufferVHarmMove}
           />
         </Box>

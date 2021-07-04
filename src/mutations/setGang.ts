@@ -22,7 +22,10 @@ export interface SetGangVars {
   gang: GangInput;
 }
 
-export const getSetGangOR = (character: Character, gangInput: GangInput): SetGangData => {
+export const getSetGangOR = (
+  character: Character,
+  gangInput: GangInput
+): SetGangData => {
   let optimisticPlaybookUniques: PlaybookUniques;
   if (!!character.playbookUniques?.gang) {
     optimisticPlaybookUniques = {
@@ -33,8 +36,14 @@ export const getSetGangOR = (character: Character, gangInput: GangInput): SetGan
         id: character.playbookUniques.gang.id,
         uniqueType: UniqueTypes.gang,
         allowedStrengths: character.playbookUniques.gang.allowedStrengths,
-        strengths: gangInput.strengths.map((str) => ({ ...str, __typename: 'GangOption' })),
-        weaknesses: gangInput.weaknesses.map((wk) => ({ ...wk, __typename: 'GangOption' })),
+        strengths: gangInput.strengths.map((str) => ({
+          ...str,
+          __typename: 'GangOption',
+        })),
+        weaknesses: gangInput.weaknesses.map((wk) => ({
+          ...wk,
+          __typename: 'GangOption',
+        })),
         __typename: 'Gang',
       },
       __typename: 'PlaybookUniques',
@@ -48,8 +57,14 @@ export const getSetGangOR = (character: Character, gangInput: GangInput): SetGan
         id: 'temp-id-2',
         uniqueType: UniqueTypes.gang,
         allowedStrengths: 2,
-        strengths: gangInput.strengths.map((str) => ({ ...str, __typename: 'GangOption' })),
-        weaknesses: gangInput.weaknesses.map((wk) => ({ ...wk, __typename: 'GangOption' })),
+        strengths: gangInput.strengths.map((str) => ({
+          ...str,
+          __typename: 'GangOption',
+        })),
+        weaknesses: gangInput.weaknesses.map((wk) => ({
+          ...wk,
+          __typename: 'GangOption',
+        })),
         __typename: 'Gang',
       },
       __typename: 'PlaybookUniques',
@@ -67,7 +82,11 @@ export const getSetGangOR = (character: Character, gangInput: GangInput): SetGan
 };
 
 const SET_GANG = gql`
-  mutation SetGang($gameRoleId: String!, $characterId: String!, $gang: GangInput!) {
+  mutation SetGang(
+    $gameRoleId: String!
+    $characterId: String!
+    $gang: GangInput!
+  ) {
     setGang(gameRoleId: $gameRoleId, characterId: $characterId, gang: $gang) {
       id
       name

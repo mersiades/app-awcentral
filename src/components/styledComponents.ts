@@ -1,10 +1,15 @@
 import { Box, BoxProps } from 'grommet';
 import ReactMarkdown from 'react-markdown';
 import styled, { css } from 'styled-components';
-import { GAME_PAGE_BOTTOM_NAVBAR_HEIGHT, GAME_PAGE_TOP_NAVBAR_HEIGHT } from '../config/constants';
+import {
+  GAME_PAGE_BOTTOM_NAVBAR_HEIGHT,
+  GAME_PAGE_TOP_NAVBAR_HEIGHT,
+} from '../config/constants';
 import { accentColors } from '../config/grommetConfig';
 
-export const Footer = styled(Box as React.FC<BoxProps & JSX.IntrinsicElements['div']>)`
+export const Footer = styled(
+  Box as React.FC<BoxProps & JSX.IntrinsicElements['div']>
+)`
   border-top: 1px solid ${accentColors[0]};
 `;
 
@@ -14,34 +19,41 @@ interface MainContainerProps {
   readonly shinkWidth: number; // 0-100, for vw
 }
 
-export const MainContainer = styled(Box as React.FC<MainContainerProps & BoxProps & JSX.IntrinsicElements['div']>)(
-  ({ sidePanel, maxPanels, shinkWidth }) => {
-    return css`
-      height: calc(100vh - ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px);
-      width: 100vw;
-      transition: width 200ms ease-in-out, transform 200ms ease-in-out;
-      ${sidePanel < maxPanels &&
-      css`
-        transform: translateX(${shinkWidth}vw);
-        width: ${100 - shinkWidth}vw;
-      `};
-    `;
-  }
-);
+export const MainContainer = styled(
+  Box as React.FC<MainContainerProps & BoxProps & JSX.IntrinsicElements['div']>
+)(({ sidePanel, maxPanels, shinkWidth }) => {
+  return css`
+    height: calc(
+      100vh - ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px
+    );
+    width: 100vw;
+    transition: width 200ms ease-in-out, transform 200ms ease-in-out;
+    ${sidePanel < maxPanels &&
+    css`
+      transform: translateX(${shinkWidth}vw);
+      width: ${100 - shinkWidth}vw;
+    `};
+  `;
+});
 
 interface SidePanelProps {
   readonly sidePanel: number;
   readonly growWidth: number; // 0-100, for vw
 }
 
-export const SidePanel = styled(Box as React.FC<SidePanelProps & BoxProps & JSX.IntrinsicElements['div']>)(
+export const SidePanel = styled(
+  Box as React.FC<SidePanelProps & BoxProps & JSX.IntrinsicElements['div']>
+)(
   // @ts-ignore
   ({ sidePanel, growWidth }) => {
     return css`
       border-right: 1px solid ${accentColors[0]};
       background: transparent;
       position: absolute;
-      height: calc(100vh - ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px);
+      height: calc(
+        100vh -
+          ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px
+      );
       width: ${growWidth}vw;
     `;
   }
@@ -51,43 +63,49 @@ interface LeftMainProps {
   readonly rightPanel: number;
 }
 
-export const LeftMainContainer = styled(Box as React.FC<LeftMainProps & BoxProps & JSX.IntrinsicElements['div']>)(
-  ({ rightPanel }) => {
-    return css`
-      height: calc(100vh - ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px);
-      width: 100%;
-      transition: width 200ms ease-in-out;
-      ${rightPanel !== 2 &&
-      css`
-        width: 50%;
-      `};
-    `;
-  }
-);
+export const LeftMainContainer = styled(
+  Box as React.FC<LeftMainProps & BoxProps & JSX.IntrinsicElements['div']>
+)(({ rightPanel }) => {
+  return css`
+    height: calc(
+      100vh - ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px
+    );
+    width: 100%;
+    transition: width 200ms ease-in-out;
+    ${rightPanel !== 2 &&
+    css`
+      width: 50%;
+    `};
+  `;
+});
 
 interface RightMainProps {
   readonly rightPanel: number;
 }
-export const RightMainContainer = styled(Box as React.FC<RightMainProps & BoxProps & JSX.IntrinsicElements['div']>)(
-  ({ rightPanel }) => {
-    return css`
-      border-left: 1px solid ${accentColors[0]};
-      position: absolute;
-      height: calc(100vh - ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px);
-      opacity: 0;
-      transform: translateX(200%);
-      transition: opacity 200ms ease-in-out, transform 200ms ease-in-out;
-      ${rightPanel !== 2 &&
-      css`
-        transform: translateX(100%);
-        width: 50%;
-        opacity: 1;
-      `};
-    `;
-  }
-);
+export const RightMainContainer = styled(
+  Box as React.FC<RightMainProps & BoxProps & JSX.IntrinsicElements['div']>
+)(({ rightPanel }) => {
+  return css`
+    border-left: 1px solid ${accentColors[0]};
+    position: absolute;
+    height: calc(
+      100vh - ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px
+    );
+    opacity: 0;
+    transform: translateX(200%);
+    transition: opacity 200ms ease-in-out, transform 200ms ease-in-out;
+    ${rightPanel !== 2 &&
+    css`
+      transform: translateX(100%);
+      width: 50%;
+      opacity: 1;
+    `};
+  `;
+});
 
-export const StyledMarkdown = styled(ReactMarkdown as React.FC<ReactMarkdown.ReactMarkdownOptions>)`
+export const StyledMarkdown = styled(
+  ReactMarkdown as React.FC<ReactMarkdown.ReactMarkdownOptions>
+)`
   cursor: default;
   & p {
     margin: unset;

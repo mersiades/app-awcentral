@@ -4,8 +4,17 @@ import { useHistory, useParams } from 'react-router-dom';
 
 import { Box, Button } from 'grommet';
 import CloseButton from '../components/CloseButton';
-import { HeadingWS, ParagraphWS, RedBox, TextWS } from '../config/grommetConfig';
-import FINISH_PRE_GAME, { FinishPreGameData, FinishPreGameVars, getFinishPreGameOR } from '../mutations/finishPreGame';
+import {
+  HeadingWS,
+  ParagraphWS,
+  RedBox,
+  TextWS,
+} from '../config/grommetConfig';
+import FINISH_PRE_GAME, {
+  FinishPreGameData,
+  FinishPreGameVars,
+  getFinishPreGameOR,
+} from '../mutations/finishPreGame';
 import { useGame } from '../contexts/gameContext';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { Character } from '../@types/dataInterfaces';
@@ -50,25 +59,31 @@ const StyledLi = styled.li`
 `;
 
 const PreGamePage = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [havePlayersFinished, setHavePlayersFinished] = useState(false);
   const [showScrollable, setShowScrollable] = useState(false);
 
   // ------------------------------------------------------- Refs -------------------------------------------------------- //
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
   const history = useHistory();
-  const [finishPreGame, { loading: finishingPreGame }] = useMutation<FinishPreGameData, FinishPreGameVars>(FINISH_PRE_GAME);
+  const [finishPreGame, { loading: finishingPreGame }] = useMutation<
+    FinishPreGameData,
+    FinishPreGameVars
+  >(FINISH_PRE_GAME);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { id: userId } = useKeycloakUser();
   const { game, userGameRole, allPlayerGameRoles, setGameContext } = useGame();
 
   // ----------------------------------------- Component functions and variables ------------------------------------------- //
 
-  const pathToGame = userGameRole?.role === RoleType.mc ? `/mc-game/${game?.id}` : `/player-game/${game?.id}`;
+  const pathToGame =
+    userGameRole?.role === RoleType.mc
+      ? `/mc-game/${game?.id}`
+      : `/player-game/${game?.id}`;
 
   // TODO: refactor out into HOC
   const handleScroll = (e: any) => {
@@ -133,7 +148,7 @@ const PreGamePage = () => {
     }
   };
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   // Send User to MenuPage if not a member of this game
   useEffect(() => {
@@ -169,13 +184,17 @@ const PreGamePage = () => {
         return false;
       }
     });
-    unfinishedPlayers?.length === 0 ? setHavePlayersFinished(true) : setHavePlayersFinished(false);
+    unfinishedPlayers?.length === 0
+      ? setHavePlayersFinished(true)
+      : setHavePlayersFinished(false);
   }, [allPlayerGameRoles]);
 
   useEffect(() => {
     if (!!containerRef.current) {
       containerRef.current.addEventListener('scroll', (e) => handleScroll(e));
-      if (containerRef.current.scrollHeight > containerRef.current.offsetHeight) {
+      if (
+        containerRef.current.scrollHeight > containerRef.current.offsetHeight
+      ) {
         setShowScrollable(true);
       } else {
         setShowScrollable(false);
@@ -184,10 +203,12 @@ const PreGamePage = () => {
     }
   }, [containerRef]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderVehicleProgress = (character: Character) => {
-    if ([PlaybookType.driver, PlaybookType.chopper].includes(character.playbook)) {
+    if (
+      [PlaybookType.driver, PlaybookType.chopper].includes(character.playbook)
+    ) {
       return character.vehicles.length > 0 ? (
         <Box align="center" pad="12px" gap="12px" width="80px">
           <Checkmark size="large" color="accent-1" />
@@ -214,7 +235,9 @@ const PreGamePage = () => {
       >
         <HeadingWS level="3" margin={{ vertical: '0' }}>
           {`${!!character?.name ? character.name : 'Name'}  --  ${
-            !!character?.playbook ? decapitalize(character.playbook) : 'Playbook'
+            !!character?.playbook
+              ? decapitalize(character.playbook)
+              : 'Playbook'
           }`}
         </HeadingWS>
 
@@ -257,7 +280,9 @@ const PreGamePage = () => {
                 <Checkbox size="large" color="neutral-1" />
               )}
               <TextWS size="large" textAlign="center" truncate>
-                {!!character.playbook ? getUnique(character.playbook) : 'Unique'}
+                {!!character.playbook
+                  ? getUnique(character.playbook)
+                  : 'Unique'}
               </TextWS>
             </Box>
           )}
@@ -316,7 +341,13 @@ const PreGamePage = () => {
               margin={{ vertical: '0px' }}
             >{`${MC_INSTRUCTIONS_1} ${MC_INSTRUCTIONS_2} ${MC_INSTRUCTIONS_3}`}</ParagraphWS>
             <Button
-              label={finishingPreGame ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : START_GAME_TEXT}
+              label={
+                finishingPreGame ? (
+                  <Spinner fillColor="#FFF" width="37px" height="36px" />
+                ) : (
+                  START_GAME_TEXT
+                )
+              }
               primary
               onClick={() => !finishingPreGame && handleStartGame()}
               disabled={!havePlayersFinished}
@@ -341,10 +372,18 @@ const PreGamePage = () => {
       ) : (
         <Box flex="grow" style={{ maxWidth: '812px' }} gap="3px">
           {scriptChangeInstructions}
-          <TextWS margin={{ top: '12px' }}>{PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS}</TextWS>
+          <TextWS margin={{ top: '12px' }}>
+            {PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS}
+          </TextWS>
         </Box>
       )}
-      <Box direction="row" wrap justify="center" flex="shrink" margin={{ bottom: '12px' }}>
+      <Box
+        direction="row"
+        wrap
+        justify="center"
+        flex="shrink"
+        margin={{ bottom: '12px' }}
+      >
         {allPlayerGameRoles?.map((gameRole, index) => {
           return renderPlayerBox(gameRole.characters[0], index);
         })}

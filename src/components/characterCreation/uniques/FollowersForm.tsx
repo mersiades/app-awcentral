@@ -8,9 +8,21 @@ import Spinner from '../../Spinner';
 import DoubleRedBox from '../../DoubleRedBox';
 import RedTagsBox from '../../RedTagsBox';
 import { StyledMarkdown } from '../../styledComponents';
-import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
-import SET_FOLLOWERS, { getSetFollowerOR, SetFollowersData, SetFollowersVars } from '../../../mutations/setFollowers';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  ParagraphWS,
+} from '../../../config/grommetConfig';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../../queries/playbookCreator';
+import SET_FOLLOWERS, {
+  getSetFollowerOR,
+  SetFollowersData,
+  SetFollowersVars,
+} from '../../../mutations/setFollowers';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { FollowersInput } from '../../../@types';
 import { FollowersOption } from '../../../@types/staticDataInterfaces';
@@ -18,7 +30,11 @@ import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { updateTags, unUpdateTags } from '../../../helpers/updateTags';
 import { getFollowersDescription } from '../../../helpers/getFollowersDescription';
-import { CHARACTERIZE_THEM_TEXT, IF_YOU_TRAVEL_TEXT, INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import {
+  CHARACTERIZE_THEM_TEXT,
+  IF_YOU_TRAVEL_TEXT,
+  INCREASED_BY_IMPROVEMENT_TEXT,
+} from '../../../config/constants';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 interface FollowersFormState {
@@ -99,7 +115,7 @@ const FollowersForm: FC = () => {
     selectedStrengths: [],
     selectedWeaknesses: [],
   };
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [
     {
       description,
@@ -119,31 +135,44 @@ const FollowersForm: FC = () => {
     dispatch,
   ] = useReducer(followersFormReducer, initialState);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     variables: { playbookType: PlaybookType.hocus },
   });
 
-  const followersCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.followersCreator;
+  const followersCreator =
+    pbCreatorData?.playbookCreator.playbookUniqueCreator?.followersCreator;
 
-  const [setFollowers, { loading: settingFollowers }] = useMutation<SetFollowersData, SetFollowersVars>(SET_FOLLOWERS);
+  const [setFollowers, { loading: settingFollowers }] = useMutation<
+    SetFollowersData,
+    SetFollowersVars
+  >(SET_FOLLOWERS);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const handleSubmitFollowers = async () => {
     if (!!userGameRole && !!character && !!game) {
       // @ts-ignore
-      const strengthsNoTypename = selectedStrengths.map((str: FollowersOption) => omit(str, ['__typename']));
+      const strengthsNoTypename = selectedStrengths.map(
+        (str: FollowersOption) => omit(str, ['__typename'])
+      );
       // @ts-ignore
-      const weaknessesNoTypename = selectedWeaknesses.map((wk: FollowersOption) => omit(wk, ['__typename']));
+      const weaknessesNoTypename = selectedWeaknesses.map(
+        (wk: FollowersOption) => omit(wk, ['__typename'])
+      );
       const followersInput: FollowersInput = {
-        id: character?.playbookUniques?.followers ? character.playbookUniques.followers.id : undefined,
+        id: character?.playbookUniques?.followers
+          ? character.playbookUniques.followers.id
+          : undefined,
         selectedStrengths: strengthsNoTypename,
         selectedWeaknesses: weaknessesNoTypename,
         strengthsCount,
@@ -160,12 +189,18 @@ const FollowersForm: FC = () => {
       };
       try {
         setFollowers({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, followers: followersInput },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            followers: followersInput,
+          },
           optimisticResponse: getSetFollowerOR(character, followersInput),
         });
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
+          history.push(
+            `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
+          );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
       } catch (error) {
@@ -175,24 +210,49 @@ const FollowersForm: FC = () => {
   };
 
   const handleCharacterizationSelect = (option: string) => {
-    const description = getFollowersDescription(option, followers, travelOption);
-    dispatch({ type: 'SET_CHARACTERIZATION', payload: { characterization: option, description } });
+    const description = getFollowersDescription(
+      option,
+      followers,
+      travelOption
+    );
+    dispatch({
+      type: 'SET_CHARACTERIZATION',
+      payload: { characterization: option, description },
+    });
   };
 
   const handleTravelOptionSelect = (option: string) => {
-    const description = getFollowersDescription(characterization, followers, option);
-    dispatch({ type: 'SET_TRAVEL_OPTION', payload: { travelOption: option, description } });
+    const description = getFollowersDescription(
+      characterization,
+      followers,
+      option
+    );
+    dispatch({
+      type: 'SET_TRAVEL_OPTION',
+      payload: { travelOption: option, description },
+    });
   };
 
-  const addOption = (option: FollowersOption, type: 'strength' | 'weakness') => {
+  const addOption = (
+    option: FollowersOption,
+    type: 'strength' | 'weakness'
+  ) => {
     let update: Partial<FollowersInput> =
       type === 'strength'
         ? { selectedStrengths: [...selectedStrengths, option] }
         : { selectedWeaknesses: [...selectedWeaknesses, option] };
 
     if (option.newNumberOfFollowers > -1) {
-      const description = getFollowersDescription(characterization, option.newNumberOfFollowers, travelOption);
-      update = { ...update, followers: option.newNumberOfFollowers, description };
+      const description = getFollowersDescription(
+        characterization,
+        option.newNumberOfFollowers,
+        travelOption
+      );
+      update = {
+        ...update,
+        followers: option.newNumberOfFollowers,
+        description,
+      };
     }
 
     if (option.surplusBarterChange > -2) {
@@ -206,7 +266,10 @@ const FollowersForm: FC = () => {
     }
 
     if (!!option.surplusChange) {
-      update = { ...update, surplus: updateTags(surplus, [option.surplusChange]) };
+      update = {
+        ...update,
+        surplus: updateTags(surplus, [option.surplusChange]),
+      };
     }
 
     if (!!option.wantChange) {
@@ -216,19 +279,34 @@ const FollowersForm: FC = () => {
     dispatch({ type: 'UPDATE_FOLLOWERS', payload: update });
   };
 
-  const removeOption = (option: FollowersOption, type: 'strength' | 'weakness') => {
+  const removeOption = (
+    option: FollowersOption,
+    type: 'strength' | 'weakness'
+  ) => {
     let update: Partial<FollowersInput> =
       type === 'strength'
         ? {
-            selectedStrengths: selectedStrengths.filter((str: FollowersOption) => str.id !== option.id),
+            selectedStrengths: selectedStrengths.filter(
+              (str: FollowersOption) => str.id !== option.id
+            ),
           }
         : {
-            selectedWeaknesses: selectedWeaknesses.filter((str: FollowersOption) => str.id !== option.id),
+            selectedWeaknesses: selectedWeaknesses.filter(
+              (str: FollowersOption) => str.id !== option.id
+            ),
           };
 
     if (!!followersCreator && option.newNumberOfFollowers > -1) {
-      const description = getFollowersDescription(characterization, followersCreator.defaultNumberOfFollowers, travelOption);
-      update = { ...update, followers: followersCreator.defaultNumberOfFollowers, description };
+      const description = getFollowersDescription(
+        characterization,
+        followersCreator.defaultNumberOfFollowers,
+        travelOption
+      );
+      update = {
+        ...update,
+        followers: followersCreator.defaultNumberOfFollowers,
+        description,
+      };
     }
 
     if (option.surplusBarterChange > -2) {
@@ -242,7 +320,10 @@ const FollowersForm: FC = () => {
     }
 
     if (!!option.surplusChange) {
-      update = { ...update, surplus: unUpdateTags(surplus, [option.surplusChange]) };
+      update = {
+        ...update,
+        surplus: unUpdateTags(surplus, [option.surplusChange]),
+      };
     }
 
     if (!!option.wantChange) {
@@ -254,7 +335,11 @@ const FollowersForm: FC = () => {
 
   const handleStrengthSelect = (option: FollowersOption) => {
     if (!!followersCreator) {
-      if (selectedStrengths.map((str: FollowersOption) => str.id).includes(option.id)) {
+      if (
+        selectedStrengths
+          .map((str: FollowersOption) => str.id)
+          .includes(option.id)
+      ) {
         removeOption(option, 'strength');
       } else if (selectedStrengths.length < strengthsCount) {
         addOption(option, 'strength');
@@ -264,7 +349,11 @@ const FollowersForm: FC = () => {
 
   const handleWeaknessSelect = (option: FollowersOption) => {
     if (!!followersCreator) {
-      if (selectedWeaknesses.map((wk: FollowersOption) => wk.id).includes(option.id)) {
+      if (
+        selectedWeaknesses
+          .map((wk: FollowersOption) => wk.id)
+          .includes(option.id)
+      ) {
         removeOption(option, 'weakness');
       } else if (selectedWeaknesses.length < weaknessesCount) {
         addOption(option, 'weakness');
@@ -272,10 +361,13 @@ const FollowersForm: FC = () => {
     }
   };
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     if (!!character?.playbookUniques?.followers) {
-      dispatch({ type: 'SET_EXISTING_FOLLOWERS', payload: character.playbookUniques.followers });
+      dispatch({
+        type: 'SET_EXISTING_FOLLOWERS',
+        payload: character.playbookUniques.followers,
+      });
     } else if (!!followersCreator) {
       const defaultState: FollowersFormState = {
         description: '',
@@ -296,7 +388,7 @@ const FollowersForm: FC = () => {
     }
   }, [character, followersCreator]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   if (!followersCreator) {
     return null;
@@ -309,7 +401,11 @@ const FollowersForm: FC = () => {
           <Box
             data-testid={`${option}-pill`}
             key={option}
-            background={characterization === option ? { color: '#698D70', dark: true } : '#4C684C'}
+            background={
+              characterization === option
+                ? { color: '#698D70', dark: true }
+                : '#4C684C'
+            }
             round="medium"
             pad={{ top: '3px', bottom: '1px', horizontal: '12px' }}
             margin={{ vertical: '3px', horizontal: '3px' }}
@@ -327,35 +423,64 @@ const FollowersForm: FC = () => {
   );
 
   return (
-    <Box data-testid="followers-form" justify="start" width="85vw" align="start" style={{ maxWidth: '742px' }}>
+    <Box
+      data-testid="followers-form"
+      justify="start"
+      width="85vw"
+      align="start"
+      style={{ maxWidth: '742px' }}
+    >
       <Box direction="row" fill="horizontal" align="center" justify="between">
         <HeadingWS
           crustReady={crustReady}
           level={2}
           alignSelf="center"
           style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
-        >{`${!!character?.name ? character.name?.toUpperCase() : '...'}'S FOLLOWERS`}</HeadingWS>
+        >{`${
+          !!character?.name ? character.name?.toUpperCase() : '...'
+        }'S FOLLOWERS`}</HeadingWS>
         <ButtonWS
           primary
-          label={settingFollowers ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+          label={
+            settingFollowers ? (
+              <Spinner fillColor="#FFF" width="37px" height="36px" />
+            ) : (
+              'SET'
+            )
+          }
           onClick={() => !settingFollowers && handleSubmitFollowers()}
           disabled={
             settingFollowers ||
-            (!!followersCreator && selectedStrengths.length < followersCreator.defaultStrengthsCount) ||
-            (!!followersCreator && selectedWeaknesses.length < followersCreator.defaultWeaknessesCount) ||
+            (!!followersCreator &&
+              selectedStrengths.length <
+                followersCreator.defaultStrengthsCount) ||
+            (!!followersCreator &&
+              selectedWeaknesses.length <
+                followersCreator.defaultWeaknessesCount) ||
             !characterization ||
             !travelOption
           }
         />
       </Box>
-      {!!followersCreator && <StyledMarkdown>{followersCreator.instructions}</StyledMarkdown>}
+      {!!followersCreator && (
+        <StyledMarkdown>{followersCreator.instructions}</StyledMarkdown>
+      )}
 
-      <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
-        <ParagraphWS margin={{ bottom: '0px' }}>{`${CHARACTERIZE_THEM_TEXT}:`}</ParagraphWS>
+      <Box
+        fill="horizontal"
+        justify="between"
+        gap="12px"
+        margin={{ top: '6px' }}
+      >
+        <ParagraphWS
+          margin={{ bottom: '0px' }}
+        >{`${CHARACTERIZE_THEM_TEXT}:`}</ParagraphWS>
         <Box direction="row" fill="horizontal" justify="between" gap="12px">
           <Box>
             {renderPills()}
-            <ParagraphWS margin={{ bottom: '0px' }}>{`${IF_YOU_TRAVEL_TEXT}:`}</ParagraphWS>
+            <ParagraphWS
+              margin={{ bottom: '0px' }}
+            >{`${IF_YOU_TRAVEL_TEXT}:`}</ParagraphWS>
             {!!followersCreator &&
               followersCreator.travelOptions.map((option) => {
                 return (
@@ -369,16 +494,34 @@ const FollowersForm: FC = () => {
                 );
               })}
           </Box>
-          <Box align="center" width="200px" flex="grow" fill="vertical" style={{ maxWidth: '200px' }}>
-            <RedTagsBox tags={[description]} label="Description" height="100%" width="200px" />
+          <Box
+            align="center"
+            width="200px"
+            flex="grow"
+            fill="vertical"
+            style={{ maxWidth: '200px' }}
+          >
+            <RedTagsBox
+              tags={[description]}
+              label="Description"
+              height="100%"
+              width="200px"
+            />
           </Box>
         </Box>
       </Box>
       <Box fill="horizontal" justify="between" margin={{ top: '6px' }}>
-        <Box direction="row" align="center" gap="12px" margin={{ bottom: '0px' }}>
+        <Box
+          direction="row"
+          align="center"
+          gap="12px"
+          margin={{ bottom: '0px' }}
+        >
           <ParagraphWS>Choose {strengthsCount}:</ParagraphWS>
           {strengthsCount > followersCreator.defaultStrengthsCount && (
-            <ParagraphWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+            <ParagraphWS color={accentColors[0]}>
+              {INCREASED_BY_IMPROVEMENT_TEXT}
+            </ParagraphWS>
           )}
         </Box>
         <Box direction="row">
@@ -388,7 +531,9 @@ const FollowersForm: FC = () => {
                 return (
                   <CheckBox
                     key={option.id}
-                    checked={selectedStrengths.map((str: FollowersOption) => str.id).includes(option.id)}
+                    checked={selectedStrengths
+                      .map((str: FollowersOption) => str.id)
+                      .includes(option.id)}
                     label={option.description}
                     onChange={() => handleStrengthSelect(option)}
                     style={{ marginBottom: '3px' }}
@@ -396,14 +541,20 @@ const FollowersForm: FC = () => {
                 );
               })}
             <ParagraphWS margin={{ bottom: '0px' }}>
-              Choose {!!followersCreator ? followersCreator?.defaultWeaknessesCount : 2}:
+              Choose{' '}
+              {!!followersCreator
+                ? followersCreator?.defaultWeaknessesCount
+                : 2}
+              :
             </ParagraphWS>
             {!!followersCreator &&
               followersCreator.weaknessOptions.map((option) => {
                 return (
                   <CheckBox
                     key={option.id}
-                    checked={selectedWeaknesses.map((wk: FollowersOption) => wk.id).includes(option.id)}
+                    checked={selectedWeaknesses
+                      .map((wk: FollowersOption) => wk.id)
+                      .includes(option.id)}
                     label={option.description}
                     onChange={() => handleWeaknessSelect(option)}
                     style={{ marginBottom: '3px' }}
@@ -411,9 +562,25 @@ const FollowersForm: FC = () => {
                 );
               })}
           </Box>
-          <Box align="center" width="200px" flex="grow" fill="vertical" style={{ maxWidth: '200px' }}>
-            <DoubleRedBox value={`+${fortune}fortune`} label="Fortune" width="200px" height="100%" />
-            <RedTagsBox tags={surplus} label="Surplus" height="100%" width="200px" />
+          <Box
+            align="center"
+            width="200px"
+            flex="grow"
+            fill="vertical"
+            style={{ maxWidth: '200px' }}
+          >
+            <DoubleRedBox
+              value={`+${fortune}fortune`}
+              label="Fortune"
+              width="200px"
+              height="100%"
+            />
+            <RedTagsBox
+              tags={surplus}
+              label="Surplus"
+              height="100%"
+              width="200px"
+            />
             <RedTagsBox tags={wants} label="Want" height="100%" width="200px" />
           </Box>
         </Box>

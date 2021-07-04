@@ -11,9 +11,19 @@ export interface AdjustHxMessageProps {
   ticker: number;
 }
 
-const AdjustHxMessage: FC<AdjustHxMessageProps> = ({ message, messagesLength, index, ticker }) => {
+const AdjustHxMessage: FC<AdjustHxMessageProps> = ({
+  message,
+  messagesLength,
+  index,
+  ticker,
+}) => {
   return (
-    <MoveMessage message={message} messagesLength={messagesLength} index={index} ticker={ticker}>
+    <MoveMessage
+      message={message}
+      messagesLength={messagesLength}
+      index={index}
+      ticker={ticker}
+    >
       <StyledMarkdown>{message.content}</StyledMarkdown>
     </MoveMessage>
   );

@@ -24,8 +24,16 @@ export interface ChangeScriptVars {
 }
 
 const CHANGE_SCRIPT = gql`
-  mutation ChangeScript($gameId: String!, $scriptChangeType: ScriptChangeType!, $comment: String) {
-    changeScript(gameId: $gameId, scriptChangeType: $scriptChangeType, comment: $comment) {
+  mutation ChangeScript(
+    $gameId: String!
+    $scriptChangeType: ScriptChangeType!
+    $comment: String
+  ) {
+    changeScript(
+      gameId: $gameId
+      scriptChangeType: $scriptChangeType
+      comment: $comment
+    ) {
       id
       gameMessages {
         id

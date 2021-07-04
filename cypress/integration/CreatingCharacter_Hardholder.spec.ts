@@ -1,4 +1,10 @@
-import { HARDHOLDER_SPECIAL_NAME, LEADERSHIP_NAME, SET_TEXT, VEHICLES_TITLE, WEALTH_NAME } from '../../src/config/constants';
+import {
+  HARDHOLDER_SPECIAL_NAME,
+  LEADERSHIP_NAME,
+  SET_TEXT,
+  VEHICLES_TITLE,
+  WEALTH_NAME,
+} from '../../src/config/constants';
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import { UniqueTypes } from '../../src/@types/enums';
@@ -23,7 +29,9 @@ describe('Creating a new Hardholder Character', () => {
     const gig4 = 'market commons';
 
     // Check form content
-    cy.contains(`${hardholderNameUC}'S HOLDING`, { timeout: 6000 }).should('exist');
+    cy.contains(`${hardholderNameUC}'S HOLDING`, { timeout: 6000 }).should(
+      'exist'
+    );
     cy.contains('By default, your holding has:').should('exist');
     cy.contains('Then, choose 4:').should('exist');
     cy.contains('And choose 2:').should('exist');
@@ -31,15 +39,36 @@ describe('Creating a new Hardholder Character', () => {
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]').should('contain', hardholderWeapon);
-    cy.get('div[data-testid="holding-box"]').should('contain', decapitalize(UniqueTypes.holding));
-    cy.get('div[data-testid="holding-box"]').should('contain', 'Holding size: Medium');
-    cy.get('div[data-testid="holding-box"]').should('contain', 'Gang size: Medium');
+    cy.get('div[data-testid="holding-box"]').should(
+      'contain',
+      decapitalize(UniqueTypes.holding)
+    );
+    cy.get('div[data-testid="holding-box"]').should(
+      'contain',
+      'Holding size: Medium'
+    );
+    cy.get('div[data-testid="holding-box"]').should(
+      'contain',
+      'Gang size: Medium'
+    );
     cy.get('div[data-testid="holding-box"]').should('contain', 'Barter: 0');
     cy.get('div[data-testid="holding-box"]').should('contain', 'Wants: hungry');
-    cy.get('div[data-testid="holding-box"]').should('contain', decapitalize(UniqueTypes.holding));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(HARDHOLDER_SPECIAL_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(LEADERSHIP_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(WEALTH_NAME));
+    cy.get('div[data-testid="holding-box"]').should(
+      'contain',
+      decapitalize(UniqueTypes.holding)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(HARDHOLDER_SPECIAL_NAME)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(LEADERSHIP_NAME)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(WEALTH_NAME)
+    );
 
     // Check form functionality
     selectItem('large', [
@@ -91,7 +120,9 @@ describe('Creating a new Hardholder Character', () => {
       { box: 'wants-tags', expectedResult: 'obligation' },
       { box: 'gigs-tags', expectedResult: gig2 },
     ]);
-    selectItem('your gang is large', [{ box: 'gang size', expectedResult: 'LARGE' }]);
+    selectItem('your gang is large', [
+      { box: 'gang size', expectedResult: 'LARGE' },
+    ]);
 
     deSelectItem(gig3, [
       { box: 'surplus', expectedResult: '+3barter' }, // 2
@@ -100,9 +131,14 @@ describe('Creating a new Hardholder Character', () => {
     ]);
 
     cy.contains('your gang is well-disciplined').click();
-    cy.get(`div[data-testid="tags-tags-box"]`).should('not.include.text', 'unruly');
+    cy.get(`div[data-testid="tags-tags-box"]`).should(
+      'not.include.text',
+      'unruly'
+    );
 
-    deSelectItem('your gang is large', [{ box: 'gang size', expectedResult: 'LARGE' }]);
+    deSelectItem('your gang is large', [
+      { box: 'gang size', expectedResult: 'LARGE' },
+    ]);
 
     cy.contains('your armory is sophisticated').click();
     cy.get(`h2[aria-label="harm-value"]`).should('include.text', '3');
@@ -110,21 +146,31 @@ describe('Creating a new Hardholder Character', () => {
     cy.contains('your gang is well-disciplined').click();
     cy.get(`div[data-testid="tags-tags-box"]`).should('include.text', 'unruly');
 
-    selectItem('your compound is tall', [{ box: 'defense bonus', expectedResult: '+2armor' }]);
+    selectItem('your compound is tall', [
+      { box: 'defense bonus', expectedResult: '+2armor' },
+    ]);
 
-    selectItem('filthy and unwell', [{ box: 'wants-tags', expectedResult: 'disease' }]);
-    selectItem('lazy and drug-stupored', [{ box: 'wants-tags', expectedResult: 'famine' }]);
+    selectItem('filthy and unwell', [
+      { box: 'wants-tags', expectedResult: 'disease' },
+    ]);
+    selectItem('lazy and drug-stupored', [
+      { box: 'wants-tags', expectedResult: 'famine' },
+    ]);
     checkSelectionLimit('decadent and perverse', [
       { box: 'wants-tags', expectedResult: 'savagery' },
       { box: 'surplus', expectedResult: '+1barter' }, // 2
     ]);
 
-    deSelectItem('filthy and unwell', [{ box: 'wants-tags', expectedResult: 'disease' }]);
+    deSelectItem('filthy and unwell', [
+      { box: 'wants-tags', expectedResult: 'disease' },
+    ]);
     selectItem('decadent and perverse', [
       { box: 'wants-tags', expectedResult: 'savagery' },
       { box: 'surplus', expectedResult: '+1barter' }, // 1
     ]);
-    deSelectItem('lazy and drug-stupored', [{ box: 'wants-tags', expectedResult: 'famine' }]);
+    deSelectItem('lazy and drug-stupored', [
+      { box: 'wants-tags', expectedResult: 'famine' },
+    ]);
     selectItem('protection to tribute', [
       { box: 'wants-tags', expectedResult: 'reprisals' },
       { box: 'surplus', expectedResult: '+0barter' }, // 0
@@ -135,11 +181,19 @@ describe('Creating a new Hardholder Character', () => {
       { box: 'surplus', expectedResult: '+0barter' }, // 1
     ]);
 
-    selectItem('your gang is small', [{ box: 'gang size', expectedResult: 'SMALL' }]);
-    deSelectItem('your gang is small', [{ box: 'gang size', expectedResult: 'SMALL' }]);
+    selectItem('your gang is small', [
+      { box: 'gang size', expectedResult: 'SMALL' },
+    ]);
+    deSelectItem('your gang is small', [
+      { box: 'gang size', expectedResult: 'SMALL' },
+    ]);
 
-    selectItem('your gang is a pack', [{ box: 'tags-tags', expectedResult: 'savagery' }]);
-    deSelectItem('your gang is a pack', [{ box: 'tags-tags', expectedResult: 'savagery' }]);
+    selectItem('your gang is a pack', [
+      { box: 'tags-tags', expectedResult: 'savagery' },
+    ]);
+    deSelectItem('your gang is a pack', [
+      { box: 'tags-tags', expectedResult: 'savagery' },
+    ]);
 
     cy.contains('your armory is for shit').click();
     cy.get(`h2[aria-label="harm-value"]`).should('include.text', '2');
@@ -147,7 +201,9 @@ describe('Creating a new Hardholder Character', () => {
     cy.contains('your armory is for shit').click();
     cy.get(`h2[aria-label="harm-value"]`).should('include.text', '3');
 
-    selectItem('your compound is mostly tents', [{ box: 'defense bonus', expectedResult: '+0armor' }]);
+    selectItem('your compound is mostly tents', [
+      { box: 'defense bonus', expectedResult: '+0armor' },
+    ]);
 
     // Submit form
     cy.contains(SET_TEXT).click();
@@ -159,24 +215,56 @@ describe('Creating a new Hardholder Character', () => {
     cy.contains('Default moves').should('exist');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(HARDHOLDER_SPECIAL_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(LEADERSHIP_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(WEALTH_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(HARDHOLDER_SPECIAL_NAME)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(LEADERSHIP_NAME)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(WEALTH_NAME)
+    );
+    cy.get('div[data-testid="vehicles-box"]')
+      .should('contain', VEHICLES_TITLE)
+      .should('contain', '...');
   });
 });
 
-const selectItem = (item: string, checks: { box: string; expectedResult: string }[]) => {
+const selectItem = (
+  item: string,
+  checks: { box: string; expectedResult: string }[]
+) => {
   cy.contains(item).click();
-  checks.forEach((check) => cy.get(`div[data-testid="${check.box}-box"]`).should('include.text', check.expectedResult));
+  checks.forEach((check) =>
+    cy
+      .get(`div[data-testid="${check.box}-box"]`)
+      .should('include.text', check.expectedResult)
+  );
 };
 
-const deSelectItem = (item: string, checks: { box: string; expectedResult: string }[]) => {
+const deSelectItem = (
+  item: string,
+  checks: { box: string; expectedResult: string }[]
+) => {
   cy.contains(item).click();
-  checks.forEach((check) => cy.get(`div[data-testid="${check.box}-box"]`).should('not.include.text', check.expectedResult));
+  checks.forEach((check) =>
+    cy
+      .get(`div[data-testid="${check.box}-box"]`)
+      .should('not.include.text', check.expectedResult)
+  );
 };
 
-const checkSelectionLimit = (item: string, checks: { box: string; expectedResult: string }[]) => {
+const checkSelectionLimit = (
+  item: string,
+  checks: { box: string; expectedResult: string }[]
+) => {
   cy.contains(item).click();
-  checks.forEach((check) => cy.get(`div[data-testid="${check.box}-box"]`).should('not.include.text', check.expectedResult));
+  checks.forEach((check) =>
+    cy
+      .get(`div[data-testid="${check.box}-box"]`)
+      .should('not.include.text', check.expectedResult)
+  );
 };

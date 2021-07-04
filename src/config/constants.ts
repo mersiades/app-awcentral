@@ -231,7 +231,10 @@ export const ADJUST_UNIQUE_IMPROVEMENT_NAMES = [
 // ADD_OTHER_PB_MOVE move names
 export const ADD_OTHER_PB_MOVE_1_NAME = 'ADD MOVE FROM OTHER PLAYBOOK 1';
 export const ADD_OTHER_PB_MOVE_2_NAME = 'ADD MOVE FROM OTHER PLAYBOOK 2';
-export const ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES = [ADD_OTHER_PB_MOVE_1_NAME, ADD_OTHER_PB_MOVE_2_NAME];
+export const ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES = [
+  ADD_OTHER_PB_MOVE_1_NAME,
+  ADD_OTHER_PB_MOVE_2_NAME,
+];
 
 // ADD_UNIQUE move names
 export const ADD_GANG_LEADERSHIP_NAME = 'ADD GANG AND LEADERSHIP';
@@ -323,14 +326,18 @@ export const VEHICLES_TITLE = 'Vehicles';
 export const BATTLE_VEHICLES_TITLE = 'Battle Vehicles';
 export const HX_TITLE = 'Hx';
 
-export const IMPROVE_DRIVER_FOR_WORKSPACE_TEXT = 'Improve Driver to get workspace';
+export const IMPROVE_DRIVER_FOR_WORKSPACE_TEXT =
+  'Improve Driver to get workspace';
 
-export const START_PLAY_WITH_VEHICLE_TEXT = 'If you’d like to start play with a vehicle, get with the MC.';
+export const START_PLAY_WITH_VEHICLE_TEXT =
+  'If you’d like to start play with a vehicle, get with the MC.';
 
-export const START_PLAY_WITH_BATTLE_VEHICLE_TEXT = 'If you’d like to start play with a battle vehicle, get with the MC.';
+export const START_PLAY_WITH_BATTLE_VEHICLE_TEXT =
+  'If you’d like to start play with a battle vehicle, get with the MC.';
 
 export const INCREASED_BY_IMPROVEMENT_TEXT = '(increased by improvement)';
-export const INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT = '(increased by improvement, life support already included)';
+export const INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT =
+  '(increased by improvement, life support already included)';
 export const DECREASED_BY_IMPROVEMENT_TEXT = '(decreased by improvement)';
 
 export const LIFE_SUPPORT_TEXT = 'a life support unit';
@@ -353,7 +360,8 @@ export const WEIRD_TEXT = 'WEIRD';
 
 export const NEW_GAME_TEXT = 'NEW GAME';
 export const WELCOME_JUNGLE_TEXT = 'Welcome to the jungle, baby.';
-export const GET_STARTED_TEXT = "Once everyone's ready, punch NEXT to get started.";
+export const GET_STARTED_TEXT =
+  "Once everyone's ready, punch NEXT to get started.";
 
 export const CHOOSE_YOUR_PLAYBOOK_TEXT = 'CHOOSE YOUR PLAYBOOK';
 export const NEW_PLAYER_INTRO_TEXT =
@@ -363,7 +371,8 @@ export const CHANGED_PLAYBOOK_INTRO_TEXT =
 
 export const CHOOSE_STAT_SET_TEXT = 'Choose a set:';
 
-export const GEAR_FORM_INSTRUCTIONS = 'Select an item to add, edit or delete it, or just type your own.';
+export const GEAR_FORM_INSTRUCTIONS =
+  'Select an item to add, edit or delete it, or just type your own.';
 export const OPTIONS_TITLE = 'Options';
 
 export const DEFAULT_MOVES_TITLE = 'Default moves';
@@ -371,7 +380,8 @@ export const DEFAULT_MOVES_TITLE = 'Default moves';
 export const HX_VALIDATION_TEXT = 'Enter digits from -2 to 3';
 
 export const PRE_GAME_INCOMPLETE_TITLE = 'Game not started';
-export const PRE_GAME_INCOMPLETE_TEXT_MC = 'Pre-game stage is not complete. Go to pre-game page?';
+export const PRE_GAME_INCOMPLETE_TEXT_MC =
+  'Pre-game stage is not complete. Go to pre-game page?';
 
 // ----------------------------------------------- SCRIPT CHANGE --------------------------------------------- //
 export const SCRIPT_CHANGE_TITLE = 'Script Change';
@@ -404,16 +414,24 @@ export const MIX_AND_MATCH_TEXT = "Mix'n'match. Edit directly if necessary.";
 
 // ----------------------------------------------- PRE_GAME PAGE--------------------------------------------- //
 
-export const MC_INSTRUCTIONS_1 = 'Use this time to build the world you will play in.';
-export const MC_INSTRUCTIONS_2 = 'Ask your players lots of questions about their characters and the world.';
-export const MC_INSTRUCTIONS_3 = 'While the players are making their characters, here are some things to get out up-front:';
-export const CHARACTER_CREATION_TIP_1 = "Your characters don't have to be friends, but they should definitely be allies.";
-export const CHARACTER_CREATION_TIP_2 = 'Your characters are unique in Apocalypse World.';
-export const CHARACTER_CREATION_TIP_3 = '1-armor can be armor or clothing. 2-armor is armor.';
+export const MC_INSTRUCTIONS_1 =
+  'Use this time to build the world you will play in.';
+export const MC_INSTRUCTIONS_2 =
+  'Ask your players lots of questions about their characters and the world.';
+export const MC_INSTRUCTIONS_3 =
+  'While the players are making their characters, here are some things to get out up-front:';
+export const CHARACTER_CREATION_TIP_1 =
+  "Your characters don't have to be friends, but they should definitely be allies.";
+export const CHARACTER_CREATION_TIP_2 =
+  'Your characters are unique in Apocalypse World.';
+export const CHARACTER_CREATION_TIP_3 =
+  '1-armor can be armor or clothing. 2-armor is armor.';
 export const CHARACTER_CREATION_TIP_4 = 'Is ';
 export const CHARACTER_CREATION_TIP_5 = 'barter';
-export const CHARACTER_CREATION_TIP_6 = ' a medium of exchange? What do you use?';
-export const CHARACTER_CREATION_TIP_7 = "I'm not out to get you. I'm here to find out what's going to happen. Same as you!";
+export const CHARACTER_CREATION_TIP_6 =
+  ' a medium of exchange? What do you use?';
+export const CHARACTER_CREATION_TIP_7 =
+  "I'm not out to get you. I'm here to find out what's going to happen. Same as you!";
 
 export const PRE_GAME_SCRIPT_CHANGE_INSTRUCTIONS =
   'AW Central uses Script Change as a communication tool to help everyone feel safe and comfortable while they play. On AW Central, Script Change can be used via the Script Change icon (seen here), which sits in the bottom-right corner of the _**main game page**_. You can click the Script Change icon on _**this**_ page to get a preview of what Script Change is like.';
@@ -425,7 +443,8 @@ export const PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS =
 // ----------------------------------------------- VEHICLE FORM --------------------------------------------- //
 export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
 export const GIVE_VEHICLE_NAME_TEXT = 'Give your vehicle a name';
-export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT = '(make/model, nickname, whatever)';
+export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT =
+  '(make/model, nickname, whatever)';
 export const STRENGTHS_TEXT = 'Strengths';
 export const WEAKNESSES_TEXT = 'Weaknesses';
 export const LOOKS_TEXT = 'Looks';
@@ -451,10 +470,12 @@ export const ADD_HARD_MINUS_1_TEXT = 'reduce your HARD stat by 1';
 export const REMOVE_HARD_MINUS_1_TEXT = 'increase your HARD stat by 1';
 export const ADD_WEIRD_1_TEXT = 'increase your WEIRD stat by 1';
 export const REMOVE_WEIRD_1_TEXT = 'reduce to your WEIRD stat by 1';
-export const ADD_CHANGE_PLAYBOOK_TEXT_1 = 'change your playbook. You will lose your';
+export const ADD_CHANGE_PLAYBOOK_TEXT_1 =
+  'change your playbook. You will lose your';
 export const ADD_CHANGE_PLAYBOOK_TEXT_2 =
   "your default moves and your gear. You'll also lose your base stats, but you'll keep any stat bonus you might have. And you'll keep everything else, and will be able to add everything from a new playbook";
-export const REMOVE_CHANGE_PLAYBOOK_TEXT = "have no effect. You can't un-change a playbook";
+export const REMOVE_CHANGE_PLAYBOOK_TEXT =
+  "have no effect. You can't un-change a playbook";
 export const ADD_DIE_TEXT_1 = 'mark';
 export const ADD_DIE_TEXT_2 = 'as dead';
 export const REMOVE_DIE_TEXT_1 = 'bring';
@@ -494,7 +515,8 @@ export const USE_STOCK_TEXT = 'Do they want you to use any stock?';
 // ----------------------------------------------- GAME PANEL --------------------------------------------- //
 export const PLAYERS_TEXT = 'Players';
 export const INVITATIONS_TEXT = 'Invitations';
-export const DELETE_PLAYER_WARNING_TEXT = 'This cannot be undone. Their character will be deleted.';
+export const DELETE_PLAYER_WARNING_TEXT =
+  'This cannot be undone. Their character will be deleted.';
 export const NO_PLAYER_TEXT = 'No players yet';
 export const WARNING_DIALOG_TITLE = 'Remove player?';
 export const NO_PENDING_INVITATIONS_TEXT = 'No pending invitations';
@@ -521,7 +543,8 @@ export const NO_STATS_HIGHLIGHTED_TEXT = 'No stats highlighted';
 
 // ----------------------------------------------- INVITATION FORM --------------------------------------------- //
 export const INVITE_A_PLAYER_TO_TEXT = 'Invite a player to';
-export const ADD_EMAIL_ADDRESS_TEXT = "First, add the player's email address to the game";
+export const ADD_EMAIL_ADDRESS_TEXT =
+  "First, add the player's email address to the game";
 export const TELL_HOW_JOIN_GAME_TEXT =
   'Let your player know how to join your game. You can edit the instructions below (if you want) and then copy and paste into an email, Discord chat etc.';
 
@@ -539,7 +562,8 @@ export const CAST_CREW_INSTRUCTIONS =
 export const REGULARS_INSTRUCTIONS =
   '_**Your regulars**_ include these 5 NPCs (at least): Lamprey, Ba, Camo, Toyota and Lits.';
 
-export const ATMOSPHERE_INSTRUCTIONS = "_**For your establishment's atmosphere**_, choose 3 or 4:";
+export const ATMOSPHERE_INSTRUCTIONS =
+  "_**For your establishment's atmosphere**_, choose 3 or 4:";
 
 export const INTERESTED_NPCS_INSTRUCTIONS =
   'These 3 NPCs (at least) have an _**interest in your establishment**_: Been, Rolfball, Gams.';
@@ -549,7 +573,8 @@ export const RESOLVED_INTEREST_TEXT = 'Interest resolved';
 export const SELECT_SIDE_ATTRACTIONS = 'Select side attractions';
 
 // ----------------------------------------------- WORKSPACE FORM --------------------------------------------- //
-export const ITEMS_INSTRUCTIONS = 'Choose which of the following your workspace includes.';
+export const ITEMS_INSTRUCTIONS =
+  'Choose which of the following your workspace includes.';
 export const PROJECTS_TITLE = 'Projects';
 
 // ----------------------------------------------- SKINNER GEAR FORM --------------------------------------------- //

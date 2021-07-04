@@ -9,11 +9,14 @@ import NpcDialog from './NpcDialog';
 import { ADD_TEXT, NPCS_TEXT } from '../../config/constants';
 
 const NpcsPanel = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [showNpcDialog, setShowNpcDialog] = useState<{ show: boolean; npc?: Npc }>({ show: false });
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
+  const [showNpcDialog, setShowNpcDialog] = useState<{
+    show: boolean;
+    npc?: Npc;
+  }>({ show: false });
+  // ----------------------------- 3rd party hooks ------------------------------- //
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { mcGameRole } = useGame();
   const { crustReady } = useFonts();
 
@@ -22,7 +25,10 @@ const NpcsPanel = () => {
   return (
     <Box fill="horizontal" direction="row" wrap pad="12px" overflow="auto">
       {showNpcDialog.show && (
-        <NpcDialog handleClose={() => setShowNpcDialog({ show: false, npc: undefined })} existingNpc={showNpcDialog.npc} />
+        <NpcDialog
+          handleClose={() => setShowNpcDialog({ show: false, npc: undefined })}
+          existingNpc={showNpcDialog.npc}
+        />
       )}
       <Box
         fill="horizontal"
@@ -34,13 +40,29 @@ const NpcsPanel = () => {
         <HeadingWS crustReady={crustReady} level={3}>
           {NPCS_TEXT}
         </HeadingWS>
-        <ButtonWS primary label={ADD_TEXT} onClick={() => setShowNpcDialog({ show: true })} />
+        <ButtonWS
+          primary
+          label={ADD_TEXT}
+          onClick={() => setShowNpcDialog({ show: true })}
+        />
       </Box>
       {!!npcs &&
         npcs.length > 0 &&
         npcs.map((npc) => (
-          <Box key={npc.id} fill="horizontal" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
-            <NpcBox npc={npc} onEdit={() => setShowNpcDialog({ show: true, npc })} />
+          <Box
+            key={npc.id}
+            fill="horizontal"
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
+          >
+            <NpcBox
+              npc={npc}
+              onEdit={() => setShowNpcDialog({ show: true, npc })}
+            />
           </Box>
         ))}
     </Box>

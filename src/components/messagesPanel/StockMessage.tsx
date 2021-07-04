@@ -13,8 +13,18 @@ export interface StockMessageProps {
   ticker: number;
 }
 
-const StockMessage: FC<StockMessageProps> = ({ message, messagesLength, index, ticker }) => (
-  <MoveMessage message={message} messagesLength={messagesLength} index={index} ticker={ticker}>
+const StockMessage: FC<StockMessageProps> = ({
+  message,
+  messagesLength,
+  index,
+  ticker,
+}) => (
+  <MoveMessage
+    message={message}
+    messagesLength={messagesLength}
+    index={index}
+    ticker={ticker}
+  >
     <>
       <Box fill="horizontal" direction="row" justify="around" align="center">
         <ParagraphWS alignSelf="start">{`Stock spent: ${message.stockSpent}`}</ParagraphWS>

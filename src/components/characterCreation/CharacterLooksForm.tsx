@@ -6,7 +6,10 @@ import { Box, FormField, TextInput, Text } from 'grommet';
 
 import Spinner from '../Spinner';
 import { ButtonWS, HeadingWS } from '../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../queries/playbookCreator';
 import SET_CHARACTER_LOOK, {
   getSetCharacterLookOR,
   SetCharacterLookData,
@@ -51,31 +54,39 @@ const looksReducer = (state: LooksFormState, action: Action) => {
 };
 
 const CharacterLooksForm: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [{ gender, clothes, face, eyes, body }, dispatch] = useReducer(looksReducer, {});
+  // ----------------------------- Component state ------------------------------ //
+  const [{ gender, clothes, face, eyes, body }, dispatch] = useReducer(
+    looksReducer,
+    {}
+  );
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [steps] = useState(Object.values(LookType));
   const [selectedStep, setSelectedStep] = useState(0);
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // -------------------------------------------------- Graphql hooks ---------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(
-    PLAYBOOK_CREATOR,
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     // @ts-ignore
-    { variables: { playbookType: character?.playbook }, skip: !character?.playbook }
-  );
+    variables: { playbookType: character?.playbook },
+    skip: !character?.playbook,
+  });
   const looks = pbCreatorData?.playbookCreator.looks;
-  const [setCharacterLook, { loading: settingLooks }] =
-    useMutation<SetCharacterLookData, SetCharacterLookVars>(SET_CHARACTER_LOOK);
+  const [setCharacterLook, { loading: settingLooks }] = useMutation<
+    SetCharacterLookData,
+    SetCharacterLookVars
+  >(SET_CHARACTER_LOOK);
 
-  // ------------------------------------------ Component functions and variables ------------------------------------------ //
+  // ----------------------------- Component functions ------------------------- //
   const handleSubmitLook = async (look: Look) => {
     if (!!userGameRole && !!character && !character.isDead && !!game) {
       // Prepare LookInput
@@ -84,13 +95,22 @@ const CharacterLooksForm: FC = () => {
       // Send Look
       try {
         const data = await setCharacterLook({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, look: lookInput },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            look: lookInput,
+          },
           optimisticResponse: getSetCharacterLookOR(character, lookInput),
         });
 
-        if (data.data?.setCharacterLook.looks?.length === 5 && !character.hasCompletedCharacterCreation) {
+        if (
+          data.data?.setCharacterLook.looks?.length === 5 &&
+          !character.hasCompletedCharacterCreation
+        ) {
           logAmpEvent('set looks');
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectStats}`);
+          history.push(
+            `/character-creation/${game.id}?step=${CharacterCreationSteps.selectStats}`
+          );
         }
       } catch (error) {
         console.error(error);
@@ -101,7 +121,11 @@ const CharacterLooksForm: FC = () => {
   // Create custom Look when User types
   const handleTypeLook = (look: string, category: LookType) => {
     if (!!character) {
-      const newLook: LookInput = { look, category, playbookType: character.playbook };
+      const newLook: LookInput = {
+        look,
+        category,
+        playbookType: character.playbook,
+      };
       switch (category) {
         case LookType.gender:
           dispatch({ type: 'SET_GENDER', payload: newLook });
@@ -135,21 +159,33 @@ const CharacterLooksForm: FC = () => {
     handleSubmitLook(look);
   };
 
-  // ------------------------------------------------------- Effects ------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   useEffect(() => {
-    const existingGender: Look | undefined = character?.looks.find((look) => look.category === LookType.gender);
-    !!existingGender && dispatch({ type: 'SET_GENDER', payload: existingGender });
-    const existingClothes: Look | undefined = character?.looks.find((look) => look.category === LookType.clothes);
-    !!existingClothes && dispatch({ type: 'SET_CLOTHES', payload: existingClothes });
-    const existingFace: Look | undefined = character?.looks.find((look) => look.category === LookType.face);
+    const existingGender: Look | undefined = character?.looks.find(
+      (look) => look.category === LookType.gender
+    );
+    !!existingGender &&
+      dispatch({ type: 'SET_GENDER', payload: existingGender });
+    const existingClothes: Look | undefined = character?.looks.find(
+      (look) => look.category === LookType.clothes
+    );
+    !!existingClothes &&
+      dispatch({ type: 'SET_CLOTHES', payload: existingClothes });
+    const existingFace: Look | undefined = character?.looks.find(
+      (look) => look.category === LookType.face
+    );
     !!existingFace && dispatch({ type: 'SET_FACE', payload: existingFace });
-    const existingEyes: Look | undefined = character?.looks.find((look) => look.category === LookType.eyes);
+    const existingEyes: Look | undefined = character?.looks.find(
+      (look) => look.category === LookType.eyes
+    );
     !!existingEyes && dispatch({ type: 'SET_EYES', payload: existingEyes });
-    const existingBody: Look | undefined = character?.looks.find((look) => look.category === LookType.body);
+    const existingBody: Look | undefined = character?.looks.find(
+      (look) => look.category === LookType.body
+    );
     !!existingBody && dispatch({ type: 'SET_BODY', payload: existingBody });
   }, [character]);
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderPill = (look: Look) => {
     let isSelected = false;
@@ -193,7 +229,12 @@ const CharacterLooksForm: FC = () => {
             !!character?.name ? character.name.toUpperCase() : '...'
           } LOOK LIKE?`}</HeadingWS>
         </Box>
-        <Box direction="row" justify="between" gap="24px" style={{ minHeight: '70px' }}>
+        <Box
+          direction="row"
+          justify="between"
+          gap="24px"
+          style={{ minHeight: '70px' }}
+        >
           {steps.map((step, index) => {
             const isSelected = index === selectedStep;
             return (
@@ -215,7 +256,12 @@ const CharacterLooksForm: FC = () => {
             fill="horizontal"
             margin={{ bottom: '12px' }}
             align="center"
-            animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
           >
             <Box direction="row" fill="horizontal" align="center" gap="12px">
               <FormField width="100%">
@@ -224,20 +270,31 @@ const CharacterLooksForm: FC = () => {
                   aria-label="gender-input"
                   size="xxlarge"
                   value={gender ? gender.look : ''}
-                  onChange={(e) => handleTypeLook(e.target.value, LookType.gender)}
+                  onChange={(e) =>
+                    handleTypeLook(e.target.value, LookType.gender)
+                  }
                 />
               </FormField>
 
               <ButtonWS
                 secondary
                 data-testid="set-look-button"
-                label={settingLooks ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : SET_TEXT}
+                label={
+                  settingLooks ? (
+                    <Spinner fillColor="#FFF" width="37px" height="36px" />
+                  ) : (
+                    SET_TEXT
+                  )
+                }
                 disabled={!gender || gender.look === '' || settingLooks}
                 onClick={() => handlePillOrSetClick(gender)}
               />
             </Box>
             <Box direction="row" margin={{ top: '3px' }} wrap>
-              {!!looks && looks.filter((look) => look.category === LookType.gender).map((look) => renderPill(look))}
+              {!!looks &&
+                looks
+                  .filter((look) => look.category === LookType.gender)
+                  .map((look) => renderPill(look))}
             </Box>
           </Box>
         )}
@@ -246,7 +303,12 @@ const CharacterLooksForm: FC = () => {
             fill="horizontal"
             margin={{ bottom: '12px' }}
             align="center"
-            animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
           >
             <Box direction="row" fill="horizontal" align="center" gap="12px">
               <FormField width="100%">
@@ -255,18 +317,29 @@ const CharacterLooksForm: FC = () => {
                   aria-label="clothes-input"
                   size="xxlarge"
                   value={clothes ? clothes.look : ''}
-                  onChange={(e) => handleTypeLook(e.target.value, LookType.clothes)}
+                  onChange={(e) =>
+                    handleTypeLook(e.target.value, LookType.clothes)
+                  }
                 />
               </FormField>
               <ButtonWS
                 secondary
-                label={settingLooks ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+                label={
+                  settingLooks ? (
+                    <Spinner fillColor="#FFF" width="37px" height="36px" />
+                  ) : (
+                    'SET'
+                  )
+                }
                 disabled={!clothes || clothes.look === '' || settingLooks}
                 onClick={() => handlePillOrSetClick(clothes)}
               />
             </Box>
             <Box direction="row" margin={{ top: '3px' }} wrap>
-              {!!looks && looks.filter((look) => look.category === LookType.clothes).map((look) => renderPill(look))}
+              {!!looks &&
+                looks
+                  .filter((look) => look.category === LookType.clothes)
+                  .map((look) => renderPill(look))}
             </Box>
           </Box>
         )}
@@ -275,7 +348,12 @@ const CharacterLooksForm: FC = () => {
             fill="horizontal"
             margin={{ bottom: '12px' }}
             align="center"
-            animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
           >
             <Box direction="row" fill="horizontal" align="center" gap="12px">
               <FormField width="100%">
@@ -284,18 +362,29 @@ const CharacterLooksForm: FC = () => {
                   aria-label="face-input"
                   size="xxlarge"
                   value={face ? face.look : ''}
-                  onChange={(e) => handleTypeLook(e.target.value, LookType.face)}
+                  onChange={(e) =>
+                    handleTypeLook(e.target.value, LookType.face)
+                  }
                 />
               </FormField>
               <ButtonWS
                 secondary
-                label={settingLooks ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+                label={
+                  settingLooks ? (
+                    <Spinner fillColor="#FFF" width="37px" height="36px" />
+                  ) : (
+                    'SET'
+                  )
+                }
                 disabled={!face || gender.face === '' || settingLooks}
                 onClick={() => handlePillOrSetClick(face)}
               />
             </Box>
             <Box direction="row" margin={{ top: '3px' }} wrap overflow="auto">
-              {!!looks && looks.filter((look) => look.category === LookType.face).map((look) => renderPill(look))}
+              {!!looks &&
+                looks
+                  .filter((look) => look.category === LookType.face)
+                  .map((look) => renderPill(look))}
             </Box>
           </Box>
         )}
@@ -304,7 +393,12 @@ const CharacterLooksForm: FC = () => {
             fill="horizontal"
             margin={{ bottom: '12px' }}
             align="center"
-            animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
           >
             <Box direction="row" fill="horizontal" align="center" gap="12px">
               <FormField width="100%">
@@ -313,18 +407,29 @@ const CharacterLooksForm: FC = () => {
                   aria-label="eyes-input"
                   size="xxlarge"
                   value={eyes ? eyes.look : ''}
-                  onChange={(e) => handleTypeLook(e.target.value, LookType.eyes)}
+                  onChange={(e) =>
+                    handleTypeLook(e.target.value, LookType.eyes)
+                  }
                 />
               </FormField>
               <ButtonWS
                 secondary
-                label={settingLooks ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+                label={
+                  settingLooks ? (
+                    <Spinner fillColor="#FFF" width="37px" height="36px" />
+                  ) : (
+                    'SET'
+                  )
+                }
                 disabled={!eyes || eyes.look === '' || settingLooks}
                 onClick={() => handlePillOrSetClick(eyes)}
               />
             </Box>
             <Box direction="row" margin={{ top: '3px' }} wrap overflow="auto">
-              {!!looks && looks.filter((look) => look.category === LookType.eyes).map((look) => renderPill(look))}
+              {!!looks &&
+                looks
+                  .filter((look) => look.category === LookType.eyes)
+                  .map((look) => renderPill(look))}
             </Box>
           </Box>
         )}
@@ -333,7 +438,12 @@ const CharacterLooksForm: FC = () => {
             fill="horizontal"
             margin={{ bottom: '12px' }}
             align="center"
-            animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
           >
             <Box direction="row" fill="horizontal" align="center" gap="12px">
               <FormField width="100%">
@@ -342,18 +452,29 @@ const CharacterLooksForm: FC = () => {
                   aria-label="body-input"
                   size="xxlarge"
                   value={body ? body.look : ''}
-                  onChange={(e) => handleTypeLook(e.target.value, LookType.body)}
+                  onChange={(e) =>
+                    handleTypeLook(e.target.value, LookType.body)
+                  }
                 />
               </FormField>
               <ButtonWS
                 secondary
-                label={settingLooks ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+                label={
+                  settingLooks ? (
+                    <Spinner fillColor="#FFF" width="37px" height="36px" />
+                  ) : (
+                    'SET'
+                  )
+                }
                 disabled={!body || body.look === '' || settingLooks}
                 onClick={() => handlePillOrSetClick(body)}
               />
             </Box>
             <Box direction="row" margin={{ top: '3px' }} wrap overflow="auto">
-              {!!looks && looks.filter((look) => look.category === LookType.body).map((look) => renderPill(look))}
+              {!!looks &&
+                looks
+                  .filter((look) => look.category === LookType.body)
+                  .map((look) => renderPill(look))}
             </Box>
           </Box>
         )}

@@ -21,14 +21,24 @@ describe('Rendering FirstSessionBox', () => {
   });
 
   test('should reveal and hide sub-components', async () => {
-    const openButton = await screen.findByTestId(`${boxTitle.toLowerCase()}-down-chevron`);
+    const openButton = await screen.findByTestId(
+      `${boxTitle.toLowerCase()}-down-chevron`
+    );
     await screen.findByRole('heading', { name: boxTitle });
     userEvent.click(openButton);
     screen.getByText(mockMcContent.firstSessionContent.intro);
-    screen.getByRole('heading', { name: mockMcContent.firstSessionContent.duringCharacterCreation.title });
-    screen.getByRole('heading', { name: mockMcContent.firstSessionContent.duringFirstSession.title });
-    screen.getByRole('heading', { name: mockMcContent.firstSessionContent.threatMapInstructions.title });
-    screen.getByRole('heading', { name: mockMcContent.firstSessionContent.afterFirstSession.title });
+    screen.getByRole('heading', {
+      name: mockMcContent.firstSessionContent.duringCharacterCreation.title,
+    });
+    screen.getByRole('heading', {
+      name: mockMcContent.firstSessionContent.duringFirstSession.title,
+    });
+    screen.getByRole('heading', {
+      name: mockMcContent.firstSessionContent.threatMapInstructions.title,
+    });
+    screen.getByRole('heading', {
+      name: mockMcContent.firstSessionContent.afterFirstSession.title,
+    });
     screen.getByTestId(`${boxTitle.toLowerCase()}-up-chevron`);
   });
 });

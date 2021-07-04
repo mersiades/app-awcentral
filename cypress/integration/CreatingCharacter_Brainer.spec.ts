@@ -1,4 +1,8 @@
-import { BRAINER_SPECIAL_NAME, SET_TEXT, VEHICLES_TITLE } from '../../src/config/constants';
+import {
+  BRAINER_SPECIAL_NAME,
+  SET_TEXT,
+  VEHICLES_TITLE,
+} from '../../src/config/constants';
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import { UniqueTypes } from '../../src/@types/enums';
@@ -21,7 +25,9 @@ describe('Creating a new Brainer Character', () => {
     const brainerWeapon = 'Sharp kitchen knife'; // Set by backend
 
     // Check form content
-    cy.contains(`WHAT SPECIAL BRAINER GEAR DOES ${brainerNameUC} HAVE?`, { timeout: 8000 }).should('exist');
+    cy.contains(`WHAT SPECIAL BRAINER GEAR DOES ${brainerNameUC} HAVE?`, {
+      timeout: 8000,
+    }).should('exist');
     cy.contains(SET_TEXT).as('setButton');
     cy.contains('Select 2').should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 6);
@@ -31,8 +37,14 @@ describe('Creating a new Brainer Character', () => {
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]').should('contain', brainerWeapon);
-    cy.get('div[data-testid="brainer-gear-box"]').should('contain', decapitalize(UniqueTypes.brainerGear));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(BRAINER_SPECIAL_NAME));
+    cy.get('div[data-testid="brainer-gear-box"]').should(
+      'contain',
+      decapitalize(UniqueTypes.brainerGear)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(BRAINER_SPECIAL_NAME)
+    );
 
     // Check form functionality
     cy.contains(option1Text).click();
@@ -60,7 +72,12 @@ describe('Creating a new Brainer Character', () => {
     cy.contains('Select 2').should('exist');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(BRAINER_SPECIAL_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(BRAINER_SPECIAL_NAME)
+    );
+    cy.get('div[data-testid="vehicles-box"]')
+      .should('contain', VEHICLES_TITLE)
+      .should('contain', '...');
   });
 });

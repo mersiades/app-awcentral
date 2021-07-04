@@ -17,14 +17,16 @@ interface EstablishmentBoxProps {
   navigateToCharacterCreation: (step: string) => void;
 }
 
-const EstablishmentBox: FC<EstablishmentBoxProps> = ({ navigateToCharacterCreation }) => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+const EstablishmentBox: FC<EstablishmentBoxProps> = ({
+  navigateToCharacterCreation,
+}) => {
+  // ----------------------------- Hooks ---------------------------------------- //
   const { character } = useGame();
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const establishment = character?.playbookUniques?.establishment;
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <CollapsiblePanelBox
       open
@@ -39,7 +41,13 @@ const EstablishmentBox: FC<EstablishmentBoxProps> = ({ navigateToCharacterCreati
         animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
       >
         {!!establishment && (
-          <Box fill="horizontal" align="start" justify="start" gap="12px" pad="12px">
+          <Box
+            fill="horizontal"
+            align="start"
+            justify="start"
+            gap="12px"
+            pad="12px"
+          >
             <Box aria-label="Cast & crew box" align="center" flex="grow" fill>
               <RedBox fill justify="center" pad="12px" gap="12px">
                 {establishment.castAndCrew.length > 0 &&
@@ -54,15 +62,31 @@ const EstablishmentBox: FC<EstablishmentBoxProps> = ({ navigateToCharacterCreati
               </RedBox>
               <TextWS weight={600}>Cast & Crew</TextWS>
             </Box>
-            <Box direction="row" fill="horizontal" justify="between" wrap height="102px">
+            <Box
+              direction="row"
+              fill="horizontal"
+              justify="between"
+              wrap
+              height="102px"
+            >
               <AttractionsBox
                 mainAttraction={establishment.mainAttraction}
                 sideAttractions={establishment.sideAttractions}
                 width="48.5%"
               />
-              <AtmosphereBox atmospheres={establishment.atmospheres} width="48.5%" />
+              <AtmosphereBox
+                atmospheres={establishment.atmospheres}
+                width="48.5%"
+              />
             </Box>
-            <Box direction="row" fill="horizontal" justify="between" gap="12px" wrap height="126px">
+            <Box
+              direction="row"
+              fill="horizontal"
+              justify="between"
+              gap="12px"
+              wrap
+              height="126px"
+            >
               <RegularsBox
                 regulars={establishment.regulars}
                 bestRegular={establishment.bestRegular}
@@ -78,7 +102,10 @@ const EstablishmentBox: FC<EstablishmentBoxProps> = ({ navigateToCharacterCreati
               />
             </Box>
             <Box direction="row" fill>
-              <SecurityBox securityOptions={establishment.securityOptions} width="48.5%" />
+              <SecurityBox
+                securityOptions={establishment.securityOptions}
+                width="48.5%"
+              />
             </Box>
           </Box>
         )}

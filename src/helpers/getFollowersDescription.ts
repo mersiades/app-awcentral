@@ -1,6 +1,10 @@
 import { capitalize } from 'lodash';
 
-export const getFollowersDescription = (characterization?: string, followers?: number, travelOption?: string) => {
+export const getFollowersDescription = (
+  characterization?: string,
+  followers?: number,
+  travelOption?: string
+) => {
   if (!characterization && !followers && !travelOption) {
     return '';
   } else if (characterization && !followers && !travelOption) {

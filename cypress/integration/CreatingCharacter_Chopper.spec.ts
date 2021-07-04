@@ -32,18 +32,25 @@ describe('Creating a new Chopper Character', () => {
     const chopperWeapon2 = 'machete (3-harm ';
 
     // ------------------------------------------ GangForm ------------------------------------------ //
-    const strength1Text = 'your gang consists of 30 or so violent bastards. Medium instead of small.';
+    const strength1Text =
+      'your gang consists of 30 or so violent bastards. Medium instead of small.';
     const strength2Text = "your gang's well-armed. +1harm";
     const strength3Text = "your gang's well-armored. +1armor";
     const strength4Text = "your gang's well-disciplined. Drop savage.";
     const strength5Text =
       "your gang's nomadic at heart, and able to maintain and repair its own bikes without a home base. It gets +mobile.";
-    const strength6Text = "your gang's self-sufficient, able to provide for itself by raiding and scavenging. It gets +rich";
-    const weakness1Text = "your gang's bikes are in bad shape and need constant attention. Vulnerable: breakdown.";
-    const weakness2Text = "your gang's bikes are picky and high-maintenance. Vulnerable: grounded.";
-    const weakness3Text = "your gang's loose-knit, with members coming and going as they choose. Vulnerable: desertion";
-    const weakness4Text = 'your gang is in significant debt to someone powerful. Vulnerable: obligation.';
-    const weakness5Text = 'your gang is filthy and unwell. Vulnerable: disease.';
+    const strength6Text =
+      "your gang's self-sufficient, able to provide for itself by raiding and scavenging. It gets +rich";
+    const weakness1Text =
+      "your gang's bikes are in bad shape and need constant attention. Vulnerable: breakdown.";
+    const weakness2Text =
+      "your gang's bikes are picky and high-maintenance. Vulnerable: grounded.";
+    const weakness3Text =
+      "your gang's loose-knit, with members coming and going as they choose. Vulnerable: desertion";
+    const weakness4Text =
+      'your gang is in significant debt to someone powerful. Vulnerable: obligation.';
+    const weakness5Text =
+      'your gang is filthy and unwell. Vulnerable: disease.';
 
     // Check form content
     cy.contains(`${chopperNameUC}'S GANG`, { timeout: 8000 }).should('exist');
@@ -64,7 +71,9 @@ describe('Creating a new Chopper Character', () => {
     cy.get(`input[aria-label="option-${weakness5Text}"]`).as('weakness5');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="gear-box"]').should('contain', chopperWeapon1).should('contain', chopperWeapon2);
+    cy.get('div[data-testid="gear-box"]')
+      .should('contain', chopperWeapon1)
+      .should('contain', chopperWeapon2);
     cy.get('div[data-testid="gang-box"]')
       .should('contain', decapitalize(UniqueTypes.gang))
       .should('contain', 'Size')
@@ -125,13 +134,17 @@ describe('Creating a new Chopper Character', () => {
     cy.get('@strength5').should('be.checked');
     cy.get(`div[data-testid="size-box"]`).should('contain', 'SMALL');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '1');
-    cy.get(`div[data-testid="tags-tags-box"]`).should('not.contain', 'savage').should('contain', 'mobile');
+    cy.get(`div[data-testid="tags-tags-box"]`)
+      .should('not.contain', 'savage')
+      .should('contain', 'mobile');
 
     cy.contains(strength4Text).click();
     cy.get('@strength4').should('not.be.checked');
     cy.get(`div[data-testid="size-box"]`).should('contain', 'SMALL');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '1');
-    cy.get(`div[data-testid="tags-tags-box"]`).should('contain', 'savage').should('contain', 'mobile');
+    cy.get(`div[data-testid="tags-tags-box"]`)
+      .should('contain', 'savage')
+      .should('contain', 'mobile');
 
     cy.contains(strength6Text).click();
     cy.get('@strength6').should('be.checked');
@@ -240,7 +253,9 @@ describe('Creating a new Chopper Character', () => {
       .should('contain', decapitalize(CHOPPER_SPECIAL_NAME))
       .should('contain', decapitalize(PACK_ALPHA_NAME))
       .should('contain', decapitalize(FUCKING_THIEVES_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
+    cy.get('div[data-testid="vehicles-box"]')
+      .should('contain', VEHICLES_TITLE)
+      .should('contain', '...');
 
     // Check form functionality
     // Chopper has three default moves; no optional moves to select
@@ -328,8 +343,12 @@ describe('Creating a new Chopper Character', () => {
     cy.get('div[data-testid="vehicles-box"]', { timeout: 10000 })
       .should('contain', VEHICLES_TITLE)
       .should('contain', vehicleName);
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
+    cy.get('div[data-testid="battle-vehicles-box"]')
+      .should('contain', BATTLE_VEHICLES_TITLE)
+      .should('contain', '...');
+    cy.get('div[data-testid="hx-box"]')
+      .should('contain', HX_TITLE)
+      .should('contain', '...');
 
     // Finish test here because remainder of character creation process has been tested elsewhere
   });

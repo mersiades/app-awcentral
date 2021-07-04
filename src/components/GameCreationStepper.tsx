@@ -10,11 +10,15 @@ interface GameCreationStepperProps {
   setHasSkippedComms: (skipped: boolean) => void;
 }
 
-const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCreationStep, setHasSkippedComms }) => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+const GameCreationStepper: FC<GameCreationStepperProps> = ({
+  currentStep,
+  setCreationStep,
+  setHasSkippedComms,
+}) => {
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game } = useGame();
 
-  // -------------------------------------------------- Render component ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   const renderComms = (app?: string, url?: string) => {
     if (!!app) {
       if (!!url) {
@@ -30,7 +34,14 @@ const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCre
   };
 
   return (
-    <Box direction="row" fill="horizontal" justify="center" align="center" height="195px" pad={{ bottom: '12px' }}>
+    <Box
+      direction="row"
+      fill="horizontal"
+      justify="center"
+      align="center"
+      height="195px"
+      pad={{ bottom: '12px' }}
+    >
       <Grid
         fill
         gap="small"
@@ -66,7 +77,10 @@ const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCre
           justify="start"
           pad="12px"
           border
-          background={{ color: 'neutral-1', opacity: currentStep === 1 ? 1 : 0.5 }}
+          background={{
+            color: 'neutral-1',
+            opacity: currentStep === 1 ? 1 : 0.5,
+          }}
           onClick={() => {
             setCreationStep(1);
             setHasSkippedComms(false);
@@ -75,7 +89,9 @@ const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCre
           <Text color="white" weight="bold">
             Channel
           </Text>
-          <Box width="100%">{!!game && renderComms(game.commsApp, game.commsUrl)}</Box>
+          <Box width="100%">
+            {!!game && renderComms(game.commsApp, game.commsUrl)}
+          </Box>
         </Box>
         <Box
           data-testid="invitations-box"
@@ -85,7 +101,10 @@ const GameCreationStepper: FC<GameCreationStepperProps> = ({ currentStep, setCre
           justify="start"
           pad="12px"
           border
-          background={{ color: 'neutral-1', opacity: currentStep === 2 ? 1 : 0.5 }}
+          background={{
+            color: 'neutral-1',
+            opacity: currentStep === 2 ? 1 : 0.5,
+          }}
           onClick={() => setCreationStep(2)}
         >
           <Text color="white" weight="bold">

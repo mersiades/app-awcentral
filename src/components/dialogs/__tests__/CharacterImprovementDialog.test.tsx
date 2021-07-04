@@ -2,9 +2,13 @@ import { InMemoryCache } from '@apollo/client';
 import { MockedResponse } from '@apollo/client/testing';
 import userEvent from '@testing-library/user-event';
 import react from 'react';
-import ADJUST_IMPROVEMENTS, { AdjustImprovementsData } from '../../../mutations/adjustImprovements';
+import ADJUST_IMPROVEMENTS, {
+  AdjustImprovementsData,
+} from '../../../mutations/adjustImprovements';
 import GAME, { GameData } from '../../../queries/game';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../../../queries/playbookCreator';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+} from '../../../queries/playbookCreator';
 import {
   mockCoolMax2AsCM,
   mockHardMax2AsCM,
@@ -14,7 +18,11 @@ import {
 } from '../../../tests/fixtures/characterMovesFixtures';
 import { mockCoolMax2 } from '../../../tests/fixtures/movesFixtures';
 import { mockGame7, mockPlaybookCreatorAngel } from '../../../tests/mocks';
-import { customRenderForComponent, RenderResult, waitOneTick } from '../../../tests/test-utils';
+import {
+  customRenderForComponent,
+  RenderResult,
+  waitOneTick,
+} from '../../../tests/test-utils';
 import CharacterImprovementDialog from '../CharacterImprovementDialog';
 
 // With allowedImprovments = 1, no improvementMoves (on gameRole[1]'s character)
@@ -147,13 +155,21 @@ const mockAdjustImprovementsMutation: MockedResponse<AdjustImprovementsData> = {
           name: mockGame7.gameRoles[1].characters[0].name as string,
           playbook: mockGame7.gameRoles[1].characters[0].playbook,
           allowedImprovements: 1,
-          allowedOtherPlaybookMoves: mockGame7.gameRoles[1].characters[0].allowedOtherPlaybookMoves,
-          characterMoves: mockGame7.gameRoles[1].characters[0].characterMoves.map((cm) => ({
-            id: cm.id,
-            name: cm.name,
-            __typename: 'CharacterMove',
-          })),
-          improvementMoves: [{ id: 'mock-id', name: mockCoolMax2.name, __typename: 'CharacterMove' }],
+          allowedOtherPlaybookMoves:
+            mockGame7.gameRoles[1].characters[0].allowedOtherPlaybookMoves,
+          characterMoves:
+            mockGame7.gameRoles[1].characters[0].characterMoves.map((cm) => ({
+              id: cm.id,
+              name: cm.name,
+              __typename: 'CharacterMove',
+            })),
+          improvementMoves: [
+            {
+              id: 'mock-id',
+              name: mockCoolMax2.name,
+              __typename: 'CharacterMove',
+            },
+          ],
           futureImprovementMoves: [],
           __typename: 'Character',
         },
@@ -164,7 +180,10 @@ const mockAdjustImprovementsMutation: MockedResponse<AdjustImprovementsData> = {
 
 // Whole test suite is failing. For some reason the mock game query is not getting picked up by the MockedProvider
 describe.skip('Rendering CharacterImprovementDialog', () => {
-  let screen: RenderResult<typeof import('@testing-library/dom/types/queries'), HTMLElement>;
+  let screen: RenderResult<
+    typeof import('@testing-library/dom/types/queries'),
+    HTMLElement
+  >;
   const mockHandleClose = jest.fn();
 
   let cache: InMemoryCache;
@@ -175,22 +194,35 @@ describe.skip('Rendering CharacterImprovementDialog', () => {
 
   describe('with 1 unassigned and 0 assigned improvements', () => {
     beforeEach(async () => {
-      screen = customRenderForComponent(<CharacterImprovementDialog handleClose={mockHandleClose} />, {
-        isAuthenticated: true,
-        apolloMocks: [mockGameQuery1, mockPlaybookCreatorQuery, mockAdjustImprovementsMutation],
-        injectedGameId: mockGame7.id,
-        injectedUserId: mockGame7.gameRoles[1].userId,
-        cache,
-      });
+      screen = customRenderForComponent(
+        <CharacterImprovementDialog handleClose={mockHandleClose} />,
+        {
+          isAuthenticated: true,
+          apolloMocks: [
+            mockGameQuery1,
+            mockPlaybookCreatorQuery,
+            mockAdjustImprovementsMutation,
+          ],
+          injectedGameId: mockGame7.id,
+          injectedUserId: mockGame7.gameRoles[1].userId,
+          cache,
+        }
+      );
 
       await waitOneTick(); // wait for game query
       // await waitOneTick(); // wait for playbookCreator query
     });
 
     test('should render with no pre-selected moves and 1 improvement available', async () => {
-      expect(screen.getByRole('heading', { name: 'Improvements' })).toBeInTheDocument();
-      expect(screen.getByRole('heading', { name: 'You can select 1 improvement' })).toBeInTheDocument();
-      const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      expect(
+        screen.getByRole('heading', { name: 'Improvements' })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { name: 'You can select 1 improvement' })
+      ).toBeInTheDocument();
+      const setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toBeTruthy();
       const checkBoxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
       expect(checkBoxes).toHaveLength(16);
@@ -203,10 +235,14 @@ describe.skip('Rendering CharacterImprovementDialog', () => {
     });
 
     test('should allow move selection and click SET button', async () => {
-      const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      const setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
 
       // Check can select item
-      const firstMoveCheckbox = screen.getAllByRole('checkbox')[0] as HTMLInputElement;
+      const firstMoveCheckbox = screen.getAllByRole(
+        'checkbox'
+      )[0] as HTMLInputElement;
       userEvent.click(firstMoveCheckbox);
       expect(firstMoveCheckbox.checked).toBeTruthy();
       expect(setButton.disabled).toBeFalsy();
@@ -217,7 +253,9 @@ describe.skip('Rendering CharacterImprovementDialog', () => {
       expect(setButton.disabled).toBeTruthy();
 
       // Check can select another item
-      const secondMoveCheckbox = screen.getByRole('checkbox', { name: mockCoolMax2.description }) as HTMLInputElement;
+      const secondMoveCheckbox = screen.getByRole('checkbox', {
+        name: mockCoolMax2.description,
+      }) as HTMLInputElement;
       userEvent.click(secondMoveCheckbox);
       expect(secondMoveCheckbox.checked).toBeTruthy();
       expect(setButton.disabled).toBeFalsy();
@@ -228,47 +266,61 @@ describe.skip('Rendering CharacterImprovementDialog', () => {
 
       // Check have navigated away
       await waitOneTick(); // wait for navigation
-      expect(screen.queryByRole('heading', { name: 'Improvements' })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('heading', { name: 'Improvements' })
+      ).not.toBeInTheDocument();
     });
   });
 
   describe('with 1 unassigned and 2 assigned improvements', () => {
     beforeEach(async () => {
-      screen = customRenderForComponent(<CharacterImprovementDialog handleClose={mockHandleClose} />, {
-        isAuthenticated: true,
-        apolloMocks: [mockGameQuery2, mockPlaybookCreatorQuery],
-        injectedGameId: mockGame7.id,
-        injectedUserId: mockGame7.gameRoles[1].userId,
-        cache,
-      });
+      screen = customRenderForComponent(
+        <CharacterImprovementDialog handleClose={mockHandleClose} />,
+        {
+          isAuthenticated: true,
+          apolloMocks: [mockGameQuery2, mockPlaybookCreatorQuery],
+          injectedGameId: mockGame7.id,
+          injectedUserId: mockGame7.gameRoles[1].userId,
+          cache,
+        }
+      );
 
       await waitOneTick(); // wait for game query
       await waitOneTick(); // wait for playbookCreator query
     });
 
     test('should render with 1 pre-selected move and 2 improvements available', async () => {
-      expect(screen.getByRole('heading', { name: 'You can select 2 improvements' })).toBeInTheDocument();
-      const checkedCheckBox = screen.getByRole('checkbox', { name: mockCoolMax2AsCM.description }) as HTMLInputElement;
+      expect(
+        screen.getByRole('heading', { name: 'You can select 2 improvements' })
+      ).toBeInTheDocument();
+      const checkedCheckBox = screen.getByRole('checkbox', {
+        name: mockCoolMax2AsCM.description,
+      }) as HTMLInputElement;
       expect(checkedCheckBox.checked).toBeTruthy();
     });
   });
 
   describe('with 1 unassigned and 5 assigned improvements', () => {
     beforeEach(async () => {
-      screen = customRenderForComponent(<CharacterImprovementDialog handleClose={mockHandleClose} />, {
-        isAuthenticated: true,
-        apolloMocks: [mockGameQuery3, mockPlaybookCreatorQuery],
-        injectedGameId: mockGame7.id,
-        injectedUserId: mockGame7.gameRoles[1].userId,
-        cache,
-      });
+      screen = customRenderForComponent(
+        <CharacterImprovementDialog handleClose={mockHandleClose} />,
+        {
+          isAuthenticated: true,
+          apolloMocks: [mockGameQuery3, mockPlaybookCreatorQuery],
+          injectedGameId: mockGame7.id,
+          injectedUserId: mockGame7.gameRoles[1].userId,
+          cache,
+        }
+      );
 
       await waitOneTick(); // wait for game query
       await waitOneTick(); // wait for playbookCreator query
     });
 
     test('should render with 5 pre-selected move and 6 improvements available', async () => {
-      expect(screen.getByRole('heading', { name: 'You can select 6 improvements' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { name: 'You can select 6 improvements' })
+      ).toBeInTheDocument();
 
       const checkBoxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
 

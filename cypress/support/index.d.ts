@@ -28,12 +28,30 @@ declare namespace Cypress {
     ): void;
     setCharacterStat(nameUC: string): void;
     completeGearForm(nameUC: string, clothes: string, items: string[]);
-    setVehicleOptions(option1: string, option2: string, option3: string, targetBox: string);
+    setVehicleOptions(
+      option1: string,
+      option2: string,
+      option3: string,
+      targetBox: string
+    );
     deleteKeycloakUser(email: string): void;
     openPlaybookPanel(): void;
     openMovesPanelBox(boxTitle: string): void;
-    checkMoveMessage(messageTitle: string, snippet: string, stat?: StatType): void;
-    checkPrintMove(characterName: string, moveName: string, moveSnippet: string): void;
-    checkRollMove(characterName: string, moveName: string, moveSnippet: string, rollStat: StatType): void;
+    checkMoveMessage(
+      messageTitle: string,
+      snippet: string,
+      stat?: StatType
+    ): void;
+    checkPrintMove(
+      characterName: string,
+      moveName: string,
+      moveSnippet: string
+    ): void;
+    checkRollMove(
+      characterName: string,
+      moveName: string,
+      moveSnippet: string,
+      rollStat: StatType
+    ): void;
   }
 }

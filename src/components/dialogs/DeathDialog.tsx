@@ -2,7 +2,12 @@ import React, { FC } from 'react';
 import { Box } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
-import { HeadingWS, ButtonWS, deathDialogBackground, TextWS } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ButtonWS,
+  deathDialogBackground,
+  TextWS,
+} from '../../config/grommetConfig';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import {
@@ -35,14 +40,20 @@ interface DeathDialogProps {
   handleConfirm: () => void;
 }
 
-const DeathDialog: FC<DeathDialogProps> = ({ addedMoves, removedMoves, settingDeathMoves, handleClose, handleConfirm }) => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+const DeathDialog: FC<DeathDialogProps> = ({
+  addedMoves,
+  removedMoves,
+  settingDeathMoves,
+  handleClose,
+  handleConfirm,
+}) => {
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
 
   const getText = () => {
     const textArray: string[] = [];
@@ -56,7 +67,9 @@ const DeathDialog: FC<DeathDialogProps> = ({ addedMoves, removedMoves, settingDe
 
     if (addedMoves.includes(DEATH_CHANGE_PLAYBOOK_NAME) && !!character) {
       textArray.push(
-        `${ADD_CHANGE_PLAYBOOK_TEXT_1} ${getUniqueFromPlaybookType(character.playbook)}, ${ADD_CHANGE_PLAYBOOK_TEXT_2}`
+        `${ADD_CHANGE_PLAYBOOK_TEXT_1} ${getUniqueFromPlaybookType(
+          character.playbook
+        )}, ${ADD_CHANGE_PLAYBOOK_TEXT_2}`
       );
     }
 
@@ -77,12 +90,14 @@ const DeathDialog: FC<DeathDialogProps> = ({ addedMoves, removedMoves, settingDe
     }
 
     if (removedMoves.includes(DIE_NAME) && !!character) {
-      textArray.push(`${REMOVE_DIE_TEXT_1} ${character.name} ${REMOVE_DIE_TEXT_2}`);
+      textArray.push(
+        `${REMOVE_DIE_TEXT_1} ${character.name} ${REMOVE_DIE_TEXT_2}`
+      );
     }
     return textArray;
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
     <DialogWrapper background={deathDialogBackground} handleClose={handleClose}>
@@ -101,7 +116,8 @@ const DeathDialog: FC<DeathDialogProps> = ({ addedMoves, removedMoves, settingDe
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />

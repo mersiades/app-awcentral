@@ -13,8 +13,16 @@ export interface SetCharacterHxVars {
 }
 
 const SET_CHARACTER_HX = gql`
-  mutation SetCharacterHx($gameRoleId: String!, $characterId: String!, $hxStats: [HxInput]!) {
-    setCharacterHx(gameRoleId: $gameRoleId, characterId: $characterId, hxStats: $hxStats) {
+  mutation SetCharacterHx(
+    $gameRoleId: String!
+    $characterId: String!
+    $hxStats: [HxInput]!
+  ) {
+    setCharacterHx(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      hxStats: $hxStats
+    ) {
       id
       name
       playbook

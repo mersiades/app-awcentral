@@ -47,14 +47,17 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     const harmInflicted = '2';
     const messageTitle = `${characterName?.toUpperCase()}: ${INFLICT_HARM_NAME}`;
     const targetName = 'Doc';
-    const moveDescSnippet = 'When you inflict harm on another player’s character';
+    const moveDescSnippet =
+      'When you inflict harm on another player’s character';
     const hxChangeDesc1 = `${targetName} suffered ${harmInflicted}-harm at the hand of ${characterName}.`;
     const hxChangeDesc2 = `${targetName}'s Hx with ${characterName} has been increased by ${harmInflicted}`;
     cy.contains(decapitalize(INFLICT_HARM_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
     cy.get('input[aria-label="target-character-input"]').click();
     cy.get('div[role="menubar"]').within(() => cy.contains(targetName).click());
-    cy.get('input[type="number"]').type('{selectall}{backspace}').type(harmInflicted);
+    cy.get('input[type="number"]')
+      .type('{selectall}{backspace}')
+      .type(harmInflicted);
     cy.contains('OKAY').click();
     cy.checkMoveMessage(messageTitle, hxChangeDesc1);
     cy.contains(hxChangeDesc2).should('be.visible');
@@ -71,23 +74,32 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     cy.contains(moveDescSnippet).should('be.visible');
     cy.get('input[aria-label="target-character-input"]').click();
     cy.get('div[role="menubar"]').within(() => cy.contains(targetName).click());
-    cy.get('input[type="number"]').type('{selectall}{backspace}').type(harmInflicted);
+    cy.get('input[type="number"]')
+      .type('{selectall}{backspace}')
+      .type(harmInflicted);
     cy.contains('APPLY').click();
     cy.checkMoveMessage(messageTitle, hxChangeDesc1);
     cy.contains(hxChangeDesc2).should('be.visible');
     cy.openPlaybookPanel();
-    cy.get('div[data-testid="Hx-box"]').within(() => cy.get('div[aria-label="Smith-hx"]').should('contain.text', '1'));
+    cy.get('div[data-testid="Hx-box"]').within(() =>
+      cy.get('div[aria-label="Smith-hx"]').should('contain.text', '1')
+    );
     cy.get('div[data-testid="Improvement-box"]').within(() =>
-      cy.get('div[data-testid="filled-circle"]').then((elems) => expect(elems).to.have.length(1))
+      cy
+        .get('div[data-testid="filled-circle"]')
+        .then((elems) => expect(elems).to.have.length(1))
     );
   });
 
   it(`should show a ${GIVE_BARTER_NAME} move message`, () => {
     // Make sure Scarlet has enough barter
     cy.openPlaybookPanel();
-    cy.get('div[data-testid="Barter-box"]').within(() => cy.get('div[data-testid="increase-caret"]').click());
+    cy.get('div[data-testid="Barter-box"]').within(() =>
+      cy.get('div[data-testid="increase-caret"]').click()
+    );
     cy.openMovesPanelBox('Peripheral moves');
-    const moveDescSnippet = 'When you give 1-barter to someone, but with strings attached';
+    const moveDescSnippet =
+      'When you give 1-barter to someone, but with strings attached';
     const messageTitle = `${characterName?.toUpperCase()}: ${GIVE_BARTER_NAME}`;
     cy.contains(decapitalize(GIVE_BARTER_NAME)).click();
 
@@ -106,7 +118,9 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
   it(`should show a ${MAKE_WANT_KNOWN_NAME} move message`, () => {
     // Make sure Scarlet has enough barter
     cy.openPlaybookPanel();
-    cy.get('div[data-testid="Barter-box"]').within(() => cy.get('div[data-testid="increase-caret"]').click());
+    cy.get('div[data-testid="Barter-box"]').within(() =>
+      cy.get('div[data-testid="increase-caret"]').click()
+    );
     cy.openMovesPanelBox('Peripheral moves');
     const moveDescSnippet = 'When you make known that you want a thing';
     const messageTitle = `${characterName?.toUpperCase()}: ${MAKE_WANT_KNOWN_NAME}`;
@@ -118,7 +132,11 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
   });
 
   it(`should show a ${INSIGHT_NAME} move message`, () => {
-    cy.checkPrintMove(characterName, INSIGHT_NAME, 'When you are able to go to someone for insight');
+    cy.checkPrintMove(
+      characterName,
+      INSIGHT_NAME,
+      'When you are able to go to someone for insight'
+    );
   });
 
   it(`should show a ${AUGURY_NAME} move message`, () => {
@@ -129,6 +147,10 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
   });
 
   it(`should show a ${CHANGE_HIGHLIGHTED_STAT_NAME} move message`, () => {
-    cy.checkPrintMove(characterName, CHANGE_HIGHLIGHTED_STAT_NAME, 'At the beginning of any session');
+    cy.checkPrintMove(
+      characterName,
+      CHANGE_HIGHLIGHTED_STAT_NAME,
+      'At the beginning of any session'
+    );
   });
 });

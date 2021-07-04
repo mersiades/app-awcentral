@@ -38,8 +38,22 @@ const statusColors = {
   unknown: '#CCCCCC',
   disabled: '#CCCCCC',
 };
-const darkColors = ['#333333', '#555555', '#777777', '#999999', '#999999', '#999999'];
-const lightColors = ['#F8F8F8', '#F2F2F2', '#EDEDED', '#DADADA', '#DADADA', '#DADADA'];
+const darkColors = [
+  '#333333',
+  '#555555',
+  '#777777',
+  '#999999',
+  '#999999',
+  '#999999',
+];
+const lightColors = [
+  '#F8F8F8',
+  '#F2F2F2',
+  '#EDEDED',
+  '#DADADA',
+  '#DADADA',
+  '#DADADA',
+];
 const focusColor = accentColors[0];
 
 const colors = {
@@ -578,7 +592,10 @@ export const HeadingWS = styled(
       JSX.IntrinsicElements['h3'] &
       JSX.IntrinsicElements['h4'] &
       JSX.IntrinsicElements['h5'] &
-      JSX.IntrinsicElements['h6'] & { vtksReady?: boolean; crustReady?: boolean }
+      JSX.IntrinsicElements['h6'] & {
+        vtksReady?: boolean;
+        crustReady?: boolean;
+      }
   >
 )(({ level, vtksReady, crustReady }) => {
   const setFontFamily = () => {
@@ -636,7 +653,9 @@ export const HeadingWS = styled(
 });
 
 // Renders Grommet Paragraph with black text shadow
-export const ParagraphWS = styled(Paragraph as FC<ParagraphProps & JSX.IntrinsicElements['p']>)(() => {
+export const ParagraphWS = styled(
+  Paragraph as FC<ParagraphProps & JSX.IntrinsicElements['p']>
+)(() => {
   return css`
     text-shadow: 0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000;
     cursor: default;
@@ -644,7 +663,10 @@ export const ParagraphWS = styled(Paragraph as FC<ParagraphProps & JSX.Intrinsic
 });
 
 export const TextInputWS = styled(
-  TextInput as FC<TextInputProps & Omit<JSX.IntrinsicElements['input'], 'onSelect' | 'size' | 'placeholder'>>
+  TextInput as FC<
+    TextInputProps &
+      Omit<JSX.IntrinsicElements['input'], 'onSelect' | 'size' | 'placeholder'>
+  >
 )(() => {
   return css`
     text-shadow: 0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000;
@@ -652,7 +674,9 @@ export const TextInputWS = styled(
 });
 
 // Renders Grommet Button with black box shadow
-export const ButtonWS = styled(Button as FC<ButtonProps & JSX.IntrinsicElements['button']>)(({ primary }) => {
+export const ButtonWS = styled(
+  Button as FC<ButtonProps & JSX.IntrinsicElements['button']>
+)(({ primary }) => {
   return css`
     box-shadow: 0 0 5px 1px #000 ${!primary ? ', 0 0 5px 1px #000 inset' : ''};
     text-shadow: ${!primary ? '0 0 2px #000, 0 0 4px #000' : ''};
@@ -666,14 +690,18 @@ export const ButtonWS = styled(Button as FC<ButtonProps & JSX.IntrinsicElements[
 });
 
 // Renders Grommet Text with black text shadow
-export const TextWS = styled(Text as FC<TextProps & Omit<JSX.IntrinsicElements['span'], 'color'>>)(() => {
+export const TextWS = styled(
+  Text as FC<TextProps & Omit<JSX.IntrinsicElements['span'], 'color'>>
+)(() => {
   return css`
     text-shadow: 0 0 1px #000, 0 0 3px #000;
     cursor: default;
   `;
 });
 
-export const StyledClose = styled(Close as FC<IconProps & JSX.IntrinsicElements['svg']>)(() => {
+export const StyledClose = styled(
+  Close as FC<IconProps & JSX.IntrinsicElements['svg']>
+)(() => {
   return css`
     cursor: pointer;
     &:hover {
@@ -682,12 +710,15 @@ export const StyledClose = styled(Close as FC<IconProps & JSX.IntrinsicElements[
   `;
 });
 
-export const RedBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(() => {
+export const RedBox = styled(
+  Box as FC<BoxProps & JSX.IntrinsicElements['div']>
+)(() => {
   return css`
     border-color: ${brandColor};
     border-width: 3px;
     border-style: solid;
-    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3), 0 0 10px 1px rgba(0, 0, 0, 0.2), 0 0 5px 1px rgba(0, 0, 0, 0.3) inset,
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3), 0 0 10px 1px rgba(0, 0, 0, 0.2),
+      0 0 5px 1px rgba(0, 0, 0, 0.3) inset,
       0 0 10px 1px rgba(0, 0, 0, 0.2) inset;
   `;
 });

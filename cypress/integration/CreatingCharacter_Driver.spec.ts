@@ -124,14 +124,21 @@ describe('Creating a new Driver Character', () => {
     cy.contains('BATTLE VEHICLES').should('exist');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(DRIVER_SPECIAL_NAME));
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(DRIVER_SPECIAL_NAME)
+    );
     cy.get('div[data-testid="vehicles-box"]');
     cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE);
     cy.get('div[data-testid="vehicles-box"]').should('contain', vehicleName1);
     cy.get('div[data-testid="vehicles-box"]').should('contain', vehicleName2);
     cy.get('div[data-testid="vehicles-box"]').should('contain', vehicleName3);
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
+    cy.get('div[data-testid="battle-vehicles-box"]')
+      .should('contain', BATTLE_VEHICLES_TITLE)
+      .should('contain', '...');
+    cy.get('div[data-testid="hx-box"]')
+      .should('contain', HX_TITLE)
+      .should('contain', '...');
 
     // Finish test here because remainder of character creation process has been tested elsewhere
   });
@@ -145,15 +152,24 @@ const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
   cy.get('div[data-testid="Looks-tags-box"]').should('contain.text', '');
   cy.get('h2[aria-label="speed-value"]').should('contain.text', '0');
   cy.get('h2[aria-label="handling-value"]').should('contain.text', '0');
-  cy.get('input[aria-label="name-input"]').should('have.value', 'Unnamed vehicle');
+  cy.get('input[aria-label="name-input"]').should(
+    'have.value',
+    'Unnamed vehicle'
+  );
   cy.get('input[aria-label="name-input"]').type('{selectall}');
   cy.get('input[aria-label="name-input"]').type('{backspace}');
   cy.get('input[aria-label="name-input"]').type(name);
   cy.get('input[aria-label="name-input"]').should('have.value', name);
   cy.contains('uncomplaining').click();
-  cy.get('div[data-testid="Strengths-tags-box"]').should('contain.text', 'uncomplaining');
+  cy.get('div[data-testid="Strengths-tags-box"]').should(
+    'contain.text',
+    'uncomplaining'
+  );
   cy.contains('guzzler').click();
-  cy.get('div[data-testid="Weaknesses-tags-box"]').should('contain.text', 'guzzler');
+  cy.get('div[data-testid="Weaknesses-tags-box"]').should(
+    'contain.text',
+    'guzzler'
+  );
   cy.contains('vintage').click();
   cy.get('div[data-testid="Looks-tags-box"]').should('contain.text', 'vintage');
   cy.contains('SPEED').click();

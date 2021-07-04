@@ -43,11 +43,15 @@ describe('Using the ThreatsPanel', () => {
     const newThreatImpulse = 'Pain addict';
     const threatStakes = 'Will Gnarly ever listen to Bob Marley?';
     cy.get(`svg[data-testid="${threatName.toLowerCase()}-edit-link"]`).click();
-    cy.get('input[name="impulses"]').should('have.value', originalThreatImpulse).click();
+    cy.get('input[name="impulses"]')
+      .should('have.value', originalThreatImpulse)
+      .click();
     cy.contains(newThreatImpulse).click();
     cy.get('textarea[name="stakes"]').type(threatStakes);
     cy.contains(SET_TEXT).click();
-    cy.get(`svg[data-testid="${threatName.toLowerCase()}-down-chevron"]`).click();
+    cy.get(
+      `svg[data-testid="${threatName.toLowerCase()}-down-chevron"]`
+    ).click();
     cy.contains(newThreatImpulse).should('exist');
     cy.contains(threatStakes).should('exist');
   });
@@ -79,7 +83,9 @@ const checkAddingThreat = (options: checkAddingThreatOptions) => {
   cy.contains(SET_TEXT).click();
   cy.contains(expectedDialogContent1).should('not.exist');
   cy.contains(options.name).should('exist');
-  cy.get(`svg[data-testid="${options.name.toLowerCase()}-down-chevron"]`).click();
+  cy.get(
+    `svg[data-testid="${options.name.toLowerCase()}-down-chevron"]`
+  ).click();
   cy.contains(decapitalize(options.type)).should('exist');
   cy.contains(options.impulse).should('exist');
   if (!!options.description) {

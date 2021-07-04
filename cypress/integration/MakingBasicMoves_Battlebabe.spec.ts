@@ -27,15 +27,28 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
   });
 
   it(`should show a ${UNDER_FIRE_NAME} move message`, () => {
-    cy.checkPrintMove(characterName, UNDER_FIRE_NAME, 'When you do something under fire');
+    cy.checkPrintMove(
+      characterName,
+      UNDER_FIRE_NAME,
+      'When you do something under fire'
+    );
   });
 
   it(`should show a ${GO_AGGRO_NAME} move message`, () => {
-    cy.checkRollMove(characterName, GO_AGGRO_NAME, 'When you go aggro on someone', StatType.hard);
+    cy.checkRollMove(
+      characterName,
+      GO_AGGRO_NAME,
+      'When you go aggro on someone',
+      StatType.hard
+    );
   });
 
   it(`should show a ${SUCKER_SOMEONE_NAME} move message`, () => {
-    cy.checkPrintMove(characterName, SUCKER_SOMEONE_NAME, 'When you attack someone unsuspecting or helpless');
+    cy.checkPrintMove(
+      characterName,
+      SUCKER_SOMEONE_NAME,
+      'When you attack someone unsuspecting or helpless'
+    );
   });
 
   it(`should show a ${DO_BATTLE_NAME} move message`, () => {
@@ -63,11 +76,21 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
   });
 
   it(`should show a ${READ_A_SITCH_NAME} move message`, () => {
-    cy.checkRollMove(characterName, READ_A_SITCH_NAME, 'When you read a charged situation', StatType.sharp);
+    cy.checkRollMove(
+      characterName,
+      READ_A_SITCH_NAME,
+      'When you read a charged situation',
+      StatType.sharp
+    );
   });
 
   it(`should show a ${READ_PERSON_NAME} move message`, () => {
-    cy.checkRollMove(characterName, READ_PERSON_NAME, 'When you read a person', StatType.sharp);
+    cy.checkRollMove(
+      characterName,
+      READ_PERSON_NAME,
+      'When you read a person',
+      StatType.sharp
+    );
     // Flakey: not worth the effort
     // cy.get(`div[data-testid="${characterName?.toUpperCase()}: ${READ_PERSON_NAME}-message"]`).within(() => {
     //   cy.get('h1[aria-label="final-roll-result"]').then((elem) => {
@@ -108,6 +131,10 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
   });
 
   it(`should show a ${SESSION_END_NAME} move message`, () => {
-    cy.checkPrintMove(characterName, SESSION_END_NAME, 'At the end of every session');
+    cy.checkPrintMove(
+      characterName,
+      SESSION_END_NAME,
+      'At the end of every session'
+    );
   });
 });

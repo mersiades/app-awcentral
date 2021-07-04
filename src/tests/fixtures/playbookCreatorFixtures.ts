@@ -34,7 +34,11 @@ import {
   mockUniqueCreatorSavvyhead,
   mockUniqueCreatorSkinner,
 } from './playbookUniqueCreatorsFixtures';
-import { mockStatsOptionsDefault1, mockStatsOptionsDefault2, mockStatsOptionsDefault3 } from './statsOptionsFixtures';
+import {
+  mockStatsOptionsDefault1,
+  mockStatsOptionsDefault2,
+  mockStatsOptionsDefault3,
+} from './statsOptionsFixtures';
 
 export const mockPlaybookCreatorDefault: PlaybookCreator = {
   id: 'default-playbook-creator-id',
@@ -42,7 +46,8 @@ export const mockPlaybookCreatorDefault: PlaybookCreator = {
   gearInstructions: mockgearInstructionsDefault,
   improvementInstructions: 'Whenever you roll a highlighted stat...',
   movesInstructions: 'You get all the basic moves. Choose 2 angel moves.  ',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  hxInstructions:
+    'Everyone introduces their characters by name, look and outlook...',
   names: [mockNameAngel1, mockNameAngel2],
   looks: [
     mockLookAngel1,
@@ -56,9 +61,17 @@ export const mockPlaybookCreatorDefault: PlaybookCreator = {
     mockLookAngel9,
     mockLookAngel10,
   ],
-  statsOptions: [mockStatsOptionsDefault1, mockStatsOptionsDefault2, mockStatsOptionsDefault3],
+  statsOptions: [
+    mockStatsOptionsDefault1,
+    mockStatsOptionsDefault2,
+    mockStatsOptionsDefault3,
+  ],
   playbookUniqueCreator: mockUniqueCreatorDefault,
-  optionalMoves: [mockSixthSenseCM, mockInfirmaryCM, mockProfessionalCompassionCM],
+  optionalMoves: [
+    mockSixthSenseCM,
+    mockInfirmaryCM,
+    mockProfessionalCompassionCM,
+  ],
   defaultMoves: [mockAngelSpecialCM],
   defaultMoveCount: 1,
   moveChoiceCount: 2,
@@ -72,7 +85,8 @@ export const mockPlaybookCreatorBrainer: PlaybookCreator = {
   id: 'brainer-playbook-creator-id',
   playbookType: PlaybookType.brainer,
   movesInstructions: 'You get all the basic moves. Choose 2 driver moves.',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  hxInstructions:
+    'Everyone introduces their characters by name, look and outlook...',
   playbookUniqueCreator: mockUniqueCreatorBrainer,
 };
 
@@ -80,7 +94,8 @@ export const mockPlaybookCreatorChopper: PlaybookCreator = {
   ...mockPlaybookCreatorDefault,
   id: 'chopper-playbook-creator-id',
   playbookType: PlaybookType.chopper,
-  movesInstructions: 'You get all the basic moves. You get both chopper moves. ',
+  movesInstructions:
+    'You get all the basic moves. You get both chopper moves. ',
   playbookUniqueCreator: mockUniqueCreatorChopper,
   defaultMoves: [mockChopperSpecial],
   optionalMoves: [],
@@ -91,7 +106,8 @@ export const mockPlaybookCreatorDriver: PlaybookCreator = {
   id: 'driver-playbook-creator-id',
   playbookType: PlaybookType.driver,
   movesInstructions: 'You get all the basic moves. Choose 2 driver moves.',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  hxInstructions:
+    'Everyone introduces their characters by name, look and outlook...',
   playbookUniqueCreator: undefined,
 };
 
@@ -106,7 +122,8 @@ export const mockPlaybookCreatorHardHolder: PlaybookCreator = {
   ...mockPlaybookCreatorDefault,
   id: 'hardholder-playbook-creator-id',
   playbookType: PlaybookType.hardholder,
-  movesInstructions: 'You get all the basic moves. You get both hardholder moves.  ',
+  movesInstructions:
+    'You get all the basic moves. You get both hardholder moves.  ',
   playbookUniqueCreator: mockUniqueCreatorHardHolder,
 };
 
@@ -114,7 +131,8 @@ export const mockPlaybookCreatorHocus: PlaybookCreator = {
   ...mockPlaybookCreatorDefault,
   id: 'hocus-playbook-creator-id',
   playbookType: PlaybookType.hocus,
-  movesInstructions: 'You get all the basic moves. You get fortunes, and the choose 2 more hocus moves.',
+  movesInstructions:
+    'You get all the basic moves. You get fortunes, and the choose 2 more hocus moves.',
   playbookUniqueCreator: mockUniqueCreatorHocus,
 };
 
@@ -123,7 +141,8 @@ export const mockPlaybookCreatorMaestroD: PlaybookCreator = {
   id: 'maestro-d-playbook-creator-id',
   playbookType: PlaybookType.maestroD,
   movesInstructions: "You get all the basic moves. Choose 2 maestro d' moves. ",
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  hxInstructions:
+    'Everyone introduces their characters by name, look and outlook...',
   playbookUniqueCreator: mockUniqueCreatorMaestroD,
 };
 

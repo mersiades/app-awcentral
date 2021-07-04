@@ -13,8 +13,16 @@ export interface SetCharacterStatsVars {
 }
 
 const SET_CHARACTER_STATS = gql`
-  mutation SetCharacterStats($gameRoleId: String!, $characterId: String!, $statsOptionId: String!) {
-    setCharacterStats(gameRoleId: $gameRoleId, characterId: $characterId, statsOptionId: $statsOptionId) {
+  mutation SetCharacterStats(
+    $gameRoleId: String!
+    $characterId: String!
+    $statsOptionId: String!
+  ) {
+    setCharacterStats(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      statsOptionId: $statsOptionId
+    ) {
       id
       name
       playbook

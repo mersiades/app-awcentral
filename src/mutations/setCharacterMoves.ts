@@ -27,7 +27,10 @@ export interface SetCharacterMovesVars {
   moveNames: string[];
 }
 
-export const getSetCharacterMovesOR = (character: Character, moveNames: string[]): SetCharacterMovesData => {
+export const getSetCharacterMovesOR = (
+  character: Character,
+  moveNames: string[]
+): SetCharacterMovesData => {
   const optimisticCharacterMoves: SetCharacterMovesData_CharacterMove[] = [];
 
   moveNames.forEach((newMoveName) => {
@@ -74,8 +77,16 @@ export const getSetCharacterMovesOR = (character: Character, moveNames: string[]
 };
 
 const SET_CHARACTER_MOVES = gql`
-  mutation SetCharacterMoves($gameRoleId: String!, $characterId: String!, $moveNames: [String]!) {
-    setCharacterMoves(gameRoleId: $gameRoleId, characterId: $characterId, moveNames: $moveNames) {
+  mutation SetCharacterMoves(
+    $gameRoleId: String!
+    $characterId: String!
+    $moveNames: [String]!
+  ) {
+    setCharacterMoves(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      moveNames: $moveNames
+    ) {
       id
       playbook
       characterMoves {

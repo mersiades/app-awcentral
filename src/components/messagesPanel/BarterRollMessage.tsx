@@ -15,21 +15,47 @@ export interface BarterRollMessageProps {
   ticker: number;
 }
 
-const BarterRollMessage: FC<BarterRollMessageProps> = ({ message, messagesLength, index, ticker }) => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+const BarterRollMessage: FC<BarterRollMessageProps> = ({
+  message,
+  messagesLength,
+  index,
+  ticker,
+}) => {
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady, vtksReady } = useFonts();
 
   return (
-    <MoveMessage message={message} messagesLength={messagesLength} index={index} ticker={ticker}>
+    <MoveMessage
+      message={message}
+      messagesLength={messagesLength}
+      index={index}
+      ticker={ticker}
+    >
       <Box fill>
-        <Box fill="horizontal" direction="row" align="center" justify="center" pad="12px">
+        <Box
+          fill="horizontal"
+          direction="row"
+          align="center"
+          justify="center"
+          pad="12px"
+        >
           <Box direction="row" align="center" justify="around" width="67%">
             {getDiceImage(message.roll1)}
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               +
             </HeadingWS>
             {getDiceImage(message.roll2)}
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               +
             </HeadingWS>
             <Box align="center" justify="between" pad="12px">
@@ -45,7 +71,12 @@ const BarterRollMessage: FC<BarterRollMessageProps> = ({ message, messagesLength
             </Box>
             {message.usedPlusOneForward && (
               <>
-                <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+                <HeadingWS
+                  crustReady={crustReady}
+                  level={2}
+                  color="brand"
+                  margin="3px"
+                >
                   +
                 </HeadingWS>
                 <Box align="center" justify="between" pad="12px">
@@ -61,11 +92,26 @@ const BarterRollMessage: FC<BarterRollMessageProps> = ({ message, messagesLength
                 </Box>
               </>
             )}
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               =
             </HeadingWS>
-            <Box align="center" justify="between" pad={{ vertical: '12px', horizontal: '24px' }}>
-              <HeadingWS vtksReady={vtksReady} level={1} color="brand" margin="3px" style={{ fontSize: '80px' }}>
+            <Box
+              align="center"
+              justify="between"
+              pad={{ vertical: '12px', horizontal: '24px' }}
+            >
+              <HeadingWS
+                vtksReady={vtksReady}
+                level={1}
+                color="brand"
+                margin="3px"
+                style={{ fontSize: '80px' }}
+              >
                 {message.rollResult}
               </HeadingWS>
             </Box>

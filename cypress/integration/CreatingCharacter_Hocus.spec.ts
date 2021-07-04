@@ -55,22 +55,43 @@ describe('Creating a new Hocus Character', () => {
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]').should('contain', hocusGearItem);
-    cy.get('div[data-testid="followers-box"]').should('contain', decapitalize(UniqueTypes.followers));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(HOCUS_SPECIAL_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(FORTUNES_NAME));
+    cy.get('div[data-testid="followers-box"]').should(
+      'contain',
+      decapitalize(UniqueTypes.followers)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(HOCUS_SPECIAL_NAME)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(FORTUNES_NAME)
+    );
 
     // Check form functionality
     cy.contains(characterization1.toLowerCase()).click();
-    cy.get('div[data-testid="description-tags-box"]').should('contain', characterization1);
+    cy.get('div[data-testid="description-tags-box"]').should(
+      'contain',
+      characterization1
+    );
 
     cy.contains(travelOption1).click();
-    cy.get('div[data-testid="description-tags-box"]').should('contain', travelOption1);
+    cy.get('div[data-testid="description-tags-box"]').should(
+      'contain',
+      travelOption1
+    );
 
     cy.contains(travelOption2).click();
-    cy.get('div[data-testid="description-tags-box"]').should('contain', travelOption2);
+    cy.get('div[data-testid="description-tags-box"]').should(
+      'contain',
+      travelOption2
+    );
 
     cy.contains(characterization2.toLowerCase()).click();
-    cy.get('div[data-testid="description-tags-box"]').should('contain', characterization2);
+    cy.get('div[data-testid="description-tags-box"]').should(
+      'contain',
+      characterization2
+    );
 
     selectItem(strength1, [
       { box: 'surplus-tags', expectedResult: '2-barter' },
@@ -78,45 +99,81 @@ describe('Creating a new Hocus Character', () => {
     ]);
 
     selectItem(strength2, [{ box: 'fortune', expectedResult: '+2fortune' }]);
-    deSelectItem(strength2, [{ box: 'fortune', notExpectedResult: '+2fortune' }]);
+    deSelectItem(strength2, [
+      { box: 'fortune', notExpectedResult: '+2fortune' },
+    ]);
 
     selectItem(strength3, [{ box: 'surplus-tags', expectedResult: 'augury' }]);
-    checkSelectionLimit(strength4, [{ box: 'surplus-tags', notExpectedResult: 'party' }]);
-    deSelectItem(strength3, [{ box: 'surplus-tags', notExpectedResult: 'augury' }]);
+    checkSelectionLimit(strength4, [
+      { box: 'surplus-tags', notExpectedResult: 'party' },
+    ]);
+    deSelectItem(strength3, [
+      { box: 'surplus-tags', notExpectedResult: 'augury' },
+    ]);
 
     selectItem(strength4, [{ box: 'surplus-tags', expectedResult: 'party' }]);
-    deSelectItem(strength4, [{ box: 'surplus-tags', notExpectedResult: 'party' }]);
+    deSelectItem(strength4, [
+      { box: 'surplus-tags', notExpectedResult: 'party' },
+    ]);
 
     selectItem(strength5, [{ box: 'surplus-tags', expectedResult: 'insight' }]);
-    deSelectItem(strength5, [{ box: 'surplus-tags', notExpectedResult: 'insight' }]);
+    deSelectItem(strength5, [
+      { box: 'surplus-tags', notExpectedResult: 'insight' },
+    ]);
 
-    selectItem(strength6, [{ box: 'surplus-tags', expectedResult: '3-barter' }]);
-    deSelectItem(strength6, [{ box: 'surplus-tags', notExpectedResult: '3-barter' }]); // 2-barter
+    selectItem(strength6, [
+      { box: 'surplus-tags', expectedResult: '3-barter' },
+    ]);
+    deSelectItem(strength6, [
+      { box: 'surplus-tags', notExpectedResult: '3-barter' },
+    ]); // 2-barter
 
     selectItem(strength7, [{ box: 'surplus-tags', expectedResult: 'growth' }]);
-    deSelectItem(strength7, [{ box: 'surplus-tags', notExpectedResult: 'growth' }]);
+    deSelectItem(strength7, [
+      { box: 'surplus-tags', notExpectedResult: 'growth' },
+    ]);
     selectItem(strength7, [{ box: 'surplus-tags', expectedResult: 'growth' }]);
 
-    selectItem(weakness1, [{ box: 'surplus-tags', expectedResult: '1-barter' }]);
+    selectItem(weakness1, [
+      { box: 'surplus-tags', expectedResult: '1-barter' },
+    ]);
 
     selectItem(weakness2, [{ box: 'want-tags', expectedResult: 'judgement' }]);
-    deSelectItem(weakness2, [{ box: 'want-tags', notExpectedResult: 'judgement' }]);
+    deSelectItem(weakness2, [
+      { box: 'want-tags', notExpectedResult: 'judgement' },
+    ]);
 
-    selectItem(weakness3, [{ box: 'want-tags', expectedResult: 'desperation' }]);
-    checkSelectionLimit(weakness4, [{ box: 'surplus-tags', notExpectedResult: 'stupor' }]);
-    deSelectItem(weakness3, [{ box: 'want-tags', notExpectedResult: 'desperation' }]);
+    selectItem(weakness3, [
+      { box: 'want-tags', expectedResult: 'desperation' },
+    ]);
+    checkSelectionLimit(weakness4, [
+      { box: 'surplus-tags', notExpectedResult: 'stupor' },
+    ]);
+    deSelectItem(weakness3, [
+      { box: 'want-tags', notExpectedResult: 'desperation' },
+    ]);
 
     selectItem(weakness4, [{ box: 'surplus-tags', expectedResult: 'stupor' }]);
-    deSelectItem(weakness4, [{ box: 'surplus-tags', notExpectedResult: 'stupor' }]);
+    deSelectItem(weakness4, [
+      { box: 'surplus-tags', notExpectedResult: 'stupor' },
+    ]);
 
     selectItem(weakness5, [{ box: 'want-tags', expectedResult: 'disease' }]);
-    deSelectItem(weakness5, [{ box: 'want-tags', notExpectedResult: 'disease' }]);
+    deSelectItem(weakness5, [
+      { box: 'want-tags', notExpectedResult: 'disease' },
+    ]);
 
-    selectItem(weakness6, [{ box: 'surplus-tags', expectedResult: 'violence' }]);
-    deSelectItem(weakness6, [{ box: 'surplus-tags', notExpectedResult: 'violence' }]);
+    selectItem(weakness6, [
+      { box: 'surplus-tags', expectedResult: 'violence' },
+    ]);
+    deSelectItem(weakness6, [
+      { box: 'surplus-tags', notExpectedResult: 'violence' },
+    ]);
 
     selectItem(weakness7, [{ box: 'want-tags', expectedResult: 'savagery' }]);
-    deSelectItem(weakness7, [{ box: 'want-tags', notExpectedResult: 'savagery' }]);
+    deSelectItem(weakness7, [
+      { box: 'want-tags', notExpectedResult: 'savagery' },
+    ]);
     selectItem(weakness7, [{ box: 'want-tags', expectedResult: 'savagery' }]);
 
     // Submit form
@@ -134,27 +191,52 @@ describe('Creating a new Hocus Character', () => {
       .should('contain', decapitalize(UniqueTypes.followers))
       .should('contain', characterization2)
       .should('contain', travelOption2);
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(HOCUS_SPECIAL_NAME));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(FORTUNES_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(HOCUS_SPECIAL_NAME)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(FORTUNES_NAME)
+    );
+    cy.get('div[data-testid="vehicles-box"]')
+      .should('contain', VEHICLES_TITLE)
+      .should('contain', '...');
   });
 });
 
-const selectItem = (item: string, checks: { box: string; expectedResult: string }[]) => {
-  cy.contains(item).click();
-  checks.forEach((check) => cy.get(`div[data-testid="${check.box}-box"]`).should('include.text', check.expectedResult));
-};
-
-const deSelectItem = (item: string, checks: { box: string; notExpectedResult: string }[]) => {
+const selectItem = (
+  item: string,
+  checks: { box: string; expectedResult: string }[]
+) => {
   cy.contains(item).click();
   checks.forEach((check) =>
-    cy.get(`div[data-testid="${check.box}-box"]`).should('not.include.text', check.notExpectedResult)
+    cy
+      .get(`div[data-testid="${check.box}-box"]`)
+      .should('include.text', check.expectedResult)
   );
 };
 
-const checkSelectionLimit = (item: string, checks: { box: string; notExpectedResult: string }[]) => {
+const deSelectItem = (
+  item: string,
+  checks: { box: string; notExpectedResult: string }[]
+) => {
   cy.contains(item).click();
   checks.forEach((check) =>
-    cy.get(`div[data-testid="${check.box}-box"]`).should('not.include.text', check.notExpectedResult)
+    cy
+      .get(`div[data-testid="${check.box}-box"]`)
+      .should('not.include.text', check.notExpectedResult)
+  );
+};
+
+const checkSelectionLimit = (
+  item: string,
+  checks: { box: string; notExpectedResult: string }[]
+) => {
+  cy.contains(item).click();
+  checks.forEach((check) =>
+    cy
+      .get(`div[data-testid="${check.box}-box"]`)
+      .should('not.include.text', check.notExpectedResult)
   );
 };

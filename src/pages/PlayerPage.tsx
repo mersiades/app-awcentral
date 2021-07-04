@@ -28,7 +28,11 @@ import VHarmDialog from '../components/dialogs/VHarmDialog';
 import GoToPreGameDialog from '../components/dialogs/GoToPreGameDialog';
 import RipSign from '../components/RipSign';
 import ScriptChange from '../components/ScriptChange';
-import { Footer, MainContainer, SidePanel } from '../components/styledComponents';
+import {
+  Footer,
+  MainContainer,
+  SidePanel,
+} from '../components/styledComponents';
 import ALL_MOVES from '../queries/allMoves';
 import { MoveActionType, RollType } from '../@types/enums';
 import { CharacterMove, Move } from '../@types/staticDataInterfaces';
@@ -79,7 +83,7 @@ const PlayerPage: FC = () => {
   const MAX_SIDE_PANEL = 2;
   const SIDE_PANEL_WIDTH = 50;
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   /**
    * Number that indicates what should be shown in the side panel
    * 0 - PlaybookPanel
@@ -92,19 +96,19 @@ const PlayerPage: FC = () => {
   const [showGoToPreGameDialog, setShowGoToPreGameDialog] = useState(false);
   let hasShownGotToPreGameDialog = useRef(false);
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { id: userId } = useKeycloakUser();
   const { game, fetchingGame, userGameRole, setGameContext } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
   const allMoves = allMovesData?.allMoves;
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const navigateToCharacterCreation = useCallback(
     (step: string) => {
       history.push(`/character-creation/${gameId}?step=${step}`);
@@ -112,7 +116,7 @@ const PlayerPage: FC = () => {
     [history, gameId]
   );
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   // Kick the User off the page if they are not a member of the game
   useEffect(() => {
@@ -145,12 +149,16 @@ const PlayerPage: FC = () => {
 
   // Show GoToPreGameDialog if game hasn't finished pre-game
   useEffect(() => {
-    if (!!game && !game?.hasFinishedPreGame && !hasShownGotToPreGameDialog.current) {
+    if (
+      !!game &&
+      !game?.hasFinishedPreGame &&
+      !hasShownGotToPreGameDialog.current
+    ) {
       setShowGoToPreGameDialog(true);
     }
   }, [game, game?.hasFinishedPreGame]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
     <Box fill background={background}>
@@ -167,52 +175,122 @@ const PlayerPage: FC = () => {
       {dialog?.moveAction?.rollType === RollType.harm && (
         <HarmDialog move={dialog} handleClose={() => setDialog(undefined)} />
       )}
-      {dialog && [OUTDISTANCE_VEHICLE_NAME, OVERTAKE_VEHICLE_NAME].includes(dialog.name) && (
-        <RelativeSpeedDialog move={dialog} handleClose={() => setDialog(undefined)} />
-      )}
+      {dialog &&
+        [OUTDISTANCE_VEHICLE_NAME, OVERTAKE_VEHICLE_NAME].includes(
+          dialog.name
+        ) && (
+          <RelativeSpeedDialog
+            move={dialog}
+            handleClose={() => setDialog(undefined)}
+          />
+        )}
       {dialog?.moveAction?.actionType === MoveActionType.barter && (
         <BarterDialog move={dialog} handleClose={() => setDialog(undefined)} />
       )}
       {dialog?.name === HELP_OR_INTERFERE_NAME && (
-        <HelpOrInterfereDialog move={dialog} buttonTitle="ROLL" handleClose={() => setDialog(undefined)} />
+        <HelpOrInterfereDialog
+          move={dialog}
+          buttonTitle="ROLL"
+          handleClose={() => setDialog(undefined)}
+        />
       )}
       {dialog?.name === MAKE_WANT_KNOWN_NAME && (
-        <MakeWantKnownDialog move={dialog} handleClose={() => setDialog(undefined)} />
+        <MakeWantKnownDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
       )}
-      {dialog?.name === INFLICT_HARM_NAME && <InflictHarmDialog move={dialog} handleClose={() => setDialog(undefined)} />}
-      {dialog?.name === HEAL_HARM_NAME && <HealHarmDialog move={dialog} handleClose={() => setDialog(undefined)} />}
-      {dialog?.name === ANGEL_SPECIAL_NAME && <AngelSpecialDialog move={dialog} handleClose={() => setDialog(undefined)} />}
+      {dialog?.name === INFLICT_HARM_NAME && (
+        <InflictHarmDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
+      )}
+      {dialog?.name === HEAL_HARM_NAME && (
+        <HealHarmDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
+      )}
+      {dialog?.name === ANGEL_SPECIAL_NAME && (
+        <AngelSpecialDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
+      )}
       {dialog?.moveAction?.actionType === MoveActionType.hocus && (
-        <HocusSpecialDialog move={dialog} handleClose={() => setDialog(undefined)} />
+        <HocusSpecialDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
       )}
       {dialog?.name === STABILIZE_AND_HEAL_NAME && (
-        <StabilizeDialog move={dialog} handleClose={() => setDialog(undefined)} />
+        <StabilizeDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
       )}
       {dialog?.name === SPEED_RECOVERY_NAME && (
-        <SpeedRecoveryDialog move={dialog} handleClose={() => setDialog(undefined)} />
+        <SpeedRecoveryDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
       )}
-      {dialog?.name === REVIVE_SOMEONE_NAME && <ReviveDialog move={dialog} handleClose={() => setDialog(undefined)} />}
-      {dialog?.name === TREAT_NPC_NAME && <TreatNpcDialog move={dialog} handleClose={() => setDialog(undefined)} />}
+      {dialog?.name === REVIVE_SOMEONE_NAME && (
+        <ReviveDialog move={dialog} handleClose={() => setDialog(undefined)} />
+      )}
+      {dialog?.name === TREAT_NPC_NAME && (
+        <TreatNpcDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
+      )}
       {dialog?.name === CHOPPER_SPECIAL_NAME && (
-        <ChopperSpecialDialog move={dialog} handleClose={() => setDialog(undefined)} />
+        <ChopperSpecialDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
       )}
       {dialog?.name === GUNLUGGER_SPECIAL_NAME && (
-        <GunluggerSpecialDialog move={dialog} handleClose={() => setDialog(undefined)} />
+        <GunluggerSpecialDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
       )}
       {dialog?.name === SKINNER_SPECIAL_NAME && (
-        <SkinnerSpecialDialog move={dialog} handleClose={() => setDialog(undefined)} />
+        <SkinnerSpecialDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
       )}
-      {dialog?.name === BOARD_VEHICLE_NAME && <BoardVehicleDialog move={dialog} handleClose={() => setDialog(undefined)} />}
+      {dialog?.name === BOARD_VEHICLE_NAME && (
+        <BoardVehicleDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
+      )}
       {dialog?.name === DEAL_WITH_TERRAIN_NAME && (
-        <DealTerrainDialog move={dialog} handleClose={() => setDialog(undefined)} />
+        <DealTerrainDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
       )}
       {dialog?.name === JUST_GIVE_MOTIVE_NAME && (
-        <JustGiveMotiveDialog move={dialog} handleClose={() => setDialog(undefined)} />
+        <JustGiveMotiveDialog
+          move={dialog}
+          handleClose={() => setDialog(undefined)}
+        />
       )}
-      {dialog?.name === SUFFER_V_HARM && <VHarmDialog move={dialog} handleClose={() => setDialog(undefined)} />}
+      {dialog?.name === SUFFER_V_HARM && (
+        <VHarmDialog move={dialog} handleClose={() => setDialog(undefined)} />
+      )}
       <div
         data-testid="player-page"
-        style={{ height: `calc(100vh - ${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT}px)` }}
+        style={{
+          height: `calc(100vh - ${
+            GAME_PAGE_BOTTOM_NAVBAR_HEIGHT + GAME_PAGE_TOP_NAVBAR_HEIGHT
+          }px)`,
+        }}
       >
         <Collapsible direction="horizontal" open={sidePanel < 2}>
           <SidePanel sidePanel={sidePanel} growWidth={SIDE_PANEL_WIDTH}>
@@ -223,7 +301,9 @@ const PlayerPage: FC = () => {
                 openDialog={setDialog}
               />
             )}
-            {sidePanel === 1 && !!allMoves && <MovesPanel allMoves={allMoves} openDialog={setDialog} />}
+            {sidePanel === 1 && !!allMoves && (
+              <MovesPanel allMoves={allMoves} openDialog={setDialog} />
+            )}
           </SidePanel>
         </Collapsible>
         <MainContainer
@@ -237,7 +317,12 @@ const PlayerPage: FC = () => {
           <MessagesPanel />
         </MainContainer>
       </div>
-      <Footer direction="row" justify="between" align="center" height={`${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT}px`}>
+      <Footer
+        direction="row"
+        justify="between"
+        align="center"
+        height={`${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT}px`}
+      >
         <ThemeContext.Extend value={customTabStyles}>
           <Tabs
             activeIndex={sidePanel}
@@ -248,13 +333,17 @@ const PlayerPage: FC = () => {
               tab === sidePanel ? setSidePanel(3) : setSidePanel(tab);
             }}
           >
-            {userGameRole && userGameRole.characters && userGameRole.characters.length >= 1 && <Tab title="Playbook" />}
+            {userGameRole &&
+              userGameRole.characters &&
+              userGameRole.characters.length >= 1 && <Tab title="Playbook" />}
             {allMoves && <Tab title="Moves" />}
           </Tabs>
         </ThemeContext.Extend>
         <Box direction="row" gap="12px" align="center">
           {character?.hasPlusOneForward && <Plus1ForwardPill />}
-          {!!character && character.holds.length > 0 && <Holds holds={character.holds} />}
+          {!!character && character.holds.length > 0 && (
+            <Holds holds={character.holds} />
+          )}
           <ScriptChange />
         </Box>
       </Footer>

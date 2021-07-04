@@ -4,7 +4,13 @@ import { useMutation } from '@apollo/client';
 import { Box, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
-import { HeadingWS, ParagraphWS, ButtonWS, RedBox, stabilizeBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  RedBox,
+  stabilizeBackground,
+} from '../../config/grommetConfig';
 import PERFORM_STABILIZE_AND_HEAL_MOVE, {
   PerformStabilizeAndHealMoveData,
   PerformStabilizeAndHealMoveVars,
@@ -28,20 +34,25 @@ interface StabilizeDialogProps {
 }
 
 const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [stockSpent, setStockSpent] = useState(0);
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performStabilizeAndHealMove, { loading: performingStabilizeAndHealMove }] =
-    useMutation<PerformStabilizeAndHealMoveData, PerformStabilizeAndHealMoveVars>(PERFORM_STABILIZE_AND_HEAL_MOVE);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [
+    performStabilizeAndHealMove,
+    { loading: performingStabilizeAndHealMove },
+  ] = useMutation<
+    PerformStabilizeAndHealMoveData,
+    PerformStabilizeAndHealMoveVars
+  >(PERFORM_STABILIZE_AND_HEAL_MOVE);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const currentStock = character?.playbookUniques?.angelKit?.stock || 0;
 
   const handleStabilizeAndHealMove = async () => {
@@ -49,7 +60,12 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
       console.warn("You don't have enough stock");
       return;
     }
-    if (!!userGameRole && !!character && !character.isDead && !performingStabilizeAndHealMove) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingStabilizeAndHealMove
+    ) {
       try {
         await performStabilizeAndHealMove({
           variables: {
@@ -67,7 +83,7 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   console.log(`stockSpent`, stockSpent);
   return (
@@ -77,15 +93,30 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
           {move.name}
         </HeadingWS>
         <StyledMarkdown>{move.description}</StyledMarkdown>
-        <Box direction="row" align="start" justify="start" gap="12px" flex="grow">
-          <RedBox alignSelf="center" width="150px" align="center" justify="between" pad="24px">
+        <Box
+          direction="row"
+          align="start"
+          justify="start"
+          gap="12px"
+          flex="grow"
+        >
+          <RedBox
+            alignSelf="center"
+            width="150px"
+            align="center"
+            justify="between"
+            pad="24px"
+          >
             <FormField>
               <TextInput
                 type="number"
                 value={stockSpent}
                 size="xlarge"
                 textAlign="center"
-                onChange={(e) => [0, 1, 2, 3].includes(parseInt(e.target.value)) && setStockSpent(parseInt(e.target.value))}
+                onChange={(e) =>
+                  [0, 1, 2, 3].includes(parseInt(e.target.value)) &&
+                  setStockSpent(parseInt(e.target.value))
+                }
               />
             </FormField>
           </RedBox>
@@ -94,12 +125,19 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
             <ParagraphWS alignSelf="start">{`${CURRENT_STOCK_1_TEXT} ${currentStock} ${CURRENT_STOCK_2_TEXT}`}</ParagraphWS>
           </Box>
         </Box>
-        <Box fill="horizontal" direction="row" justify="end" gap="small" flex="grow">
+        <Box
+          fill="horizontal"
+          direction="row"
+          justify="end"
+          gap="small"
+          flex="grow"
+        >
           <ButtonWS
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
@@ -108,9 +146,14 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
             name="stabilize-button"
             primary
             onClick={() =>
-              [0, 1, 2, 3].includes(stockSpent) && !performingStabilizeAndHealMove && handleStabilizeAndHealMove()
+              [0, 1, 2, 3].includes(stockSpent) &&
+              !performingStabilizeAndHealMove &&
+              handleStabilizeAndHealMove()
             }
-            disabled={![0, 1, 2, 3].includes(stockSpent) || performingStabilizeAndHealMove}
+            disabled={
+              ![0, 1, 2, 3].includes(stockSpent) ||
+              performingStabilizeAndHealMove
+            }
           />
         </Box>
       </Box>

@@ -12,20 +12,27 @@ interface ContentItemBoxProps {
 }
 
 const ContentItemBox: FC<ContentItemBoxProps> = ({ contentItem }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [showDetails, setShowDetails] = useState<string>('');
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const toggleShowDetails = (id: string) => (showDetails === id ? setShowDetails('') : setShowDetails(id));
+  // ----------------------------- Component functions ------------------------- //
+  const toggleShowDetails = (id: string) =>
+    showDetails === id ? setShowDetails('') : setShowDetails(id);
 
   // -------------------------------------------------- Render component --------------------------------------------------- //
   return (
     <>
       <Box fill="horizontal" direction="row" justify="between" align="center">
-        <Box direction="row" justify="start" align="center" pad="12px" gap="12px">
+        <Box
+          direction="row"
+          justify="start"
+          align="center"
+          pad="12px"
+          gap="12px"
+        >
           {showDetails.includes(contentItem.id) ? (
             <FormUp
               data-testid={`${contentItem.title}-up-icon`}
@@ -51,7 +58,15 @@ const ContentItemBox: FC<ContentItemBoxProps> = ({ contentItem }) => {
         </Box>
       </Box>
       {showDetails.includes(contentItem.id) && (
-        <Box pad="12px" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+        <Box
+          pad="12px"
+          animation={{
+            type: 'fadeIn',
+            delay: 0,
+            duration: 500,
+            size: 'xsmall',
+          }}
+        >
           <StyledMarkdown>{contentItem.content}</StyledMarkdown>
         </Box>
       )}

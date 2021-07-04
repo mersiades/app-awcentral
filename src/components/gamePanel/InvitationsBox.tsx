@@ -7,30 +7,45 @@ import { ButtonWS, TextWS } from '../../config/grommetConfig';
 import { useGame } from '../../contexts/gameContext';
 import { LeftPanelState } from '../../pages/MCPage';
 import styled, { css } from 'styled-components';
-import { INVITATIONS_TEXT, INVITE_PLAYER_TEXT, NO_PENDING_INVITATIONS_TEXT } from '../../config/constants';
+import {
+  INVITATIONS_TEXT,
+  INVITE_PLAYER_TEXT,
+  NO_PENDING_INVITATIONS_TEXT,
+} from '../../config/constants';
 
-const StyledBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(() => {
-  return css`
-    &:focus {
-      outline: 0;
-      box-shadow: none;
-    }
-  `;
-});
+const StyledBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(
+  () => {
+    return css`
+      &:focus {
+        outline: 0;
+        box-shadow: none;
+      }
+    `;
+  }
+);
 
 interface InvitationsBoxProps {
   handleShowInvitationForm: (value: LeftPanelState) => void;
   handleRemoveInvitee: (invitee: string) => void;
 }
 
-const InvitationsBox: FC<InvitationsBoxProps> = ({ handleShowInvitationForm, handleRemoveInvitee }) => {
+const InvitationsBox: FC<InvitationsBoxProps> = ({
+  handleShowInvitationForm,
+  handleRemoveInvitee,
+}) => {
   const { game } = useGame();
 
   const renderInvitations = () => {
     if (!!game) {
       if (game.invitees.length === 0) {
         return (
-          <Box direction="row" align="center" alignContent="end" fill margin={{ vertical: 'small' }}>
+          <Box
+            direction="row"
+            align="center"
+            alignContent="end"
+            fill
+            margin={{ vertical: 'small' }}
+          >
             <Box align="start" fill>
               <TextWS>{NO_PENDING_INVITATIONS_TEXT}</TextWS>
             </Box>
@@ -39,13 +54,24 @@ const InvitationsBox: FC<InvitationsBoxProps> = ({ handleShowInvitationForm, han
       } else {
         return game.invitees.map((invitee) => {
           return (
-            <Box key={invitee} direction="row" align="center" alignContent="end" fill margin={{ vertical: 'small' }}>
+            <Box
+              key={invitee}
+              direction="row"
+              align="center"
+              alignContent="end"
+              fill
+              margin={{ vertical: 'small' }}
+            >
               <StyledBox
                 data-testid={`${invitee}-list-item`}
                 align="start"
                 fill
                 onClick={() =>
-                  handleShowInvitationForm({ type: 'INVITATION_FORM', showMessageOnly: true, existingEmail: invitee })
+                  handleShowInvitationForm({
+                    type: 'INVITATION_FORM',
+                    showMessageOnly: true,
+                    existingEmail: invitee,
+                  })
                 }
               >
                 <TextWS style={{ cursor: 'pointer' }}>{invitee}</TextWS>
@@ -83,7 +109,13 @@ const InvitationsBox: FC<InvitationsBoxProps> = ({ handleShowInvitationForm, han
           size="large"
           alignSelf="center"
           fill="horizontal"
-          onClick={() => handleShowInvitationForm({ type: 'INVITATION_FORM', showMessageOnly: false, existingEmail: '' })}
+          onClick={() =>
+            handleShowInvitationForm({
+              type: 'INVITATION_FORM',
+              showMessageOnly: false,
+              existingEmail: '',
+            })
+          }
         />
       </Box>
     </CollapsiblePanelBox>

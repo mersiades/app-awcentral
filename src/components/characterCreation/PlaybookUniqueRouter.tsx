@@ -64,30 +64,37 @@ const UniqueFormSelector: FC<UniqueFormSelectorProps> = ({ unique }) => {
  * renders tabs so the user can select the different forms.
  */
 const PlaybookUniqueRouter: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [activeTab, setActiveTab] = useState(0);
   const [uniques, setUniques] = useState<PlaybookUniqueTypes[]>([]);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character } = useGame();
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     if (!!character?.playbookUniques) {
-      setUniques(Object.values(character.playbookUniques).filter((elem) => !!elem && !!elem.uniqueType));
+      setUniques(
+        Object.values(character.playbookUniques).filter(
+          (elem) => !!elem && !!elem.uniqueType
+        )
+      );
     }
   }, [character]);
 
   useEffect(() => {
     if (!!character && !character.playbookUniques) {
-      !!game && history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
+      !!game &&
+        history.push(
+          `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
+        );
     }
   }, [game, character, history]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   if (uniques.length === 0) {
     return <Spinner />;

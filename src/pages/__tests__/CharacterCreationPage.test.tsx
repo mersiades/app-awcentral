@@ -12,7 +12,9 @@ import {
   mockSetAngelKit,
   // mockSetVehicle,
 } from '../../tests/mockQueries';
-import { /*customRenderForComponent,*/ renderWithRouter } from '../../tests/test-utils';
+import {
+  /*customRenderForComponent,*/ renderWithRouter,
+} from '../../tests/test-utils';
 import { mockKeycloakStub } from '../../../__mocks__/@react-keycloak/web';
 import {
   mockCharacter2,
@@ -39,7 +41,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -163,7 +168,8 @@ describe('Rendering CharacterCreationPage', () => {
   test('should submit AngelKitForm and navigate to next step', async () => {
     const startCharacter: Character = {
       id: mockCharacter2.id,
-      hasCompletedCharacterCreation: mockCharacter2.hasCompletedCharacterCreation,
+      hasCompletedCharacterCreation:
+        mockCharacter2.hasCompletedCharacterCreation,
       harm: mockCharacter2.harm,
       name: mockCharacter2.name,
       playbook: PlaybookType.angel,
@@ -202,13 +208,17 @@ describe('Rendering CharacterCreationPage', () => {
       ],
     };
 
-    renderWithRouter(<CharacterCreationPage />, `/character-creation/${mockGame5.id}?step=6`, {
-      isAuthenticated: true,
-      apolloMocks: [mockPlayBookCreatorQueryAngel, mockSetAngelKit],
-      injectedGame: game,
-      injectedUserId: mockKeycloakUserInfo1.sub,
-      injectedCharacter: startCharacter,
-    });
+    renderWithRouter(
+      <CharacterCreationPage />,
+      `/character-creation/${mockGame5.id}?step=6`,
+      {
+        isAuthenticated: true,
+        apolloMocks: [mockPlayBookCreatorQueryAngel, mockSetAngelKit],
+        injectedGame: game,
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedCharacter: startCharacter,
+      }
+    );
     await screen.findByTestId('character-creation-page');
     screen.getByTestId('character-creation-stepper');
     screen.getByTestId('angel-kit-form');

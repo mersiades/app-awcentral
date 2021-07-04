@@ -18,15 +18,15 @@ export const background = {
 };
 
 const CreateGamePage = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [creationStep, setCreationStep] = useState<number>(0);
   const [hasSkippedComms, setHasSkippedComms] = useState(false);
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { id: userId } = useKeycloakUser();
   const { game, fetchingGame, setGameContext } = useGame();
 
@@ -48,10 +48,16 @@ const CreateGamePage = () => {
     }
   }, [fetchingGame, gameId, userId, setGameContext]);
 
-  // -------------------------------------------------- Render component ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
-    <Box data-testid="create-game-page" fill background={background} pad="6px" overflow={{ vertical: 'auto' }}>
+    <Box
+      data-testid="create-game-page"
+      fill
+      background={background}
+      pad="6px"
+      overflow={{ vertical: 'auto' }}
+    >
       <CloseButton handleClose={() => history.push('/menu')} />
       <Box fill direction="column" justify="start">
         <GameCreationStepper
@@ -59,7 +65,12 @@ const CreateGamePage = () => {
           currentStep={creationStep}
           setHasSkippedComms={setHasSkippedComms}
         />
-        {creationStep === 1 && <CommsForm setCreationStep={setCreationStep} setHasSkippedComms={setHasSkippedComms} />}
+        {creationStep === 1 && (
+          <CommsForm
+            setCreationStep={setCreationStep}
+            setHasSkippedComms={setHasSkippedComms}
+          />
+        )}
         {creationStep === 2 && <InviteesForm />}
       </Box>
     </Box>

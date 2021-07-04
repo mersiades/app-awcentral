@@ -4,7 +4,10 @@ import { useHistory } from 'react-router-dom';
 import { Box, Image, Heading, Grid } from 'grommet';
 
 import InvitationsList from '../components/InvitationsList';
-import GAMES_FOR_INVITEE, { GamesForInviteeData, GamesForInviteeVars } from '../queries/gamesForInvitee';
+import GAMES_FOR_INVITEE, {
+  GamesForInviteeData,
+  GamesForInviteeVars,
+} from '../queries/gamesForInvitee';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { HeadingWS, StyledClose } from '../config/grommetConfig';
 import '../assets/styles/transitions.css';
@@ -25,11 +28,14 @@ const MenuPage: FC = () => {
   const { vtksReady } = useFonts();
 
   // -------------------------------- Hooking in to Apollo graphql ----------------------------------------- //
-  const { data } = useQuery<GamesForInviteeData, GamesForInviteeVars>(GAMES_FOR_INVITEE, {
-    skip: !email,
-    // @ts-ignore
-    variables: { email },
-  });
+  const { data } = useQuery<GamesForInviteeData, GamesForInviteeVars>(
+    GAMES_FOR_INVITEE,
+    {
+      skip: !email,
+      // @ts-ignore
+      variables: { email },
+    }
+  );
 
   const games = data?.gamesForInvitee;
 
@@ -40,7 +46,13 @@ const MenuPage: FC = () => {
   return (
     <Box data-testid="join-game-page" fill background={background}>
       {!games && (
-        <div style={{ position: 'absolute', top: 'calc(50vh - 12px)', left: 'calc(50vw - 12px)' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(50vh - 12px)',
+            left: 'calc(50vw - 12px)',
+          }}
+        >
           <Spinner />
         </div>
       )}
@@ -79,13 +91,31 @@ const MenuPage: FC = () => {
             ]}
           >
             {!!games ? (
-              <Box gridArea="gamesContainer" alignSelf="end" gap="small" style={{ minHeight: '300px' }}>
-                <Box animation={{ type: 'slideUp', size: 'large', duration: 750 }} gap="12px">
+              <Box
+                gridArea="gamesContainer"
+                alignSelf="end"
+                gap="small"
+                style={{ minHeight: '300px' }}
+              >
+                <Box
+                  animation={{ type: 'slideUp', size: 'large', duration: 750 }}
+                  gap="12px"
+                >
                   <Box direction="row" align="center" justify="between">
                     <Box align="start" alignContent="center">
-                      <StyledClose color="accent-1" onClick={() => history.push('/')} cursor="pointer" />
+                      <StyledClose
+                        color="accent-1"
+                        onClick={() => history.push('/')}
+                        cursor="pointer"
+                      />
                     </Box>
-                    <HeadingWS vtksReady={vtksReady} level={1} margin={{ vertical: 'small' }} size="small" textAlign="end">
+                    <HeadingWS
+                      vtksReady={vtksReady}
+                      level={1}
+                      margin={{ vertical: 'small' }}
+                      size="small"
+                      textAlign="end"
+                    >
                       {YOUR_INVITATIONS_TITLE}
                     </HeadingWS>
                   </Box>

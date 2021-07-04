@@ -37,20 +37,44 @@ describe('Creating a new Gunlugger Character', () => {
     cy.contains('choose 2').should('exist');
     cy.contains(SET_TEXT).as('setButton');
 
-    cy.get(`div[data-testid="silenced sniper rifle (3-harm far hi-tech)-pill"]`).as('bigOption1');
-    cy.get(`div[data-testid="assault rifle (3-harm close/far loud autofire)-pill"]`).as('bigOption2');
-    cy.get(`div[data-testid="grenade launcher (4-harm close area messy)-pill"]`).as('bigOption3');
-    cy.get(`div[data-testid="hunting rifle (3-harm far loud)-pill"]`).as('seriousOption1');
-    cy.get(`div[data-testid="shotgun (3-harm close messy)-pill"]`).as('seriousOption2');
-    cy.get(`div[data-testid="smg (2-harm close autofire loud)-pill"]`).as('seriousOption3');
-    cy.get(`div[data-testid="9mm (2-harm close loud)-pill"]`).as('backupOption1');
-    cy.get(`div[data-testid="machete (3-harm hand messy)-pill"]`).as('backupOption2');
-    cy.get(`div[data-testid="grenades (4-harm hand area reload messy)-pill"]`).as('backupOption3');
+    cy.get(
+      `div[data-testid="silenced sniper rifle (3-harm far hi-tech)-pill"]`
+    ).as('bigOption1');
+    cy.get(
+      `div[data-testid="assault rifle (3-harm close/far loud autofire)-pill"]`
+    ).as('bigOption2');
+    cy.get(
+      `div[data-testid="grenade launcher (4-harm close area messy)-pill"]`
+    ).as('bigOption3');
+    cy.get(`div[data-testid="hunting rifle (3-harm far loud)-pill"]`).as(
+      'seriousOption1'
+    );
+    cy.get(`div[data-testid="shotgun (3-harm close messy)-pill"]`).as(
+      'seriousOption2'
+    );
+    cy.get(`div[data-testid="smg (2-harm close autofire loud)-pill"]`).as(
+      'seriousOption3'
+    );
+    cy.get(`div[data-testid="9mm (2-harm close loud)-pill"]`).as(
+      'backupOption1'
+    );
+    cy.get(`div[data-testid="machete (3-harm hand messy)-pill"]`).as(
+      'backupOption2'
+    );
+    cy.get(
+      `div[data-testid="grenades (4-harm hand area reload messy)-pill"]`
+    ).as('backupOption3');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]').should('contain', gunluggerArmor);
-    cy.get('div[data-testid="weapons-box"]').should('contain', decapitalize(UniqueTypes.weapons));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(GUNLUGGER_SPECIAL_NAME));
+    cy.get('div[data-testid="weapons-box"]').should(
+      'contain',
+      decapitalize(UniqueTypes.weapons)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(GUNLUGGER_SPECIAL_NAME)
+    );
 
     // Check form functionality
     cy.get('@bigOption1').click();
@@ -75,7 +99,12 @@ describe('Creating a new Gunlugger Character', () => {
       .should('contain', seriousOption1Text)
       .should('contain', seriousOption2Text)
       .should('contain', backupOption1Text);
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(GUNLUGGER_SPECIAL_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(GUNLUGGER_SPECIAL_NAME)
+    );
+    cy.get('div[data-testid="vehicles-box"]')
+      .should('contain', VEHICLES_TITLE)
+      .should('contain', '...');
   });
 });

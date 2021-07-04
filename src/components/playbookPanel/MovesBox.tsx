@@ -6,12 +6,18 @@ import { FormUp, FormDown, Edit } from 'grommet-icons';
 
 import { StyledMarkdown } from '../styledComponents';
 import { brandColor, HeadingWS } from '../../config/grommetConfig';
-import PERFORM_PRINT_MOVE, { PerformPrintMoveData, PerformPrintMoveVars } from '../../mutations/performPrintMove';
+import PERFORM_PRINT_MOVE, {
+  PerformPrintMoveData,
+  PerformPrintMoveVars,
+} from '../../mutations/performPrintMove';
 import PERFORM_STAT_ROLL_MOVE, {
   PerformStatRollMoveData,
   PerformStatRollMoveVars,
 } from '../../mutations/performStatRollMove';
-import PERFORM_WEALTH_MOVE, { PerformWealthMoveData, PerformWealthMoveVars } from '../../mutations/performWealthMove';
+import PERFORM_WEALTH_MOVE, {
+  PerformWealthMoveData,
+  PerformWealthMoveVars,
+} from '../../mutations/performWealthMove';
 import PERFORM_FORTUNES_MOVE, {
   PerformFortunesMoveData,
   PerformFortunesMoveVars,
@@ -32,32 +38,46 @@ interface MovesBoxProps {
   openDialog?: (move: Move | CharacterMove) => void;
 }
 
-const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToCharacterCreation, openDialog }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const MovesBox: FC<MovesBoxProps> = ({
+  moves,
+  moveCategory,
+  open,
+  navigateToCharacterCreation,
+  openDialog,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [showMoves, setShowMoves] = useState(open);
   const [showMoveDetails, setShowMoveDetails] = useState<string[]>([]);
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { userGameRole, character } = useGame();
   const { crustReady } = useFonts();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
 
-  const [performPrintMove, { loading: performingPrintMove }] =
-    useMutation<PerformPrintMoveData, PerformPrintMoveVars>(PERFORM_PRINT_MOVE);
-  const [performWealthMove, { loading: performingWealthMove }] =
-    useMutation<PerformWealthMoveData, PerformWealthMoveVars>(PERFORM_WEALTH_MOVE);
+  const [performPrintMove, { loading: performingPrintMove }] = useMutation<
+    PerformPrintMoveData,
+    PerformPrintMoveVars
+  >(PERFORM_PRINT_MOVE);
+  const [performWealthMove, { loading: performingWealthMove }] = useMutation<
+    PerformWealthMoveData,
+    PerformWealthMoveVars
+  >(PERFORM_WEALTH_MOVE);
 
   const [performFortunesMove, { loading: performingFortunesMove }] =
-    useMutation<PerformFortunesMoveData, PerformFortunesMoveVars>(PERFORM_FORTUNES_MOVE);
+    useMutation<PerformFortunesMoveData, PerformFortunesMoveVars>(
+      PERFORM_FORTUNES_MOVE
+    );
 
   const [performStatRollMove, { loading: performingStatRollMove }] =
-    useMutation<PerformStatRollMoveData, PerformStatRollMoveVars>(PERFORM_STAT_ROLL_MOVE);
+    useMutation<PerformStatRollMoveData, PerformStatRollMoveVars>(
+      PERFORM_STAT_ROLL_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const toggleShowMoves = () => setShowMoves(!showMoves);
 
   const clickableStyle = {
@@ -80,7 +100,12 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
   };
 
   const handlePrintMove = async (move: Move | CharacterMove) => {
-    if (!!userGameRole && !!character && !character.isDead && !performingPrintMove) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingPrintMove
+    ) {
       try {
         await performPrintMove({
           variables: {
@@ -140,7 +165,11 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
       if (!performingFortunesMove) {
         try {
           performFortunesMove({
-            variables: { gameId, gameRoleId: userGameRole.id, characterId: character.id },
+            variables: {
+              gameId,
+              gameRoleId: userGameRole.id,
+              characterId: character.id,
+            },
           });
           logAmpEvent('make move', { move: FORTUNES_NAME });
         } catch (error) {
@@ -209,7 +238,13 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
       pad={{ vertical: '12px' }}
       style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.25)' }}
     >
-      <Box fill="horizontal" direction="row" align="center" justify="between" pad={{ vertical: '12px' }}>
+      <Box
+        fill="horizontal"
+        direction="row"
+        align="center"
+        justify="between"
+        pad={{ vertical: '12px' }}
+      >
         <HeadingWS
           crustReady={crustReady}
           level="3"
@@ -222,22 +257,55 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
         </HeadingWS>
         <Box direction="row" align="center" gap="12px">
           {showMoves ? (
-            <FormUp data-testid="hide-moves-icon" onClick={toggleShowMoves} style={{ cursor: 'pointer' }} />
+            <FormUp
+              data-testid="hide-moves-icon"
+              onClick={toggleShowMoves}
+              style={{ cursor: 'pointer' }}
+            />
           ) : (
-            <FormDown data-testid="show-moves-icon" onClick={toggleShowMoves} style={{ cursor: 'pointer' }} />
+            <FormDown
+              data-testid="show-moves-icon"
+              onClick={toggleShowMoves}
+              style={{ cursor: 'pointer' }}
+            />
           )}
           {!!navigateToCharacterCreation && (
-            <Edit color="accent-1" onClick={() => navigateToCharacterCreation('7')} style={{ cursor: 'pointer' }} />
+            <Edit
+              color="accent-1"
+              onClick={() => navigateToCharacterCreation('7')}
+              style={{ cursor: 'pointer' }}
+            />
           )}
         </Box>
       </Box>
       {showMoves &&
         moves.map((move) => {
-          const canPerformMove = !!move.moveAction && userGameRole?.role !== RoleType.mc;
+          const canPerformMove =
+            !!move.moveAction && userGameRole?.role !== RoleType.mc;
           return (
-            <Box key={move.id} fill="horizontal" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
-              <Box fill="horizontal" direction="row" justify="between" align="center">
-                <Box direction="row" justify="start" align="center" pad="12px" gap="12px">
+            <Box
+              key={move.id}
+              fill="horizontal"
+              animation={{
+                type: 'fadeIn',
+                delay: 0,
+                duration: 500,
+                size: 'xsmall',
+              }}
+            >
+              <Box
+                fill="horizontal"
+                direction="row"
+                justify="between"
+                align="center"
+              >
+                <Box
+                  direction="row"
+                  justify="start"
+                  align="center"
+                  pad="12px"
+                  gap="12px"
+                >
                   {showMoveDetails.includes(move.id) ? (
                     <FormUp
                       data-testid="hide-move-details-icon"
@@ -258,10 +326,14 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
                     onClick={() => canPerformMove && handleMoveClick(move)}
                     onMouseOver={(e: React.MouseEvent<HTMLHeadingElement>) =>
                       // @ts-ignore
-                      (e.target.style.color = canPerformMove ? '#CD3F3E' : '#FFF')
+                      (e.target.style.color = canPerformMove
+                        ? '#CD3F3E'
+                        : '#FFF')
                     }
-                    // @ts-ignore
-                    onMouseOut={(e: React.MouseEvent<HTMLHeadingElement>) => (e.target.style.color = '#FFF')}
+                    onMouseOut={(e: React.MouseEvent<HTMLHeadingElement>) =>
+                      // @ts-ignore
+                      (e.target.style.color = '#FFF')
+                    }
                     style={canPerformMove ? clickableStyle : unClickableStyle}
                   >
                     {decapitalize(move.name)}
@@ -270,7 +342,15 @@ const MovesBox: FC<MovesBoxProps> = ({ moves, moveCategory, open, navigateToChar
               </Box>
 
               {showMoveDetails.includes(move.id) && (
-                <Box pad="12px" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+                <Box
+                  pad="12px"
+                  animation={{
+                    type: 'fadeIn',
+                    delay: 0,
+                    duration: 500,
+                    size: 'xsmall',
+                  }}
+                >
                   <StyledMarkdown>{move.description}</StyledMarkdown>
                 </Box>
               )}

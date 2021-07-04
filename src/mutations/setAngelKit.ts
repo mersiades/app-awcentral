@@ -14,8 +14,18 @@ export interface SetAngelKitVars {
 }
 
 const SET_ANGEL_KIT = gql`
-  mutation SetAngelKit($gameRoleId: String!, $characterId: String!, $stock: Int!, $hasSupplier: Boolean!) {
-    setAngelKit(gameRoleId: $gameRoleId, characterId: $characterId, stock: $stock, hasSupplier: $hasSupplier) {
+  mutation SetAngelKit(
+    $gameRoleId: String!
+    $characterId: String!
+    $stock: Int!
+    $hasSupplier: Boolean!
+  ) {
+    setAngelKit(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      stock: $stock
+      hasSupplier: $hasSupplier
+    ) {
       id
       name
       playbook

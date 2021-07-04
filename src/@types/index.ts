@@ -1,5 +1,13 @@
 import { CastCrew, Project } from './dataInterfaces';
-import { GangSize, HoldingSize, LookType, PlaybookType, ThreatType, UniqueTypes, VehicleType } from './enums';
+import {
+  GangSize,
+  HoldingSize,
+  LookType,
+  PlaybookType,
+  ThreatType,
+  UniqueTypes,
+  VehicleType,
+} from './enums';
 import {
   VehicleFrame,
   VehicleBattleOption,

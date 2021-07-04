@@ -9,13 +9,16 @@ import { useMcContent } from '../../contexts/mcContentContext';
 import { CORE_BOX_TITLE } from '../../config/constants';
 
 const CoreBox: FC = () => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { core, decisionMaking } = useMcContent();
 
   // ------------------------------------------------- Render component -------------------------------------------------- //
   return (
     <CollapsiblePanelBox title={CORE_BOX_TITLE}>
-      <Box fill="horizontal" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+      <Box
+        fill="horizontal"
+        animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+      >
         {!!core && !!decisionMaking ? (
           <>
             {core.map((ticker) => (

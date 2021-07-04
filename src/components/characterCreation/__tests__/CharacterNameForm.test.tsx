@@ -3,7 +3,12 @@ import { act, screen } from '@testing-library/react';
 
 import CharacterNameForm from '../CharacterNameForm';
 import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
-import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
+import {
+  blankCharacter,
+  mockCharacter2,
+  mockGame5,
+  mockKeycloakUserInfo1,
+} from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import { mockPlaybookCreator } from '../../../tests/mockQueries';
 import { UniqueTypes } from '../../../@types/enums';
@@ -15,7 +20,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -45,16 +53,22 @@ describe('Rendering CharacterNameForm', () => {
       ],
     };
 
-    renderWithRouter(<CharacterNameForm />, `/character-creation/${mockGame5.id}?step=2`, {
-      isAuthenticated: true,
-      injectedGame: mockGame,
-      apolloMocks: [mockPlaybookCreator],
-      injectedUserId: mockKeycloakUserInfo1.sub,
-    });
+    renderWithRouter(
+      <CharacterNameForm />,
+      `/character-creation/${mockGame5.id}?step=2`,
+      {
+        isAuthenticated: true,
+        injectedGame: mockGame,
+        apolloMocks: [mockPlaybookCreator],
+        injectedUserId: mockKeycloakUserInfo1.sub,
+      }
+    );
 
     await screen.findByTestId('character-name-form');
     await act(async () => await wait());
-    screen.getByRole('heading', { name: `WHAT IS THE ${mockCharacter2.playbook} CALLED?` });
+    screen.getByRole('heading', {
+      name: `WHAT IS THE ${mockCharacter2.playbook} CALLED?`,
+    });
     screen.getByRole('button', { name: 'SET' });
     screen.getByRole('textbox', { name: 'name-input' });
     screen.getByTestId(`${mockNameAngel1.name}-pill`);
@@ -137,15 +151,21 @@ describe('Rendering CharacterNameForm', () => {
       ],
     };
 
-    renderWithRouter(<CharacterNameForm />, `/character-creation/${mockGame5.id}?step=2`, {
-      isAuthenticated: true,
-      injectedGame: mockGame,
-      apolloMocks: [mockPlaybookCreator],
-      injectedUserId: mockKeycloakUserInfo1.sub,
-    });
+    renderWithRouter(
+      <CharacterNameForm />,
+      `/character-creation/${mockGame5.id}?step=2`,
+      {
+        isAuthenticated: true,
+        injectedGame: mockGame,
+        apolloMocks: [mockPlaybookCreator],
+        injectedUserId: mockKeycloakUserInfo1.sub,
+      }
+    );
 
     await screen.findByTestId('character-name-form');
-    const input = screen.getByRole('textbox', { name: 'name-input' }) as HTMLInputElement;
+    const input = screen.getByRole('textbox', {
+      name: 'name-input',
+    }) as HTMLInputElement;
     expect(input.value).toEqual(existingName);
   });
 });

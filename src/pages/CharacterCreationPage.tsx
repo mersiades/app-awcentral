@@ -37,25 +37,25 @@ const CharacterCreationPage: FC = () => {
   const step = query.get('step');
   const creationStep = !!step ? parseInt(step) : undefined;
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [showScrollable, setShowScrollable] = useState(false);
 
   // ------------------------------------------------------- Refs -------------------------------------------------------- //
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { id: userId } = useKeycloakUser();
   const { game, setGameContext, character } = useGame();
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
   const history = useHistory();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   // Fetch playbooks now, to speed things up later
   useQuery<PlaybooksData>(PLAYBOOKS);
 
-  // ---------------------------------------- Component functions and variables ------------------------------------------ //
+  // ----------------------------- Component functions ------------------------- //
   const handleScroll = (e: any) => {
     if (!e.currentTarget) {
       return;
@@ -110,7 +110,9 @@ const CharacterCreationPage: FC = () => {
 
       // Set showScrollable on component mount
       // There's a bug here, because on initial mount, scrollHeight is always the same as offsetHeight
-      if (containerRef.current.scrollHeight > containerRef.current.offsetHeight) {
+      if (
+        containerRef.current.scrollHeight > containerRef.current.offsetHeight
+      ) {
         setShowScrollable(true);
       } else {
         setShowScrollable(false);
@@ -134,7 +136,7 @@ const CharacterCreationPage: FC = () => {
     );
   }
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <Box
       data-testid="character-creation-page"
@@ -145,7 +147,13 @@ const CharacterCreationPage: FC = () => {
     >
       {character?.isDead && <RipSign />}
       {!game && (
-        <div style={{ position: 'absolute', top: 'calc(50vh - 12px)', left: 'calc(50vw - 12px)' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(50vh - 12px)',
+            left: 'calc(50vw - 12px)',
+          }}
+        >
           <Spinner />
         </div>
       )}
@@ -162,31 +170,45 @@ const CharacterCreationPage: FC = () => {
 
       <CharacterCreationStepper />
       <Box flex="grow">
-        {creationStep === CharacterCreationSteps.intro && !!game && !character && <NewGameIntro />}
-        {creationStep === CharacterCreationSteps.selectPlaybook && !!character && <CharacterPlaybookForm />}
-        {creationStep === CharacterCreationSteps.selectName && character && character.playbook && <CharacterNameForm />}
-        {creationStep === CharacterCreationSteps.selectLooks && character && character.name && character.playbook && (
-          <CharacterLooksForm />
-        )}
-        {creationStep === CharacterCreationSteps.selectStats && character && character.name && character.playbook && (
-          <CharacterStatsForm />
-        )}
-        {creationStep === CharacterCreationSteps.selectGear && character && character.name && character.playbook && (
-          <CharacterGearForm />
-        )}
-        {creationStep === CharacterCreationSteps.setUnique && character && character.name && character.playbook && (
-          <PlaybookUniqueRouter />
-        )}
-        {creationStep === CharacterCreationSteps.setVehicle && character && character.name && character.playbook && (
-          <VehiclesFormContainer />
-        )}
-        {creationStep === CharacterCreationSteps.setBattleVehicle && character && character.name && character.playbook && (
-          <BattleVehiclesFormContainer />
-        )}
-        {creationStep === CharacterCreationSteps.selectMoves && character && !!character.name && character.playbook && (
-          <CharacterMovesForm />
-        )}
-        {creationStep === CharacterCreationSteps.setHx && !!character && !!character.playbook && <CharacterHxForm />}
+        {creationStep === CharacterCreationSteps.intro &&
+          !!game &&
+          !character && <NewGameIntro />}
+        {creationStep === CharacterCreationSteps.selectPlaybook &&
+          !!character && <CharacterPlaybookForm />}
+        {creationStep === CharacterCreationSteps.selectName &&
+          character &&
+          character.playbook && <CharacterNameForm />}
+        {creationStep === CharacterCreationSteps.selectLooks &&
+          character &&
+          character.name &&
+          character.playbook && <CharacterLooksForm />}
+        {creationStep === CharacterCreationSteps.selectStats &&
+          character &&
+          character.name &&
+          character.playbook && <CharacterStatsForm />}
+        {creationStep === CharacterCreationSteps.selectGear &&
+          character &&
+          character.name &&
+          character.playbook && <CharacterGearForm />}
+        {creationStep === CharacterCreationSteps.setUnique &&
+          character &&
+          character.name &&
+          character.playbook && <PlaybookUniqueRouter />}
+        {creationStep === CharacterCreationSteps.setVehicle &&
+          character &&
+          character.name &&
+          character.playbook && <VehiclesFormContainer />}
+        {creationStep === CharacterCreationSteps.setBattleVehicle &&
+          character &&
+          character.name &&
+          character.playbook && <BattleVehiclesFormContainer />}
+        {creationStep === CharacterCreationSteps.selectMoves &&
+          character &&
+          !!character.name &&
+          character.playbook && <CharacterMovesForm />}
+        {creationStep === CharacterCreationSteps.setHx &&
+          !!character &&
+          !!character.playbook && <CharacterHxForm />}
       </Box>
     </Box>
   );

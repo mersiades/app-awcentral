@@ -1,12 +1,15 @@
-import { KeycloakUserInfo } from "../../src/@types";
+import { KeycloakUserInfo } from '../../src/@types';
 
 /**
  * Creates a mock Keycloak object for testing.
  * Defaults to an initialized and authenticated state (via TestRoot.tsx),
  * but the optional parameter allow testing of unauthenticated state
- * @param isAuthenticated 
+ * @param isAuthenticated
  */
-export const mockKeycloakStub = (isAuthenticated: boolean = true, userInfo?: KeycloakUserInfo) => ({
+export const mockKeycloakStub = (
+  isAuthenticated: boolean = true,
+  userInfo?: KeycloakUserInfo
+) => ({
   init: jest.fn().mockResolvedValue(true),
   updateToken: jest.fn(),
   login: jest.fn(),

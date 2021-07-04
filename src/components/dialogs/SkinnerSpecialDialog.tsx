@@ -4,7 +4,13 @@ import { useMutation } from '@apollo/client';
 import { Box, RadioButtonGroup, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
-import { HeadingWS, ParagraphWS, ButtonWS, TextWS, skinnerSpecialDialogBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  TextWS,
+  skinnerSpecialDialogBackground,
+} from '../../config/grommetConfig';
 import PERFORM_SKINNER_SPECIAL_MOVE, {
   PerformSkinnerSpecialMoveData,
   PerformSkinnerSpecialMoveVars,
@@ -19,23 +25,29 @@ interface SkinnerSpecialDialogProps {
   handleClose: () => void;
 }
 
-const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({
+  move,
+  handleClose,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [otherCharacterId, setotherCharacterId] = useState('');
   const [option, setOption] = useState('');
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performSkinnerSpecialMove, { loading: performingSkinnerSpecialMove }] =
-    useMutation<PerformSkinnerSpecialMoveData, PerformSkinnerSpecialMoveVars>(PERFORM_SKINNER_SPECIAL_MOVE);
+    useMutation<PerformSkinnerSpecialMoveData, PerformSkinnerSpecialMoveVars>(
+      PERFORM_SKINNER_SPECIAL_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
+  // ----------------------------- Component functions ------------------------- //
+  const characters =
+    otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const options = [
     'You take +1forward and so do they.',
     'You take +1forward; they take -1.',
@@ -43,7 +55,13 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
     "You can hypnotize them as though you'd rolled a 10+, even if you haven't chosen the move.",
   ];
   const handleSkinnerSpecialMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead && !performingSkinnerSpecialMove && !!otherCharacterId) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingSkinnerSpecialMove &&
+      !!otherCharacterId
+    ) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
         gameRole.characters.forEach((character) => {
@@ -74,9 +92,12 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
-    <DialogWrapper background={skinnerSpecialDialogBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={skinnerSpecialDialogBackground}
+      handleClose={handleClose}
+    >
       <Box gap="12px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
@@ -94,7 +115,9 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
         </Box>
         <Box direction="row" gap="24px">
           <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">Who did you have sex with?</ParagraphWS>
+            <ParagraphWS alignSelf="start">
+              Who did you have sex with?
+            </ParagraphWS>
             <Select
               id="target-character-input"
               aria-label="target-character-input"
@@ -112,14 +135,19 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({ move, handleClose
             label="CANCEL"
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
             label="APPLY"
             primary
-            onClick={() => !performingSkinnerSpecialMove && !!otherCharacterId && handleSkinnerSpecialMove()}
+            onClick={() =>
+              !performingSkinnerSpecialMove &&
+              !!otherCharacterId &&
+              handleSkinnerSpecialMove()
+            }
             disabled={performingSkinnerSpecialMove || !otherCharacterId}
           />
         </Box>

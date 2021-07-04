@@ -5,7 +5,10 @@ import { FormDown, FormUp } from 'grommet-icons';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { HeadingWS, brandColor } from '../../config/grommetConfig';
-import SET_ANGEL_KIT, { SetAngelKitData, SetAngelKitVars } from '../../mutations/setAngelKit';
+import SET_ANGEL_KIT, {
+  SetAngelKitData,
+  SetAngelKitVars,
+} from '../../mutations/setAngelKit';
 import { RoleType } from '../../@types/enums';
 import { AngelKit } from '../../@types/dataInterfaces';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
@@ -14,7 +17,11 @@ import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import { StyledMarkdown } from '../styledComponents';
 import SingleRedBox from '../SingleRedBox';
-import { ANGEL_KIT_TEXT, STOCK_TEXT, SUPPLIER_TEXT } from '../../config/constants';
+import {
+  ANGEL_KIT_TEXT,
+  STOCK_TEXT,
+  SUPPLIER_TEXT,
+} from '../../config/constants';
 
 interface AngelKitBoxProps {
   angelKit: AngelKit;
@@ -22,18 +29,25 @@ interface AngelKitBoxProps {
   openDialog: (move: Move | CharacterMove) => void;
 }
 
-const AngelKitBox: FC<AngelKitBoxProps> = ({ angelKit, navigateToCharacterCreation, openDialog }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const AngelKitBox: FC<AngelKitBoxProps> = ({
+  angelKit,
+  navigateToCharacterCreation,
+  openDialog,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [showMoveDetails, setShowMoveDetails] = useState<string[]>([]);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [setAngelKit, { loading: settingAngelKit }] = useMutation<SetAngelKitData, SetAngelKitVars>(SET_ANGEL_KIT);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [setAngelKit, { loading: settingAngelKit }] = useMutation<
+    SetAngelKitData,
+    SetAngelKitVars
+  >(SET_ANGEL_KIT);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const clickableStyle = {
     cursor: 'pointer',
     '&:hover': {
@@ -77,28 +91,64 @@ const AngelKitBox: FC<AngelKitBoxProps> = ({ angelKit, navigateToCharacterCreati
       navigateToCharacterCreation={navigateToCharacterCreation}
       targetCreationStep="6"
     >
-      <Box fill="horizontal" align="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
-        <Box fill="horizontal" direction="row" align="start" justify="between" margin={{ bottom: '6px' }}>
+      <Box
+        fill="horizontal"
+        align="start"
+        animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+      >
+        <Box
+          fill="horizontal"
+          direction="row"
+          align="start"
+          justify="between"
+          margin={{ bottom: '6px' }}
+        >
           <Box>{angelKit.description}</Box>
           <Box flex="grow">
-            <Box align="start" justify="start" gap="12px" margin={{ left: '12px' }}>
+            <Box
+              align="start"
+              justify="start"
+              gap="12px"
+              margin={{ left: '12px' }}
+            >
               <SingleRedBox
                 value={angelKit.stock.toString()}
                 label={STOCK_TEXT}
                 loading={settingAngelKit}
-                onIncrease={() => handleSetAngelKit(angelKit.stock + 1, angelKit.hasSupplier)}
-                onDecrease={() => handleSetAngelKit(angelKit.stock - 1, angelKit.hasSupplier)}
+                onIncrease={() =>
+                  handleSetAngelKit(angelKit.stock + 1, angelKit.hasSupplier)
+                }
+                onDecrease={() =>
+                  handleSetAngelKit(angelKit.stock - 1, angelKit.hasSupplier)
+                }
               />
-              <SingleRedBox value={angelKit.hasSupplier ? 'Yes' : 'No'} label={SUPPLIER_TEXT} loading={settingAngelKit} />
+              <SingleRedBox
+                value={angelKit.hasSupplier ? 'Yes' : 'No'}
+                label={SUPPLIER_TEXT}
+                loading={settingAngelKit}
+              />
             </Box>
           </Box>
         </Box>
         {angelKit.angelKitMoves.map((move) => {
-          const canPerformMove = !!move.moveAction && userGameRole?.role !== RoleType.mc;
+          const canPerformMove =
+            !!move.moveAction && userGameRole?.role !== RoleType.mc;
           return (
-            <Box key={move.id} fill="horizontal" direction="row" justify="between" align="center">
+            <Box
+              key={move.id}
+              fill="horizontal"
+              direction="row"
+              justify="between"
+              align="center"
+            >
               <Box>
-                <Box direction="row" justify="start" align="center" pad="12px" gap="12px">
+                <Box
+                  direction="row"
+                  justify="start"
+                  align="center"
+                  pad="12px"
+                  gap="12px"
+                >
                   {showMoveDetails.includes(move.id) ? (
                     <FormUp
                       data-testid="hide-move-details-icon"
@@ -116,13 +166,19 @@ const AngelKitBox: FC<AngelKitBoxProps> = ({ angelKit, navigateToCharacterCreati
                     crustReady={crustReady}
                     level="3"
                     margin={{ top: '3px', bottom: '3px' }}
-                    onClick={() => canPerformMove && !!openDialog && openDialog(move)}
+                    onClick={() =>
+                      canPerformMove && !!openDialog && openDialog(move)
+                    }
                     onMouseOver={(e: React.MouseEvent<HTMLHeadingElement>) =>
                       // @ts-ignore
-                      (e.target.style.color = canPerformMove ? '#CD3F3E' : '#FFF')
+                      (e.target.style.color = canPerformMove
+                        ? '#CD3F3E'
+                        : '#FFF')
                     }
-                    // @ts-ignore
-                    onMouseOut={(e: React.MouseEvent<HTMLHeadingElement>) => (e.target.style.color = '#FFF')}
+                    onMouseOut={(e: React.MouseEvent<HTMLHeadingElement>) =>
+                      // @ts-ignore
+                      (e.target.style.color = '#FFF')
+                    }
                     style={canPerformMove ? clickableStyle : unClickableStyle}
                   >
                     {decapitalize(move.name)}

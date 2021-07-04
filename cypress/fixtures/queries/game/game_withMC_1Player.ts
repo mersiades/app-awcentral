@@ -17,8 +17,14 @@ const game_withMC_1Player: Game = {
   commsUrl: '',
   hasFinishedPreGame: false,
   showFirstSession: false,
-  mc: { id: 'mock-user-2-id', displayName: 'mock-user-2-name', __typename: 'User' },
-  players: [{ id: MOCK_USER_1_ID, displayName: MOCK_USER_1_NAME, __typename: 'User' }],
+  mc: {
+    id: 'mock-user-2-id',
+    displayName: 'mock-user-2-name',
+    __typename: 'User',
+  },
+  players: [
+    { id: MOCK_USER_1_ID, displayName: MOCK_USER_1_NAME, __typename: 'User' },
+  ],
   gameMessages: [],
   gameRoles: [
     {

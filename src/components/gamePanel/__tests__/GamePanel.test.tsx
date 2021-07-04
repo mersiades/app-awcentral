@@ -26,8 +26,12 @@ describe('Rendering GamePanel', () => {
     );
 
     screen.getByRole('heading', { name: mockGame7.name });
-    const downChevron = screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`);
-    const editIcon = screen.getByTestId(`${mockGame7.name.toLowerCase()}-edit-link`);
+    const downChevron = screen.getByTestId(
+      `${mockGame7.name.toLowerCase()}-down-chevron`
+    );
+    const editIcon = screen.getByTestId(
+      `${mockGame7.name.toLowerCase()}-edit-link`
+    );
 
     // Check edit link
     userEvent.click(editIcon);
@@ -36,15 +40,21 @@ describe('Rendering GamePanel', () => {
 
     // Check can open GameBox
     userEvent.click(downChevron);
-    expect(screen.getByTestId('game-box').textContent).toContain(mockGame7.commsApp);
-    expect(screen.getByTestId('game-box').textContent).toContain(mockGame7.commsUrl);
+    expect(screen.getByTestId('game-box').textContent).toContain(
+      mockGame7.commsApp
+    );
+    expect(screen.getByTestId('game-box').textContent).toContain(
+      mockGame7.commsUrl
+    );
 
     // Check DELETE GAME button
     userEvent.click(screen.getByRole('button', { name: /DELETE GAME/ }));
     expect(mockSetShowDeleteGameDialog).toHaveBeenCalledWith(true);
 
     // Check can close GameBox
-    userEvent.click(screen.getByTestId(`${mockGame7.name.toLowerCase()}-up-chevron`));
+    userEvent.click(
+      screen.getByTestId(`${mockGame7.name.toLowerCase()}-up-chevron`)
+    );
   });
 
   test('should render GameBox with comms url only', () => {
@@ -63,9 +73,15 @@ describe('Rendering GamePanel', () => {
     );
 
     // Check comms Url only
-    userEvent.click(screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`));
-    expect(screen.getByTestId('game-box').textContent).not.toContain(mockGame7.commsApp);
-    expect(screen.getByTestId('game-box').textContent).toContain(mockGame7.commsUrl);
+    userEvent.click(
+      screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`)
+    );
+    expect(screen.getByTestId('game-box').textContent).not.toContain(
+      mockGame7.commsApp
+    );
+    expect(screen.getByTestId('game-box').textContent).toContain(
+      mockGame7.commsUrl
+    );
   });
 
   test('should render GameBox with comms app only', () => {
@@ -83,9 +99,15 @@ describe('Rendering GamePanel', () => {
       }
     );
     // Check comms app only
-    userEvent.click(screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`));
-    expect(screen.getByTestId('game-box').textContent).toContain(mockGame7.commsApp);
-    expect(screen.getByTestId('game-box').textContent).not.toContain(mockGame7.commsUrl);
+    userEvent.click(
+      screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`)
+    );
+    expect(screen.getByTestId('game-box').textContent).toContain(
+      mockGame7.commsApp
+    );
+    expect(screen.getByTestId('game-box').textContent).not.toContain(
+      mockGame7.commsUrl
+    );
   });
 
   test('should render InvitationsBox with no invitations', () => {
@@ -106,7 +128,9 @@ describe('Rendering GamePanel', () => {
 
     screen.getByRole('heading', { name: /Invitations/ });
 
-    expect(screen.getByTestId('invitations-box').textContent).toContain('No pending invitations');
+    expect(screen.getByTestId('invitations-box').textContent).toContain(
+      'No pending invitations'
+    );
 
     // Check INVITE PLAYER button
     userEvent.click(screen.getByRole('button', { name: /INVITE PLAYER/ }));
@@ -131,14 +155,21 @@ describe('Rendering GamePanel', () => {
       {
         isAuthenticated: true,
         apolloMocks: [],
-        injectedGame: { ...mockGame7, invitees: ['john@email.com', 'maya@email.com'] },
+        injectedGame: {
+          ...mockGame7,
+          invitees: ['john@email.com', 'maya@email.com'],
+        },
       }
     );
 
     screen.getByRole('heading', { name: /Invitations/ });
 
-    expect(screen.getByTestId('invitations-box').textContent).toContain('john@email.com');
-    expect(screen.getByTestId('invitations-box').textContent).toContain('maya@email.com');
+    expect(screen.getByTestId('invitations-box').textContent).toContain(
+      'john@email.com'
+    );
+    expect(screen.getByTestId('invitations-box').textContent).toContain(
+      'maya@email.com'
+    );
 
     // Check show invitation when click on invitee
     userEvent.click(screen.getByTestId('john@email.com-list-item'));

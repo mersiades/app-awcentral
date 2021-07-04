@@ -10,7 +10,11 @@ import { Playbook } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
-import { CHOOSE_YOUR_PLAYBOOK_TEXT, CHANGED_PLAYBOOK_INTRO_TEXT, NEW_PLAYER_INTRO_TEXT } from '../../config/constants';
+import {
+  CHOOSE_YOUR_PLAYBOOK_TEXT,
+  CHANGED_PLAYBOOK_INTRO_TEXT,
+  NEW_PLAYER_INTRO_TEXT,
+} from '../../config/constants';
 
 import '../../assets/styles/transitions.css';
 
@@ -38,21 +42,21 @@ const StyledTabs = styled(Tabs as FC<TabsExtendedProps>)(
 );
 
 const CharacterPlaybookForm: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [startFadeOut, setStartFadeOut] = useState(false);
   const [sortedPlaybooks, setSortedPlaybooks] = useState<Playbook[]>([]);
 
   const [activeTab, setActiveTab] = useState(12);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { character } = useGame();
   const { crustReady } = useFonts();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const { data: playbooksData } = useQuery<PlaybooksData>(PLAYBOOKS);
   const playbooks = playbooksData?.playbooks;
 
-  // ------------------------------------------------------ Effects --------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   useEffect(() => {
     if (!!playbooks) {
@@ -72,12 +76,14 @@ const CharacterPlaybookForm: FC = () => {
   // If the playbook has already been set, show that playbook to the User
   useEffect(() => {
     if (!!character && !!character.playbook && playbooks) {
-      const setPlaybook = playbooks.filter((pb) => pb.playbookType === character.playbook)[0];
+      const setPlaybook = playbooks.filter(
+        (pb) => pb.playbookType === character.playbook
+      )[0];
       setActiveTab(sortedPlaybooks.indexOf(setPlaybook));
     }
   }, [character, playbooks, sortedPlaybooks]);
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <Box
       fill
@@ -90,7 +96,11 @@ const CharacterPlaybookForm: FC = () => {
     >
       <Box width="85vw" align="start" style={{ maxWidth: '763px' }}>
         <Box direction="row" fill="horizontal" justify="start" align="center">
-          <HeadingWS crustReady={crustReady} level={2} style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}>
+          <HeadingWS
+            crustReady={crustReady}
+            level={2}
+            style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
+          >
             {CHOOSE_YOUR_PLAYBOOK_TEXT}
           </HeadingWS>
         </Box>
@@ -102,16 +112,31 @@ const CharacterPlaybookForm: FC = () => {
             }}
           >
             {sortedPlaybooks.map((playbook) => (
-              <StyledTab key={playbook.id} title={decapitalize(playbook.playbookType)} name={playbook.playbookType}>
-                <PlaybookDisplay playbook={playbook} startFadeOut={() => setStartFadeOut(true)} />
+              <StyledTab
+                key={playbook.id}
+                title={decapitalize(playbook.playbookType)}
+                name={playbook.playbookType}
+              >
+                <PlaybookDisplay
+                  playbook={playbook}
+                  startFadeOut={() => setStartFadeOut(true)}
+                />
               </StyledTab>
             ))}
           </StyledTabs>
         </Box>
         {activeTab === 12 && (
-          <Box direction="row" fill="horizontal" justify="center" align="center" pad={{ vertical: '48px' }}>
+          <Box
+            direction="row"
+            fill="horizontal"
+            justify="center"
+            align="center"
+            pad={{ vertical: '48px' }}
+          >
             <ParagraphWS textAlign="center">
-              {character?.mustChangePlaybook ? CHANGED_PLAYBOOK_INTRO_TEXT : NEW_PLAYER_INTRO_TEXT}
+              {character?.mustChangePlaybook
+                ? CHANGED_PLAYBOOK_INTRO_TEXT
+                : NEW_PLAYER_INTRO_TEXT}
             </ParagraphWS>
           </Box>
         )}

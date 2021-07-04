@@ -1,13 +1,32 @@
-import React, { ChangeEvent, FC, Reducer, useEffect, useReducer, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  Reducer,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 import { shuffle } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
 import { Box, FormField, TextArea } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
 import Spinner from '../Spinner';
-import { ButtonWS, HeadingWS, npcDialogBackground, TextInputWS } from '../../config/grommetConfig';
-import THREAT_CREATOR, { ThreatCreatorData, ThreatCreatorVars } from '../../queries/threatCreator';
-import ADD_NPC, { AddNpcData, AddNpcVars, getAddNpcOR } from '../../mutations/addNpc';
+import {
+  ButtonWS,
+  HeadingWS,
+  npcDialogBackground,
+  TextInputWS,
+} from '../../config/grommetConfig';
+import THREAT_CREATOR, {
+  ThreatCreatorData,
+  ThreatCreatorVars,
+} from '../../queries/threatCreator';
+import ADD_NPC, {
+  AddNpcData,
+  AddNpcVars,
+  getAddNpcOR,
+} from '../../mutations/addNpc';
 import { NpcInput } from '../../@types';
 import { Npc } from '../../@types/dataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
@@ -29,7 +48,10 @@ interface Action {
   payload?: any;
 }
 
-const npcFormReducer: Reducer<NpcFormState, Action> = (state: NpcFormState, action: Action) => {
+const npcFormReducer: Reducer<NpcFormState, Action> = (
+  state: NpcFormState,
+  action: Action
+) => {
   switch (action.type) {
     case 'SET_NAME':
       return {
@@ -52,19 +74,26 @@ const NpcDialog: FC<NpcDialogProps> = ({ handleClose, existingNpc }) => {
     description: !!existingNpc?.description ? existingNpc.description : '',
   };
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [{ name, description }, dispatch] = useReducer(npcFormReducer, initialState);
+  // ----------------------------- Component state ------------------------------ //
+  const [{ name, description }, dispatch] = useReducer(
+    npcFormReducer,
+    initialState
+  );
   const [filteredNames, setFilteredNames] = useState<string[]>([]);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { mcGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data } = useQuery<ThreatCreatorData, ThreatCreatorVars>(THREAT_CREATOR);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data } = useQuery<ThreatCreatorData, ThreatCreatorVars>(
+    THREAT_CREATOR
+  );
   const threatCreator = data?.threatCreator;
-  const [addNpc, { loading: addingNpc }] = useMutation<AddNpcData, AddNpcVars>(ADD_NPC);
-  // ---------------------------------------- Component functions and variables ------------------------------------------ //
+  const [addNpc, { loading: addingNpc }] = useMutation<AddNpcData, AddNpcVars>(
+    ADD_NPC
+  );
+  // ----------------------------- Component functions ------------------------- //
 
   const handleSetNpc = async () => {
     if (!!mcGameRole) {
@@ -85,15 +114,17 @@ const NpcDialog: FC<NpcDialogProps> = ({ handleClose, existingNpc }) => {
     }
   };
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     if (!!threatCreator) {
-      const filteredNames = threatCreator.threatNames.filter((n) => n.toLowerCase().includes(name.toLowerCase()));
+      const filteredNames = threatCreator.threatNames.filter((n) =>
+        n.toLowerCase().includes(name.toLowerCase())
+      );
       setFilteredNames(filteredNames);
     }
   }, [threatCreator, name]);
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderNameForm = () => (
     <Box flex="grow">
@@ -104,10 +135,16 @@ const NpcDialog: FC<NpcDialogProps> = ({ handleClose, existingNpc }) => {
             name="npcName"
             value={name}
             size="xlarge"
-            suggestions={name === '' ? shuffle(threatCreator.threatNames) : filteredNames}
-            onChange={(e) => dispatch({ type: 'SET_NAME', payload: e.target.value })}
+            suggestions={
+              name === '' ? shuffle(threatCreator.threatNames) : filteredNames
+            }
+            onChange={(e) =>
+              dispatch({ type: 'SET_NAME', payload: e.target.value })
+            }
             // @ts-ignore
-            onSuggestionSelect={({ suggestion }) => dispatch({ type: 'SET_NAME', payload: suggestion })}
+            onSuggestionSelect={({ suggestion }) =>
+              dispatch({ type: 'SET_NAME', payload: suggestion })
+            }
           />
         )}
       </FormField>
@@ -122,7 +159,9 @@ const NpcDialog: FC<NpcDialogProps> = ({ handleClose, existingNpc }) => {
           fill
           size="xlarge"
           value={description}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => dispatch({ type: 'SET_DESC', payload: e.target.value })}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            dispatch({ type: 'SET_DESC', payload: e.target.value })
+          }
           style={{ whiteSpace: 'pre-wrap', height: '250px' }}
         />
       </FormField>
@@ -133,7 +172,13 @@ const NpcDialog: FC<NpcDialogProps> = ({ handleClose, existingNpc }) => {
     <ButtonWS
       primary
       fill="horizontal"
-      label={addingNpc ? <Spinner fillColor="#FFF" width="100%" height="36px" /> : SET_TEXT}
+      label={
+        addingNpc ? (
+          <Spinner fillColor="#FFF" width="100%" height="36px" />
+        ) : (
+          SET_TEXT
+        )
+      }
       onClick={() => !addingNpc && !!name && handleSetNpc()}
       disabled={!!addingNpc || !name}
     />

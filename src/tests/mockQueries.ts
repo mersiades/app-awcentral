@@ -5,7 +5,9 @@ import ADD_COMMS_APP, { AddCommsAppData } from '../mutations/addCommsApp';
 import ADD_COMMS_URL, { AddCommsUrlData } from '../mutations/addCommsUrl';
 import ADD_INVITEE, { AddInviteeData } from '../mutations/addInvitee';
 import ADD_USER_TO_GAME from '../mutations/addUserToGame';
-import ADJUST_CHARACTER_HX, { getAdjustCharacterHxOR } from '../mutations/adjustCharacterHx';
+import ADJUST_CHARACTER_HX, {
+  getAdjustCharacterHxOR,
+} from '../mutations/adjustCharacterHx';
 import CREATE_CHARACTER from '../mutations/createCharacter';
 import CREATE_GAME, { CreateGameData } from '../mutations/createGame';
 import DELETE_GAME from '../mutations/deleteGame';
@@ -28,11 +30,15 @@ import SET_VEHICLE_COUNT from '../mutations/setVehicleCount';
 import TOGGLE_STAT_HIGHLIGHT from '../mutations/toggleStatHighlight';
 import ALL_MOVES from '../queries/allMoves';
 import GAME, { GameData } from '../queries/game';
-import GAMEROLES_BY_USER_ID, { GameRolesByUserIdData } from '../queries/gameRolesByUserId';
+import GAMEROLES_BY_USER_ID, {
+  GameRolesByUserIdData,
+} from '../queries/gameRolesByUserId';
 import GAMES_FOR_INVITEE from '../queries/gamesForInvitee';
 import MC_CONTENT from '../queries/mcContent';
 import PLAYBOOK from '../queries/playbook';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../queries/playbookCreator';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+} from '../queries/playbookCreator';
 import PLAYBOOKS from '../queries/playbooks';
 import VEHICLE_CREATOR from '../queries/vehicleCreator';
 import { dummyAngelKitMove } from './fixtures/dummyData';
@@ -117,7 +123,13 @@ export const mockCreateGame: MockedResponse<CreateGameData> = {
         name: mockGame3.name,
         mc: mockGame3.mc,
         players: mockGame3.players,
-        gameRoles: [{ id: mockGame3.gameRoles[0].id, role: mockGame3.gameRoles[0].role, __typename: 'GameRole' }],
+        gameRoles: [
+          {
+            id: mockGame3.gameRoles[0].id,
+            role: mockGame3.gameRoles[0].role,
+            __typename: 'GameRole',
+          },
+        ],
         __typename: 'Game',
       },
     },
@@ -278,7 +290,11 @@ export const mockSetCharacterLook3: MockedResponse = {
           id: mockCharacter2.id,
           playbook: mockCharacter2.playbook,
           name: mockCharacter2.name,
-          looks: [mockCharacter2.looks[0], mockCharacter2.looks[1], mockCharacter2.looks[2]],
+          looks: [
+            mockCharacter2.looks[0],
+            mockCharacter2.looks[1],
+            mockCharacter2.looks[2],
+          ],
         },
       },
     };
@@ -307,7 +323,12 @@ export const mockSetCharacterLook4: MockedResponse = {
           id: mockCharacter2.id,
           playbook: mockCharacter2.playbook,
           name: mockCharacter2.name,
-          looks: [mockCharacter2.looks[0], mockCharacter2.looks[1], mockCharacter2.looks[2], mockCharacter2.looks[3]],
+          looks: [
+            mockCharacter2.looks[0],
+            mockCharacter2.looks[1],
+            mockCharacter2.looks[2],
+            mockCharacter2.looks[3],
+          ],
         },
       },
     };
@@ -384,7 +405,9 @@ export const mockSetAngelKit: MockedResponse = {
     variables: {
       gameRoleId: mockGame5.gameRoles[2].id,
       characterId: mockCharacter2.id,
-      stock: mockPlaybookCreatorAngel.playbookUniqueCreator?.angelKitCreator?.startingStock,
+      stock:
+        mockPlaybookCreatorAngel.playbookUniqueCreator?.angelKitCreator
+          ?.startingStock,
       hasSupplier: false,
     },
   },
@@ -511,7 +534,11 @@ export const mockPlaybook: MockedResponse = {
 export const mockSetVehicle: MockedResponse = {
   request: {
     query: SET_VEHICLE,
-    variables: { gameRoleId: 'mock-gameRole-id-8', characterId: mockCharacter2.id, vehicleInput: mockVehicleInput },
+    variables: {
+      gameRoleId: 'mock-gameRole-id-8',
+      characterId: mockCharacter2.id,
+      vehicleInput: mockVehicleInput,
+    },
   },
   result: () => {
     // console.log('mockSetVehicle');
@@ -528,35 +555,37 @@ export const mockSetVehicle: MockedResponse = {
   },
 };
 
-export const mockPlayBookCreatorQueryAngel: MockedResponse<PlaybookCreatorData> = {
-  request: {
-    query: PLAYBOOK_CREATOR,
-    variables: { playbookType: PlaybookType.angel },
-  },
-  result: () => {
-    // console.log('mockPlayBookCreatorQueryAngel');
-    return {
-      data: {
-        playbookCreator: mockPlaybookCreatorAngel,
-      },
-    };
-  },
-};
+export const mockPlayBookCreatorQueryAngel: MockedResponse<PlaybookCreatorData> =
+  {
+    request: {
+      query: PLAYBOOK_CREATOR,
+      variables: { playbookType: PlaybookType.angel },
+    },
+    result: () => {
+      // console.log('mockPlayBookCreatorQueryAngel');
+      return {
+        data: {
+          playbookCreator: mockPlaybookCreatorAngel,
+        },
+      };
+    },
+  };
 
-export const mockPlayBookCreatorQueryBrainer: MockedResponse<PlaybookCreatorData> = {
-  request: {
-    query: PLAYBOOK_CREATOR,
-    variables: { playbookType: PlaybookType.brainer },
-  },
-  result: () => {
-    // console.log('mockPlayBookCreatorQueryBrainer');
-    return {
-      data: {
-        playbookCreator: mockPlaybookCreatorBrainer,
-      },
-    };
-  },
-};
+export const mockPlayBookCreatorQueryBrainer: MockedResponse<PlaybookCreatorData> =
+  {
+    request: {
+      query: PLAYBOOK_CREATOR,
+      variables: { playbookType: PlaybookType.brainer },
+    },
+    result: () => {
+      // console.log('mockPlayBookCreatorQueryBrainer');
+      return {
+        data: {
+          playbookCreator: mockPlaybookCreatorBrainer,
+        },
+      };
+    },
+  };
 
 export const mockVehicleCreatorQuery: MockedResponse = {
   request: {
@@ -576,7 +605,11 @@ export const mockVehicleCreatorQuery: MockedResponse = {
 export const mockSetVehicleCount: MockedResponse = {
   request: {
     query: SET_VEHICLE_COUNT,
-    variables: { gameRoleId: 'mock-gameRole-id-8', characterId: 'mock-character-id-2', vehicleCount: 1 },
+    variables: {
+      gameRoleId: 'mock-gameRole-id-8',
+      characterId: 'mock-character-id-2',
+      vehicleCount: 1,
+    },
   },
   result: () => {
     // console.log('mockSetVehicleCount');
@@ -596,7 +629,11 @@ export const mockSetVehicleCount: MockedResponse = {
 export const mockSetBattleVehicleCount: MockedResponse = {
   request: {
     query: SET_BATTLE_VEHICLE_COUNT,
-    variables: { gameRoleId: 'mock-gameRole-id-8', characterId: 'mock-character-id-2', battleVehicleCount: 1 },
+    variables: {
+      gameRoleId: 'mock-gameRole-id-8',
+      characterId: 'mock-character-id-2',
+      battleVehicleCount: 1,
+    },
   },
   result: () => {
     // console.log('mockSetBattleVehicleCount');
@@ -619,7 +656,11 @@ export const mockAdjustCharacterHx: MockedResponse = {
     variables: {
       gameRoleId: 'mock-gameRole-id-8',
       characterId: 'mock-character-id-2',
-      hxStat: { characterId: 'mock-character-id-1', characterName: 'Mock Character 1', hxValue: 1 },
+      hxStat: {
+        characterId: 'mock-character-id-1',
+        characterName: 'Mock Character 1',
+        hxValue: 1,
+      },
     },
   },
   result: () => {
@@ -637,21 +678,22 @@ export const mockAdjustCharacterHx: MockedResponse = {
   },
 };
 
-export const mockPlayBookCreatorQueryMaestroD: MockedResponse<PlaybookCreatorData> = {
-  request: {
-    query: PLAYBOOK_CREATOR,
-    variables: { playbookType: PlaybookType.maestroD },
-  },
-  result: () => {
-    // console.log('mockPlayBookCreatorQueryMaestroD');
-    return {
-      data: {
-        __typename: 'Mutation',
-        playbookCreator: mockPlaybookCreatorMaestroD,
-      },
-    };
-  },
-};
+export const mockPlayBookCreatorQueryMaestroD: MockedResponse<PlaybookCreatorData> =
+  {
+    request: {
+      query: PLAYBOOK_CREATOR,
+      variables: { playbookType: PlaybookType.maestroD },
+    },
+    result: () => {
+      // console.log('mockPlayBookCreatorQueryMaestroD');
+      return {
+        data: {
+          __typename: 'Mutation',
+          playbookCreator: mockPlaybookCreatorMaestroD,
+        },
+      };
+    },
+  };
 
 export const mockPlayBookCreatorQueryHocus: MockedResponse = {
   request: {
