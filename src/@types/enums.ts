@@ -170,3 +170,24 @@ export enum ScriptChangeType {
   replay = 'INSTANT_REPLAY',
   resume = 'RESUME',
 }
+
+export enum ThreatMapLocation {
+  center = 'CENTER',
+  closreNorth = 'CLOSER_NORTH',
+  fatherNorth = 'FARTHER_NORTH',
+  closerUp = 'CLOSER_UP',
+  fartherUp = 'FARTHER_UP',
+  closerEast = 'CLOSER_EAST',
+  fartherEast = 'FARTHER_EAST',
+  closrOut = 'CLOSER_OUT',
+  fartherOut = 'FARTHER_OUT',
+  closerSouth = 'CLOSER_SOUTH',
+  fartherSouth = 'FARTHER_SOUTH',
+  closerDown = 'CLOSER_DOWN',
+  fatherDown = 'FARTHER_DOWN',
+  closerWest = 'CLOSER_WEST',
+  fartherWest = 'FARTHER_WEST',
+  closerIn = 'CLOSER_IN',
+  fartherIn = 'FARTHER_IN',
+  notAssigned = 'NOT_ASSIGNED',
+}

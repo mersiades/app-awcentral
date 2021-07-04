@@ -26,6 +26,7 @@ import {
   RoleType,
   RollType,
   StatType,
+  ThreatMapLocation,
   UniqueTypes,
   VehicleFrameType,
   VehicleType,
@@ -116,6 +117,7 @@ interface MockCharacter {
   allowedImprovements: number;
   allowedPlaybookMoves: number;
   allowedOtherPlaybookMoves: number;
+  mapPosition: ThreatMapLocation;
   isDead: boolean;
   mustChangePlaybook: boolean;
   battleVehicles: BattleVehicle[];
@@ -193,6 +195,7 @@ export const mockCharacter1: MockCharacter = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 2,
   allowedOtherPlaybookMoves: 0,
+  mapPosition: ThreatMapLocation.center,
   isDead: false,
   mustChangePlaybook: false,
   harm: mockCharacterHarm,
@@ -227,6 +230,7 @@ export const mockCharacter2: MockCharacter = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 2,
   allowedOtherPlaybookMoves: 0,
+  mapPosition: ThreatMapLocation.center,
   isDead: false,
   mustChangePlaybook: false,
   hxBlock: [
@@ -1264,6 +1268,7 @@ export const blankCharacter: MockCharacter = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 0,
   allowedOtherPlaybookMoves: 0,
+  mapPosition: ThreatMapLocation.center,
   isDead: false,
   mustChangePlaybook: false,
   hasCompletedCharacterCreation: false,

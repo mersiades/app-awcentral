@@ -594,6 +594,7 @@ const GAME = gql`
           allowedImprovements
           allowedPlaybookMoves
           allowedOtherPlaybookMoves
+          mapPosition
           isDead
           mustChangePlaybook
           vehicleCount

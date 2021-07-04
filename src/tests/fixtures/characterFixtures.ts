@@ -1,5 +1,5 @@
 import { Character } from '../../@types/dataInterfaces';
-import { PlaybookType } from '../../@types/enums';
+import { PlaybookType, ThreatMapLocation } from '../../@types/enums';
 import { mockCharacterHarm } from '../mocks';
 import { mockAngelSpecialCM } from './characterMovesFixtures';
 import {
@@ -31,6 +31,7 @@ export const mockAngel_fresh: Character = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 0,
   allowedOtherPlaybookMoves: 0,
+  mapPosition: ThreatMapLocation.center,
   isDead: false,
   mustChangePlaybook: false,
   harm: mockCharacterHarm,
@@ -78,6 +79,7 @@ export const mockChopper_fresh: Character = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 0,
   allowedOtherPlaybookMoves: 0,
+  mapPosition: ThreatMapLocation.center,
   isDead: false,
   mustChangePlaybook: false,
   harm: mockCharacterHarm,
@@ -114,6 +116,7 @@ export const mockBattlebabe_fresh: Character = {
   allowedImprovements: 0,
   allowedPlaybookMoves: 0,
   allowedOtherPlaybookMoves: 0,
+  mapPosition: ThreatMapLocation.center,
   isDead: false,
   mustChangePlaybook: false,
   harm: mockCharacterHarm,

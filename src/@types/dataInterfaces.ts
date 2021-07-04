@@ -5,6 +5,7 @@ import {
   PlaybookType,
   RoleType,
   StatType,
+  ThreatMapLocation,
   ThreatType,
   UniqueTypes,
   VehicleType,
@@ -88,6 +89,7 @@ export interface Character {
   allowedImprovements: number;
   allowedPlaybookMoves: number;
   allowedOtherPlaybookMoves: number;
+  mapPosition: ThreatMapLocation;
   isDead: boolean;
   mustChangePlaybook: boolean;
   battleVehicles: BattleVehicle[];
