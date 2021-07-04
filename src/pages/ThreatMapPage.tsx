@@ -1,7 +1,7 @@
 import { Box, BoxProps } from 'grommet';
 import React from 'react';
 import styled, { css } from 'styled-components';
-import ThreatMap from '../components/threatMap/ThreatMap';
+import ThreatMapData from '../components/threatMap/ThreatMapData';
 import { useWindowSize } from '../hooks/useWindowSize';
 
 const background = {
@@ -57,7 +57,7 @@ const ThreatMapPage = () => {
         New threat form
       </ThreatFormContainer>
       <ThreatMapContainer border background={background} flex="grow">
-        <ThreatMap />
+        <ThreatMapData />
       </ThreatMapContainer>
     </Box>
   );

@@ -1,30 +1,20 @@
-import React, { useEffect, useReducer } from 'react';
+import React from 'react';
 import { Box, BoxProps } from 'grommet';
 import styled, { css } from 'styled-components';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
 import ThreatMapLabels from './ThreatMapLabels';
 import ThreatMapDropSegments from './ThreatMapDropSegments';
-import { useGame } from '../../contexts/gameContext';
-import { useParams } from 'react-router-dom';
-import { useKeycloakUser } from '../../contexts/keycloakUserContext';
 import { FC } from 'react';
-import { ThreatMapItemType, ThreatMapLocation } from '../../@types/enums';
-import { Character } from '../../@types/dataInterfaces';
-import { union } from 'lodash';
-import { useCallback } from 'react';
+import { ThreatMapItem } from './ThreatMapData';
+import ThreatMapItemPill from './ThreatMapItemPill';
 
 export interface WindowWidths {
   readonly windowHeight: number;
   readonly windowWidth: number;
 }
 
-interface ThreatMapItem {
-  label: string;
-  position: ThreatMapLocation;
-}
-
-interface ThreatMapState {
+interface ThreatMapProps {
   center: ThreatMapItem[];
   closerNorth: ThreatMapItem[];
   fatherNorth: ThreatMapItem[];
@@ -43,11 +33,6 @@ interface ThreatMapState {
   closerIn: ThreatMapItem[];
   fartherIn: ThreatMapItem[];
   notAssigned: ThreatMapItem[];
-}
-
-interface Action {
-  type: 'SET_CHARACTERS';
-  payload?: any;
 }
 
 const CenterCircle = styled(
@@ -80,212 +65,52 @@ const CenterCircle = styled(
   `;
 });
 
-const initialState: ThreatMapState = {
-  center: [],
-  closerNorth: [],
-  fatherNorth: [],
-  closerUp: [],
-  fartherUp: [],
-  closerEast: [],
-  fartherEast: [],
-  closerOut: [],
-  fartherOut: [],
-  closerSouth: [],
-  fartherSouth: [],
-  closerDown: [],
-  fatherDown: [],
-  closerWest: [],
-  fartherWest: [],
-  closerIn: [],
-  fartherIn: [],
-  notAssigned: [],
-};
+const CenterPillContainer = styled(
+  Box as React.FC<WindowWidths & BoxProps & JSX.IntrinsicElements['div']>
+)(({ windowWidth, windowHeight }) => {
+  const isLandscape = windowWidth > windowHeight;
+  const width = windowWidth * 0.2;
+  const height = windowHeight * 0.2;
+  const left = isLandscape
+    ? windowHeight * 0.5 - width / 2
+    : windowWidth * 0.5 - width / 2;
+  const top = isLandscape
+    ? windowHeight * 0.53 - height / 2
+    : windowWidth * 0.53 - height / 2;
 
-const updateState = (oldState: ThreatMapState, newState: ThreatMapState) => {
-  const addOrRemoveItem = (
-    oldItems: ThreatMapItem[],
-    newItems: ThreatMapItem[]
-  ) => {
-    // TODO: remove items from old segment
-    // TODO: add items to new segment
-    return union(oldItems, newItems);
-    // let items: ThreatMapItem[] = []
-    // newItems.forEach((newItem) => {
-    //   if (oldItems.map((oldItem)  => oldItem.label).includes(newItem.label)) {
-    //      items.push
-    //   }
-    // })
-    // // The items are new
-    // if ()
+  return css`
+    position: absolute;
+    left: ${left}px;
+    top: ${top}px;
+    width: ${width}px;
+    background: transparent;
+  `;
+});
 
-    // // If an item has been removed
-
-    // // Nothing has changed
-
-    // return items
-  };
-
-  return {
-    center: addOrRemoveItem(oldState.center, newState.center),
-    closerNorth: [],
-    fatherNorth: [],
-    closerUp: [],
-    fartherUp: [],
-    closerEast: [],
-    fartherEast: [],
-    closerOut: [],
-    fartherOut: [],
-    closerSouth: [],
-    fartherSouth: [],
-    closerDown: [],
-    fatherDown: [],
-    closerWest: [],
-    fartherWest: [],
-    closerIn: [],
-    fartherIn: [],
-    notAssigned: [],
-  };
-};
-
-const threatMapReducer = (
-  state: ThreatMapState,
-  action: Action
-): ThreatMapState => {
-  switch (action.type) {
-    case 'SET_CHARACTERS':
-      console.log(`action.payload`, action.payload);
-      return updateState(state, action.payload);
-    default:
-      return state;
-  }
-};
-
-const ThreatMap: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
-  const [state, dispatch] = useReducer(threatMapReducer, initialState);
-  console.log(`state`, state);
+const ThreatMap: FC<ThreatMapProps> = ({ center }) => {
   // ----------------------------- Hooks ---------------------------------------- //
   const [width, height] = useWindowSize();
-  const { allPlayerGameRoles, setGameContext } = useGame();
-  const { id: userId } = useKeycloakUser();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-
-  const { gameId } = useParams<{ gameId: string }>();
-
-  // ----------------------------- Component functions ------------------------- //
-  const convertCharacterToThreatMapItem = (
-    characters: Character[]
-  ): ThreatMapItem[] => {
-    return characters.map((ch) => ({
-      label: !!ch.name ? ch.name : 'unnamed character',
-      position: ch.mapPosition,
-    }));
-  };
-
-  const filterIntoSegments = useCallback(
-    (data: any[], itemType: ThreatMapItemType): ThreatMapState => {
-      let items: ThreatMapItem[] = [];
-      switch (itemType) {
-        case ThreatMapItemType.character:
-          items = convertCharacterToThreatMapItem(data);
-          break;
-      }
-
-      return {
-        center: items.filter(
-          (item) => item.position === ThreatMapLocation.center
-        ),
-        closerNorth: items.filter(
-          (item) => item.position === ThreatMapLocation.closerNorth
-        ),
-        fatherNorth: items.filter(
-          (item) => item.position === ThreatMapLocation.fatherNorth
-        ),
-        closerUp: items.filter(
-          (item) => item.position === ThreatMapLocation.closerUp
-        ),
-        fartherUp: items.filter(
-          (item) => item.position === ThreatMapLocation.fartherUp
-        ),
-        closerEast: items.filter(
-          (item) => item.position === ThreatMapLocation.closerEast
-        ),
-        fartherEast: items.filter(
-          (item) => item.position === ThreatMapLocation.fartherEast
-        ),
-        closerOut: items.filter(
-          (item) => item.position === ThreatMapLocation.closerOut
-        ),
-        fartherOut: items.filter(
-          (item) => item.position === ThreatMapLocation.fartherOut
-        ),
-        closerSouth: items.filter(
-          (item) => item.position === ThreatMapLocation.closerSouth
-        ),
-        fartherSouth: items.filter(
-          (item) => item.position === ThreatMapLocation.fartherSouth
-        ),
-        closerDown: items.filter(
-          (item) => item.position === ThreatMapLocation.closerDown
-        ),
-        fatherDown: items.filter(
-          (item) => item.position === ThreatMapLocation.fatherDown
-        ),
-        closerWest: items.filter(
-          (item) => item.position === ThreatMapLocation.closerWest
-        ),
-        fartherWest: items.filter(
-          (item) => item.position === ThreatMapLocation.fartherWest
-        ),
-        closerIn: items.filter(
-          (item) => item.position === ThreatMapLocation.closerIn
-        ),
-        fartherIn: items.filter(
-          (item) => item.position === ThreatMapLocation.fartherIn
-        ),
-        notAssigned: items.filter(
-          (item) => item.position === ThreatMapLocation.notAssigned
-        ),
-      };
-    },
-    []
-  );
-
-  // ----------------------------- Effects ---------------------------------------- //
-  // Sets the GameContext
-  useEffect(() => {
-    if (!!gameId && !!userId && !!setGameContext) {
-      setGameContext(gameId, userId);
-    }
-  }, [gameId, userId, setGameContext]);
-
-  // Assign characters to map segments
-  useEffect(() => {
-    if (!!allPlayerGameRoles) {
-      const characters = allPlayerGameRoles
-        .map((gameRole) => gameRole.characters)
-        .flat();
-
-      dispatch({
-        type: 'SET_CHARACTERS',
-        payload: filterIntoSegments(characters, ThreatMapItemType.character),
-      });
-    }
-  }, [allPlayerGameRoles, filterIntoSegments]);
+  console.log(`center`, center);
 
   // ----------------------------- Render ---------------------------------------- //
   return (
     <>
-      <CenterCircle
-        windowHeight={height}
-        windowWidth={width}
-        align="center"
-        justify="center"
-      />
+      <CenterCircle windowHeight={height} windowWidth={width} />
 
       <ThreatMapDropSegments />
       <ThreatMapLabels />
+      <CenterPillContainer
+        direction="row"
+        justify="around"
+        wrap
+        windowHeight={height}
+        windowWidth={width}
+      >
+        {center.map((item) => (
+          <ThreatMapItemPill key={item.label} item={item} />
+        ))}
+      </CenterPillContainer>
     </>
   );
 };
