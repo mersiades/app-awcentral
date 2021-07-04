@@ -3,7 +3,7 @@ import { Box, BoxProps } from 'grommet';
 import styled, { css } from 'styled-components';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
-import { HeadingWS } from '../../config/grommetConfig';
+import { HeadingWS, ParagraphWS, TextWS } from '../../config/grommetConfig';
 import { useFonts } from '../../contexts/fontContext';
 
 interface WindowWidths {
@@ -59,7 +59,7 @@ const CloserCircle = styled(
     top: ${top}px;
     width: ${width}px;
     height: ${height}px;
-    border: 3px solid white;
+    border: 2px solid white;
     background: transparent;
     border-radius: 50%;
     overflow: hidden;
@@ -78,7 +78,7 @@ const getCloserSegment = (
       bottom: 50%;
       width: 100%;
       height: 100%;
-      border-left: 3px solid white;
+      border-left: 2px solid white;
       background: transparent;
       border-radius: 0 100% 0 0;
       transform-origin: bottom left;
@@ -116,6 +116,51 @@ const getOuterLabel = (rotation: number, topRatio: number, leftRatio: number) =>
       transform: rotate(${rotation}deg);
     `;
   });
+
+const CenterLabelContainer = styled(
+  Box as React.FC<WindowWidths & BoxProps & JSX.IntrinsicElements['div']>
+)(({ windowWidth, windowHeight }) => {
+  const isLandscape = windowWidth > windowHeight;
+  const width = 150;
+  const height = 30;
+  const left = isLandscape
+    ? windowHeight * 0.5 - width / 2
+    : windowWidth * 0.5 - width / 2;
+  const top = isLandscape
+    ? windowHeight * 0.375 - height / 2
+    : windowWidth * 0.375 - height / 2;
+
+  return css`
+    position: absolute;
+    left: ${left}px;
+    top: ${top}px;
+    width: ${width}px;
+    background: transparent;
+  `;
+});
+
+const DistanceLabelContainer = styled(
+  Box as React.FC<WindowWidths & BoxProps & JSX.IntrinsicElements['div']>
+)(({ windowWidth, windowHeight }) => {
+  const isLandscape = windowWidth > windowHeight;
+  const width = 100;
+  const height = 30;
+  const left = isLandscape
+    ? windowHeight * 0.675 - width / 2
+    : windowWidth * 0.675 - width / 2;
+  const top = isLandscape
+    ? windowHeight * 0.21 - height / 2
+    : windowWidth * 0.21 - height / 2;
+
+  return css`
+    position: absolute;
+    left: ${left}px;
+    top: ${top}px;
+    width: ${width}px;
+    background: transparent;
+    transform: rotate(30deg);
+  `;
+});
 
 const NorthLabelContainer = getOuterLabel(0, 0.02, 0.5);
 const UpLabelContainer = getOuterLabel(45, 0.1, 0.88);
@@ -179,7 +224,7 @@ const getFartherSegment = (
       bottom: 50%;
       width: 100%;
       height: 100%;
-      border-left: 3px solid white;
+      border-left: 2px solid white;
       background: transparent;
       border-radius: 0 100% 0 0;
       transform-origin: bottom left;
@@ -247,9 +292,8 @@ const ThreatMap = () => {
         windowWidth={width}
         align="center"
         justify="center"
-      >
-        Center circle
-      </CenterCircle>
+      />
+
       <CloserCircle windowHeight={height} windowWidth={width}>
         <CloserNorthSegment
           align="center"
@@ -354,6 +398,25 @@ const ThreatMap = () => {
           IN
         </HeadingWS>
       </InLabelContainer>
+      <CenterLabelContainer windowHeight={height} windowWidth={width}>
+        <HeadingWS
+          crustReady={crustReady}
+          level={3}
+          textAlign="center"
+          margin={{ vertical: '0px' }}
+        >
+          THE PCS
+        </HeadingWS>
+        <TextWS textAlign="center">& their resources</TextWS>
+      </CenterLabelContainer>
+      <DistanceLabelContainer windowHeight={height} windowWidth={width}>
+        <TextWS color="accent-1" textAlign="center">
+          Farther ↑
+        </TextWS>
+        <TextWS color="accent-1" textAlign="center">
+          Closer ↓
+        </TextWS>
+      </DistanceLabelContainer>
     </>
   );
 };
