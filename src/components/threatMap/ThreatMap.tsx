@@ -3,6 +3,8 @@ import { Box, BoxProps } from 'grommet';
 import styled, { css } from 'styled-components';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
+import { HeadingWS } from '../../config/grommetConfig';
+import { useFonts } from '../../contexts/fontContext';
 
 interface WindowWidths {
   readonly windowHeight: number;
@@ -90,6 +92,39 @@ const getCloserSegment = (
       }
     `;
   });
+
+const getOuterLabel = (rotation: number, topRatio: number, leftRatio: number) =>
+  styled(
+    Box as React.FC<WindowWidths & BoxProps & JSX.IntrinsicElements['div']>
+  )(({ windowWidth, windowHeight }) => {
+    const isLandscape = windowWidth > windowHeight;
+    const width = 75;
+    const height = 30;
+    const left = isLandscape
+      ? windowHeight * leftRatio - width / 2
+      : windowWidth * leftRatio - width / 2;
+    const top = isLandscape
+      ? windowHeight * topRatio - height / 2
+      : windowWidth * topRatio - height / 2;
+
+    return css`
+      position: absolute;
+      left: ${left}px;
+      top: ${top}px;
+      width: ${width}px;
+      background: transparent;
+      transform: rotate(${rotation}deg);
+    `;
+  });
+
+const NorthLabelContainer = getOuterLabel(0, 0.02, 0.5);
+const UpLabelContainer = getOuterLabel(45, 0.1, 0.88);
+const EastLabelContainer = getOuterLabel(90, 0.5, 0.97);
+const OutLabelContainer = getOuterLabel(135, 0.9, 0.88);
+const SouthLabelContainer = getOuterLabel(180, 0.97, 0.5);
+const DownLabelContainer = getOuterLabel(225, 0.9, 0.12);
+const WestLabelContainer = getOuterLabel(270, 0.5, 0.03);
+const InLabelContainer = getOuterLabel(315, 0.1, 0.12);
 
 const CloserNorthSegment = getCloserSegment(
   -60,
@@ -201,7 +236,10 @@ const FartherInSegment = getFartherSegment(
 );
 
 const ThreatMap = () => {
+  // ----------------------------- Hooks ---------------------------------------- //
   const [width, height] = useWindowSize();
+  const { crustReady } = useFonts();
+
   return (
     <>
       <CenterCircle
@@ -236,6 +274,86 @@ const ThreatMap = () => {
       <FartherDownSegment />
       <FartherWestSegment />
       <FartherInSegment />
+      <NorthLabelContainer windowHeight={height} windowWidth={width}>
+        <HeadingWS
+          crustReady={crustReady}
+          level={3}
+          textAlign="center"
+          margin={{ vertical: '0px' }}
+        >
+          NORTH
+        </HeadingWS>
+      </NorthLabelContainer>
+      <UpLabelContainer windowHeight={height} windowWidth={width}>
+        <HeadingWS
+          crustReady={crustReady}
+          level={3}
+          textAlign="center"
+          margin={{ vertical: '0px' }}
+        >
+          UP
+        </HeadingWS>
+      </UpLabelContainer>
+      <EastLabelContainer windowHeight={height} windowWidth={width}>
+        <HeadingWS
+          crustReady={crustReady}
+          level={3}
+          textAlign="center"
+          margin={{ vertical: '0px' }}
+        >
+          EAST
+        </HeadingWS>
+      </EastLabelContainer>
+      <OutLabelContainer windowHeight={height} windowWidth={width}>
+        <HeadingWS
+          crustReady={crustReady}
+          level={3}
+          textAlign="center"
+          margin={{ vertical: '0px' }}
+        >
+          OUT
+        </HeadingWS>
+      </OutLabelContainer>
+      <SouthLabelContainer windowHeight={height} windowWidth={width}>
+        <HeadingWS
+          crustReady={crustReady}
+          level={3}
+          textAlign="center"
+          margin={{ vertical: '0px' }}
+        >
+          SOUTH
+        </HeadingWS>
+      </SouthLabelContainer>
+      <DownLabelContainer windowHeight={height} windowWidth={width}>
+        <HeadingWS
+          crustReady={crustReady}
+          level={3}
+          textAlign="center"
+          margin={{ vertical: '0px' }}
+        >
+          DOWN
+        </HeadingWS>
+      </DownLabelContainer>
+      <WestLabelContainer windowHeight={height} windowWidth={width}>
+        <HeadingWS
+          crustReady={crustReady}
+          level={3}
+          textAlign="center"
+          margin={{ vertical: '0px' }}
+        >
+          WEST
+        </HeadingWS>
+      </WestLabelContainer>
+      <InLabelContainer windowHeight={height} windowWidth={width}>
+        <HeadingWS
+          crustReady={crustReady}
+          level={3}
+          textAlign="center"
+          margin={{ vertical: '0px' }}
+        >
+          IN
+        </HeadingWS>
+      </InLabelContainer>
     </>
   );
 };
