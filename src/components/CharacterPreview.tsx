@@ -24,14 +24,19 @@ interface CharacterPreviewProps {
 const CharacterPreview: FC<CharacterPreviewProps> = ({ character, isMc }) => {
   const { crustReady } = useFonts();
 
-  const highlightedStats: CharacterStat[] | undefined = character.statsBlock?.stats.filter(
-    (stat) => stat.isHighlighted === true
-  );
+  const highlightedStats: CharacterStat[] | undefined =
+    character.statsBlock?.stats.filter((stat) => stat.isHighlighted === true);
 
   return (
     <Box pad="12px" gap="12px">
       <Box align="start" justify="start">
-        <Box direction="row" align="center" justify="start" gap="12px" fill="horizontal">
+        <Box
+          direction="row"
+          align="center"
+          justify="start"
+          gap="12px"
+          fill="horizontal"
+        >
           <Box>
             <HarmClock
               harmValue={character.harm.value}
@@ -42,7 +47,11 @@ const CharacterPreview: FC<CharacterPreviewProps> = ({ character, isMc }) => {
             />
           </Box>
           <Box data-testid="character-preview-name">
-            <HeadingWS level={3} crustReady={crustReady} style={{ width: '100%' }}>
+            <HeadingWS
+              level={3}
+              crustReady={crustReady}
+              style={{ width: '100%' }}
+            >
               {getCharacterNameString(character)}
             </HeadingWS>
           </Box>
@@ -62,7 +71,9 @@ const CharacterPreview: FC<CharacterPreviewProps> = ({ character, isMc }) => {
               </HeadingWS>
               <Box fill direction="row" gap="12px" justify="center">
                 {!!highlightedStats ? (
-                  highlightedStats.map((stat) => <StatBox key={stat.id} stat={stat} />)
+                  highlightedStats.map((stat) => (
+                    <StatBox key={stat.id} stat={stat} />
+                  ))
                 ) : (
                   <Text>{NO_STATS_HIGHLIGHTED_TEXT}</Text>
                 )}
@@ -76,7 +87,12 @@ const CharacterPreview: FC<CharacterPreviewProps> = ({ character, isMc }) => {
                 <HeadingWS
                   crustReady={crustReady}
                   level="2"
-                  margin={{ left: '9px', right: '9px', bottom: '3px', top: '9px' }}
+                  margin={{
+                    left: '9px',
+                    right: '9px',
+                    bottom: '3px',
+                    top: '9px',
+                  }}
                 >
                   {character.barter}
                 </HeadingWS>

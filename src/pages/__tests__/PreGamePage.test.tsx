@@ -15,14 +15,21 @@ import {
   mockKeycloakUserInfo1,
   mockKeycloakUserInfo2,
 } from '../../tests/mocks';
-import { mockGameForPreGame1, mockFinishPreGame, mockGameForPreGame3 } from '../../tests/mockQueries';
+import {
+  mockGameForPreGame1,
+  mockFinishPreGame,
+  mockGameForPreGame3,
+} from '../../tests/mockQueries';
 import { decapitalize } from '../../helpers/decapitalize';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo2), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo2),
+      initialized: true,
+    }),
   };
 });
 
@@ -48,13 +55,21 @@ describe('Rendering PreGamePage', () => {
 
     // Check everything has been rendered properly initially
     screen.getByRole('heading', { name: /PRE-GAME/ });
-    screen.getByRole('heading', { name: `${mockCharacter1.name} -- ${decapitalize(mockCharacter1.playbook)}` });
+    screen.getByRole('heading', {
+      name: `${mockCharacter1.name} -- ${decapitalize(
+        mockCharacter1.playbook
+      )}`,
+    });
     screen.getByRole('heading', { name: 'Name -- Playbook' });
     screen.getByRole('button', { name: /START GAME/ });
     let char1LooksBox = screen.getByTestId(`${mockCharacter1.id}-looks-box`);
-    expect(char1LooksBox.querySelector('svg')?.getAttribute('aria-label')).toEqual('Checkbox');
+    expect(
+      char1LooksBox.querySelector('svg')?.getAttribute('aria-label')
+    ).toEqual('Checkbox');
     let char2LooksBox = screen.getByTestId('1-looks-box');
-    expect(char2LooksBox.querySelector('svg')?.getAttribute('aria-label')).toEqual('Checkbox');
+    expect(
+      char2LooksBox.querySelector('svg')?.getAttribute('aria-label')
+    ).toEqual('Checkbox');
 
     // TODO: add tests for when new data comes in via polling
   });

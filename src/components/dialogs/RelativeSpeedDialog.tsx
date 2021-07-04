@@ -5,7 +5,12 @@ import { Box, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
 import { StyledMarkdown } from '../styledComponents';
-import { HeadingWS, ParagraphWS, ButtonWS, relativeSpeedDialogBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  relativeSpeedDialogBackground,
+} from '../../config/grommetConfig';
 import PERFORM_SPEED_ROLL_MOVE, {
   PerformSpeedRollMoveData,
   PerformSpeedRollMoveVars,
@@ -15,7 +20,12 @@ import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { Vehicle } from '../../@types/dataInterfaces';
 import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
-import { CANCEL_TEXT, OUTDISTANCE_TEXT, OUTDISTANCE_VEHICLE_NAME, OVERTAKE_TEXT } from '../../config/constants';
+import {
+  CANCEL_TEXT,
+  OUTDISTANCE_TEXT,
+  OUTDISTANCE_VEHICLE_NAME,
+  OVERTAKE_TEXT,
+} from '../../config/constants';
 import { VehicleType } from '../../@types/enums';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 
@@ -24,23 +34,28 @@ interface RelativeSpeedDialogProps {
   handleClose: () => void;
 }
 
-const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({
+  move,
+  handleClose,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [mySpeed, setMySpeed] = useState('');
   const [theirSpeed, setTheirSpeed] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | undefined>();
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performSpeedRollMove, { loading: performingSpeedRollMove }] =
-    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(PERFORM_SPEED_ROLL_MOVE);
+    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(
+      PERFORM_SPEED_ROLL_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const otherVehicle: Vehicle = {
     id: 'other-vehicle-id',
     vehicleType: VehicleType.car,
@@ -57,7 +72,14 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
   };
 
   const handleSpeedRollMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead && !performingSpeedRollMove && !!mySpeed && !!theirSpeed) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingSpeedRollMove &&
+      !!mySpeed &&
+      !!theirSpeed
+    ) {
       const modifier = parseInt(mySpeed) - parseInt(theirSpeed);
       try {
         await performSpeedRollMove({
@@ -77,7 +99,7 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderVehicleChoice = () => {
     if (!!character && character.vehicles.length > 0) {
@@ -116,7 +138,9 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
     } else if (!!character) {
       return (
         <Box fill align="start" justify="start">
-          <ParagraphWS alignSelf="start">What is the speed of your vehicle?</ParagraphWS>
+          <ParagraphWS alignSelf="start">
+            What is the speed of your vehicle?
+          </ParagraphWS>
           <Select
             aria-label="my speed select"
             name="my-speed"
@@ -131,7 +155,10 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
   };
 
   return (
-    <DialogWrapper background={relativeSpeedDialogBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={relativeSpeedDialogBackground}
+      handleClose={handleClose}
+    >
       <Box gap="12px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
@@ -140,7 +167,9 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
         <Box direction="row" gap="24px">
           {character && renderVehicleChoice()}
           <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">What is the speed of their vehicle?</ParagraphWS>
+            <ParagraphWS alignSelf="start">
+              What is the speed of their vehicle?
+            </ParagraphWS>
             <Select
               id="target-character-input"
               aria-label="opposition speed select"
@@ -157,12 +186,17 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({ move, handleClose }
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
-            label={move.name === OUTDISTANCE_VEHICLE_NAME ? OUTDISTANCE_TEXT : OVERTAKE_TEXT}
+            label={
+              move.name === OUTDISTANCE_VEHICLE_NAME
+                ? OUTDISTANCE_TEXT
+                : OVERTAKE_TEXT
+            }
             primary
             onClick={() => !performingSpeedRollMove && handleSpeedRollMove()}
             disabled={performingSpeedRollMove || !mySpeed || !theirSpeed}

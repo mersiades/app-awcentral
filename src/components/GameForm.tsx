@@ -6,9 +6,20 @@ import { Box, Select, TextArea, TextInput } from 'grommet';
 import CloseButton from './CloseButton';
 import Spinner from './Spinner';
 import { ButtonWS } from '../config/grommetConfig';
-import ADD_COMMS_APP, { AddCommsAppData, AddCommsAppVars, getAddCommsAppOR } from '../mutations/addCommsApp';
-import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars, getAddCommsUrlOR } from '../mutations/addCommsUrl';
-import SET_GAME_NAME, { SetGameNameData, SetGameNameVars } from '../mutations/setGameName';
+import ADD_COMMS_APP, {
+  AddCommsAppData,
+  AddCommsAppVars,
+  getAddCommsAppOR,
+} from '../mutations/addCommsApp';
+import ADD_COMMS_URL, {
+  AddCommsUrlData,
+  AddCommsUrlVars,
+  getAddCommsUrlOR,
+} from '../mutations/addCommsUrl';
+import SET_GAME_NAME, {
+  SetGameNameData,
+  SetGameNameVars,
+} from '../mutations/setGameName';
 import { useGame } from '../contexts/gameContext';
 import { SET_TEXT } from '../config/constants';
 
@@ -19,34 +30,56 @@ interface GameFormProps {
 const GameForm: FC<GameFormProps> = ({ handleClose }) => {
   const { game } = useGame();
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [app, setApp] = useState(game?.commsApp || '');
   const [url, setUrl] = useState(game?.commsUrl || 'https://');
   const [name, setName] = useState(game?.name || '');
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [addCommsApp, { loading: settingApp }] = useMutation<AddCommsAppData, AddCommsAppVars>(ADD_COMMS_APP, {
+
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [addCommsApp, { loading: settingApp }] = useMutation<
+    AddCommsAppData,
+    AddCommsAppVars
+  >(ADD_COMMS_APP, {
     variables: { gameId, app },
   });
-  const [addCommsUrl, { loading: settingUrl }] = useMutation<AddCommsUrlData, AddCommsUrlVars>(ADD_COMMS_URL, {
+  const [addCommsUrl, { loading: settingUrl }] = useMutation<
+    AddCommsUrlData,
+    AddCommsUrlVars
+  >(ADD_COMMS_URL, {
     variables: { gameId, url },
   });
 
-  const [setGameName, { loading: settingName }] = useMutation<SetGameNameData, SetGameNameVars>(SET_GAME_NAME, {
+  const [setGameName, { loading: settingName }] = useMutation<
+    SetGameNameData,
+    SetGameNameVars
+  >(SET_GAME_NAME, {
     variables: { gameId, name },
   });
 
-  // ------------------------------------------------ Component functions -------------------------------------------------- //
-  const appOptions = ['Discord', 'Zoom', 'Skype', 'FaceTime', 'WhatsApp', 'Google Hangouts', 'Talky', 'ooVoo', 'other'];
+  // ----------------------------- Component functions ------------------------- //
+  const appOptions = [
+    'Discord',
+    'Zoom',
+    'Skype',
+    'FaceTime',
+    'WhatsApp',
+    'Google Hangouts',
+    'Talky',
+    'ooVoo',
+    'other',
+  ];
 
   const handleSetApp = async () => {
     if (!!app && !!game) {
       try {
         // TODO: Figure out why optomistic response isn't working here
-        await addCommsApp({ variables: { gameId, app }, optimisticResponse: getAddCommsAppOR(game, app) });
+        await addCommsApp({
+          variables: { gameId, app },
+          optimisticResponse: getAddCommsAppOR(game, app),
+        });
       } catch (e) {
         console.warn(e);
       }
@@ -56,7 +89,10 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
   const handleSetUrl = async () => {
     if (!!url && !!game) {
       try {
-        await addCommsUrl({ variables: { gameId, url }, optimisticResponse: getAddCommsUrlOR(game, url) });
+        await addCommsUrl({
+          variables: { gameId, url },
+          optimisticResponse: getAddCommsUrlOR(game, url),
+        });
       } catch (e) {
         console.warn(e);
       }
@@ -73,8 +109,8 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
     }
   };
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
-  // ------------------------------------------------------- Render -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   if (!game) {
     return <Spinner />;
   }

@@ -8,7 +8,12 @@ import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import { mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryChopper } from '../../../../tests/mockQueries';
-import { Character, Game, Gang, PlaybookUniques } from '../../../../@types/dataInterfaces';
+import {
+  Character,
+  Game,
+  Gang,
+  PlaybookUniques,
+} from '../../../../@types/dataInterfaces';
 import { mockChopper_withName } from '../../../../tests/fixtures/characterFixtures';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
 import { mockGangCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
@@ -17,7 +22,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -79,25 +87,41 @@ describe('Rendering GangForm', () => {
 
     test('should render GangForm in intial state', () => {
       screen.getByTestId('gang-form');
-      screen.getByRole('heading', { name: `${mockChopper_withName.name?.toUpperCase()}'S GANG` });
+      screen.getByRole('heading', {
+        name: `${mockChopper_withName.name?.toUpperCase()}'S GANG`,
+      });
       const sizeValue = screen.getByRole('heading', { name: 'size-value' });
       expect(sizeValue.textContent).toEqual(mockGangCreator.defaultSize);
       const harmValue = screen.getByRole('heading', { name: 'harm-value' });
-      expect(harmValue.textContent).toEqual(mockGangCreator.defaultHarm.toString());
+      expect(harmValue.textContent).toEqual(
+        mockGangCreator.defaultHarm.toString()
+      );
       const armorValue = screen.getByRole('heading', { name: 'armor-value' });
-      expect(armorValue.textContent).toEqual(mockGangCreator.defaultArmor.toString());
+      expect(armorValue.textContent).toEqual(
+        mockGangCreator.defaultArmor.toString()
+      );
       const tagsBox = screen.getByTestId('tags-tags-box');
-      expect('+' + tagsBox.textContent).toContain(mockGangCreator.defaultTags[0]);
+      expect('+' + tagsBox.textContent).toContain(
+        mockGangCreator.defaultTags[0]
+      );
       const checkBoxes = screen.getAllByRole('checkbox');
       expect(checkBoxes.length).toEqual(4);
       screen.getByRole('button', { name: 'SET' });
     });
 
     test('should enable SET button after completing form', async () => {
-      let setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
-      const strength1 = screen.getByRole('checkbox', { name: `option-${mockGangCreator.strengths[0].description}` });
-      const strength2 = screen.getByRole('checkbox', { name: `option-${mockGangCreator.strengths[1].description}` });
-      const weakness = screen.getByRole('checkbox', { name: `option-${mockGangCreator.weaknesses[0].description}` });
+      let setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
+      const strength1 = screen.getByRole('checkbox', {
+        name: `option-${mockGangCreator.strengths[0].description}`,
+      });
+      const strength2 = screen.getByRole('checkbox', {
+        name: `option-${mockGangCreator.strengths[1].description}`,
+      });
+      const weakness = screen.getByRole('checkbox', {
+        name: `option-${mockGangCreator.weaknesses[0].description}`,
+      });
       const harmValue = screen.getByRole('heading', { name: 'harm-value' });
       const tagsBox = screen.getByTestId('tags-tags-box');
 
@@ -105,21 +129,29 @@ describe('Rendering GangForm', () => {
       userEvent.click(strength1);
       expect(harmValue.textContent).toEqual('3');
       await waitOneTick();
-      setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toEqual(true);
 
       // Select second strength
       userEvent.click(strength2);
       expect(tagsBox.textContent).not.toContain('savage');
       await waitOneTick();
-      setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toEqual(true);
 
       // Select weakness
       userEvent.click(weakness);
-      expect('+' + tagsBox.textContent).toContain(mockGangCreator.weaknesses[0].tag);
+      expect('+' + tagsBox.textContent).toContain(
+        mockGangCreator.weaknesses[0].tag
+      );
       await waitOneTick();
-      setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toEqual(false);
     });
   });
@@ -148,7 +180,9 @@ describe('Rendering GangForm', () => {
     });
 
     test('should rended "increased by improvement" text', () => {
-      expect(screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
+      expect(
+        screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)
+      ).toBeInTheDocument();
     });
   });
 });

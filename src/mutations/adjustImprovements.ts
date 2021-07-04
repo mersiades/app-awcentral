@@ -35,14 +35,20 @@ export interface AdjustImprovementsVars {
   futureImprovementIds: string[];
 }
 
-export const adjustImprovementsOR = (character: Character): AdjustImprovementsData => ({
+export const adjustImprovementsOR = (
+  character: Character
+): AdjustImprovementsData => ({
   adjustImprovements: {
     id: character.id,
     name: character.name || 'temp-name',
     playbook: character.playbook,
     allowedImprovements: character.allowedImprovements,
     allowedOtherPlaybookMoves: character.allowedOtherPlaybookMoves,
-    characterMoves: character.characterMoves.map((move) => ({ id: move.id, name: move.name, __typename: 'CharacterMove' })),
+    characterMoves: character.characterMoves.map((move) => ({
+      id: move.id,
+      name: move.name,
+      __typename: 'CharacterMove',
+    })),
     improvementMoves: character.improvementMoves.map((move) => ({
       id: move.id,
       name: move.name,

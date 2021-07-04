@@ -1,4 +1,4 @@
-import { EMAIL_REGEX } from "../config/constants";
+import { EMAIL_REGEX } from '../config/constants';
 
 export const validateEmail = (value: string) => {
   if (typeof value === 'undefined' || value.length === 0) {

@@ -6,7 +6,10 @@ import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import DoubleRedBox from '../DoubleRedBox';
 import SingleRedBox from '../SingleRedBox';
 import RedTagsBox from '../RedTagsBox';
-import UPDATE_FOLLOWERS, { UpdateFollowersData, UpdateFollowersVars } from '../../mutations/updateFollowers';
+import UPDATE_FOLLOWERS, {
+  UpdateFollowersData,
+  UpdateFollowersVars,
+} from '../../mutations/updateFollowers';
 import { useGame } from '../../contexts/gameContext';
 import { getFollowersDescription } from '../../helpers/getFollowersDescription';
 
@@ -14,21 +17,32 @@ interface FollowersBoxProps {
   navigateToCharacterCreation: (step: string) => void;
 }
 
-const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+const FollowersBox: FC<FollowersBoxProps> = ({
+  navigateToCharacterCreation,
+}) => {
+  // ----------------------------- Hooks ---------------------------------------- //
   const { character, userGameRole } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
 
-  const [updateFollowers, { loading: updatingFollowers }] =
-    useMutation<UpdateFollowersData, UpdateFollowersVars>(UPDATE_FOLLOWERS);
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  const [updateFollowers, { loading: updatingFollowers }] = useMutation<
+    UpdateFollowersData,
+    UpdateFollowersVars
+  >(UPDATE_FOLLOWERS);
+  // ----------------------------- Component functions ------------------------- //
 
   const followers = character?.playbookUniques?.followers;
 
   const adjustBarter = (type: 'increase' | 'decrease') => {
-    if (!!userGameRole && !!character && !character.isDead && !!character.playbookUniques && !!followers) {
-      const barter = type === 'increase' ? followers.barter + 1 : followers.barter - 1;
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !!character.playbookUniques &&
+      !!followers
+    ) {
+      const barter =
+        type === 'increase' ? followers.barter + 1 : followers.barter - 1;
       try {
         updateFollowers({
           variables: {
@@ -60,9 +74,21 @@ const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) =>
   };
 
   const adjustFollowers = (type: 'increase' | 'decrease') => {
-    if (!!userGameRole && !!character && !character.isDead && !!character.playbookUniques && !!followers) {
-      const newFollowers = type === 'increase' ? followers.followers + 1 : followers.followers - 1;
-      const description = getFollowersDescription(followers.characterization, newFollowers, followers.travelOption) || '';
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !!character.playbookUniques &&
+      !!followers
+    ) {
+      const newFollowers =
+        type === 'increase' ? followers.followers + 1 : followers.followers - 1;
+      const description =
+        getFollowersDescription(
+          followers.characterization,
+          newFollowers,
+          followers.travelOption
+        ) || '';
       try {
         updateFollowers({
           variables: {
@@ -94,7 +120,7 @@ const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) =>
     }
   };
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
     <CollapsiblePanelBox
@@ -110,13 +136,37 @@ const FollowersBox: FC<FollowersBoxProps> = ({ navigateToCharacterCreation }) =>
         animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
       >
         {!!followers && (
-          <Box fill="horizontal" direction="row" align="center" justify="start" wrap gap="12px" pad="12px">
+          <Box
+            fill="horizontal"
+            direction="row"
+            align="center"
+            justify="start"
+            wrap
+            gap="12px"
+            pad="12px"
+          >
             {!!followers.description && (
-              <RedTagsBox tags={[followers.description]} label="Description" height="90px" maxWidth="400px" />
+              <RedTagsBox
+                tags={[followers.description]}
+                label="Description"
+                height="90px"
+                maxWidth="400px"
+              />
             )}
-            <DoubleRedBox value={`fortune+${followers.fortune}`} label="Fortune" />
-            {!!followers.surplus && <RedTagsBox tags={followers.surplus} label="Surplus" height="90px" />}
-            {!!followers.wants && <RedTagsBox tags={followers.wants} label="Want" height="90px" />}
+            <DoubleRedBox
+              value={`fortune+${followers.fortune}`}
+              label="Fortune"
+            />
+            {!!followers.surplus && (
+              <RedTagsBox
+                tags={followers.surplus}
+                label="Surplus"
+                height="90px"
+              />
+            )}
+            {!!followers.wants && (
+              <RedTagsBox tags={followers.wants} label="Want" height="90px" />
+            )}
             <SingleRedBox
               value={followers.barter.toString()}
               label="Barter"

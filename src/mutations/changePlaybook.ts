@@ -17,7 +17,10 @@ export interface ChangePlaybookVars {
   playbookType: PlaybookType;
 }
 
-export const getChangePlaybookOR = (character: Character, playbookType: PlaybookType): ChangePlaybookData => {
+export const getChangePlaybookOR = (
+  character: Character,
+  playbookType: PlaybookType
+): ChangePlaybookData => {
   return {
     changePlaybook: {
       id: character.id,
@@ -29,8 +32,16 @@ export const getChangePlaybookOR = (character: Character, playbookType: Playbook
 };
 
 const CHANGE_PLAYBOOK = gql`
-  mutation ChangePlaybook($gameRoleId: String!, $characterId: String!, $playbookType: PlaybookType!) {
-    changePlaybook(gameRoleId: $gameRoleId, characterId: $characterId, playbookType: $playbookType) {
+  mutation ChangePlaybook(
+    $gameRoleId: String!
+    $characterId: String!
+    $playbookType: PlaybookType!
+  ) {
+    changePlaybook(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      playbookType: $playbookType
+    ) {
       id
       name
       playbook

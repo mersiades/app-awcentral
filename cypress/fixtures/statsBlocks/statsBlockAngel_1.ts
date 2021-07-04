@@ -41,5 +41,11 @@ export const statAngelWeird_1: CharacterStat = {
 export const statsBlockAngel_1: StatsBlock = {
   id: 'angel-stats-block-1-id',
   statsOptionId: '609e42b4784e276a94ff2995',
-  stats: [statAngelCool_1, statAngelHard_1, statAngelHot_1, statAngelSharp_1, statAngelWeird_1],
+  stats: [
+    statAngelCool_1,
+    statAngelHard_1,
+    statAngelHot_1,
+    statAngelSharp_1,
+    statAngelWeird_1,
+  ],
 };

@@ -1,7 +1,12 @@
 import { gql } from '@apollo/client';
 import { Character, CharacterStat, StatsBlock } from '../@types/dataInterfaces';
 import { MoveType, PlaybookType, StatType } from '../@types/enums';
-import { DEATH_CHANGE_PLAYBOOK_NAME, DEATH_WEIRD_MAX_3_NAME, DIE_NAME, HARD_MINUS_1_NAME } from '../config/constants';
+import {
+  DEATH_CHANGE_PLAYBOOK_NAME,
+  DEATH_WEIRD_MAX_3_NAME,
+  DIE_NAME,
+  HARD_MINUS_1_NAME,
+} from '../config/constants';
 
 export interface SetDeathMovesData_CharacterMove {
   id: string;
@@ -116,7 +121,8 @@ export const getSetDeathMovesOR = (
 
   const optimisticStatsBlock: StatsBlock = {
     id: character.statsBlock?.id || 'temp-stats-block-id',
-    statsOptionId: character.statsBlock?.statsOptionId || 'temp-stats-block-statsOptionId',
+    statsOptionId:
+      character.statsBlock?.statsOptionId || 'temp-stats-block-statsOptionId',
     stats: generateOptimisticStats(),
     __typename: 'StatsBlock',
   };
@@ -134,8 +140,16 @@ export const getSetDeathMovesOR = (
 };
 
 const SET_DEATH_MOVES = gql`
-  mutation SetDeathMoves($gameRoleId: String!, $characterId: String!, $moveNames: [String]!) {
-    setDeathMoves(gameRoleId: $gameRoleId, characterId: $characterId, moveNames: $moveNames) {
+  mutation SetDeathMoves(
+    $gameRoleId: String!
+    $characterId: String!
+    $moveNames: [String]!
+  ) {
+    setDeathMoves(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      moveNames: $moveNames
+    ) {
       id
       playbook
       isDead

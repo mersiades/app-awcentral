@@ -13,7 +13,12 @@ export interface PerformStabilizeAndHealMoveVars {
 }
 
 const PERFORM_STABILIZE_AND_HEAL_MOVE = gql`
-  mutation PerformStabilizeAndHealMove($gameId: String!, $gameRoleId: String!, $characterId: String!, $stockSpent: Int!) {
+  mutation PerformStabilizeAndHealMove(
+    $gameId: String!
+    $gameRoleId: String!
+    $characterId: String!
+    $stockSpent: Int!
+  ) {
     performStabilizeAndHealMove(
       gameId: $gameId
       gameRoleId: $gameRoleId

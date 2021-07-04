@@ -1,5 +1,9 @@
 import { gql } from '@apollo/client';
-import { Character, CustomWeapons, PlaybookUniques } from '../@types/dataInterfaces';
+import {
+  Character,
+  CustomWeapons,
+  PlaybookUniques,
+} from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetCustomWeaponsData {
@@ -20,7 +24,10 @@ export interface SetCustomWeaponsVars {
   weapons: string[];
 }
 
-export const getSetCustomWeaponsOR = (character: Character, weapons: string[]): SetCustomWeaponsData => {
+export const getSetCustomWeaponsOR = (
+  character: Character,
+  weapons: string[]
+): SetCustomWeaponsData => {
   let optimisticPlaybookUnique: PlaybookUniques;
   if (!!character.playbookUniques && character.playbookUniques.customWeapons) {
     optimisticPlaybookUnique = {
@@ -58,8 +65,16 @@ export const getSetCustomWeaponsOR = (character: Character, weapons: string[]): 
 };
 
 const SET_CUSTOM_WEAPONS = gql`
-  mutation SetCustomWeapons($gameRoleId: String!, $characterId: String!, $weapons: [String]!) {
-    setCustomWeapons(gameRoleId: $gameRoleId, characterId: $characterId, weapons: $weapons) {
+  mutation SetCustomWeapons(
+    $gameRoleId: String!
+    $characterId: String!
+    $weapons: [String]!
+  ) {
+    setCustomWeapons(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      weapons: $weapons
+    ) {
       id
       playbookUniques {
         id

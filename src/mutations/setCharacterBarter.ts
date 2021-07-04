@@ -14,7 +14,10 @@ export interface SetCharacterBarterVars {
   amount: number;
 }
 
-export const getSetCharacterBarterOR = (id: string, barter: number): SetCharacterBarterData => {
+export const getSetCharacterBarterOR = (
+  id: string,
+  barter: number
+): SetCharacterBarterData => {
   return {
     setCharacterBarter: {
       id,
@@ -25,8 +28,16 @@ export const getSetCharacterBarterOR = (id: string, barter: number): SetCharacte
 };
 
 const SET_CHARACTER_BARTER = gql`
-  mutation SetCharacterBarter($gameRoleId: String!, $characterId: String!, $amount: Int!) {
-    setCharacterBarter(gameRoleId: $gameRoleId, characterId: $characterId, amount: $amount) {
+  mutation SetCharacterBarter(
+    $gameRoleId: String!
+    $characterId: String!
+    $amount: Int!
+  ) {
+    setCharacterBarter(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      amount: $amount
+    ) {
       id
       barter
     }

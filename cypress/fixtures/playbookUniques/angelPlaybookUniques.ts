@@ -9,7 +9,8 @@ export const mockAngelKit_1: AngelKit = {
   stock: 2,
   angelKitMoves: [], // TODO add mock moves
   hasSupplier: false,
-  supplierText: '_**You have a supplier.**_\nAt the beginning of every session, gain 1-stock, to a maximum of 6-stock.',
+  supplierText:
+    '_**You have a supplier.**_\nAt the beginning of every session, gain 1-stock, to a maximum of 6-stock.',
   __typename: 'AngelKit',
 };
 

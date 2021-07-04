@@ -195,7 +195,11 @@ describe('Rendering PlaybookPanel', () => {
 
   test('should render MovesBox properly', async () => {
     customRenderForComponent(
-      <PlaybookPanel character={mockCharacter2} navigateToCharacterCreation={jest.fn()} openDialog={jest.fn()} />,
+      <PlaybookPanel
+        character={mockCharacter2}
+        navigateToCharacterCreation={jest.fn()}
+        openDialog={jest.fn()}
+      />,
       {
         isAuthenticated: true,
         apolloMocks: [mockPlaybook],
@@ -203,30 +207,54 @@ describe('Rendering PlaybookPanel', () => {
     );
 
     // Check MovesBox has rendered initially
-    await screen.findByRole('heading', { name: `${decapitalize(MoveType.character)} moves` });
-    expect(screen.getByTestId('moves-box').textContent).toContain(decapitalize(mockCharacter2.characterMoves[0].name));
-    expect(screen.getByTestId('moves-box').textContent).toContain(decapitalize(mockCharacter2.characterMoves[1].name));
-    expect(screen.getByTestId('moves-box').textContent).toContain(decapitalize(mockCharacter2.characterMoves[2].name));
+    await screen.findByRole('heading', {
+      name: `${decapitalize(MoveType.character)} moves`,
+    });
+    expect(screen.getByTestId('moves-box').textContent).toContain(
+      decapitalize(mockCharacter2.characterMoves[0].name)
+    );
+    expect(screen.getByTestId('moves-box').textContent).toContain(
+      decapitalize(mockCharacter2.characterMoves[1].name)
+    );
+    expect(screen.getByTestId('moves-box').textContent).toContain(
+      decapitalize(mockCharacter2.characterMoves[2].name)
+    );
 
     // Check can collapse moves list
     userEvent.click(screen.getByTestId('hide-moves-icon'));
-    expect(screen.getByTestId('moves-box').textContent).not.toContain(decapitalize(mockCharacter2.characterMoves[0].name));
-    expect(screen.getByTestId('moves-box').textContent).not.toContain(decapitalize(mockCharacter2.characterMoves[1].name));
-    expect(screen.getByTestId('moves-box').textContent).not.toContain(decapitalize(mockCharacter2.characterMoves[2].name));
+    expect(screen.getByTestId('moves-box').textContent).not.toContain(
+      decapitalize(mockCharacter2.characterMoves[0].name)
+    );
+    expect(screen.getByTestId('moves-box').textContent).not.toContain(
+      decapitalize(mockCharacter2.characterMoves[1].name)
+    );
+    expect(screen.getByTestId('moves-box').textContent).not.toContain(
+      decapitalize(mockCharacter2.characterMoves[2].name)
+    );
 
     // Check can re-open moves list
     userEvent.click(screen.getByTestId('show-moves-icon'));
-    expect(screen.getByTestId('moves-box').textContent).toContain(decapitalize(mockCharacter2.characterMoves[0].name));
-    expect(screen.getByTestId('moves-box').textContent).toContain(decapitalize(mockCharacter2.characterMoves[1].name));
-    expect(screen.getByTestId('moves-box').textContent).toContain(decapitalize(mockCharacter2.characterMoves[2].name));
+    expect(screen.getByTestId('moves-box').textContent).toContain(
+      decapitalize(mockCharacter2.characterMoves[0].name)
+    );
+    expect(screen.getByTestId('moves-box').textContent).toContain(
+      decapitalize(mockCharacter2.characterMoves[1].name)
+    );
+    expect(screen.getByTestId('moves-box').textContent).toContain(
+      decapitalize(mockCharacter2.characterMoves[2].name)
+    );
 
     // Check can show move details
     userEvent.click(screen.getAllByTestId('show-move-details-icon')[0]);
-    expect(screen.getByTestId('moves-box').textContent).toContain(mockCharacter2.characterMoves[0].description);
+    expect(screen.getByTestId('moves-box').textContent).toContain(
+      mockCharacter2.characterMoves[0].description
+    );
 
     // Check can close move details
     userEvent.click(screen.getAllByTestId('hide-move-details-icon')[0]);
-    expect(screen.getByTestId('moves-box').textContent).not.toContain(mockCharacter2.characterMoves[0].description);
+    expect(screen.getByTestId('moves-box').textContent).not.toContain(
+      mockCharacter2.characterMoves[0].description
+    );
   });
 
   // TODO: Add test for performing moves from MovesBox

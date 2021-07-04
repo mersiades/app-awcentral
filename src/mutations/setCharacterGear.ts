@@ -13,8 +13,16 @@ export interface SetCharacterGearVars {
 }
 
 const SET_CHARACTER_GEAR = gql`
-  mutation SetCharacterGear($gameRoleId: String!, $characterId: String!, $gear: [String]!) {
-    setCharacterGear(gameRoleId: $gameRoleId, characterId: $characterId, gear: $gear) {
+  mutation SetCharacterGear(
+    $gameRoleId: String!
+    $characterId: String!
+    $gear: [String]!
+  ) {
+    setCharacterGear(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      gear: $gear
+    ) {
       id
       name
       playbook

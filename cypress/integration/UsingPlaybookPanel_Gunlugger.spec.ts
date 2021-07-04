@@ -1,5 +1,9 @@
 import { StatType } from '../../src/@types/enums';
-import { APPLY_TEXT, GUNLUGGER_SPECIAL_NAME, FUCK_THIS_SHIT_NAME } from '../../src/config/constants';
+import {
+  APPLY_TEXT,
+  GUNLUGGER_SPECIAL_NAME,
+  FUCK_THIS_SHIT_NAME,
+} from '../../src/config/constants';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import game1 from '../fixtures/games/game1';
 describe('Using the PlaybookPanel as a Gunlugger', () => {
@@ -33,7 +37,8 @@ describe('Using the PlaybookPanel as a Gunlugger', () => {
   });
 
   it(`should show message for the ${GUNLUGGER_SPECIAL_NAME} character move`, () => {
-    const moveDescSnippet = 'If you and another character have sex, you take +1 forward.';
+    const moveDescSnippet =
+      'If you and another character have sex, you take +1 forward.';
     cy.get('div[data-testid="moves-box"]').scrollIntoView();
     cy.contains(decapitalize(GUNLUGGER_SPECIAL_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
@@ -52,18 +57,35 @@ describe('Using the PlaybookPanel as a Gunlugger', () => {
     cy.contains('button', APPLY_TEXT).click();
     cy.contains('button', APPLY_TEXT).should('not.exist');
     const messageTitle = `BATTY: ${GUNLUGGER_SPECIAL_NAME}`;
-    cy.checkMoveMessage(messageTitle, 'Batty and Phoenix had sex. Batty has gained +1forward');
+    cy.checkMoveMessage(
+      messageTitle,
+      'Batty and Phoenix had sex. Batty has gained +1forward'
+    );
     cy.get('div[aria-label="+1forward token"]').should('be.visible');
   });
 
   it(`should show message for the ${FUCK_THIS_SHIT_NAME} character move and increase experience`, () => {
-    cy.checkRollMove('Batty', FUCK_THIS_SHIT_NAME, 'name your escape route and roll+hard.', StatType.hard);
+    cy.checkRollMove(
+      'Batty',
+      FUCK_THIS_SHIT_NAME,
+      'name your escape route and roll+hard.',
+      StatType.hard
+    );
 
     checkExperienceNumber(1, 4);
   });
 });
 
-const checkExperienceNumber = (expectedFilled: number, expectedUnfilled: number) => {
-  cy.get('div[data-testid="filled-circle"]', { timeout: 8000 }).should('have.length', expectedFilled);
-  cy.get('div[data-testid="unfilled-circle"]', { timeout: 8000 }).should('have.length', expectedUnfilled);
+const checkExperienceNumber = (
+  expectedFilled: number,
+  expectedUnfilled: number
+) => {
+  cy.get('div[data-testid="filled-circle"]', { timeout: 8000 }).should(
+    'have.length',
+    expectedFilled
+  );
+  cy.get('div[data-testid="unfilled-circle"]', { timeout: 8000 }).should(
+    'have.length',
+    expectedUnfilled
+  );
 };

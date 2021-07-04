@@ -17,7 +17,11 @@ const GearBox: FC<GearBoxProps> = ({ gear, navigateToCharacterCreation }) => {
       navigateToCharacterCreation={navigateToCharacterCreation}
       targetCreationStep="5"
     >
-      <Box fill="horizontal" align="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+      <Box
+        fill="horizontal"
+        align="start"
+        animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+      >
         <ul style={{ margin: 0, paddingInlineStart: '28px' }}>
           {gear.map((item, index) => (
             <li key={item + index}>{item}</li>

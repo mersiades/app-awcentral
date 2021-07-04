@@ -19,7 +19,11 @@ export interface CreateGameVars {
   email: string;
 }
 
-export const getCreateGameOR = (name: string, id: string, displayName: string): CreateGameData => {
+export const getCreateGameOR = (
+  name: string,
+  id: string,
+  displayName: string
+): CreateGameData => {
   return {
     createGame: {
       id: 'temp-id',
@@ -30,15 +34,27 @@ export const getCreateGameOR = (name: string, id: string, displayName: string): 
         __typename: 'User',
       },
       players: [],
-      gameRoles: [{ id: 'temp-id-2', role: RoleType.mc, __typename: 'GameRole' }],
+      gameRoles: [
+        { id: 'temp-id-2', role: RoleType.mc, __typename: 'GameRole' },
+      ],
       __typename: 'Game',
     },
   };
 };
 
 const CREATE_GAME = gql`
-  mutation CreateGame($userId: String!, $name: String!, $displayName: String!, $email: String!) {
-    createGame(userId: $userId, name: $name, displayName: $displayName, email: $email) {
+  mutation CreateGame(
+    $userId: String!
+    $name: String!
+    $displayName: String!
+    $email: String!
+  ) {
+    createGame(
+      userId: $userId
+      name: $name
+      displayName: $displayName
+      email: $email
+    ) {
       id
       name
       mc {

@@ -38,8 +38,14 @@ describe('Creating a new Savvyhead Character', () => {
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]').should('contain', savvyheadGearItem);
-    cy.get('div[data-testid="workspace-box"]').should('contain', decapitalize(UniqueTypes.workspace));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(SAVVYHEAD_SPECIAL_NAME));
+    cy.get('div[data-testid="workspace-box"]').should(
+      'contain',
+      decapitalize(UniqueTypes.workspace)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(SAVVYHEAD_SPECIAL_NAME)
+    );
 
     // Check form functionality
     cy.get(`div[data-testid="${option1}-pill"]`).click();
@@ -68,13 +74,28 @@ describe('Creating a new Savvyhead Character', () => {
       .should('contain', option2)
       .should('contain', option3)
       .should('contain', option4);
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(SAVVYHEAD_SPECIAL_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(SAVVYHEAD_SPECIAL_NAME)
+    );
+    cy.get('div[data-testid="vehicles-box"]')
+      .should('contain', VEHICLES_TITLE)
+      .should('contain', '...');
 
-    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).check({ force: true });
-    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).should('be.checked');
-    cy.get(`input[aria-label="${thingsSpeakMoveName}-checkbox"]`).check({ force: true });
-    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).should('be.checked');
-    cy.get(`input[aria-label="${thingsSpeakMoveName}-checkbox"]`).should('be.checked');
+    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).check({
+      force: true,
+    });
+    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).should(
+      'be.checked'
+    );
+    cy.get(`input[aria-label="${thingsSpeakMoveName}-checkbox"]`).check({
+      force: true,
+    });
+    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).should(
+      'be.checked'
+    );
+    cy.get(`input[aria-label="${thingsSpeakMoveName}-checkbox"]`).should(
+      'be.checked'
+    );
   });
 });

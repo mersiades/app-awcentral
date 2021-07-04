@@ -21,21 +21,27 @@ interface HxBoxProps {
 
 const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
   const [hxMessage, setHxMessage] = useState('');
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { userGameRole, character } = useGame();
   const hxStats = character?.hxBlock;
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [adjustCharacterHx, { loading: adjustingHx }] =
-    useMutation<AdjustCharacterHxData, AdjustCharacterHxVars>(ADJUST_CHARACTER_HX);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [adjustCharacterHx, { loading: adjustingHx }] = useMutation<
+    AdjustCharacterHxData,
+    AdjustCharacterHxVars
+  >(ADJUST_CHARACTER_HX);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
 
   const handleAdjustHx = async (hxInput: HxInput) => {
     if (!!userGameRole && !!character && !character.isDead) {
       try {
         await adjustCharacterHx({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, hxStat: hxInput },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            hxStat: hxInput,
+          },
           optimisticResponse: getAdjustCharacterHxOR(character, hxInput),
         });
         if (hxInput.hxValue >= 4 || hxInput.hxValue <= -3) {
@@ -55,13 +61,13 @@ const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
     handleAdjustHx({ ...hxStat, hxValue: hxStat.hxValue - 1 });
   };
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   // Remove hxMessage after 10 seconds
   useEffect(() => {
     !!hxMessage && setTimeout(() => setHxMessage(''), 10000);
   }, [hxMessage]);
 
-  // ------------------------------------------------------- Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <CollapsiblePanelBox
       open
@@ -84,8 +90,12 @@ const HxBox: FC<HxBoxProps> = ({ navigateToCharacterCreation }) => {
               value={stat.hxValue.toString()}
               label={stat.characterName}
               loading={adjustingHx}
-              onIncrease={() => increaseHx(omit(stat, ['__typename']) as HxInput)}
-              onDecrease={() => decreaseHx(omit(stat, ['__typename']) as HxInput)}
+              onIncrease={() =>
+                increaseHx(omit(stat, ['__typename']) as HxInput)
+              }
+              onDecrease={() =>
+                decreaseHx(omit(stat, ['__typename']) as HxInput)
+              }
             />
           ))
         ) : (

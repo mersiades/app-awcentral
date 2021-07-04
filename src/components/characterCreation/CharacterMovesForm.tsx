@@ -6,19 +6,30 @@ import styled from 'styled-components';
 import { Box, CheckBox, Tab, Tabs, Text } from 'grommet';
 
 import Spinner from '../Spinner';
-import { accentColors, ButtonWS, HeadingWS, TextWS } from '../../config/grommetConfig';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  TextWS,
+} from '../../config/grommetConfig';
 import SET_CHARACTER_MOVES, {
   getSetCharacterMovesOR,
   SetCharacterMovesData,
   SetCharacterMovesVars,
 } from '../../mutations/setCharacterMoves';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../queries/playbookCreator';
 import { CharacterCreationSteps } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { Move } from '../../@types/staticDataInterfaces';
 import { decapitalize } from '../../helpers/decapitalize';
-import OTHER_PLAYBOOK_MOVES, { OtherPlaybookMovesData, OtherPlaybookMovesVars } from '../../queries/otherPlaybookMoves';
+import OTHER_PLAYBOOK_MOVES, {
+  OtherPlaybookMovesData,
+  OtherPlaybookMovesVars,
+} from '../../queries/otherPlaybookMoves';
 import {
   ADD_FOLLOWERS_NAME,
   ADD_GANG_LEADERSHIP_NAME,
@@ -42,34 +53,44 @@ const StyledMarkdown = styled(ReactMarkdown)`
 `;
 
 const CharacterMovesForm: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   // Used for form submission
   const [selectedMoves, setSelectedMoves] = useState<string[]>([]);
   // Used for counting and setting limit. Contains moves selected from character's own playbook. Doesn't include default moves.
   const [selectedPBMoves, setSelectedPBMoves] = useState<string[]>([]);
   // Used for counting and setting limit. Contains moves selected from other playbooks. Doesn't include default moves.
-  const [selectedOtherPBMoves, setSelectedOtherPBMoves] = useState<string[]>([]);
+  const [selectedOtherPBMoves, setSelectedOtherPBMoves] = useState<string[]>(
+    []
+  );
 
-  const [movesNotInOtherPBList, setMovesNotInOtherPBList] = useState<string[]>([]);
+  const [movesNotInOtherPBList, setMovesNotInOtherPBList] = useState<string[]>(
+    []
+  );
   const [activeTab, setActiveTab] = useState(0);
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
   const allowedPlaybookMoves = character?.allowedPlaybookMoves;
   const allowedOtherPlaybookMoves = character?.allowedOtherPlaybookMoves;
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // --------------------------------------------------- Graphql hooks ----------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(
-    PLAYBOOK_CREATOR,
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     // @ts-ignore
-    { variables: { playbookType: character?.playbook }, skip: !character?.playbook }
-  );
+    variables: { playbookType: character?.playbook },
+    skip: !character?.playbook,
+  });
 
-  const { data: otherMovesData } = useQuery<OtherPlaybookMovesData, OtherPlaybookMovesVars>(OTHER_PLAYBOOK_MOVES, {
+  const { data: otherMovesData } = useQuery<
+    OtherPlaybookMovesData,
+    OtherPlaybookMovesVars
+  >(OTHER_PLAYBOOK_MOVES, {
     // @ts-ignore
     variables: { playbookType: character?.playbook },
     skip: !character || character.allowedOtherPlaybookMoves < 1,
@@ -79,14 +100,20 @@ const CharacterMovesForm: FC = () => {
   const optionalMoves = pbCreatorData?.playbookCreator.optionalMoves;
   const defaultMoves = pbCreatorData?.playbookCreator.defaultMoves;
   const moveChoiceCount = pbCreatorData?.playbookCreator.moveChoiceCount;
-  const [setCharacterMoves, { loading: settingMoves }] =
-    useMutation<SetCharacterMovesData, SetCharacterMovesVars>(SET_CHARACTER_MOVES);
+  const [setCharacterMoves, { loading: settingMoves }] = useMutation<
+    SetCharacterMovesData,
+    SetCharacterMovesVars
+  >(SET_CHARACTER_MOVES);
 
-  // ------------------------------------------ Component functions and variables ------------------------------------------ //
+  // ----------------------------- Component functions ------------------------- //
 
   const getTotalAllowedMoves = (): number | undefined => {
     if (!!character && !!defaultMoves) {
-      return character.allowedPlaybookMoves + character.allowedOtherPlaybookMoves + defaultMoves.length;
+      return (
+        character.allowedPlaybookMoves +
+        character.allowedOtherPlaybookMoves +
+        defaultMoves.length
+      );
     }
   };
   const handleSelectMove = (move: Move, isOtherPBMove: boolean = false) => {
@@ -95,17 +122,28 @@ const CharacterMovesForm: FC = () => {
     if (selectedMoves.some((name) => name === move.name)) {
       setSelectedMoves(selectedMoves.filter((name) => name !== move.name));
       if (isOtherPBMove) {
-        setSelectedOtherPBMoves(selectedOtherPBMoves.filter((name) => name !== move.name));
+        setSelectedOtherPBMoves(
+          selectedOtherPBMoves.filter((name) => name !== move.name)
+        );
       } else {
-        setSelectedPBMoves(selectedPBMoves.filter((name) => name !== move.name));
+        setSelectedPBMoves(
+          selectedPBMoves.filter((name) => name !== move.name)
+        );
       }
     } else {
       if (!!totalAllowedMoves && !!character && !!defaultMoves) {
         if (selectedMoves.length < totalAllowedMoves) {
-          if (isOtherPBMove && selectedOtherPBMoves.length < character.allowedOtherPlaybookMoves) {
+          if (
+            isOtherPBMove &&
+            selectedOtherPBMoves.length < character.allowedOtherPlaybookMoves
+          ) {
             setSelectedMoves([...selectedMoves, move.name]);
             setSelectedOtherPBMoves([...selectedOtherPBMoves, move.name]);
-          } else if (!isOtherPBMove && selectedPBMoves.length < character.allowedPlaybookMoves + defaultMoves.length) {
+          } else if (
+            !isOtherPBMove &&
+            selectedPBMoves.length <
+              character.allowedPlaybookMoves + defaultMoves.length
+          ) {
             setSelectedMoves([...selectedMoves, move.name]);
             setSelectedPBMoves([...selectedPBMoves, move.name]);
           }
@@ -127,7 +165,9 @@ const CharacterMovesForm: FC = () => {
         });
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set moves');
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.setVehicle}`);
+          history.push(
+            `/character-creation/${game.id}?step=${CharacterCreationSteps.setVehicle}`
+          );
         }
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {
@@ -144,34 +184,51 @@ const CharacterMovesForm: FC = () => {
     }
   };
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- /
+  // ----------------------------- Effects ---------------------------------------- //
   // load in existing moves
   useEffect(() => {
     if (!!character && !!defaultMoves && !!optionalMoves) {
       setSelectedMoves(character.characterMoves.map((move) => move.name));
       character.characterMoves.forEach((cm) => {
-        if (optionalMoves.map((om) => om.name).includes(cm.name) || defaultMoves.map((om) => om.name).includes(cm.name)) {
-          setSelectedPBMoves((prevState) => checkForDupesAndSetState(prevState, cm.name));
+        if (
+          optionalMoves.map((om) => om.name).includes(cm.name) ||
+          defaultMoves.map((om) => om.name).includes(cm.name)
+        ) {
+          setSelectedPBMoves((prevState) =>
+            checkForDupesAndSetState(prevState, cm.name)
+          );
         } else {
-          setSelectedOtherPBMoves((prevState) => checkForDupesAndSetState(prevState, cm.name));
+          setSelectedOtherPBMoves((prevState) =>
+            checkForDupesAndSetState(prevState, cm.name)
+          );
           if (!cm.rollModifier && !cm.moveAction) {
-            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, cm.name));
+            setMovesNotInOtherPBList((prevState) =>
+              checkForDupesAndSetState(prevState, cm.name)
+            );
           }
         }
       });
       character.improvementMoves.forEach((move) => {
         switch (move.name) {
           case ADD_GANG_LEADERSHIP_NAME:
-            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, LEADERSHIP_NAME));
+            setMovesNotInOtherPBList((prevState) =>
+              checkForDupesAndSetState(prevState, LEADERSHIP_NAME)
+            );
             break;
           case ADD_GANG_PACK_ALPHA_NAME:
-            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, PACK_ALPHA_NAME));
+            setMovesNotInOtherPBList((prevState) =>
+              checkForDupesAndSetState(prevState, PACK_ALPHA_NAME)
+            );
             break;
           case ADD_HOLDING_NAME:
-            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, WEALTH_NAME));
+            setMovesNotInOtherPBList((prevState) =>
+              checkForDupesAndSetState(prevState, WEALTH_NAME)
+            );
             break;
           case ADD_FOLLOWERS_NAME:
-            setMovesNotInOtherPBList((prevState) => checkForDupesAndSetState(prevState, FORTUNES_NAME));
+            setMovesNotInOtherPBList((prevState) =>
+              checkForDupesAndSetState(prevState, FORTUNES_NAME)
+            );
             break;
           default:
           // Do nothing
@@ -180,7 +237,7 @@ const CharacterMovesForm: FC = () => {
     }
   }, [character, optionalMoves, defaultMoves]);
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   if (!defaultMoves || !character || !getTotalAllowedMoves()) {
     return <Spinner />;
   }
@@ -194,11 +251,17 @@ const CharacterMovesForm: FC = () => {
           </Text>
         </Box>
       );
-    } else if (movesNotInOtherPBList.length > 0 && !!allowedOtherPlaybookMoves) {
+    } else if (
+      movesNotInOtherPBList.length > 0 &&
+      !!allowedOtherPlaybookMoves
+    ) {
       const includedMoves = (): string => {
         let string = `(Already includes `;
         movesNotInOtherPBList.forEach((move, index) => {
-          if (index === movesNotInOtherPBList.length - 1 && movesNotInOtherPBList.length > 1) {
+          if (
+            index === movesNotInOtherPBList.length - 1 &&
+            movesNotInOtherPBList.length > 1
+          ) {
             string += ` and ${decapitalize(move)}`;
           } else if (index === 0) {
             string += `${decapitalize(move)}`;
@@ -212,7 +275,9 @@ const CharacterMovesForm: FC = () => {
       return (
         <Box direction="row" align="center" gap="12px">
           <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
-            {`Select ${allowedOtherPlaybookMoves - movesNotInOtherPBList.length}`}
+            {`Select ${
+              allowedOtherPlaybookMoves - movesNotInOtherPBList.length
+            }`}
           </Text>
           <TextWS color={accentColors[0]}>{includedMoves()}</TextWS>
         </Box>
@@ -225,10 +290,16 @@ const CharacterMovesForm: FC = () => {
       {!!moveChoiceCount && !!allowedPlaybookMoves && moveChoiceCount > 0 && (
         <Box direction="row" align="center" gap="12px">
           <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
-            {`Select ${moveChoiceCount < allowedPlaybookMoves ? allowedPlaybookMoves : moveChoiceCount}`}
+            {`Select ${
+              moveChoiceCount < allowedPlaybookMoves
+                ? allowedPlaybookMoves
+                : moveChoiceCount
+            }`}
           </Text>
           {moveChoiceCount < allowedPlaybookMoves && (
-            <TextWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</TextWS>
+            <TextWS color={accentColors[0]}>
+              {INCREASED_BY_IMPROVEMENT_TEXT}
+            </TextWS>
           )}
         </Box>
       )}
@@ -278,9 +349,15 @@ const CharacterMovesForm: FC = () => {
   );
 
   const tabbedMoveLists = (
-    <Tabs activeIndex={activeTab} onActive={(tab) => setActiveTab(tab)} margin={{ top: '6px' }}>
+    <Tabs
+      activeIndex={activeTab}
+      onActive={(tab) => setActiveTab(tab)}
+      margin={{ top: '6px' }}
+    >
       {!!optionalMoves && optionalMoves.length > 0 && (
-        <Tab title={`${decapitalize(character.playbook)} moves`}>{playbookMovesList}</Tab>
+        <Tab title={`${decapitalize(character.playbook)} moves`}>
+          {playbookMovesList}
+        </Tab>
       )}
       <Tab title="Other moves">{otherMovesList}</Tab>
     </Tabs>
@@ -291,7 +368,12 @@ const CharacterMovesForm: FC = () => {
       return playbookMovesList;
     }
 
-    if (!!allowedOtherPlaybookMoves && allowedOtherPlaybookMoves > 0 && !!optionalMoves && optionalMoves.length > 0) {
+    if (
+      !!allowedOtherPlaybookMoves &&
+      allowedOtherPlaybookMoves > 0 &&
+      !!optionalMoves &&
+      optionalMoves.length > 0
+    ) {
       return tabbedMoveLists;
     } else if (!!allowedOtherPlaybookMoves && allowedOtherPlaybookMoves > 0) {
       return otherMovesList;
@@ -306,25 +388,40 @@ const CharacterMovesForm: FC = () => {
       justify="start"
       animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
     >
-      <Box width="85vw" align="start" style={{ maxWidth: '763px' }} margin={{ bottom: '24px' }}>
+      <Box
+        width="85vw"
+        align="start"
+        style={{ maxWidth: '763px' }}
+        margin={{ bottom: '24px' }}
+      >
         <Box direction="row" fill="horizontal" justify="between" align="center">
           <HeadingWS
             level={2}
             crustReady={crustReady}
             textAlign="center"
             style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
-          >{`WHAT ARE ${!!character?.name ? character.name.toUpperCase() : '...'}'S MOVES?`}</HeadingWS>
+          >{`WHAT ARE ${
+            !!character?.name ? character.name.toUpperCase() : '...'
+          }'S MOVES?`}</HeadingWS>
           <ButtonWS
             primary
             data-testid="set-moves-button"
-            label={settingMoves ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : SET_TEXT}
+            label={
+              settingMoves ? (
+                <Spinner fillColor="#FFF" width="37px" height="36px" />
+              ) : (
+                SET_TEXT
+              )
+            }
             disabled={selectedMoves.length !== getTotalAllowedMoves()}
             onClick={() => !settingMoves && handleSubmitCharacterMoves()}
           />
         </Box>
 
         <StyledMarkdown>
-          {pbCreatorData?.playbookCreator.movesInstructions ? pbCreatorData.playbookCreator.movesInstructions : '...'}
+          {pbCreatorData?.playbookCreator.movesInstructions
+            ? pbCreatorData.playbookCreator.movesInstructions
+            : '...'}
         </StyledMarkdown>
 
         <Text size="large" weight="bold" margin={{ vertical: '12px' }}>
@@ -334,7 +431,10 @@ const CharacterMovesForm: FC = () => {
           defaultMoves.map((move) => {
             return (
               <Box key={move.id} margin={{ vertical: '6px' }}>
-                <CheckBox checked label={<StyledMarkdown>{move.description}</StyledMarkdown>} />
+                <CheckBox
+                  checked
+                  label={<StyledMarkdown>{move.description}</StyledMarkdown>}
+                />
               </Box>
             );
           })}

@@ -1,6 +1,11 @@
 import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { ContentItem, FirstSessionContent, McContent, TickerList } from '../@types/staticDataInterfaces';
+import {
+  ContentItem,
+  FirstSessionContent,
+  McContent,
+  TickerList,
+} from '../@types/staticDataInterfaces';
 import MC_CONTENT, { McContentData } from '../queries/mcContent';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -29,14 +34,20 @@ export const useMcContent = () => useContext(McContentContext);
 
 export const McContentConsumer = McContentContext.Consumer;
 
-export const McContentProvider: FC<McContentProviderProps> = ({ children, injectedMcContent = {} }) => {
-  const [mcContent, setMcContent] = useState<IMcContentContext>(injectedMcContent);
+export const McContentProvider: FC<McContentProviderProps> = ({
+  children,
+  injectedMcContent = {},
+}) => {
+  const [mcContent, setMcContent] =
+    useState<IMcContentContext>(injectedMcContent);
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { keycloak } = useKeycloak();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: mcContentData } = useQuery<McContentData>(MC_CONTENT, { skip: !keycloak.authenticated });
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: mcContentData } = useQuery<McContentData>(MC_CONTENT, {
+    skip: !keycloak.authenticated,
+  });
 
   useEffect(() => {
     if (!!mcContentData) {
@@ -65,5 +76,9 @@ export const McContentProvider: FC<McContentProviderProps> = ({ children, inject
     }
   }, [mcContentData]);
 
-  return <McContentContext.Provider value={mcContent}>{children}</McContentContext.Provider>;
+  return (
+    <McContentContext.Provider value={mcContent}>
+      {children}
+    </McContentContext.Provider>
+  );
 };

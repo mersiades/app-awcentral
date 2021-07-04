@@ -6,7 +6,12 @@ import { screen } from '@testing-library/react';
 
 import WeaponsForm from '../WeaponsForm';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
-import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
+import {
+  blankCharacter,
+  mockCharacter2,
+  mockGame5,
+  mockKeycloakUserInfo1,
+} from '../../../../tests/mocks';
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryGunlugger } from '../../../../tests/mockQueries';
 import { Game } from '../../../../@types/dataInterfaces';
@@ -16,7 +21,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -63,10 +71,18 @@ describe('Rendering WeaponsForm', () => {
     });
 
     await screen.findByTestId('weapons-form');
-    await screen.findByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S WEAPONS` });
-    mockWeaponsCreator.bigFuckOffGuns.forEach((gun) => screen.getByTestId(`${gun}-pill`));
-    mockWeaponsCreator.seriousGuns.forEach((gun) => screen.getByTestId(`${gun}-pill`));
-    mockWeaponsCreator.backupWeapons.forEach((gun) => screen.getByTestId(`${gun}-pill`));
+    await screen.findByRole('heading', {
+      name: `${mockCharacter2.name?.toUpperCase()}'S WEAPONS`,
+    });
+    mockWeaponsCreator.bigFuckOffGuns.forEach((gun) =>
+      screen.getByTestId(`${gun}-pill`)
+    );
+    mockWeaponsCreator.seriousGuns.forEach((gun) =>
+      screen.getByTestId(`${gun}-pill`)
+    );
+    mockWeaponsCreator.backupWeapons.forEach((gun) =>
+      screen.getByTestId(`${gun}-pill`)
+    );
     screen.getByRole('button', { name: 'SET' });
   });
 
@@ -80,11 +96,21 @@ describe('Rendering WeaponsForm', () => {
     });
 
     await screen.findByTestId('weapons-form');
-    screen.getByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S WEAPONS` });
-    const bigGun = screen.getByTestId(`${mockWeaponsCreator.bigFuckOffGuns[0]}-pill`);
-    const seriousGun1 = screen.getByTestId(`${mockWeaponsCreator.seriousGuns[0]}-pill`);
-    const seriousGun2 = screen.getByTestId(`${mockWeaponsCreator.seriousGuns[1]}-pill`);
-    const backupWeapon = screen.getByTestId(`${mockWeaponsCreator.backupWeapons[0]}-pill`);
+    screen.getByRole('heading', {
+      name: `${mockCharacter2.name?.toUpperCase()}'S WEAPONS`,
+    });
+    const bigGun = screen.getByTestId(
+      `${mockWeaponsCreator.bigFuckOffGuns[0]}-pill`
+    );
+    const seriousGun1 = screen.getByTestId(
+      `${mockWeaponsCreator.seriousGuns[0]}-pill`
+    );
+    const seriousGun2 = screen.getByTestId(
+      `${mockWeaponsCreator.seriousGuns[1]}-pill`
+    );
+    const backupWeapon = screen.getByTestId(
+      `${mockWeaponsCreator.backupWeapons[0]}-pill`
+    );
 
     // Select big gun
     userEvent.click(bigGun);
@@ -97,12 +123,16 @@ describe('Rendering WeaponsForm', () => {
 
     // Select backup weapon
     userEvent.click(backupWeapon);
-    let setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+    let setButton = screen.getByRole('button', {
+      name: 'SET',
+    }) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(false);
 
     // De-select backup weapon
     userEvent.click(backupWeapon);
-    setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+    setButton = screen.getByRole('button', {
+      name: 'SET',
+    }) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(true);
   });
 });

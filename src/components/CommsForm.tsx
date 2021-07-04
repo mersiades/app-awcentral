@@ -4,8 +4,16 @@ import { Box, Button, Select, Heading, Text, TextArea } from 'grommet';
 
 import Spinner from './Spinner';
 import { ButtonWS, ParagraphWS } from '../config/grommetConfig';
-import ADD_COMMS_APP, { AddCommsAppData, AddCommsAppVars, getAddCommsAppOR } from '../mutations/addCommsApp';
-import ADD_COMMS_URL, { AddCommsUrlData, AddCommsUrlVars, getAddCommsUrlOR } from '../mutations/addCommsUrl';
+import ADD_COMMS_APP, {
+  AddCommsAppData,
+  AddCommsAppVars,
+  getAddCommsAppOR,
+} from '../mutations/addCommsApp';
+import ADD_COMMS_URL, {
+  AddCommsUrlData,
+  AddCommsUrlVars,
+  getAddCommsUrlOR,
+} from '../mutations/addCommsUrl';
 import { useGame } from '../contexts/gameContext';
 
 interface CommsFormProps {
@@ -13,21 +21,40 @@ interface CommsFormProps {
   setHasSkippedComms: (skipped: boolean) => void;
 }
 
-const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) => {
-  // ------------------------------------------------- Component state --------------------------------------------------- //
+const CommsForm: FC<CommsFormProps> = ({
+  setCreationStep,
+  setHasSkippedComms,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [app, setApp] = useState('');
   const [url, setUrl] = useState('');
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game } = useGame();
 
-  // -------------------------------------------------- Graphql hooks ---------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
 
-  const [addCommsApp, { loading: loadingCommsApp }] = useMutation<AddCommsAppData, AddCommsAppVars>(ADD_COMMS_APP);
-  const [addCommsUrl, { loading: loadingCommsUrl }] = useMutation<AddCommsUrlData, AddCommsUrlVars>(ADD_COMMS_URL);
+  const [addCommsApp, { loading: loadingCommsApp }] = useMutation<
+    AddCommsAppData,
+    AddCommsAppVars
+  >(ADD_COMMS_APP);
+  const [addCommsUrl, { loading: loadingCommsUrl }] = useMutation<
+    AddCommsUrlData,
+    AddCommsUrlVars
+  >(ADD_COMMS_URL);
 
-  // ---------------------------------------- Component functions and variables ------------------------------------------ //
-  const appOptions = ['Discord', 'Zoom', 'Skype', 'FaceTime', 'WhatsApp', 'Google Hangouts', 'Talky', 'ooVoo', 'other'];
+  // ----------------------------- Component functions ------------------------- //
+  const appOptions = [
+    'Discord',
+    'Zoom',
+    'Skype',
+    'FaceTime',
+    'WhatsApp',
+    'Google Hangouts',
+    'Talky',
+    'ooVoo',
+    'other',
+  ];
 
   const handleSetApp = async () => {
     if (!!app && !!game) {
@@ -55,7 +82,7 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
     }
   };
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     if (!!game) {
       !!game.commsApp && setApp(game.commsApp);
@@ -63,7 +90,7 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
     }
   }, [game]);
 
-  // ------------------------------------------------ Render component ------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderOption = (option: string) => {
     return (
@@ -81,7 +108,14 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
       justify="center"
       animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
     >
-      <Box width="65vw" height="70vh" align="center" direction="column" justify="start" overflow="auto">
+      <Box
+        width="65vw"
+        height="70vh"
+        align="center"
+        direction="column"
+        justify="start"
+        overflow="auto"
+      >
         <Heading level={2}>COMMS</Heading>
         <Box direction="row" justify="evenly" gap="48px" height="400px">
           <Box direction="column" fill="vertical">
@@ -89,11 +123,12 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
               How will you talk to your players?
             </ParagraphWS>
             <ParagraphWS textAlign="center" size="medium">
-              AW Central can manage playbooks, threats, dice rolls etc, but you'll need to use some other app to talk with
-              your players.
+              AW Central can manage playbooks, threats, dice rolls etc, but
+              you'll need to use some other app to talk with your players.
             </ParagraphWS>
             <ParagraphWS textAlign="center" size="medium">
-              If you know your voice comms details, add them here to make it easier for your players to join you.
+              If you know your voice comms details, add them here to make it
+              easier for your players to join you.
             </ParagraphWS>
           </Box>
           <Box direction="column" fill="vertical" justify="around">
@@ -113,7 +148,13 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
                   <ButtonWS
                     aria-label="set-app"
                     data-testid="set-app-button"
-                    label={loadingCommsApp ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
+                    label={
+                      loadingCommsApp ? (
+                        <Spinner fillColor="#FFF" width="36px" height="36px" />
+                      ) : (
+                        'SET'
+                      )
+                    }
                     secondary={!!game.commsApp}
                     primary={!game.commsApp}
                     size="large"
@@ -144,7 +185,13 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
                   <ButtonWS
                     aria-label="set-url"
                     data-testid="set-url-button"
-                    label={loadingCommsUrl ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
+                    label={
+                      loadingCommsUrl ? (
+                        <Spinner fillColor="#FFF" width="36px" height="36px" />
+                      ) : (
+                        'SET'
+                      )
+                    }
                     secondary={!!game.commsUrl}
                     primary={!game.commsUrl}
                     size="large"
@@ -153,7 +200,13 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
                     disabled={!url}
                   />
                 ) : (
-                  <ButtonWS label="Set" primary disabled size="large" alignSelf="center" />
+                  <ButtonWS
+                    label="Set"
+                    primary
+                    disabled
+                    size="large"
+                    alignSelf="center"
+                  />
                 )}
               </Box>
               <Text color="accent-1" weight="bold" margin={{ top: 'xsmall' }}>
@@ -168,7 +221,8 @@ const CommsForm: FC<CommsFormProps> = ({ setCreationStep, setHasSkippedComms }) 
                 alignSelf="end"
                 onClick={() => {
                   setCreationStep(2);
-                  (!game.commsApp || !game.commsUrl) && setHasSkippedComms(true);
+                  (!game.commsApp || !game.commsUrl) &&
+                    setHasSkippedComms(true);
                 }}
               />
             )}

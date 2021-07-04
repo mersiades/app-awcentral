@@ -14,8 +14,16 @@ export interface AddProjectVars {
 }
 
 const ADD_PROJECT = gql`
-  mutation AppProject($gameRoleId: String!, $characterId: String!, $project: ProjectInput!) {
-    addProject(gameRoleId: $gameRoleId, characterId: $characterId, project: $project) {
+  mutation AppProject(
+    $gameRoleId: String!
+    $characterId: String!
+    $project: ProjectInput!
+  ) {
+    addProject(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      project: $project
+    ) {
       id
       name
       playbook

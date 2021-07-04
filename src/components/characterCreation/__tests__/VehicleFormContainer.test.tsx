@@ -1,9 +1,17 @@
 import { screen } from '@testing-library/react';
 
 import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
-import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
+import {
+  blankCharacter,
+  mockCharacter2,
+  mockGame5,
+  mockKeycloakUserInfo1,
+} from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
-import { mockSetVehicleCount, mockVehicleCreatorQuery } from '../../../tests/mockQueries';
+import {
+  mockSetVehicleCount,
+  mockVehicleCreatorQuery,
+} from '../../../tests/mockQueries';
 import { InMemoryCache } from '@apollo/client';
 import { Game } from '../../../@types/dataInterfaces';
 import VehiclesFormContainer from '../VehiclesFormContainer';
@@ -13,7 +21,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -57,12 +68,16 @@ describe('Rendering VehicleForm', () => {
   });
 
   test('should give "no default vehicles" message to Angel', async () => {
-    renderWithRouter(<VehiclesFormContainer />, `/character-creation/${mockGame5.id}?step=8`, {
-      isAuthenticated: true,
-      injectedGame: mockGame,
-      injectedUserId: mockKeycloakUserInfo1.sub,
-      cache,
-    });
+    renderWithRouter(
+      <VehiclesFormContainer />,
+      `/character-creation/${mockGame5.id}?step=8`,
+      {
+        isAuthenticated: true,
+        injectedGame: mockGame,
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      }
+    );
 
     await screen.findByTestId('no-default-vehicle-message');
     screen.getByRole('button', { name: 'ADD VEHICLE' });
@@ -70,13 +85,17 @@ describe('Rendering VehicleForm', () => {
   });
 
   test('should open VehicleForm on ADD VEHICLE click', async () => {
-    renderWithRouter(<VehiclesFormContainer />, `/character-creation/${mockGame5.id}?step=8`, {
-      isAuthenticated: true,
-      injectedGame: mockGame,
-      apolloMocks: [mockSetVehicleCount, mockVehicleCreatorQuery],
-      injectedUserId: mockKeycloakUserInfo1.sub,
-      cache,
-    });
+    renderWithRouter(
+      <VehiclesFormContainer />,
+      `/character-creation/${mockGame5.id}?step=8`,
+      {
+        isAuthenticated: true,
+        injectedGame: mockGame,
+        apolloMocks: [mockSetVehicleCount, mockVehicleCreatorQuery],
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      }
+    );
 
     await screen.findByTestId('no-default-vehicle-message');
     const addButton = screen.getByRole('button', { name: 'ADD VEHICLE' });

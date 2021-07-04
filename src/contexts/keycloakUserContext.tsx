@@ -1,5 +1,12 @@
 import { KeycloakUser, KeycloakUserInfo } from '../@types';
-import { createContext, FC, useCallback, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 
 interface KeycloakUserProviderProps {
@@ -21,7 +28,10 @@ export const useKeycloakUser = () => useContext(KeyCloakUserContext);
 
 export const KeycloakUserConsumer = KeyCloakUserContext.Consumer;
 
-export const KeycloakUserProvider: FC<KeycloakUserProviderProps> = ({ children, keycloakUser }) => {
+export const KeycloakUserProvider: FC<KeycloakUserProviderProps> = ({
+  children,
+  keycloakUser,
+}) => {
   const [user, setUser] = useState<KeycloakUser | undefined>(keycloakUser);
   const { keycloak, initialized } = useKeycloak();
 
@@ -41,10 +51,19 @@ export const KeycloakUserProvider: FC<KeycloakUserProviderProps> = ({ children, 
   useEffect(() => {
     initialized &&
       getUser().then((response) => {
-        !!response && setUser({ id: response.sub, email: response.email, username: response.preferred_username });
+        !!response &&
+          setUser({
+            id: response.sub,
+            email: response.email,
+            username: response.preferred_username,
+          });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialized]);
 
-  return <KeyCloakUserContext.Provider value={{ ...user }}>{children}</KeyCloakUserContext.Provider>;
+  return (
+    <KeyCloakUserContext.Provider value={{ ...user }}>
+      {children}
+    </KeyCloakUserContext.Provider>
+  );
 };

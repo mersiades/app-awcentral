@@ -5,8 +5,14 @@ import { Box } from 'grommet';
 
 import Spinner from '../Spinner';
 import { ButtonWS, HeadingWS } from '../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
-import SET_CHARACTER_STATS, { SetCharacterStatsData, SetCharacterStatsVars } from '../../mutations/setCharacterStats';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../queries/playbookCreator';
+import SET_CHARACTER_STATS, {
+  SetCharacterStatsData,
+  SetCharacterStatsVars,
+} from '../../mutations/setCharacterStats';
 import { CharacterCreationSteps, StatType } from '../../@types/enums';
 import { StatsOption } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
@@ -24,30 +30,37 @@ import {
 import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const CharacterStatsForm: FC = () => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const existingStatsOptionId = character?.statsBlock?.statsOptionId;
-  const [selectedStatsOption, setSelectedStatsOption] = useState<StatsOption | undefined>();
+  const [selectedStatsOption, setSelectedStatsOption] = useState<
+    StatsOption | undefined
+  >();
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // -------------------------------------------------- Graphql hooks ---------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(
-    PLAYBOOK_CREATOR,
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     // @ts-ignore
-    { variables: { playbookType: character?.playbook }, skip: !character?.playbook }
-  );
+    variables: { playbookType: character?.playbook },
+    skip: !character?.playbook,
+  });
 
   const statsOptions = pbCreatorData?.playbookCreator.statsOptions;
 
-  const [setCharacterStats, { loading: settingStats }] =
-    useMutation<SetCharacterStatsData, SetCharacterStatsVars>(SET_CHARACTER_STATS);
+  const [setCharacterStats, { loading: settingStats }] = useMutation<
+    SetCharacterStatsData,
+    SetCharacterStatsVars
+  >(SET_CHARACTER_STATS);
 
-  // ---------------------------------------- Component functions and variables ------------------------------------------ //
+  // ----------------------------- Component functions ------------------------- //
   const handleSubmitStats = async (statsOption: StatsOption) => {
     if (!!userGameRole && !!character && !character.isDead && !!game) {
       // Optimistic response is not working
@@ -69,7 +82,13 @@ const CharacterStatsForm: FC = () => {
             isHighlighted: false,
             __typename: 'CharacterStat',
           },
-          { id: 'temp-id-1', stat: StatType.hot, value: statsOption.HOT, isHighlighted: false, __typename: 'CharacterStat' },
+          {
+            id: 'temp-id-1',
+            stat: StatType.hot,
+            value: statsOption.HOT,
+            isHighlighted: false,
+            __typename: 'CharacterStat',
+          },
           {
             id: 'temp-id-1',
             stat: StatType.sharp,
@@ -89,7 +108,11 @@ const CharacterStatsForm: FC = () => {
       };
       try {
         await setCharacterStats({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, statsOptionId: statsOption.id },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            statsOptionId: statsOption.id,
+          },
           optimisticResponse: {
             __typename: 'Mutation',
             setCharacterStats: {
@@ -100,7 +123,9 @@ const CharacterStatsForm: FC = () => {
           },
         });
         !character.hasCompletedCharacterCreation && logAmpEvent('set stats');
-        history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectGear}`);
+        history.push(
+          `/character-creation/${game.id}?step=${CharacterCreationSteps.selectGear}`
+        );
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {
         console.error(error);
@@ -108,8 +133,13 @@ const CharacterStatsForm: FC = () => {
     }
   };
 
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
-    if (!!statsOptions && !!character && !!character.statsBlock?.statsOptionId) {
+    if (
+      !!statsOptions &&
+      !!character &&
+      !!character.statsBlock?.statsOptionId
+    ) {
       const existingStatsOption: StatsOption | undefined = statsOptions.find(
         (so) => so.id === character.statsBlock?.statsOptionId
       );
@@ -117,7 +147,7 @@ const CharacterStatsForm: FC = () => {
     }
   }, [character, statsOptions]);
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <Box
       data-testid="character-stats-form"
@@ -128,17 +158,35 @@ const CharacterStatsForm: FC = () => {
       animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
     >
       <Box width="85vw" align="start" style={{ maxWidth: '763px' }}>
-        <Box direction="row" fill="horizontal" justify="between" align="center" wrap={true}>
+        <Box
+          direction="row"
+          fill="horizontal"
+          justify="between"
+          align="center"
+          wrap={true}
+        >
           <HeadingWS
             level={2}
             crustReady={crustReady}
             style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
-          >{`WHAT ARE ${!!character?.name ? character.name.toUpperCase() : '...'}'S STRENGTHS AND WEAKNESSES?`}</HeadingWS>
+          >{`WHAT ARE ${
+            !!character?.name ? character.name.toUpperCase() : '...'
+          }'S STRENGTHS AND WEAKNESSES?`}</HeadingWS>
           <ButtonWS
             primary
             data-testid="set-stats-button"
-            label={settingStats ? <Spinner fillColor="#FFF" width="37px" /> : SET_TEXT}
-            onClick={() => !!selectedStatsOption && !settingStats && handleSubmitStats(selectedStatsOption)}
+            label={
+              settingStats ? (
+                <Spinner fillColor="#FFF" width="37px" />
+              ) : (
+                SET_TEXT
+              )
+            }
+            onClick={() =>
+              !!selectedStatsOption &&
+              !settingStats &&
+              handleSubmitStats(selectedStatsOption)
+            }
             disabled={!selectedStatsOption || settingStats}
             style={{ minHeight: '52px' }}
           />
@@ -155,8 +203,14 @@ const CharacterStatsForm: FC = () => {
                 direction="row"
                 justify="around"
                 align="center"
-                border={opt.id === selectedStatsOption?.id || opt.id === existingStatsOptionId}
-                background={{ color: 'neutral-1', opacity: opt.id === selectedStatsOption?.id ? 0.5 : 0 }}
+                border={
+                  opt.id === selectedStatsOption?.id ||
+                  opt.id === existingStatsOptionId
+                }
+                background={{
+                  color: 'neutral-1',
+                  opacity: opt.id === selectedStatsOption?.id ? 0.5 : 0,
+                }}
                 hoverIndicator={{ color: 'neutral-1', opacity: 0.4 }}
                 onClick={() => setSelectedStatsOption(opt)}
                 gap="6px"
@@ -166,7 +220,12 @@ const CharacterStatsForm: FC = () => {
                   <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${COOL_TEXT}:`}
                   </HeadingWS>
-                  <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
+                  <HeadingWS
+                    crustReady={crustReady}
+                    color="brand"
+                    level={3}
+                    margin={{ vertical: '6px' }}
+                  >
                     {opt.COOL}
                   </HeadingWS>
                 </Box>
@@ -174,7 +233,12 @@ const CharacterStatsForm: FC = () => {
                   <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${HARD_TEXT}:`}
                   </HeadingWS>
-                  <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
+                  <HeadingWS
+                    crustReady={crustReady}
+                    color="brand"
+                    level={3}
+                    margin={{ vertical: '6px' }}
+                  >
                     {opt.HARD}
                   </HeadingWS>
                 </Box>
@@ -182,7 +246,12 @@ const CharacterStatsForm: FC = () => {
                   <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${HOT_TEXT}:`}
                   </HeadingWS>
-                  <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
+                  <HeadingWS
+                    crustReady={crustReady}
+                    color="brand"
+                    level={3}
+                    margin={{ vertical: '6px' }}
+                  >
                     {opt.HOT}
                   </HeadingWS>
                 </Box>
@@ -190,7 +259,12 @@ const CharacterStatsForm: FC = () => {
                   <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${SHARP_TEXT}:`}
                   </HeadingWS>
-                  <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
+                  <HeadingWS
+                    crustReady={crustReady}
+                    color="brand"
+                    level={3}
+                    margin={{ vertical: '6px' }}
+                  >
                     {opt.SHARP}
                   </HeadingWS>
                 </Box>
@@ -198,7 +272,12 @@ const CharacterStatsForm: FC = () => {
                   <HeadingWS level={4} margin={{ top: '7px', bottom: '6px' }}>
                     {`${WEIRD_TEXT}:`}
                   </HeadingWS>
-                  <HeadingWS crustReady={crustReady} color="brand" level={3} margin={{ vertical: '6px' }}>
+                  <HeadingWS
+                    crustReady={crustReady}
+                    color="brand"
+                    level={3}
+                    margin={{ vertical: '6px' }}
+                  >
                     {opt.WEIRD}
                   </HeadingWS>
                 </Box>

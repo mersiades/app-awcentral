@@ -33,15 +33,19 @@ const ArrowSpacer = styled.div`
   height: 22px;
 `;
 
-const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({ loading, onIncrease, onDecrease }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({
+  loading,
+  onIncrease,
+  onDecrease,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [showUp, setShowUp] = useState(true);
   const [showDown, setShowDown] = useState(true);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { character } = useGame();
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     let timeout: number;
 
@@ -57,11 +61,18 @@ const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({ loading, on
     return () => window.clearTimeout(timeout);
   }, [loading]);
 
-  // ------------------------------------------------------- Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <Box align="center" justify="center">
       {showUp ? (
-        <Box animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+        <Box
+          animation={{
+            type: 'fadeIn',
+            delay: 0,
+            duration: 500,
+            size: 'xsmall',
+          }}
+        >
           <UpArrow
             data-testid="increase-caret"
             onClick={() => {
@@ -74,7 +85,14 @@ const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({ loading, on
         <ArrowSpacer />
       )}
       {showDown ? (
-        <Box animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+        <Box
+          animation={{
+            type: 'fadeIn',
+            delay: 0,
+            duration: 500,
+            size: 'xsmall',
+          }}
+        >
           <DownArrow
             data-testid="decrease-caret"
             onClick={() => {

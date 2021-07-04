@@ -15,33 +15,43 @@ import { CharacterCreationSteps } from '../../@types/enums';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import { useFonts } from '../../contexts/fontContext';
-import { ADD_VEHICLE_TEXT, PASS_TEXT, START_PLAY_WITH_BATTLE_VEHICLE_TEXT } from '../../config/constants';
+import {
+  ADD_VEHICLE_TEXT,
+  PASS_TEXT,
+  START_PLAY_WITH_BATTLE_VEHICLE_TEXT,
+} from '../../config/constants';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const BattleVehiclesFormContainer: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
 
   const [activeTab, setActiveTab] = useState(0);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // --------------------------------------------------- Graphql hooks ----------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [setBattleVehicleCount, { loading: settingBattleVehicleCount }] =
-    useMutation<SetBattleVehicleCountData, SetBattleVehicleCountVars>(SET_BATTLE_VEHICLE_COUNT);
+    useMutation<SetBattleVehicleCountData, SetBattleVehicleCountVars>(
+      SET_BATTLE_VEHICLE_COUNT
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
 
   const handleAddVehicle = async () => {
     if (!!userGameRole && !!character && !character.isDead && !!game) {
       const battleVehicleCount = character.battleVehicleCount + 1;
       try {
         await setBattleVehicleCount({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, battleVehicleCount },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            battleVehicleCount,
+          },
           optimisticResponse: {
             __typename: 'Mutation',
             setBattleVehicleCount: {
@@ -51,7 +61,8 @@ const BattleVehiclesFormContainer: FC = () => {
             },
           },
         });
-        !character.hasCompletedCharacterCreation && logAmpEvent('set battle vehicle');
+        !character.hasCompletedCharacterCreation &&
+          logAmpEvent('set battle vehicle');
       } catch (error) {
         console.error(error);
       }
@@ -61,15 +72,20 @@ const BattleVehiclesFormContainer: FC = () => {
   const navigateOnSet = (numVehicles: number) => {
     if (!character?.hasCompletedCharacterCreation && !!game) {
       if (character?.battleVehicleCount === numVehicles) {
-        history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.setHx}`);
+        history.push(
+          `/character-creation/${game.id}?step=${CharacterCreationSteps.setHx}`
+        );
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } else {
-        !!character && setActiveTab((prevTab) => (prevTab < character.vehicleCount ? prevTab + 1 : prevTab));
+        !!character &&
+          setActiveTab((prevTab) =>
+            prevTab < character.vehicleCount ? prevTab + 1 : prevTab
+          );
       }
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   if (!character) {
     return <Spinner />;
@@ -86,7 +102,12 @@ const BattleVehiclesFormContainer: FC = () => {
         animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
       >
         <Box width="85vw" align="center" style={{ maxWidth: '742px' }}>
-          <Box direction="row" fill="horizontal" justify="between" align="center">
+          <Box
+            direction="row"
+            fill="horizontal"
+            justify="between"
+            align="center"
+          >
             <HeadingWS
               level={2}
               crustReady={crustReady}
@@ -98,12 +119,24 @@ const BattleVehiclesFormContainer: FC = () => {
             <ButtonWS
               primary
               label={PASS_TEXT}
-              onClick={() => !!game && history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.setHx}`)}
+              onClick={() =>
+                !!game &&
+                history.push(
+                  `/character-creation/${game.id}?step=${CharacterCreationSteps.setHx}`
+                )
+              }
             />
           </Box>
-          <ParagraphWS>By default, the {decapitalize(character.playbook)} has no battle vehicles.</ParagraphWS>
+          <ParagraphWS>
+            By default, the {decapitalize(character.playbook)} has no battle
+            vehicles.
+          </ParagraphWS>
           <ParagraphWS>{START_PLAY_WITH_BATTLE_VEHICLE_TEXT}</ParagraphWS>
-          <ButtonWS label={ADD_VEHICLE_TEXT} secondary onClick={() => handleAddVehicle()} />
+          <ButtonWS
+            label={ADD_VEHICLE_TEXT}
+            secondary
+            onClick={() => handleAddVehicle()}
+          />
         </Box>
       </Box>
     );
@@ -122,17 +155,31 @@ const BattleVehiclesFormContainer: FC = () => {
             {/*
           // @ts-ignore */}
             {[...Array(character.battleVehicleCount).keys()].map((number) => (
-              <Tab key={number} title={`Battle Vehicle ${number + 1}`} name={`battle-vehicle-${number + 1}-tab`}>
-                <BattleVehicleForm navigateOnSet={navigateOnSet} existingVehicle={character.battleVehicles[number]} />
+              <Tab
+                key={number}
+                title={`Battle Vehicle ${number + 1}`}
+                name={`battle-vehicle-${number + 1}-tab`}
+              >
+                <BattleVehicleForm
+                  navigateOnSet={navigateOnSet}
+                  existingVehicle={character.battleVehicles[number]}
+                />
               </Tab>
             ))}
-            {character.battleVehicleCount === character.battleVehicles.length && (
+            {character.battleVehicleCount ===
+              character.battleVehicles.length && (
               <Tip content="Add another vehicle">
-                <Box margin={{ horizontal: '24px' }} justify="center" align="center">
+                <Box
+                  margin={{ horizontal: '24px' }}
+                  justify="center"
+                  align="center"
+                >
                   <AddCircle
                     color="brand"
                     style={{ cursor: 'pointer' }}
-                    onClick={() => !settingBattleVehicleCount && handleAddVehicle()}
+                    onClick={() =>
+                      !settingBattleVehicleCount && handleAddVehicle()
+                    }
                   />
                 </Box>
               </Tip>

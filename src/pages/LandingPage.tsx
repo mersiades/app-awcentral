@@ -10,7 +10,13 @@ const LandingPage = () => {
 
   // ----------------------------------------- Render component  ------------------------------------------------ //
   return (
-    <Box data-testid="landing-page-box" fill background="black" justify="center" align="center">
+    <Box
+      data-testid="landing-page-box"
+      fill
+      background="black"
+      justify="center"
+      align="center"
+    >
       {!keycloak.authenticated && <Spinner />}
     </Box>
   );

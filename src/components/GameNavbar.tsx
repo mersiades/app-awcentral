@@ -7,7 +7,10 @@ import CharacterPreview from './CharacterPreview';
 import UnderConstructionDialog from '../components/dialogs/UnderConstructionDialog';
 import { ThemeContext } from 'styled-components';
 import { Character, GameRole } from '../@types/dataInterfaces';
-import { accentColors, customDefaultButtonStyles } from '../config/grommetConfig';
+import {
+  accentColors,
+  customDefaultButtonStyles,
+} from '../config/grommetConfig';
 import { useGame } from '../contexts/gameContext';
 import { GAME_PAGE_TOP_NAVBAR_HEIGHT } from '../config/constants';
 
@@ -16,23 +19,32 @@ interface GameNavbarProps {
 }
 
 const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [showConstructionDialog, setShowConstructionDialog] = useState(false);
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
   const { keycloak } = useKeycloak();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, otherPlayerGameRoles, allPlayerGameRoles } = useGame();
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   const renderCharacterPreviews = (gameRoles: GameRole[]) => {
     return gameRoles.map((gameRole: GameRole) =>
       gameRole.characters?.map((character: Character) => (
-        <Tip key={character.id} content={<CharacterPreview character={character} isMc={isMc} />}>
+        <Tip
+          key={character.id}
+          content={<CharacterPreview character={character} isMc={isMc} />}
+        >
           <Button
-            label={character.isDead ? `${character.name} [RIP]` : character.name}
-            style={{ backgroundColor: 'transparent', height: '4vh', lineHeight: '16px' }}
+            label={
+              character.isDead ? `${character.name} [RIP]` : character.name
+            }
+            style={{
+              backgroundColor: 'transparent',
+              height: '4vh',
+              lineHeight: '16px',
+            }}
             name={`${character.name?.toLowerCase()}-preview-button`}
           />
         </Tip>
@@ -46,7 +58,11 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
       style={{ borderBottom: `1px solid ${accentColors[0]}` }}
       height={`${GAME_PAGE_TOP_NAVBAR_HEIGHT}px`}
     >
-      {showConstructionDialog && <UnderConstructionDialog handleClose={() => setShowConstructionDialog(false)} />}
+      {showConstructionDialog && (
+        <UnderConstructionDialog
+          handleClose={() => setShowConstructionDialog(false)}
+        />
+      )}
       {/*
         // @ts-ignore */}
       <ThemeContext.Extend value={customDefaultButtonStyles}>
@@ -64,11 +80,16 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
         />
         {isMc
           ? allPlayerGameRoles && renderCharacterPreviews(allPlayerGameRoles)
-          : otherPlayerGameRoles && renderCharacterPreviews(otherPlayerGameRoles)}
+          : otherPlayerGameRoles &&
+            renderCharacterPreviews(otherPlayerGameRoles)}
         {isMc && (
           <Button
             label="Threat map"
-            style={{ backgroundColor: 'transparent', height: '4vh', lineHeight: '16px' }}
+            style={{
+              backgroundColor: 'transparent',
+              height: '4vh',
+              lineHeight: '16px',
+            }}
             onClick={() => setShowConstructionDialog(true)}
           />
         )}
@@ -76,7 +97,11 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
           <Button
             label="Pre-game"
             onClick={() => history.push(`/pre-game/${game.id}`)}
-            style={{ backgroundColor: 'transparent', height: '4vh', lineHeight: '16px' }}
+            style={{
+              backgroundColor: 'transparent',
+              height: '4vh',
+              lineHeight: '16px',
+            }}
           />
         )}
         {/*

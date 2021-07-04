@@ -13,7 +13,9 @@ describe('Editing game details from the MC Page', () => {
   });
 
   it('should set a name game name', () => {
-    cy.get('input[aria-label="name-input"]').type('{selectall}{backspace}').type(mockGameName);
+    cy.get('input[aria-label="name-input"]')
+      .type('{selectall}{backspace}')
+      .type(mockGameName);
 
     cy.get('button[name="set-name-button"]').click();
 
@@ -23,7 +25,9 @@ describe('Editing game details from the MC Page', () => {
     });
 
     // Restore original name
-    cy.get('input[aria-label="name-input"]').type('{selectall}{backspace}').type(game7.name);
+    cy.get('input[aria-label="name-input"]')
+      .type('{selectall}{backspace}')
+      .type(game7.name);
     cy.get('button[name="set-name-button"]').click();
   });
 
@@ -41,7 +45,9 @@ describe('Editing game details from the MC Page', () => {
 
   it('should set a new game comms url and close form', () => {
     const mockUrl = 'https://newurl.com/play-game-here';
-    cy.get('textarea[aria-label="url-input"]').type('{selectall}{backspace}').type(mockUrl);
+    cy.get('textarea[aria-label="url-input"]')
+      .type('{selectall}{backspace}')
+      .type(mockUrl);
     cy.get('button[name="set-url-button"]').click();
     cy.get('div[data-testid="Mock Game 7-box"]').within(() => {
       cy.get('svg[aria-label="FormDown"]').click();

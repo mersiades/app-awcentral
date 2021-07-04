@@ -1,4 +1,8 @@
-import { ADD_TEXT, FINISH_TEXT, NO_MC_AS_PLAYER_TEXT } from '../../src/config/constants';
+import {
+  ADD_TEXT,
+  FINISH_TEXT,
+  NO_MC_AS_PLAYER_TEXT,
+} from '../../src/config/constants';
 import game4 from '../fixtures/games/game4';
 import game5 from '../fixtures/games/game5';
 import dave from '../fixtures/users/dave';
@@ -26,19 +30,25 @@ describe('Creating a Game as MC', () => {
       cy.contains('button', 'SUBMIT').should('not.be.disabled');
       cy.contains('button', 'SUBMIT').click();
       cy.url().should('contain', 'create-game');
-      cy.get('div[data-testid="name-box"]').should('include.text', 'Name').should('include.text', game4.name);
+      cy.get('div[data-testid="name-box"]')
+        .should('include.text', 'Name')
+        .should('include.text', game4.name);
       cy.contains('LATER').click();
       cy.contains('INVITE PLAYERS').should('exist');
       cy.get('input').type(emailJohn);
       cy.contains('ADD').click();
       // Check the copiable invitation has correct text
       cy.get('textarea').then((textarea) => {
-        expect(textarea[0].value).to.contain('Hi. Please join our Apocalypse World game on AW Central.');
+        expect(textarea[0].value).to.contain(
+          'Hi. Please join our Apocalypse World game on AW Central.'
+        );
         expect(textarea[0].value).to.contain('join-game');
         expect(textarea[0].value).to.contain(emailJohn);
         expect(textarea[0].value).to.contain(game4.name);
       });
-      cy.get('div[data-testid="invitations-box"]').should('include.text', 'Invitations').should('include.text', emailJohn);
+      cy.get('div[data-testid="invitations-box"]')
+        .should('include.text', 'Invitations')
+        .should('include.text', emailJohn);
 
       cy.contains('INVITE ANOTHER').click();
       cy.get('input').type(emailMaya);
@@ -85,12 +95,20 @@ describe('Creating a Game as MC', () => {
       cy.get('input[aria-label="comms-app-input"]').click();
       cy.contains('Zoom').click();
       cy.get('button[data-testid="set-app-button"]').click();
-      cy.get('div[data-testid="channel-box"]').should('contain', 'Channel').should('contain', game5.commsApp);
+      cy.get('div[data-testid="channel-box"]')
+        .should('contain', 'Channel')
+        .should('contain', game5.commsApp);
       cy.get('textarea[aria-label="comms-url-input"]').type(game5.commsUrl);
       cy.get('button[data-testid="set-url-button"]').click();
       cy.get('div[data-testid="channel-box"]').should('contain', 'Channel');
-      cy.get('div[data-testid="channel-box"]').should('contain', game5.commsApp);
-      cy.get('div[data-testid="channel-box"]').should('contain', game5.commsUrl);
+      cy.get('div[data-testid="channel-box"]').should(
+        'contain',
+        game5.commsApp
+      );
+      cy.get('div[data-testid="channel-box"]').should(
+        'contain',
+        game5.commsUrl
+      );
 
       // Check MC can't invite themselves as a player
       cy.get('input').type('dave@email.com');

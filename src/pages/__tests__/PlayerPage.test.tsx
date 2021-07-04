@@ -14,7 +14,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -45,7 +48,11 @@ describe('Rendering PlayerPage', () => {
     customRenderForComponent(<PlayerPage />, {
       isAuthenticated: true,
       apolloMocks: [mockAllMoves, mockPlaybook],
-      injectedGame: { ...mockGame7, hasFinishedPreGame: true, showFirstSession: false },
+      injectedGame: {
+        ...mockGame7,
+        hasFinishedPreGame: true,
+        showFirstSession: false,
+      },
       injectedUserId: mockKeycloakUserInfo1.sub,
     });
     await waitOneTick();
@@ -78,11 +85,17 @@ describe('Rendering PlayerPage', () => {
     });
 
     await waitOneTick();
-    const scriptChangeIcon = screen.getByRole('img', { name: 'script-change-button' });
+    const scriptChangeIcon = screen.getByRole('img', {
+      name: 'script-change-button',
+    });
     userEvent.click(scriptChangeIcon);
-    expect(screen.getByRole('heading', { name: SCRIPT_CHANGE_TITLE })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: SCRIPT_CHANGE_TITLE })
+    ).toBeInTheDocument();
 
     userEvent.click(screen.getByRole('button', { name: CANCEL_TEXT }));
-    expect(screen.queryByRole('heading', { name: SCRIPT_CHANGE_TITLE })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: SCRIPT_CHANGE_TITLE })
+    ).not.toBeInTheDocument();
   });
 });

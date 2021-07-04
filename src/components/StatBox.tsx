@@ -30,7 +30,10 @@ const StatBox: FC<StatBoxProps> = ({ stat, handleClick }) => {
       >
         {stat.value}
       </Heading>
-      <Heading level="3" margin={{ left: '6px', right: '6px', bottom: '3px', top: '3px' }}>
+      <Heading
+        level="3"
+        margin={{ left: '6px', right: '6px', bottom: '3px', top: '3px' }}
+      >
         {stat.stat}
       </Heading>
     </RedBox>

@@ -6,8 +6,18 @@ import styled from 'styled-components';
 import { Box, Text, TextArea, Tip } from 'grommet';
 
 import Spinner from '../../Spinner';
-import { accentColors, ButtonWS, HeadingWS, neutralColors, RedBox, TextWS } from '../../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  neutralColors,
+  RedBox,
+  TextWS,
+} from '../../../config/grommetConfig';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../../queries/playbookCreator';
 import SET_CUSTOM_WEAPONS, {
   getSetCustomWeaponsOR,
   SetCustomWeaponsData,
@@ -17,7 +27,11 @@ import { CharacterCreationSteps } from '../../../@types/enums';
 import { ItemCharacteristic, TaggedItem } from '../../../@types';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
-import { ADD_TEXT, MIX_AND_MATCH_TEXT, RESET_TEXT } from '../../../config/constants';
+import {
+  ADD_TEXT,
+  MIX_AND_MATCH_TEXT,
+  RESET_TEXT,
+} from '../../../config/constants';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 export const CUSTOM_WEAPONS_FORM_TEST_ID = 'custom-weapons-form';
@@ -36,23 +50,30 @@ const WeaponsUL = styled.ul`
 `;
 
 const CustomWeaponsForm: FC = () => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [baseValue, setBaseValue] = useState<TaggedItem | undefined>();
-  const [characteristics, setCharacteristics] = useState<ItemCharacteristic[]>([]);
+  const [characteristics, setCharacteristics] = useState<ItemCharacteristic[]>(
+    []
+  );
   const [value, setValue] = useState('');
   const [weapons, setWeapons] = useState<string[]>(
-    !!character?.playbookUniques?.customWeapons ? [...character.playbookUniques.customWeapons.weapons] : []
+    !!character?.playbookUniques?.customWeapons
+      ? [...character.playbookUniques.customWeapons.weapons]
+      : []
   );
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     // @ts-ignore
     variables: { playbookType: character?.playbook },
     skip: !character,
@@ -68,12 +89,16 @@ const CustomWeaponsForm: FC = () => {
     handBaseOptions,
     handOptionsInstructions,
     handOptionsOptions,
-  } = pbCreatorData?.playbookCreator.playbookUniqueCreator?.customWeaponsCreator || {};
+  } =
+    pbCreatorData?.playbookCreator.playbookUniqueCreator
+      ?.customWeaponsCreator || {};
 
-  const [setCustomWeapons, { loading: settingCustomWeapons }] =
-    useMutation<SetCustomWeaponsData, SetCustomWeaponsVars>(SET_CUSTOM_WEAPONS);
+  const [setCustomWeapons, { loading: settingCustomWeapons }] = useMutation<
+    SetCustomWeaponsData,
+    SetCustomWeaponsVars
+  >(SET_CUSTOM_WEAPONS);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const getParsedValue = useCallback(() => {
     if (!baseValue && characteristics.length === 0) {
       return '';
@@ -121,7 +146,11 @@ const CustomWeaponsForm: FC = () => {
         }
 
         // To deal with any "+1harm" or "+nharm" that doesn't include "close/far"
-        if (char.tag.match(addHarmRegex) && !char.tag.match(closeFarRegex) && !char.description.match(scopedRegex)) {
+        if (
+          char.tag.match(addHarmRegex) &&
+          !char.tag.match(closeFarRegex) &&
+          !char.description.match(scopedRegex)
+        ) {
           const existingHarm = tags.filter((tag) => tag.match(harmRegex))[0];
           let modificationValue = 1;
           const modificationValueString = char.tag.match(digitRegex);
@@ -175,7 +204,9 @@ const CustomWeaponsForm: FC = () => {
   }, [baseValue, characteristics]);
 
   const removeOption = (option: ItemCharacteristic) => {
-    const filteredOptions = characteristics.filter((char) => char.id !== option.id);
+    const filteredOptions = characteristics.filter(
+      (char) => char.id !== option.id
+    );
     setCharacteristics(filteredOptions);
     getParsedValue();
   };
@@ -207,11 +238,17 @@ const CustomWeaponsForm: FC = () => {
     if (!!userGameRole && !!character && !!game) {
       try {
         setCustomWeapons({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, weapons },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            weapons,
+          },
           optimisticResponse: getSetCustomWeaponsOR(character, weapons),
         });
         !character.hasCompletedCharacterCreation && logAmpEvent('set unique');
-        history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
+        history.push(
+          `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
+        );
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {
         console.error(error);
@@ -219,12 +256,12 @@ const CustomWeaponsForm: FC = () => {
     }
   };
 
-  // ----------------------------------------------------- Effects ------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     getParsedValue();
   }, [baseValue, characteristics, getParsedValue]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderBasePill = (option: TaggedItem) => {
     const selectedId = baseValue?.id;
@@ -233,7 +270,11 @@ const CustomWeaponsForm: FC = () => {
         data-testid={`${option.description}-base-option-pill`}
         key={option.id}
         height="fit-content"
-        background={selectedId === option.id ? { color: accentColors[0], dark: true } : neutralColors[0]}
+        background={
+          selectedId === option.id
+            ? { color: accentColors[0], dark: true }
+            : neutralColors[0]
+        }
         round="medium"
         pad={{ top: '3px', bottom: '1px', horizontal: '12px' }}
         margin={{ vertical: '3px', horizontal: '3px' }}
@@ -255,7 +296,11 @@ const CustomWeaponsForm: FC = () => {
         <Box
           data-testid={`${option.description}-option-pill`}
           height="fit-content"
-          background={selectedIds.includes(option.id) ? { color: accentColors[0], dark: true } : neutralColors[0]}
+          background={
+            selectedIds.includes(option.id)
+              ? { color: accentColors[0], dark: true }
+              : neutralColors[0]
+          }
           round="medium"
           pad={{ top: '3px', bottom: '1px', horizontal: '12px' }}
           margin={{ vertical: '3px', horizontal: '3px' }}
@@ -278,7 +323,13 @@ const CustomWeaponsForm: FC = () => {
   };
 
   return (
-    <Box data-testid={CUSTOM_WEAPONS_FORM_TEST_ID} justify="start" width="85vw" align="start" style={{ maxWidth: '763px' }}>
+    <Box
+      data-testid={CUSTOM_WEAPONS_FORM_TEST_ID}
+      justify="start"
+      width="85vw"
+      align="start"
+      style={{ maxWidth: '763px' }}
+    >
       <Box direction="row" fill="horizontal" justify="between" align="center">
         <HeadingWS
           crustReady={crustReady}
@@ -286,12 +337,22 @@ const CustomWeaponsForm: FC = () => {
           alignSelf="center"
           style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
         >{`WHAT ARE ${
-          !!character && !!character.name ? character.name.toUpperCase() : ' ...'
+          !!character && !!character.name
+            ? character.name.toUpperCase()
+            : ' ...'
         }'S TWO CUSTOM WEAPONS?`}</HeadingWS>
         <ButtonWS
-          label={settingCustomWeapons ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+          label={
+            settingCustomWeapons ? (
+              <Spinner fillColor="#FFF" width="37px" height="36px" />
+            ) : (
+              'SET'
+            )
+          }
           primary
-          onClick={() => !settingCustomWeapons && handleSubmitCustomWeapons(weapons)}
+          onClick={() =>
+            !settingCustomWeapons && handleSubmitCustomWeapons(weapons)
+          }
           disabled={weapons.length !== 2}
         />
       </Box>
@@ -302,10 +363,14 @@ const CustomWeaponsForm: FC = () => {
             <li
               key={weapon}
               aria-label={`interim-weapon-${index + 1}`}
-              // @ts-ignore
-              onMouseOver={(e: React.MouseEvent<HTMLLIElement>) => (e.target.style.color = '#CD3F3E')}
-              // @ts-ignore
-              onMouseOut={(e: React.MouseEvent<HTMLLIElement>) => (e.target.style.color = '#FFF')}
+              onMouseOver={(e: React.MouseEvent<HTMLLIElement>) =>
+                // @ts-ignore
+                (e.target.style.color = '#CD3F3E')
+              }
+              onMouseOut={(e: React.MouseEvent<HTMLLIElement>) =>
+                // @ts-ignore
+                (e.target.style.color = '#FFF')
+              }
               onClick={() => setValue(weapon)}
             >
               {weapon}
@@ -316,8 +381,18 @@ const CustomWeaponsForm: FC = () => {
 
       <TextWS margin={{ top: '12px' }}>{MIX_AND_MATCH_TEXT}</TextWS>
 
-      <TextArea aria-label="weapon-input" size="large" value={value} onChange={(e) => setValue(e.target.value)} />
-      <Box direction="row" fill="horizontal" gap="12px" margin={{ top: '12px' }}>
+      <TextArea
+        aria-label="weapon-input"
+        size="large"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <Box
+        direction="row"
+        fill="horizontal"
+        gap="12px"
+        margin={{ top: '12px' }}
+      >
         <ButtonWS
           fill="horizontal"
           label={RESET_TEXT}
@@ -328,12 +403,22 @@ const CustomWeaponsForm: FC = () => {
             setCharacteristics([]);
           }}
         />
-        <ButtonWS fill="horizontal" label="REMOVE" disabled={!weapons.includes(value)} onClick={() => removeWeapon()} />
+        <ButtonWS
+          fill="horizontal"
+          label="REMOVE"
+          disabled={!weapons.includes(value)}
+          onClick={() => removeWeapon()}
+        />
         <ButtonWS
           fill="horizontal"
           secondary
           label={ADD_TEXT}
-          disabled={!value || !baseValue || characteristics.length === 0 || characteristics.length > 2}
+          disabled={
+            !value ||
+            !baseValue ||
+            characteristics.length === 0 ||
+            characteristics.length > 2
+          }
           onClick={() => {
             setWeapons([...weapons, value]);
             setBaseValue(undefined);
@@ -364,7 +449,9 @@ const CustomWeaponsForm: FC = () => {
             {handTitle}
           </HeadingWS>
           <TextWS weight="bold">{handBaseInstructions}</TextWS>
-          <Box direction="row">{handBaseOptions?.map((option) => renderBasePill(option))}</Box>
+          <Box direction="row">
+            {handBaseOptions?.map((option) => renderBasePill(option))}
+          </Box>
           <TextWS weight="bold" margin={{ top: '6px' }}>
             {handOptionsInstructions}
           </TextWS>

@@ -20,7 +20,9 @@ export interface SpendExperienceVars {
   characterId: string;
 }
 
-export const spendExperienceOR = (character: Character): SpendExperienceData => ({
+export const spendExperienceOR = (
+  character: Character
+): SpendExperienceData => ({
   spendExperience: {
     id: character.id,
     name: character.name || 'temp-name',

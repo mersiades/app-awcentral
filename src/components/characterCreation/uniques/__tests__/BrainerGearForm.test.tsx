@@ -5,7 +5,12 @@ import userEvent from '@testing-library/user-event';
 
 import BrainerGearForm from '../BrainerGearForm';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
-import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
+import {
+  blankCharacter,
+  mockCharacter2,
+  mockGame5,
+  mockKeycloakUserInfo1,
+} from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { PlaybookType } from '../../../../@types/enums';
 import { mockPlayBookCreatorQueryBrainer } from '../../../../tests/mockQueries';
@@ -17,7 +22,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -93,13 +101,17 @@ describe('Rendering BrainerGearForm', () => {
   });
 
   test('should render BrainerGearForm in initial state', async () => {
-    renderWithRouter(<BrainerGearForm />, `/character-creation/${mockGame5.id}`, {
-      isAuthenticated: true,
-      apolloMocks: [mockPlayBookCreatorQueryBrainer],
-      injectedGame: mockGame,
-      injectedUserId: mockKeycloakUserInfo1.sub,
-      cache,
-    });
+    renderWithRouter(
+      <BrainerGearForm />,
+      `/character-creation/${mockGame5.id}`,
+      {
+        isAuthenticated: true,
+        apolloMocks: [mockPlayBookCreatorQueryBrainer],
+        injectedGame: mockGame,
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      }
+    );
 
     await waitOneTick();
 
@@ -114,21 +126,31 @@ describe('Rendering BrainerGearForm', () => {
   });
 
   test('should enable SET button after selecting two items', async () => {
-    renderWithRouter(<BrainerGearForm />, `/character-creation/${mockGame5.id}`, {
-      isAuthenticated: true,
-      apolloMocks: [mockPlayBookCreatorQueryBrainer],
-      injectedGame: mockGame,
-      injectedUserId: mockKeycloakUserInfo1.sub,
-      cache,
-    });
+    renderWithRouter(
+      <BrainerGearForm />,
+      `/character-creation/${mockGame5.id}`,
+      {
+        isAuthenticated: true,
+        apolloMocks: [mockPlayBookCreatorQueryBrainer],
+        injectedGame: mockGame,
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      }
+    );
 
     await waitOneTick();
 
-    const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+    const setButton = screen.getByRole('button', {
+      name: 'SET',
+    }) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(true);
-    const item1 = screen.getByRole('checkbox', { name: /implant syringe/i }) as HTMLInputElement;
+    const item1 = screen.getByRole('checkbox', {
+      name: /implant syringe/i,
+    }) as HTMLInputElement;
     expect(item1.checked).toEqual(false);
-    const item2 = screen.getByRole('checkbox', { name: /brain relay/i }) as HTMLInputElement;
+    const item2 = screen.getByRole('checkbox', {
+      name: /brain relay/i,
+    }) as HTMLInputElement;
     expect(item1.checked).toEqual(false);
 
     userEvent.click(item1);
@@ -139,13 +161,17 @@ describe('Rendering BrainerGearForm', () => {
   });
 
   test('should show extra options when character has improvement move', async () => {
-    renderWithRouter(<BrainerGearForm />, `/character-creation/${mockGame5.id}`, {
-      isAuthenticated: true,
-      apolloMocks: [mockPlayBookCreatorQueryBrainer],
-      injectedGame: mockGame2,
-      injectedUserId: mockKeycloakUserInfo1.sub,
-      cache,
-    });
+    renderWithRouter(
+      <BrainerGearForm />,
+      `/character-creation/${mockGame5.id}`,
+      {
+        isAuthenticated: true,
+        apolloMocks: [mockPlayBookCreatorQueryBrainer],
+        injectedGame: mockGame2,
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      }
+    );
 
     await waitOneTick();
 

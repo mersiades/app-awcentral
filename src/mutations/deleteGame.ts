@@ -2,11 +2,11 @@ import { gql } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface DeleteGameData {
-  deleteGame: Game
+  deleteGame: Game;
 }
 
 export interface DeleteGameVars {
-  gameId: string
+  gameId: string;
 }
 
 const DELETE_GAME = gql`
@@ -15,6 +15,6 @@ const DELETE_GAME = gql`
       id
     }
   }
-`
+`;
 
-export default DELETE_GAME
+export default DELETE_GAME;

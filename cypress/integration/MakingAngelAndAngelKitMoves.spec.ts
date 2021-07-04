@@ -40,7 +40,8 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
   });
 
   it(`should show message for the ${ANGEL_SPECIAL_NAME} character move`, () => {
-    const moveDescSnippet = 'If you and another character have sex, your Hx with them on your sheet goes immediately';
+    const moveDescSnippet =
+      'If you and another character have sex, your Hx with them on your sheet goes immediately';
     cy.get('div[data-testid="moves-box"]').within(() => {
       cy.contains(decapitalize(ANGEL_SPECIAL_NAME)).click();
     });
@@ -59,7 +60,10 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
     cy.contains('button', APPLY_TEXT).click();
     cy.contains('button', APPLY_TEXT).should('not.exist');
     const messageTitle = `DOC: ${ANGEL_SPECIAL_NAME}`;
-    cy.checkMoveMessage(messageTitle, "Doc and Phoenix shagged, and now Doc's Hx with Phoenix is 3");
+    cy.checkMoveMessage(
+      messageTitle,
+      "Doc and Phoenix shagged, and now Doc's Hx with Phoenix is 3"
+    );
     cy.get('div[data-testid="Hx-box"]').scrollIntoView();
     cy.get('h2[aria-label="phoenix-value"]').should('contain.text', '3');
   });
@@ -112,7 +116,10 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
         cy.get('h2[aria-label="stock-value"]').then((elem) => {
           stockValue = parseInt(elem[0].innerText);
           cy.get('div[data-testid="increase-caret"]').click();
-          cy.get('h2[aria-label="stock-value"]').should('contain.text', stockValue + 1);
+          cy.get('h2[aria-label="stock-value"]').should(
+            'contain.text',
+            stockValue + 1
+          );
         });
       });
   });
@@ -125,7 +132,9 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
     // Check initial content of ReviveDialog
     cy.contains(REVIVE_SOMEONE_NAME).should('be.visible');
     cy.contains(moveDescSnippet).should('be.visible');
-    cy.contains('This will cost 2-stock. You currently have 2 stock.').should('be.visible');
+    cy.contains('This will cost 2-stock. You currently have 2 stock.').should(
+      'be.visible'
+    );
     cy.contains('button', REVIVE_TEXT).should('not.be.disabled');
     cy.contains('button', REVIVE_TEXT).click();
 
@@ -150,7 +159,9 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
     // Check initial content of StabilizeDialog
     cy.contains(TREAT_NPC_NAME).should('be.visible');
     cy.contains(moveDescSnippet).should('be.visible');
-    cy.contains('This will cost 1-stock. You currently have 1 stock.').should('be.visible');
+    cy.contains('This will cost 1-stock. You currently have 1 stock.').should(
+      'be.visible'
+    );
     cy.contains('button', TREAT_TEXT).should('not.be.disabled');
     cy.contains('button', TREAT_TEXT).click();
 

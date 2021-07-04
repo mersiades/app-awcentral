@@ -28,17 +28,50 @@ describe('Using the PlaybookPanel as a Maestro D', () => {
     cy.get('div[data-testid="Establishment-box"]').scrollIntoView();
     cy.get('div[data-testid="Establishment-box"]').within(() => {
       cy.get('div[aria-label="Cast & crew box"]').should('contain', 'crewey 1');
-      cy.get('div[aria-label="Cast & crew box"]').should('contain', 'cool dude');
-      cy.get('div[data-testid="attractions-box"]').should('contain', 'Main: luxury food');
-      cy.get('div[data-testid="attractions-box"]').should('contain', 'Side: music, spectacle');
-      cy.get('div[data-testid="atmosphere-box"]').should('contain', 'bustle, velvet, fantasy');
-      cy.get('div[data-testid="regulars-box"]').should('contain', 'Lamprey is your best regular');
-      cy.get('div[data-testid="regulars-box"]').should('contain', 'Toyota is your worst regular');
-      cy.get('div[data-testid="interested npcs-box"]').should('contain', 'Been wants in on it');
-      cy.get('div[data-testid="interested npcs-box"]').should('contain', 'You owe Rolfball for it');
-      cy.get('div[data-testid="interested npcs-box"]').should('contain', 'Gams wants it gone');
-      cy.get('div[data-testid="security-box"]').should('contain', 'plywood & chickenwire (1-armor)');
-      cy.get('div[data-testid="security-box"]').should('contain', 'a bouncer who knows his biz (2-harm 1-armor)');
+      cy.get('div[aria-label="Cast & crew box"]').should(
+        'contain',
+        'cool dude'
+      );
+      cy.get('div[data-testid="attractions-box"]').should(
+        'contain',
+        'Main: luxury food'
+      );
+      cy.get('div[data-testid="attractions-box"]').should(
+        'contain',
+        'Side: music, spectacle'
+      );
+      cy.get('div[data-testid="atmosphere-box"]').should(
+        'contain',
+        'bustle, velvet, fantasy'
+      );
+      cy.get('div[data-testid="regulars-box"]').should(
+        'contain',
+        'Lamprey is your best regular'
+      );
+      cy.get('div[data-testid="regulars-box"]').should(
+        'contain',
+        'Toyota is your worst regular'
+      );
+      cy.get('div[data-testid="interested npcs-box"]').should(
+        'contain',
+        'Been wants in on it'
+      );
+      cy.get('div[data-testid="interested npcs-box"]').should(
+        'contain',
+        'You owe Rolfball for it'
+      );
+      cy.get('div[data-testid="interested npcs-box"]').should(
+        'contain',
+        'Gams wants it gone'
+      );
+      cy.get('div[data-testid="security-box"]').should(
+        'contain',
+        'plywood & chickenwire (1-armor)'
+      );
+      cy.get('div[data-testid="security-box"]').should(
+        'contain',
+        'a bouncer who knows his biz (2-harm 1-armor)'
+      );
 
       cy.get('svg[aria-label="Edit"]').click();
     });
@@ -50,11 +83,16 @@ describe('Using the PlaybookPanel as a Maestro D', () => {
   });
 
   it(`should show message for the ${MAESTROD_SPECIAL_NAME} character move`, () => {
-    cy.checkPrintMove('Emmy', MAESTROD_SPECIAL_NAME, 'If you hook up another character up - with sex, with food,');
+    cy.checkPrintMove(
+      'Emmy',
+      MAESTROD_SPECIAL_NAME,
+      'If you hook up another character up - with sex, with food,'
+    );
   });
 
   it(`should show message for the ${JUST_GIVE_MOTIVE_NAME} character move `, () => {
-    const moveDescSnippet = 'name somebody who might conceivably eat, drink, or otherwise';
+    const moveDescSnippet =
+      'name somebody who might conceivably eat, drink, or otherwise';
     cy.get('div[data-testid="moves-box"]').scrollIntoView();
     cy.contains(decapitalize(JUST_GIVE_MOTIVE_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');

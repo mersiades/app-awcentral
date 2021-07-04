@@ -35,10 +35,14 @@ export const getResolveEstablishmentInterestOR = (
   wantsItGone: string
 ): ResolveEstablishmentInterestData => {
   let optimisticPlaybookUniques = {
-    id: !!character.playbookUniques?.id ? character.playbookUniques.id : 'temp-id-1',
+    id: !!character.playbookUniques?.id
+      ? character.playbookUniques.id
+      : 'temp-id-1',
     establishment: {
       uniqueType: UniqueTypes.establishment,
-      id: !character.playbookUniques?.establishment?.id ? 'temporary-id' : character.playbookUniques.establishment.id,
+      id: !character.playbookUniques?.establishment?.id
+        ? 'temporary-id'
+        : character.playbookUniques.establishment.id,
       oweForIt,
       wantsInOnIt,
       wantsItGone,

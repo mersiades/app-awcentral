@@ -4,8 +4,17 @@ import { useMutation } from '@apollo/client';
 import { Box, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
-import { HeadingWS, ParagraphWS, ButtonWS, barterBackground, RedBox } from '../../config/grommetConfig';
-import PERFORM_BARTER_MOVE, { PerformBarterMoveData, PerformBarterMoveVars } from '../../mutations/performBarterMove';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  barterBackground,
+  RedBox,
+} from '../../config/grommetConfig';
+import PERFORM_BARTER_MOVE, {
+  PerformBarterMoveData,
+  PerformBarterMoveVars,
+} from '../../mutations/performBarterMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
@@ -17,28 +26,40 @@ interface BarterDialogProps {
 }
 
 const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [barter, setBarter] = useState(move.name === 'LIFESTYLE AND GIGS' ? 0 : 1);
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
+  const [barter, setBarter] = useState(
+    move.name === 'LIFESTYLE AND GIGS' ? 0 : 1
+  );
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performBarterMove, { loading: performingBarterMove }] =
-    useMutation<PerformBarterMoveData, PerformBarterMoveVars>(PERFORM_BARTER_MOVE);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [performBarterMove, { loading: performingBarterMove }] = useMutation<
+    PerformBarterMoveData,
+    PerformBarterMoveVars
+  >(PERFORM_BARTER_MOVE);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const currentBarter = character?.barter || 0;
 
-  const handleBarterMove = async (move: Move | CharacterMove, barter: number) => {
+  const handleBarterMove = async (
+    move: Move | CharacterMove,
+    barter: number
+  ) => {
     if (currentBarter - barter < 0) {
       console.warn("You don't have enough barter");
       return;
     }
-    if (!!userGameRole && !!character && !character.isDead && !performingBarterMove) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingBarterMove
+    ) {
       try {
         await performBarterMove({
           variables: {
@@ -66,7 +87,7 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
       default:
     }
   };
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
     <DialogWrapper background={barterBackground} handleClose={handleClose}>
@@ -79,7 +100,13 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
         ) : (
           <>
             <ParagraphWS alignSelf="start">{getText()}</ParagraphWS>
-            <RedBox alignSelf="center" width="150px" align="center" justify="between" pad="24px">
+            <RedBox
+              alignSelf="center"
+              width="150px"
+              align="center"
+              justify="between"
+              pad="24px"
+            >
               <FormField>
                 <TextInput
                   type="number"
@@ -98,16 +125,29 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
             label="CANCEL"
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
             label={move.name === 'LIFESTYLE AND GIGS' ? 'SPEND' : 'GIVE'}
-            data-testid={move.name === 'LIFESTYLE AND GIGS' ? 'spend-button' : 'give-button'}
+            data-testid={
+              move.name === 'LIFESTYLE AND GIGS'
+                ? 'spend-button'
+                : 'give-button'
+            }
             primary
-            onClick={() => !!barter && !performingBarterMove && handleBarterMove(move, barter)}
-            disabled={!barter || performingBarterMove || (!!character?.barter && barter > character.barter)}
+            onClick={() =>
+              !!barter &&
+              !performingBarterMove &&
+              handleBarterMove(move, barter)
+            }
+            disabled={
+              !barter ||
+              performingBarterMove ||
+              (!!character?.barter && barter > character.barter)
+            }
           />
         </Box>
       </Box>

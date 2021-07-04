@@ -2,12 +2,12 @@ import { gql } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface RemoveInviteeData {
-  game: Game
+  game: Game;
 }
 
 export interface RemoveInviteeVars {
-  gameId: string,
-  email: string
+  gameId: string;
+  email: string;
 }
 
 const REMOVE_INVITEE = gql`
@@ -31,6 +31,6 @@ const REMOVE_INVITEE = gql`
       }
     }
   }
-`
+`;
 
-export default REMOVE_INVITEE
+export default REMOVE_INVITEE;

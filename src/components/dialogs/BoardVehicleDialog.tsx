@@ -5,7 +5,12 @@ import { Box, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
 import { StyledMarkdown } from '../styledComponents';
-import { HeadingWS, ParagraphWS, ButtonWS, boardVehicleDialogBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  boardVehicleDialogBackground,
+} from '../../config/grommetConfig';
 import PERFORM_SPEED_ROLL_MOVE, {
   PerformSpeedRollMoveData,
   PerformSpeedRollMoveVars,
@@ -24,23 +29,28 @@ interface BoardVehicleDialogProps {
   handleClose: () => void;
 }
 
-const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({
+  move,
+  handleClose,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [mySpeed, setMySpeed] = useState('');
   const [theirSpeed, setTheirSpeed] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | undefined>();
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performSpeedRollMove, { loading: performingSpeedRollMove }] =
-    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(PERFORM_SPEED_ROLL_MOVE);
+    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(
+      PERFORM_SPEED_ROLL_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const otherVehicle: Vehicle = {
     id: 'other-vehicle-id',
     vehicleType: VehicleType.car,
@@ -72,7 +82,14 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
   };
 
   const handleSpeedRollMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead && !performingSpeedRollMove && !!mySpeed && !!theirSpeed) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingSpeedRollMove &&
+      !!mySpeed &&
+      !!theirSpeed
+    ) {
       let modifier = parseInt(theirSpeed) - parseInt(mySpeed);
       if (modifier > 0) {
         modifier = -Math.abs(modifier);
@@ -95,7 +112,7 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderVehicleChoice = () => {
     if (!!character && character.vehicles.length > 0) {
@@ -112,7 +129,10 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
             valueKey="name"
             onChange={(e) => {
               setSelectedVehicle(e.value);
-              if (e.value.id !== 'other-vehicle-id' && e.value.id !== 'on-foot-id') {
+              if (
+                e.value.id !== 'other-vehicle-id' &&
+                e.value.id !== 'on-foot-id'
+              ) {
                 setMySpeed(e.value.speed.toString());
               } else if (e.value.id === 'other-vehicle-id') {
                 setMySpeed('');
@@ -140,7 +160,9 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
     } else if (!!character) {
       return (
         <Box fill align="start" justify="start">
-          <ParagraphWS alignSelf="start">What is the speed of your vehicle?</ParagraphWS>
+          <ParagraphWS alignSelf="start">
+            What is the speed of your vehicle?
+          </ParagraphWS>
           <Select
             id="unknown-vehicle-speed-input"
             aria-label="unknown vehicle speed"
@@ -148,7 +170,9 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
             placeholder="My speed"
             options={['On foot (0)', '0', '1', '2', '3']}
             value={mySpeed}
-            onChange={(e) => (e.value === 'On foot' ? setMySpeed('0') : setMySpeed(e.value))}
+            onChange={(e) =>
+              e.value === 'On foot' ? setMySpeed('0') : setMySpeed(e.value)
+            }
           />
         </Box>
       );
@@ -156,7 +180,10 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
   };
 
   return (
-    <DialogWrapper background={boardVehicleDialogBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={boardVehicleDialogBackground}
+      handleClose={handleClose}
+    >
       <Box gap="12px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
@@ -165,7 +192,9 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
         <Box direction="row" gap="24px">
           {character && renderVehicleChoice()}
           <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">What is the speed of their vehicle?</ParagraphWS>
+            <ParagraphWS alignSelf="start">
+              What is the speed of their vehicle?
+            </ParagraphWS>
             <Select
               id="opposition-speed-input"
               aria-label="opposition speed"
@@ -182,7 +211,8 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({ move, handleClose }) 
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />

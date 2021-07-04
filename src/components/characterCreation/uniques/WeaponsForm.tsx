@@ -4,39 +4,68 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Box, Tip, Text } from 'grommet';
 
 import Spinner from '../../Spinner';
-import { accentColors, ButtonWS, HeadingWS, neutralColors, TextWS } from '../../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
-import SET_WEAPONS, { SetWeaponsData, SetWeaponsVars } from '../../../mutations/setWeapons';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  neutralColors,
+  TextWS,
+} from '../../../config/grommetConfig';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../../queries/playbookCreator';
+import SET_WEAPONS, {
+  SetWeaponsData,
+  SetWeaponsVars,
+} from '../../../mutations/setWeapons';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
-import { BACKUP_WEAPONS_TEXT, BIG_GUNS_TEXT, SERIOUS_GUNS_TEXT } from '../../../config/constants';
+import {
+  BACKUP_WEAPONS_TEXT,
+  BIG_GUNS_TEXT,
+  SERIOUS_GUNS_TEXT,
+} from '../../../config/constants';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
 
 export const WEAPONS_FORM_TEST_ID = 'weapons-form';
 
 const WeaponsForm: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [fobGun, setFobGun] = useState('');
   const [seriousWeapons, setSeriousWeapons] = useState<string[]>([]);
   const [backupWeapon, setBackupWeapon] = useState('');
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     variables: { playbookType: PlaybookType.gunlugger },
   });
 
-  const { bfoGunOptionCount, seriousGunOptionCount, backupWeaponsOptionCount, bigFuckOffGuns, seriousGuns, backupWeapons } =
+  const {
+    bfoGunOptionCount,
+    seriousGunOptionCount,
+    backupWeaponsOptionCount,
+    bigFuckOffGuns,
+    seriousGuns,
+    backupWeapons,
+  } =
     pbCreatorData?.playbookCreator.playbookUniqueCreator?.weaponsCreator || {};
-  const [setWeapons, { loading: settingWeapons }] = useMutation<SetWeaponsData, SetWeaponsVars>(SET_WEAPONS);
+  const [setWeapons, { loading: settingWeapons }] = useMutation<
+    SetWeaponsData,
+    SetWeaponsVars
+  >(SET_WEAPONS);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const handleSubmitWeapons = async () => {
     if (!!userGameRole && !!character && !!game) {
       try {
@@ -50,7 +79,9 @@ const WeaponsForm: FC = () => {
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
+          history.push(
+            `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
+          );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
       } catch (error) {
@@ -63,13 +94,19 @@ const WeaponsForm: FC = () => {
     if (isSelected) {
       setSeriousWeapons(seriousWeapons.filter((sw) => sw !== weapon));
     } else {
-      seriousWeapons.length < 2 && setSeriousWeapons([...seriousWeapons, weapon]);
+      seriousWeapons.length < 2 &&
+        setSeriousWeapons([...seriousWeapons, weapon]);
     }
   };
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   useEffect(() => {
-    if (!!character?.playbookUniques?.weapons && !!bigFuckOffGuns && !!seriousGuns && !!backupWeapons) {
+    if (
+      !!character?.playbookUniques?.weapons &&
+      !!bigFuckOffGuns &&
+      !!seriousGuns &&
+      !!backupWeapons
+    ) {
       let existingSeriousWeapons: string[] = [];
       character.playbookUniques.weapons.weapons.forEach((weapon) => {
         if (bigFuckOffGuns.includes(weapon)) {
@@ -86,11 +123,20 @@ const WeaponsForm: FC = () => {
       });
       setSeriousWeapons(existingSeriousWeapons);
     }
-  }, [character?.playbookUniques?.weapons, bigFuckOffGuns, seriousGuns, backupWeapons]);
+  }, [
+    character?.playbookUniques?.weapons,
+    bigFuckOffGuns,
+    seriousGuns,
+    backupWeapons,
+  ]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
-  const renderWeaponPill = (weapon: string, isSelected: boolean, onClick: () => void) => {
+  const renderWeaponPill = (
+    weapon: string,
+    isSelected: boolean,
+    onClick: () => void
+  ) => {
     const tags = weapon.substring(weapon.indexOf('(') + 1, weapon.indexOf(')'));
     const weaponName = weapon.substring(0, weapon.indexOf(' ('));
     return (
@@ -98,7 +144,11 @@ const WeaponsForm: FC = () => {
         <Box
           data-testid={`${weapon}-pill`}
           height="fit-content"
-          background={isSelected ? { color: accentColors[0], dark: true } : neutralColors[0]}
+          background={
+            isSelected
+              ? { color: accentColors[0], dark: true }
+              : neutralColors[0]
+          }
           round="medium"
           pad={{ top: '3px', bottom: '1px', horizontal: '12px' }}
           margin={{ vertical: '3px', horizontal: '3px' }}
@@ -125,7 +175,11 @@ const WeaponsForm: FC = () => {
         <Box
           data-testid={`${weapon}-pill`}
           height="fit-content"
-          background={isSelected ? { color: accentColors[0], dark: true } : neutralColors[0]}
+          background={
+            isSelected
+              ? { color: accentColors[0], dark: true }
+              : neutralColors[0]
+          }
           round="medium"
           pad={{ top: '3px', bottom: '1px', horizontal: '12px' }}
           margin={{ vertical: '3px', horizontal: '3px' }}
@@ -152,14 +206,29 @@ const WeaponsForm: FC = () => {
       margin={{ bottom: '24px' }}
     >
       <Box direction="row" fill="horizontal" align="center" justify="between">
-        <HeadingWS crustReady={crustReady} level={2} style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}>{`${
+        <HeadingWS
+          crustReady={crustReady}
+          level={2}
+          style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
+        >{`${
           !!character?.name ? character.name?.toUpperCase() : '...'
         }'S WEAPONS`}</HeadingWS>
         <ButtonWS
           primary
-          label={settingWeapons ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
+          label={
+            settingWeapons ? (
+              <Spinner fillColor="#FFF" width="36px" height="36px" />
+            ) : (
+              'SET'
+            )
+          }
           onClick={() => !settingWeapons && handleSubmitWeapons()}
-          disabled={settingWeapons || seriousWeapons.length < 2 || !fobGun || !backupWeapon}
+          disabled={
+            settingWeapons ||
+            seriousWeapons.length < 2 ||
+            !fobGun ||
+            !backupWeapon
+          }
         />
       </Box>
       <Box fill="horizontal" align="center" gap="24px">
@@ -173,7 +242,8 @@ const WeaponsForm: FC = () => {
           <Box direction="row" wrap>
             {bigFuckOffGuns?.map((weapon) => {
               const isSelected = weapon === fobGun;
-              const onClick = () => (isSelected ? setFobGun('') : setFobGun(weapon));
+              const onClick = () =>
+                isSelected ? setFobGun('') : setFobGun(weapon);
               return renderWeaponPill(weapon, isSelected, onClick);
             })}
           </Box>
@@ -199,7 +269,8 @@ const WeaponsForm: FC = () => {
           <Box direction="row" wrap>
             {backupWeapons?.map((weapon) => {
               const isSelected = weapon === backupWeapon;
-              const onClick = () => (isSelected ? setBackupWeapon('') : setBackupWeapon(weapon));
+              const onClick = () =>
+                isSelected ? setBackupWeapon('') : setBackupWeapon(weapon);
               return renderWeaponPill(weapon, isSelected, onClick);
             })}
           </Box>

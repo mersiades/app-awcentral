@@ -6,7 +6,11 @@ import { FormField, TextInput, Box, Form } from 'grommet';
 import Spinner from './Spinner';
 import { ButtonWS, TextWS } from '../config/grommetConfig';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
-import CREATE_GAME, { CreateGameData, CreateGameVars, getCreateGameOR } from '../mutations/createGame';
+import CREATE_GAME, {
+  CreateGameData,
+  CreateGameVars,
+  getCreateGameOR,
+} from '../mutations/createGame';
 import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
 import { logAmpEvent } from '../config/amplitudeConfig';
 import { CREATE_GAME_INSTRUCTIONS, SUBMIT_TEXT } from '../config/constants';
@@ -14,7 +18,10 @@ import { CREATE_GAME_INSTRUCTIONS, SUBMIT_TEXT } from '../config/constants';
 const CreateGameForm: FC = () => {
   const [gameName, setGameName] = useState({ name: '' });
   const { id: userId, username: displayName, email } = useKeycloakUser();
-  const [createGame, { loading: loadingCreateGame }] = useMutation<CreateGameData, CreateGameVars>(CREATE_GAME);
+  const [createGame, { loading: loadingCreateGame }] = useMutation<
+    CreateGameData,
+    CreateGameVars
+  >(CREATE_GAME);
   const history = useHistory();
 
   const sendNewGameRequest = async (userId: string, name: string) => {
@@ -25,7 +32,9 @@ const CreateGameForm: FC = () => {
         variables: { userId, name, displayName, email },
         // skip: !displayName || !email,
         optimisticResponse: getCreateGameOR(name, userId, displayName),
-        refetchQueries: [{ query: GAMEROLES_BY_USER_ID, variables: { id: userId } }],
+        refetchQueries: [
+          { query: GAMEROLES_BY_USER_ID, variables: { id: userId } },
+        ],
       });
       logAmpEvent('give game name');
 
@@ -42,18 +51,32 @@ const CreateGameForm: FC = () => {
       value={gameName}
       onChange={(nextName: any) => setGameName(nextName)}
       onReset={() => setGameName({ name: '' })}
-      onSubmit={async ({ value: { name } }: any) => !!userId && !loadingCreateGame && sendNewGameRequest(userId, name)}
+      onSubmit={async ({ value: { name } }: any) =>
+        !!userId && !loadingCreateGame && sendNewGameRequest(userId, name)
+      }
     >
       <Box gap="small">
         <FormField name="name" label="Name" htmlFor="text-input-id">
-          <TextInput id="text-input-id" name="name" autoFocus size="xlarge" placeholder={`${displayName}'s game`} />
+          <TextInput
+            id="text-input-id"
+            name="name"
+            autoFocus
+            size="xlarge"
+            placeholder={`${displayName}'s game`}
+          />
         </FormField>
         <TextWS color="accent-1" margin={{ top: 'xsmall' }}>
           {CREATE_GAME_INSTRUCTIONS}
         </TextWS>
         <ButtonWS
           type="submit"
-          label={loadingCreateGame ? <Spinner fillColor="#FFF" fillHorizontal /> : SUBMIT_TEXT}
+          label={
+            loadingCreateGame ? (
+              <Spinner fillColor="#FFF" fillHorizontal />
+            ) : (
+              SUBMIT_TEXT
+            )
+          }
           primary
           size="large"
           alignSelf="center"

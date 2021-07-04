@@ -2,8 +2,18 @@ import { Character } from '../../@types/dataInterfaces';
 import { PlaybookType } from '../../@types/enums';
 import { mockCharacterHarm } from '../mocks';
 import { mockAngelSpecialCM } from './characterMovesFixtures';
-import { mockLookAngel1, mockLookAngel3, mockLookAngel5, mockLookAngel7, mockLookAngel9 } from './lookFixtures';
-import { mockPlaybookUniqueAngel, mockPlaybookUniqueBattlebabe, mockPlaybookUniqueChopper } from './playBookUniquesFixtures';
+import {
+  mockLookAngel1,
+  mockLookAngel3,
+  mockLookAngel5,
+  mockLookAngel7,
+  mockLookAngel9,
+} from './lookFixtures';
+import {
+  mockPlaybookUniqueAngel,
+  mockPlaybookUniqueBattlebabe,
+  mockPlaybookUniqueChopper,
+} from './playBookUniquesFixtures';
 import { mockStatsBlock1 } from './statsBlockFixtures';
 
 export const mockAngel_fresh: Character = {
@@ -42,7 +52,13 @@ export const mockAngel_readyToAddMoves: Character = {
   name: 'Mock Angel 1',
   gear: ['item1', 'item2'],
   statsBlock: mockStatsBlock1,
-  looks: [mockLookAngel1, mockLookAngel3, mockLookAngel5, mockLookAngel7, mockLookAngel9],
+  looks: [
+    mockLookAngel1,
+    mockLookAngel3,
+    mockLookAngel5,
+    mockLookAngel7,
+    mockLookAngel9,
+  ],
   __typename: 'Character',
 };
 

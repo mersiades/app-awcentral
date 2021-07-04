@@ -26,7 +26,10 @@ describe('Rendering CommsForm', () => {
 
   beforeEach(async () => {
     customRenderForComponent(
-      <CommsForm setCreationStep={mockSetCreationStep} setHasSkippedComms={mockSetHasSkippedComms} />,
+      <CommsForm
+        setCreationStep={mockSetCreationStep}
+        setHasSkippedComms={mockSetHasSkippedComms}
+      />,
       {
         isAuthenticated: true,
         apolloMocks: [mockGameQuery],
@@ -53,16 +56,22 @@ describe('Rendering CommsForm', () => {
 
   test('should enable SET button after entering comms url', () => {
     const mockUrl = 'https://mockurl.com';
-    const urlInput = screen.getByRole('textbox', { name: 'comms-url-input' }) as HTMLInputElement;
+    const urlInput = screen.getByRole('textbox', {
+      name: 'comms-url-input',
+    }) as HTMLInputElement;
 
     userEvent.type(urlInput, mockUrl);
     expect(urlInput.value).toEqual(mockUrl);
-    const setButton = screen.getAllByRole('button', { name: /SET/i })[1] as HTMLButtonElement;
+    const setButton = screen.getAllByRole('button', {
+      name: /SET/i,
+    })[1] as HTMLButtonElement;
     expect(setButton.disabled).toEqual(false);
   });
 
   test('should skip CommsForm', () => {
-    const laterButton = screen.getByRole('button', { name: /LATER/i }) as HTMLButtonElement;
+    const laterButton = screen.getByRole('button', {
+      name: /LATER/i,
+    }) as HTMLButtonElement;
 
     userEvent.click(laterButton);
 

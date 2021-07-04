@@ -12,7 +12,10 @@ import {
 } from '../../@types/dataInterfaces';
 import { GangSize, HoldingSize, UniqueTypes } from '../../@types/enums';
 import { SecurityOption } from '../../@types/staticDataInterfaces';
-import { HOLDING_SOULS_MEDIUM, LIFE_SUPPORT_TEXT } from '../../config/constants';
+import {
+  HOLDING_SOULS_MEDIUM,
+  LIFE_SUPPORT_TEXT,
+} from '../../config/constants';
 import {
   dummyAngelKit,
   dummyBrainerGear,
@@ -258,8 +261,10 @@ export const mockPlaybookUniqueHocus_with1Improvement: PlaybookUniques = {
 export const mockWorkspace_noSelectionsMade: Workspace = {
   id: 'mock-workspace-1-id',
   uniqueType: UniqueTypes.workspace,
-  workspaceInstructions: 'When you go into your workspace and dedicate yourself to making a thing, or ...',
-  projectInstructions: "During play, it's your job to have your character start and pursue projects...",
+  workspaceInstructions:
+    'When you go into your workspace and dedicate yourself to making a thing, or ...',
+  projectInstructions:
+    "During play, it's your job to have your character start and pursue projects...",
   itemsCount: 3,
   workspaceItems: [],
   projects: [],
@@ -276,7 +281,14 @@ export const mockWorkspace_withBothImprovements: Workspace = {
   ...mockWorkspace_noSelectionsMade,
   id: 'mock-workspace-3-id',
   itemsCount: 6,
-  workspaceItems: ['item1', 'item2', 'item3', 'item4', 'item5', LIFE_SUPPORT_TEXT],
+  workspaceItems: [
+    'item1',
+    'item2',
+    'item3',
+    'item4',
+    'item5',
+    LIFE_SUPPORT_TEXT,
+  ],
 };
 
 export const mockPlaybookUniqueSavvyhead: PlaybookUniques = {
@@ -292,11 +304,12 @@ export const mockPlaybookUniqueSavvyhead_withImprovement: PlaybookUniques = {
   workspace: mockWorkspace_withImprovement,
 };
 
-export const mockPlaybookUniqueSavvyhead_withBothImprovements: PlaybookUniques = {
-  ...mockPlaybookUniqueSavvyhead,
-  id: 'mock-savvyhead-unique-3-id',
-  workspace: mockWorkspace_withBothImprovements,
-};
+export const mockPlaybookUniqueSavvyhead_withBothImprovements: PlaybookUniques =
+  {
+    ...mockPlaybookUniqueSavvyhead,
+    id: 'mock-savvyhead-unique-3-id',
+    workspace: mockWorkspace_withBothImprovements,
+  };
 
 // ------------------------------------------------------- Establishment / Maestro D' -------------------------------------------------------- //
 
@@ -367,7 +380,11 @@ export const mockEstablishment_completeWithBothImprovements: Establishment = {
   atmospheres: ['bustle', 'intimacy', 'smoke'],
   regulars: ['Lamprey', 'Ba', 'Camo', 'Toyota', 'Lits'],
   interestedParties: ['Been', 'Rolfball', 'Gams'],
-  securityOptions: [mockSecurityOption1, mockSecurityOption2, mockSecurityOption3],
+  securityOptions: [
+    mockSecurityOption1,
+    mockSecurityOption2,
+    mockSecurityOption3,
+  ],
   castAndCrew: [],
   __typename: 'Establishment',
 };
@@ -385,14 +402,16 @@ export const mockPlaybookUniqueMaestroD_withOneImprovement: PlaybookUniques = {
   establishment: mockEstablishment_withOneImprovement,
 };
 
-export const mockPlaybookUniqueMaestroD_needingInterestResolution: PlaybookUniques = {
-  ...mockPlaybookUniqueMaestroD,
-  id: 'mock-meastrod-unique-3-id',
-  establishment: mockEstablishment_needingInterestResolution,
-};
+export const mockPlaybookUniqueMaestroD_needingInterestResolution: PlaybookUniques =
+  {
+    ...mockPlaybookUniqueMaestroD,
+    id: 'mock-meastrod-unique-3-id',
+    establishment: mockEstablishment_needingInterestResolution,
+  };
 
-export const mockPlaybookUniqueMaestroD_completeWithBothImprovements: PlaybookUniques = {
-  ...mockPlaybookUniqueMaestroD,
-  id: 'mock-meastrod-unique-3-id',
-  establishment: mockEstablishment_completeWithBothImprovements,
-};
+export const mockPlaybookUniqueMaestroD_completeWithBothImprovements: PlaybookUniques =
+  {
+    ...mockPlaybookUniqueMaestroD,
+    id: 'mock-meastrod-unique-3-id',
+    establishment: mockEstablishment_completeWithBothImprovements,
+  };

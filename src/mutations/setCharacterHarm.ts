@@ -16,7 +16,10 @@ export interface SetCharacterHarmVars {
   harm: HarmInput;
 }
 
-export const getSetCharacterHarmOR = (character: Character, harmInput: HarmInput): SetCharacterHarmData => {
+export const getSetCharacterHarmOR = (
+  character: Character,
+  harmInput: HarmInput
+): SetCharacterHarmData => {
   return {
     setCharacterHarm: {
       id: character.id,
@@ -27,8 +30,16 @@ export const getSetCharacterHarmOR = (character: Character, harmInput: HarmInput
 };
 
 const SET_CHARACTER_HARM = gql`
-  mutation SetCharacterHarm($gameRoleId: String!, $characterId: String!, $harm: HarmInput!) {
-    setCharacterHarm(gameRoleId: $gameRoleId, characterId: $characterId, harm: $harm) {
+  mutation SetCharacterHarm(
+    $gameRoleId: String!
+    $characterId: String!
+    $harm: HarmInput!
+  ) {
+    setCharacterHarm(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      harm: $harm
+    ) {
       id
       harm {
         id

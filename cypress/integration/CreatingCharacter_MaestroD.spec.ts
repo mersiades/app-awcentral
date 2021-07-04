@@ -59,7 +59,9 @@ describe("Creating a new Maestro D' Character", () => {
     cy.contains(SELECT_SIDE_ATTRACTIONS).should('exist');
     cy.contains("For your establishment's atmosphere").should('exist');
     cy.contains('Your regulars include these 5 NPCs').should('exist');
-    cy.contains('These 3 NPCs (at least) have an interest in your establishment').should('exist');
+    cy.contains(
+      'These 3 NPCs (at least) have an interest in your establishment'
+    ).should('exist');
     cy.contains('For security, choose 2').should('exist');
     cy.contains(CAST_CREW_INSTRUCTIONS).should('exist');
     cy.contains(SET_TEXT).should('exist');
@@ -67,28 +69,60 @@ describe("Creating a new Maestro D' Character", () => {
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]').should('contain', maestroDGearItem);
-    cy.get('div[data-testid="establishment-box"]').should('contain', decapitalize(UniqueTypes.establishment));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(MAESTROD_SPECIAL_NAME));
+    cy.get('div[data-testid="establishment-box"]').should(
+      'contain',
+      decapitalize(UniqueTypes.establishment)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(MAESTROD_SPECIAL_NAME)
+    );
 
     // Check form functionality
     // Attractions
     cy.get('input[aria-label="main-attraction-input"]').click();
-    cy.get('div[role="menubar"]').within(() => cy.contains(attraction1).click());
+    cy.get('div[role="menubar"]').within(() =>
+      cy.contains(attraction1).click()
+    );
     cy.get('div[data-testid="attractions-box"]').should('contain', attraction1);
-    selectItem(attraction2, [{ box: 'attractions', expectedResult: attraction2 }]);
-    selectItem(attraction3, [{ box: 'attractions', expectedResult: attraction3 }]);
-    checkSelectionLimit(attraction4, [{ box: 'attractions', notExpectedResult: attraction4 }]);
-    deSelectItem(attraction2, [{ box: 'attractions', notExpectedResult: attraction2 }]);
-    selectItem(attraction4, [{ box: 'attractions', expectedResult: attraction4 }]);
+    selectItem(attraction2, [
+      { box: 'attractions', expectedResult: attraction2 },
+    ]);
+    selectItem(attraction3, [
+      { box: 'attractions', expectedResult: attraction3 },
+    ]);
+    checkSelectionLimit(attraction4, [
+      { box: 'attractions', notExpectedResult: attraction4 },
+    ]);
+    deSelectItem(attraction2, [
+      { box: 'attractions', notExpectedResult: attraction2 },
+    ]);
+    selectItem(attraction4, [
+      { box: 'attractions', expectedResult: attraction4 },
+    ]);
 
     // Atmospheres
-    selectItem(atmosphere1, [{ box: 'atmosphere', expectedResult: atmosphere1 }]);
-    selectItem(atmosphere2, [{ box: 'atmosphere', expectedResult: atmosphere2 }]);
-    selectItem(atmosphere3, [{ box: 'atmosphere', expectedResult: atmosphere3 }]);
-    selectItem(atmosphere4, [{ box: 'atmosphere', expectedResult: atmosphere4 }]);
-    checkSelectionLimit(atmosphere5, [{ box: 'atmosphere', notExpectedResult: atmosphere5 }]);
-    deSelectItem(atmosphere1, [{ box: 'atmosphere', notExpectedResult: atmosphere1 }]);
-    selectItem(atmosphere5, [{ box: 'atmosphere', expectedResult: atmosphere5 }]);
+    selectItem(atmosphere1, [
+      { box: 'atmosphere', expectedResult: atmosphere1 },
+    ]);
+    selectItem(atmosphere2, [
+      { box: 'atmosphere', expectedResult: atmosphere2 },
+    ]);
+    selectItem(atmosphere3, [
+      { box: 'atmosphere', expectedResult: atmosphere3 },
+    ]);
+    selectItem(atmosphere4, [
+      { box: 'atmosphere', expectedResult: atmosphere4 },
+    ]);
+    checkSelectionLimit(atmosphere5, [
+      { box: 'atmosphere', notExpectedResult: atmosphere5 },
+    ]);
+    deSelectItem(atmosphere1, [
+      { box: 'atmosphere', notExpectedResult: atmosphere1 },
+    ]);
+    selectItem(atmosphere5, [
+      { box: 'atmosphere', expectedResult: atmosphere5 },
+    ]);
 
     // Regulars
     cy.get('div[data-testid="regulars-box"]')
@@ -102,48 +136,90 @@ describe("Creating a new Maestro D' Character", () => {
     cy.get('div[data-testid="regulars-box"]').should('contain', regular6);
     cy.get('input[aria-label="best-regular-input"]').click();
     cy.get('div[role="menubar"]').within(() => cy.contains(regular1).click());
-    cy.get('div[data-testid="regulars-box"]').should('contain', `${regular1} is your best regular`);
+    cy.get('div[data-testid="regulars-box"]').should(
+      'contain',
+      `${regular1} is your best regular`
+    );
     cy.get('input[aria-label="worst-regular-input"]').click();
     cy.get('div[role="menubar"]').within(() => cy.contains(regular2).click());
-    cy.get('div[data-testid="regulars-box"]').should('contain', `${regular2} is your worst regular`);
+    cy.get('div[data-testid="regulars-box"]').should(
+      'contain',
+      `${regular2} is your worst regular`
+    );
 
     // Interested NPCs
     cy.get('div[data-testid="interested npcs-box"]')
       .should('contain', interestedNPC1)
       .should('contain', interestedNPC2)
       .should('contain', interestedNPC3);
-    cy.get('input[aria-label="additional-interested-npc-input"]').type(interestedNPC4);
+    cy.get('input[aria-label="additional-interested-npc-input"]').type(
+      interestedNPC4
+    );
     cy.get('button[id="add-additional-interest-npc-button"]').click();
-    cy.get('div[data-testid="interested npcs-box"]').should('contain', interestedNPC4);
+    cy.get('div[data-testid="interested npcs-box"]').should(
+      'contain',
+      interestedNPC4
+    );
 
     cy.get('input[aria-label="wants-in-on-it-input"]').click();
-    cy.get('div[role="menubar"]').within(() => cy.contains(interestedNPC1).click());
-    cy.get('div[data-testid="interested npcs-box"]').should('contain', `${interestedNPC1} wants in on it`);
+    cy.get('div[role="menubar"]').within(() =>
+      cy.contains(interestedNPC1).click()
+    );
+    cy.get('div[data-testid="interested npcs-box"]').should(
+      'contain',
+      `${interestedNPC1} wants in on it`
+    );
 
     cy.get('input[aria-label="owes-for-it-input"]').click();
-    cy.get('div[role="menubar"]').within(() => cy.contains(interestedNPC2).click());
-    cy.get('div[data-testid="interested npcs-box"]').should('contain', `You owe ${interestedNPC2} for it`);
+    cy.get('div[role="menubar"]').within(() =>
+      cy.contains(interestedNPC2).click()
+    );
+    cy.get('div[data-testid="interested npcs-box"]').should(
+      'contain',
+      `You owe ${interestedNPC2} for it`
+    );
 
     cy.get('input[aria-label="wants-it-gone-input"]').click();
-    cy.get('div[role="menubar"]').within(() => cy.contains(interestedNPC4).click());
-    cy.get('div[data-testid="interested npcs-box"]').should('contain', `${interestedNPC4} wants it gone`);
+    cy.get('div[role="menubar"]').within(() =>
+      cy.contains(interestedNPC4).click()
+    );
+    cy.get('div[data-testid="interested npcs-box"]').should(
+      'contain',
+      `${interestedNPC4} wants it gone`
+    );
 
     // Security
     selectItem(security1, [{ box: 'security', expectedResult: security1 }]);
-    checkSelectionLimit(security2, [{ box: 'security', notExpectedResult: security2 }]);
-    deSelectItem(security1, [{ box: 'atmosphere', notExpectedResult: security1 }]);
+    checkSelectionLimit(security2, [
+      { box: 'security', notExpectedResult: security2 },
+    ]);
+    deSelectItem(security1, [
+      { box: 'atmosphere', notExpectedResult: security1 },
+    ]);
     selectItem(security2, [{ box: 'security', expectedResult: security2 }]);
     selectItem(security3, [{ box: 'security', expectedResult: security3 }]);
-    checkSelectionLimit(security4, [{ box: 'security', notExpectedResult: security4 }]);
-    deSelectItem(security2, [{ box: 'atmosphere', notExpectedResult: security2 }]);
+    checkSelectionLimit(security4, [
+      { box: 'security', notExpectedResult: security4 },
+    ]);
+    deSelectItem(security2, [
+      { box: 'atmosphere', notExpectedResult: security2 },
+    ]);
     selectItem(security4, [{ box: 'security', expectedResult: security4 }]);
-    deSelectItem(security3, [{ box: 'atmosphere', notExpectedResult: security3 }]);
+    deSelectItem(security3, [
+      { box: 'atmosphere', notExpectedResult: security3 },
+    ]);
     selectItem(security5, [{ box: 'security', expectedResult: security5 }]);
-    deSelectItem(security4, [{ box: 'atmosphere', notExpectedResult: security4 }]);
+    deSelectItem(security4, [
+      { box: 'atmosphere', notExpectedResult: security4 },
+    ]);
     selectItem(security6, [{ box: 'security', expectedResult: security6 }]);
-    deSelectItem(security5, [{ box: 'atmosphere', notExpectedResult: security5 }]);
+    deSelectItem(security5, [
+      { box: 'atmosphere', notExpectedResult: security5 },
+    ]);
     selectItem(security7, [{ box: 'security', expectedResult: security7 }]);
-    deSelectItem(security6, [{ box: 'atmosphere', notExpectedResult: security6 }]);
+    deSelectItem(security6, [
+      { box: 'atmosphere', notExpectedResult: security6 },
+    ]);
     selectItem(security8, [{ box: 'security', expectedResult: security8 }]);
 
     // Cast & crew
@@ -169,26 +245,48 @@ describe("Creating a new Maestro D' Character", () => {
       .should('contain', attraction1)
       .should('contain', attraction3)
       .should('contain', attraction4);
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(MAESTROD_SPECIAL_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(MAESTROD_SPECIAL_NAME)
+    );
+    cy.get('div[data-testid="vehicles-box"]')
+      .should('contain', VEHICLES_TITLE)
+      .should('contain', '...');
   });
 });
 
-const selectItem = (item: string, checks: { box: string; expectedResult: string }[]) => {
-  cy.contains(item).click();
-  checks.forEach((check) => cy.get(`div[data-testid="${check.box}-box"]`).should('include.text', check.expectedResult));
-};
-
-const deSelectItem = (item: string, checks: { box: string; notExpectedResult: string }[]) => {
+const selectItem = (
+  item: string,
+  checks: { box: string; expectedResult: string }[]
+) => {
   cy.contains(item).click();
   checks.forEach((check) =>
-    cy.get(`div[data-testid="${check.box}-box"]`).should('not.include.text', check.notExpectedResult)
+    cy
+      .get(`div[data-testid="${check.box}-box"]`)
+      .should('include.text', check.expectedResult)
   );
 };
 
-const checkSelectionLimit = (item: string, checks: { box: string; notExpectedResult: string }[]) => {
+const deSelectItem = (
+  item: string,
+  checks: { box: string; notExpectedResult: string }[]
+) => {
   cy.contains(item).click();
   checks.forEach((check) =>
-    cy.get(`div[data-testid="${check.box}-box"]`).should('not.include.text', check.notExpectedResult)
+    cy
+      .get(`div[data-testid="${check.box}-box"]`)
+      .should('not.include.text', check.notExpectedResult)
+  );
+};
+
+const checkSelectionLimit = (
+  item: string,
+  checks: { box: string; notExpectedResult: string }[]
+) => {
+  cy.contains(item).click();
+  checks.forEach((check) =>
+    cy
+      .get(`div[data-testid="${check.box}-box"]`)
+      .should('not.include.text', check.notExpectedResult)
   );
 };

@@ -5,24 +5,34 @@ import { Anchor, Box } from 'grommet';
 
 import Spinner from '../Spinner';
 import { ButtonWS, HeadingWS, ParagraphWS } from '../../config/grommetConfig';
-import CREATE_CHARACTER, { CreateCharacterData, CreateCharacterVars } from '../../mutations/createCharacter';
+import CREATE_CHARACTER, {
+  CreateCharacterData,
+  CreateCharacterVars,
+} from '../../mutations/createCharacter';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
-import { NEW_GAME_TEXT, WELCOME_JUNGLE_TEXT, GET_STARTED_TEXT, NEXT_TEXT } from '../../config/constants';
+import {
+  NEW_GAME_TEXT,
+  WELCOME_JUNGLE_TEXT,
+  GET_STARTED_TEXT,
+  NEXT_TEXT,
+} from '../../config/constants';
 
 const NewGameIntro: FC = () => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { userGameRole, game } = useGame();
   const { crustReady } = useFonts();
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [createCharacter, { loading: creatingCharacter }] =
-    useMutation<CreateCharacterData, CreateCharacterVars>(CREATE_CHARACTER);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [createCharacter, { loading: creatingCharacter }] = useMutation<
+    CreateCharacterData,
+    CreateCharacterVars
+  >(CREATE_CHARACTER);
 
-  // ---------------------------------------- Component functions and variables ------------------------------------------ //
+  // ----------------------------- Component functions ------------------------- //
   const handleInitilializeCharacter = async () => {
     if (!!userGameRole && !!game && userGameRole.characters?.length === 0) {
       try {
@@ -34,7 +44,7 @@ const NewGameIntro: FC = () => {
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   const renderComms = () => {
     if (!!game) {
       if (!!game.commsApp) {
@@ -42,7 +52,11 @@ const NewGameIntro: FC = () => {
           return (
             <ParagraphWS textAlign="center" size="medium">
               If you haven't already, join the rest of your crew on{' '}
-              <Anchor href={game.commsUrl} target="_blank" rel="noopener noreferrer">
+              <Anchor
+                href={game.commsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {game.commsApp}
               </Anchor>
               .
@@ -59,7 +73,11 @@ const NewGameIntro: FC = () => {
         return (
           <ParagraphWS textAlign="center" size="medium">
             If you haven't already, join the rest of your crew{' '}
-            <Anchor href={game.commsUrl} target="_blank" rel="noopener noreferrer">
+            <Anchor
+              href={game.commsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               here
             </Anchor>
             .
@@ -72,14 +90,30 @@ const NewGameIntro: FC = () => {
     }
   };
   return (
-    <Box fill align="center" justify="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+    <Box
+      fill
+      align="center"
+      justify="start"
+      animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+    >
       <Box width="85vw" align="center" style={{ maxWidth: '763px' }}>
         <Box direction="row" fill="horizontal" justify="between" align="center">
-          <HeadingWS crustReady={crustReady} textAlign="center" level={2} style={{ maxWidth: 'unset' }}>
+          <HeadingWS
+            crustReady={crustReady}
+            textAlign="center"
+            level={2}
+            style={{ maxWidth: 'unset' }}
+          >
             {NEW_GAME_TEXT}
           </HeadingWS>
           <ButtonWS
-            label={creatingCharacter ? <Spinner fillColor="#FFF" width="52px" height="36px" /> : NEXT_TEXT}
+            label={
+              creatingCharacter ? (
+                <Spinner fillColor="#FFF" width="52px" height="36px" />
+              ) : (
+                NEXT_TEXT
+              )
+            }
             data-testid="next-button"
             primary
             size="large"

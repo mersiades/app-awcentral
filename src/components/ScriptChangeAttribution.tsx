@@ -17,7 +17,11 @@ const ScriptChangeAttribution: FC = () => (
         <em>{SCRIPT_CHANGE_ATTRIBUTION_TEXT_2}</em>
       </strong>
       {SCRIPT_CHANGE_ATTRIBUTION_TEXT_3}
-      <Anchor href="http://briebeau.com/scriptchange" target="_blank" rel="noopener noreferrer">
+      <Anchor
+        href="http://briebeau.com/scriptchange"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {SCRIPT_CHANGE_ATTRIBUTION_TEXT_4}
       </Anchor>
       .

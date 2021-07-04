@@ -13,8 +13,16 @@ export interface SetVehicleVars {
 }
 
 const SET_VEHICLE = gql`
-  mutation SetVehicle($gameRoleId: String!, $characterId: String!, $vehicleInput: VehicleInput!) {
-    setVehicle(gameRoleId: $gameRoleId, characterId: $characterId, vehicleInput: $vehicleInput) {
+  mutation SetVehicle(
+    $gameRoleId: String!
+    $characterId: String!
+    $vehicleInput: VehicleInput!
+  ) {
+    setVehicle(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      vehicleInput: $vehicleInput
+    ) {
       id
       name
       playbook

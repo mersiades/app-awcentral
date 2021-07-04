@@ -5,7 +5,12 @@ import { Box, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
 import { StyledMarkdown } from '../styledComponents';
-import { HeadingWS, ParagraphWS, ButtonWS, dealTerrainDialogBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  dealTerrainDialogBackground,
+} from '../../config/grommetConfig';
 import PERFORM_SPEED_ROLL_MOVE, {
   PerformSpeedRollMoveData,
   PerformSpeedRollMoveVars,
@@ -24,22 +29,27 @@ interface DealTerrainDialogProps {
   handleClose: () => void;
 }
 
-const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const DealTerrainDialog: FC<DealTerrainDialogProps> = ({
+  move,
+  handleClose,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [myHandling, setMyHandling] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | undefined>();
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performSpeedRollMove, { loading: performingSpeedRollMove }] =
-    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(PERFORM_SPEED_ROLL_MOVE);
+    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(
+      PERFORM_SPEED_ROLL_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const otherVehicle: Vehicle = {
     id: 'other-vehicle-id',
     vehicleType: VehicleType.car,
@@ -56,7 +66,13 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
   };
 
   const handleSpeedRollMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead && !performingSpeedRollMove && !!myHandling) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingSpeedRollMove &&
+      !!myHandling
+    ) {
       const modifier = parseInt(myHandling);
       try {
         await performSpeedRollMove({
@@ -76,7 +92,7 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   const renderVehicleChoice = () => {
     if (!!character && character.vehicles.length > 0) {
       return (
@@ -116,7 +132,9 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
     } else if (!!character) {
       return (
         <Box fill align="start" justify="start">
-          <ParagraphWS alignSelf="start">What is the handling of your vehicle?</ParagraphWS>
+          <ParagraphWS alignSelf="start">
+            What is the handling of your vehicle?
+          </ParagraphWS>
           <Select
             id="unknown-vehicle-input"
             aria-label="unknown vehicle handling select"
@@ -132,7 +150,10 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
   };
 
   return (
-    <DialogWrapper background={dealTerrainDialogBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={dealTerrainDialogBackground}
+      handleClose={handleClose}
+    >
       <Box gap="12px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
@@ -146,7 +167,8 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />

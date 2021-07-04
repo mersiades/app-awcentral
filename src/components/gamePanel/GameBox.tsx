@@ -13,7 +13,10 @@ interface GameBoxProps {
   setShowDeleteGameDialog: (show: boolean) => void;
 }
 
-const GameBox: FC<GameBoxProps> = ({ handleShowGameForm: showGameForm, setShowDeleteGameDialog }) => {
+const GameBox: FC<GameBoxProps> = ({
+  handleShowGameForm: showGameForm,
+  setShowDeleteGameDialog,
+}) => {
   const { game } = useGame();
 
   const renderComms = () => {
@@ -42,7 +45,10 @@ const GameBox: FC<GameBoxProps> = ({ handleShowGameForm: showGameForm, setShowDe
     }
   };
   return (
-    <CollapsiblePanelBox title={!!game ? game.name : 'Game'} onEdit={showGameForm}>
+    <CollapsiblePanelBox
+      title={!!game ? game.name : 'Game'}
+      onEdit={showGameForm}
+    >
       <Box
         data-testid="game-box"
         fill="horizontal"
@@ -53,7 +59,13 @@ const GameBox: FC<GameBoxProps> = ({ handleShowGameForm: showGameForm, setShowDe
       >
         <Box direction="row" align="center" gap="12px">
           {renderComms()}
-          {game?.commsUrl && <Copy color="accent-1" onClick={() => copyToClipboard(game.commsUrl)} cursor="pointer" />}
+          {game?.commsUrl && (
+            <Copy
+              color="accent-1"
+              onClick={() => copyToClipboard(game.commsUrl)}
+              cursor="pointer"
+            />
+          )}
         </Box>
         <ButtonWS
           label="DELETE GAME"

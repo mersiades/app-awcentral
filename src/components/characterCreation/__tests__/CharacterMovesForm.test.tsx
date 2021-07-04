@@ -32,19 +32,33 @@ import {
   mockWealth,
 } from '../../../tests/fixtures/characterMovesFixtures';
 import { MockedResponse } from '@apollo/client/testing';
-import OTHER_PLAYBOOK_MOVES, { OtherPlaybookMovesData } from '../../../queries/otherPlaybookMoves';
-import { mockBonefeel, mockEverybodyEats, mockSeeingSouls } from '../../../tests/fixtures/movesFixtures';
+import OTHER_PLAYBOOK_MOVES, {
+  OtherPlaybookMovesData,
+} from '../../../queries/otherPlaybookMoves';
+import {
+  mockBonefeel,
+  mockEverybodyEats,
+  mockSeeingSouls,
+} from '../../../tests/fixtures/movesFixtures';
 import { decapitalize } from '../../../helpers/decapitalize';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
 import { PlaybookType } from '../../../@types/enums';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData } from '../../../queries/playbookCreator';
-import { mockPlaybookCreatorChopper, mockPlaybookCreatorGunlugger } from '../../../tests/fixtures/playbookCreatorFixtures';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+} from '../../../queries/playbookCreator';
+import {
+  mockPlaybookCreatorChopper,
+  mockPlaybookCreatorGunlugger,
+} from '../../../tests/fixtures/playbookCreatorFixtures';
 
 jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -143,41 +157,71 @@ describe('Rendering CharacterMovesForm', () => {
 
   describe('with only default moves on character', () => {
     beforeEach(async () => {
-      renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(mockCharacter2.playbook, 2, 0, [{ ...mockAngelSpecialCM, isSelected: true }], []),
-        apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <CharacterMovesForm />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(
+            mockCharacter2.playbook,
+            2,
+            0,
+            [{ ...mockAngelSpecialCM, isSelected: true }],
+            []
+          ),
+          apolloMocks: [mockPlaybookCreator],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
     test('should render CharacterMovesForm in initial state (Angel)', async () => {
       screen.getByTestId('character-moves-form');
-      screen.getByRole('heading', { name: `WHAT ARE ${mockCharacter2.name?.toUpperCase()}'S MOVES?` });
-      const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      screen.getByRole('heading', {
+        name: `WHAT ARE ${mockCharacter2.name?.toUpperCase()}'S MOVES?`,
+      });
+      const setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toBeTruthy();
       const defaultMoveCheckbox = screen.getByRole('checkbox', {
         name: mockPlaybookCreatorAngel.defaultMoves[0].description,
       }) as HTMLInputElement;
       expect(defaultMoveCheckbox.checked).toBeTruthy();
       mockPlaybookCreatorAngel.optionalMoves.forEach((move) => {
-        const checkbox = screen.getByRole('checkbox', { name: `${decapitalize(move.name)}-checkbox` }) as HTMLInputElement;
+        const checkbox = screen.getByRole('checkbox', {
+          name: `${decapitalize(move.name)}-checkbox`,
+        }) as HTMLInputElement;
         expect(checkbox.checked).toBeFalsy();
       });
-      expect(screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)).not.toBeInTheDocument();
-      expect(screen.queryByRole('tab', { name: `${decapitalize(mockCharacter2.playbook)} moves` })).not.toBeInTheDocument();
-      expect(screen.queryByRole('tab', { name: 'Other moves' })).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('tab', {
+          name: `${decapitalize(mockCharacter2.playbook)} moves`,
+        })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('tab', { name: 'Other moves' })
+      ).not.toBeInTheDocument();
     });
     test('should select 2 moves and enable SET button', async () => {
-      const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      const setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toBeTruthy();
       const checkbox1 = screen.getByRole('checkbox', {
-        name: `${decapitalize(mockPlaybookCreatorAngel.optionalMoves[0].name)}-checkbox`,
+        name: `${decapitalize(
+          mockPlaybookCreatorAngel.optionalMoves[0].name
+        )}-checkbox`,
       }) as HTMLInputElement;
       const checkbox2 = screen.getByRole('checkbox', {
-        name: `${decapitalize(mockPlaybookCreatorAngel.optionalMoves[1].name)}-checkbox`,
+        name: `${decapitalize(
+          mockPlaybookCreatorAngel.optionalMoves[1].name
+        )}-checkbox`,
       }) as HTMLInputElement;
 
       userEvent.click(checkbox1);
@@ -192,36 +236,44 @@ describe('Rendering CharacterMovesForm', () => {
 
   describe('with default moves and 2 optional moves on character', () => {
     beforeEach(async () => {
-      renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(
-          mockCharacter2.playbook,
-          2,
-          0,
-          [
-            { ...mockAngelSpecialCM, isSelected: true },
-            { ...mockSixthSenseCM, isSelected: true },
-            { ...mockInfirmaryCM, isSelected: true },
-          ],
-          []
-        ),
-        apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <CharacterMovesForm />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(
+            mockCharacter2.playbook,
+            2,
+            0,
+            [
+              { ...mockAngelSpecialCM, isSelected: true },
+              { ...mockSixthSenseCM, isSelected: true },
+              { ...mockInfirmaryCM, isSelected: true },
+            ],
+            []
+          ),
+          apolloMocks: [mockPlaybookCreator],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
 
     test('should render CharacterMovesForm with correct initial state', () => {
       expect(screen.getByText('Select 2')).toBeInTheDocument();
-      expect(screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)
+      ).not.toBeInTheDocument();
       const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
       expect(checkboxes.filter((cb) => cb.checked)).toHaveLength(3);
     });
 
     test('should deselect a move and select a different one', () => {
-      const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      const setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
       const checkedCheckboxes = checkboxes.filter((cb) => cb.checked);
       const uncheckedCheckboxes = checkboxes.filter((cb) => !cb.checked);
@@ -244,39 +296,49 @@ describe('Rendering CharacterMovesForm', () => {
 
   describe('with default moves, 2 optional moves, and one ADD_CHARACTER_MOVE improvement', () => {
     beforeEach(async () => {
-      renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(
-          mockCharacter2.playbook,
-          3,
-          0,
-          [
-            { ...mockAngelSpecialCM, isSelected: true },
-            { ...mockSixthSenseCM, isSelected: true },
-            { ...mockInfirmaryCM, isSelected: true },
-          ],
-          []
-        ),
-        apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <CharacterMovesForm />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(
+            mockCharacter2.playbook,
+            3,
+            0,
+            [
+              { ...mockAngelSpecialCM, isSelected: true },
+              { ...mockSixthSenseCM, isSelected: true },
+              { ...mockInfirmaryCM, isSelected: true },
+            ],
+            []
+          ),
+          apolloMocks: [mockPlaybookCreator],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
     test('should render CharacterMovesForm with correct initial state', async () => {
       screen.getByTestId('character-moves-form');
       expect(screen.getByText('Select 3')).toBeInTheDocument();
-      expect(screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
+      expect(
+        screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)
+      ).toBeInTheDocument();
       const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
       expect(checkboxes.filter((cb) => cb.checked)).toHaveLength(3);
     });
 
     test('should select and add 4th CharacterMove', () => {
-      const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      const setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toBeTruthy();
       const checkbox3 = screen.getByRole('checkbox', {
-        name: `${decapitalize(mockPlaybookCreatorAngel.optionalMoves[2].name)}-checkbox`,
+        name: `${decapitalize(
+          mockPlaybookCreatorAngel.optionalMoves[2].name
+        )}-checkbox`,
       }) as HTMLInputElement;
 
       userEvent.click(checkbox3);
@@ -290,42 +352,61 @@ describe('Rendering CharacterMovesForm', () => {
 
   describe('with default moves, 3 optional moves, and one ADD_OTHER_PB_MOVE improvement', () => {
     beforeEach(async () => {
-      renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(
-          mockCharacter2.playbook,
-          3,
-          1,
-          [
-            { ...mockAngelSpecialCM, isSelected: true },
-            { ...mockSixthSenseCM, isSelected: true },
-            { ...mockInfirmaryCM, isSelected: true },
-            { ...mockProfessionalCompassionCM, isSelected: true },
+      renderWithRouter(
+        <CharacterMovesForm />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(
+            mockCharacter2.playbook,
+            3,
+            1,
+            [
+              { ...mockAngelSpecialCM, isSelected: true },
+              { ...mockSixthSenseCM, isSelected: true },
+              { ...mockInfirmaryCM, isSelected: true },
+              { ...mockProfessionalCompassionCM, isSelected: true },
+            ],
+            []
+          ),
+          apolloMocks: [
+            mockPlaybookCreator,
+            generateOtherPlaybooksMoveQuery(mockCharacter2.playbook),
           ],
-          []
-        ),
-        apolloMocks: [mockPlaybookCreator, generateOtherPlaybooksMoveQuery(mockCharacter2.playbook)],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick(); // wait for game query & otherPlaybookMoves query
     });
 
     test('should render CharacterMovesForm with correct initial state', () => {
       expect(screen.getByText('Select 3')).toBeInTheDocument();
-      expect(screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
+      expect(
+        screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)
+      ).toBeInTheDocument();
       const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
       expect(checkboxes.filter((cb) => cb.checked)).toHaveLength(4);
-      expect(screen.getByRole('tab', { name: `${decapitalize(mockCharacter2.playbook)} moves` })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: 'Other moves' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('tab', {
+          name: `${decapitalize(mockCharacter2.playbook)} moves`,
+        })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('tab', { name: 'Other moves' })
+      ).toBeInTheDocument();
     });
 
     test('should change tab and select move from other playbook', () => {
-      const setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      const setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
 
-      expect(screen.getByRole('tabpanel', { name: 'Other moves Tab Contents' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('tabpanel', { name: 'Other moves Tab Contents' })
+      ).toBeInTheDocument();
       const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
       expect(checkboxes).toHaveLength(4); // 1 default move + 3 moves from other playbooks
 
@@ -340,36 +421,51 @@ describe('Rendering CharacterMovesForm', () => {
 
   describe('with default moves and 4 moves on character (one from other playbook)', () => {
     beforeEach(async () => {
-      renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(
-          mockCharacter2.playbook,
-          3,
-          1,
-          [
-            { ...mockAngelSpecialCM, isSelected: true },
-            { ...mockSixthSenseCM, isSelected: true },
-            { ...mockInfirmaryCM, isSelected: true },
-            { ...mockProfessionalCompassionCM, isSelected: true },
-            { ...mockSeeingSoulsAsCM, isSelected: true },
+      renderWithRouter(
+        <CharacterMovesForm />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(
+            mockCharacter2.playbook,
+            3,
+            1,
+            [
+              { ...mockAngelSpecialCM, isSelected: true },
+              { ...mockSixthSenseCM, isSelected: true },
+              { ...mockInfirmaryCM, isSelected: true },
+              { ...mockProfessionalCompassionCM, isSelected: true },
+              { ...mockSeeingSoulsAsCM, isSelected: true },
+            ],
+            []
+          ),
+          apolloMocks: [
+            mockPlaybookCreator,
+            generateOtherPlaybooksMoveQuery(mockCharacter2.playbook),
           ],
-          []
-        ),
-        apolloMocks: [mockPlaybookCreator, generateOtherPlaybooksMoveQuery(mockCharacter2.playbook)],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick(); // wait for game query & otherPlaybookMoves query
     });
 
     test('should should render CharacterMovesForm with correct initial state', () => {
       expect(screen.getByText('Select 3')).toBeInTheDocument();
-      expect(screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
+      expect(
+        screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)
+      ).toBeInTheDocument();
       let checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
       expect(checkboxes.filter((cb) => cb.checked)).toHaveLength(4);
-      expect(screen.getByRole('tab', { name: `${decapitalize(mockCharacter2.playbook)} moves` })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: 'Other moves' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('tab', {
+          name: `${decapitalize(mockCharacter2.playbook)} moves`,
+        })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('tab', { name: 'Other moves' })
+      ).toBeInTheDocument();
 
       userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
       checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
@@ -379,13 +475,20 @@ describe('Rendering CharacterMovesForm', () => {
 
   describe('with default moves, 0 optional moves, and one ADD_OTHER_PB_MOVE improvement', () => {
     beforeEach(async () => {
-      renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(PlaybookType.chopper, 0, 1, [], []),
-        apolloMocks: [mockPlaybookCreator_Chopper, generateOtherPlaybooksMoveQuery(PlaybookType.chopper)],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <CharacterMovesForm />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(PlaybookType.chopper, 0, 1, [], []),
+          apolloMocks: [
+            mockPlaybookCreator_Chopper,
+            generateOtherPlaybooksMoveQuery(PlaybookType.chopper),
+          ],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick(); // wait for game query & otherPlaybookMoves query
     });
@@ -402,19 +505,33 @@ describe('Rendering CharacterMovesForm', () => {
 
   describe('with default moves, 3 optional moves, and two moves from ADD_UNIQUE improvement', () => {
     beforeEach(async () => {
-      renderWithRouter(<CharacterMovesForm />, `/character-creation/${mockGame5.id}?step=7`, {
-        isAuthenticated: true,
-        injectedGame: generateGame(
-          PlaybookType.gunlugger,
-          3,
-          2,
-          [mockGunluggerSpecial, mockBattleHardened, mockFuckThisShit, mockBattlefieldInstincts, mockWealth, mockPackAlpha],
-          [mockAddHolding, mockAddGangPackAlpha]
-        ),
-        apolloMocks: [mockPlaybookCreator_Gunlugger, generateOtherPlaybooksMoveQuery(PlaybookType.gunlugger)],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <CharacterMovesForm />,
+        `/character-creation/${mockGame5.id}?step=7`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame(
+            PlaybookType.gunlugger,
+            3,
+            2,
+            [
+              mockGunluggerSpecial,
+              mockBattleHardened,
+              mockFuckThisShit,
+              mockBattlefieldInstincts,
+              mockWealth,
+              mockPackAlpha,
+            ],
+            [mockAddHolding, mockAddGangPackAlpha]
+          ),
+          apolloMocks: [
+            mockPlaybookCreator_Gunlugger,
+            generateOtherPlaybooksMoveQuery(PlaybookType.gunlugger),
+          ],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick(); // wait for game query & otherPlaybookMoves query
     });
@@ -422,7 +539,9 @@ describe('Rendering CharacterMovesForm', () => {
     test('should render correct instructions on other moves tab', () => {
       userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
       expect(screen.getByText('Select 0')).toBeInTheDocument();
-      expect(screen.getByText('(Already includes Wealth and Pack alpha)')).toBeInTheDocument();
+      expect(
+        screen.getByText('(Already includes Wealth and Pack alpha)')
+      ).toBeInTheDocument();
     });
   });
 });

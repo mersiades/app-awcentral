@@ -14,8 +14,16 @@ export interface RemoveHoldVars {
 }
 
 const REMOVE_HOLD = gql`
-  mutation RemoveHold($gameRoleId: String!, $characterId: String!, $hold: HoldInput!) {
-    removeHold(gameRoleId: $gameRoleId, characterId: $characterId, hold: $hold) {
+  mutation RemoveHold(
+    $gameRoleId: String!
+    $characterId: String!
+    $hold: HoldInput!
+  ) {
+    removeHold(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      hold: $hold
+    ) {
       id
       ...Holds
     }

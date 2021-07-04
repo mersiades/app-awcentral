@@ -9,11 +9,14 @@ import ThreatBox from './ThreatBox';
 import ThreatDialog from './ThreatDialog';
 
 const ThreatsPanel = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [showThreatDialog, setShowThreatDialog] = useState<{ show: boolean; threat?: Threat }>({ show: false });
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
+  const [showThreatDialog, setShowThreatDialog] = useState<{
+    show: boolean;
+    threat?: Threat;
+  }>({ show: false });
+  // ----------------------------- 3rd party hooks ------------------------------- //
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { mcGameRole } = useGame();
   const { crustReady } = useFonts();
 
@@ -23,7 +26,9 @@ const ThreatsPanel = () => {
     <Box fill="horizontal" direction="row" wrap pad="12px" overflow="auto">
       {showThreatDialog.show && (
         <ThreatDialog
-          handleClose={() => setShowThreatDialog({ show: false, threat: undefined })}
+          handleClose={() =>
+            setShowThreatDialog({ show: false, threat: undefined })
+          }
           existingThreat={showThreatDialog.threat}
         />
       )}
@@ -37,13 +42,29 @@ const ThreatsPanel = () => {
         <HeadingWS crustReady={crustReady} level={3}>
           {THREATS_TEXT}
         </HeadingWS>
-        <ButtonWS primary label={ADD_TEXT} onClick={() => setShowThreatDialog({ show: true })} />
+        <ButtonWS
+          primary
+          label={ADD_TEXT}
+          onClick={() => setShowThreatDialog({ show: true })}
+        />
       </Box>
       {!!threats &&
         threats.length > 0 &&
         threats.map((threat) => (
-          <Box key={threat.id} fill="horizontal" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
-            <ThreatBox threat={threat} onEdit={() => setShowThreatDialog({ show: true, threat })} />
+          <Box
+            key={threat.id}
+            fill="horizontal"
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
+          >
+            <ThreatBox
+              threat={threat}
+              onEdit={() => setShowThreatDialog({ show: true, threat })}
+            />
           </Box>
         ))}
     </Box>

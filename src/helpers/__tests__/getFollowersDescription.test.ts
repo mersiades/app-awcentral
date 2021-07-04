@@ -11,12 +11,20 @@ describe('Generating descriptions for followers', () => {
   });
 
   test('should description when characterization but no followers and no travelOption', () => {
-    const result = getFollowersDescription(characterization, undefined, undefined);
+    const result = getFollowersDescription(
+      characterization,
+      undefined,
+      undefined
+    );
     expect(result).toEqual('Your cult');
   });
 
   test('should description when characterization and followers but no travelOption', () => {
-    const result = getFollowersDescription(characterization, followers, undefined);
+    const result = getFollowersDescription(
+      characterization,
+      followers,
+      undefined
+    );
     expect(result).toEqual('Your cult is about 20 followers.');
   });
 
@@ -27,7 +35,9 @@ describe('Generating descriptions for followers', () => {
 
   test('should description when followers and travelOption but no characterization', () => {
     const result = getFollowersDescription(undefined, followers, travelOption);
-    expect(result).toEqual('You have about 20 followers. When you travel, they travel with you.');
+    expect(result).toEqual(
+      'You have about 20 followers. When you travel, they travel with you.'
+    );
   });
 
   test('should description when travelOption but no followers and no characterization', () => {
@@ -36,7 +46,13 @@ describe('Generating descriptions for followers', () => {
   });
 
   test('should description when travelOption and followers andcharacterization', () => {
-    const result = getFollowersDescription(characterization, followers, travelOption);
-    expect(result).toEqual('Your cult is about 20 followers. When you travel, they travel with you.');
+    const result = getFollowersDescription(
+      characterization,
+      followers,
+      travelOption
+    );
+    expect(result).toEqual(
+      'Your cult is about 20 followers. When you travel, they travel with you.'
+    );
   });
 });

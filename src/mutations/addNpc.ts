@@ -16,7 +16,10 @@ export interface AddNpcVars {
 }
 
 export const getAddNpcOR = (gameRole: GameRole, npc: NpcInput): AddNpcData => {
-  let optimisticNpcs: Npc[] = gameRole.npcs.map((npc2) => ({ ...npc2, __typename: 'Npc' }));
+  let optimisticNpcs: Npc[] = gameRole.npcs.map((npc2) => ({
+    ...npc2,
+    __typename: 'Npc',
+  }));
 
   if (!!npc.id) {
     optimisticNpcs.forEach((npc1) => {
@@ -27,7 +30,15 @@ export const getAddNpcOR = (gameRole: GameRole, npc: NpcInput): AddNpcData => {
       return npc1;
     });
   } else {
-    optimisticNpcs = [...optimisticNpcs, { id: 'temp-id', name: npc.name, description: npc.description, __typename: 'Npc' }];
+    optimisticNpcs = [
+      ...optimisticNpcs,
+      {
+        id: 'temp-id',
+        name: npc.name,
+        description: npc.description,
+        __typename: 'Npc',
+      },
+    ];
   }
 
   return {

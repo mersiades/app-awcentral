@@ -1,11 +1,21 @@
 import { MockedResponse } from '@apollo/client/testing';
 import userEvent from '@testing-library/user-event';
 import wait from 'waait';
-import { NO_PLAYER_TEXT, WARNING_DIALOG_TITLE } from '../../../config/constants';
-import REMOVE_PLAYER, { RemovePlayerData } from '../../../mutations/removePlayer';
+import {
+  NO_PLAYER_TEXT,
+  WARNING_DIALOG_TITLE,
+} from '../../../config/constants';
+import REMOVE_PLAYER, {
+  RemovePlayerData,
+} from '../../../mutations/removePlayer';
 import GAME, { GameData } from '../../../queries/game';
 import { mockGame7 } from '../../../tests/mocks';
-import { act, customRenderForComponent, RenderResult, waitOneTick } from '../../../tests/test-utils';
+import {
+  act,
+  customRenderForComponent,
+  RenderResult,
+  waitOneTick,
+} from '../../../tests/test-utils';
 
 import PlayersBox from '../PlayersBox';
 
@@ -40,7 +50,10 @@ const mockRemovePlayerMutation: MockedResponse<RemovePlayerData> = {
 };
 
 describe('Rendering PlayersBox', () => {
-  let screen: RenderResult<typeof import('@testing-library/dom/types/queries'), HTMLElement>;
+  let screen: RenderResult<
+    typeof import('@testing-library/dom/types/queries'),
+    HTMLElement
+  >;
   const originalWarn = console.warn.bind(console.warn);
 
   beforeAll(() => {
@@ -54,8 +67,11 @@ describe('Rendering PlayersBox', () => {
        incoming: [{"__ref":"User:mock-keycloak-id-1"}]
      */
     console.warn = (msg: { toString: () => string | string[] }) =>
-      !msg.toString().includes('Cache data may be lost when replacing the players field of a Game object.') &&
-      originalWarn(msg);
+      !msg
+        .toString()
+        .includes(
+          'Cache data may be lost when replacing the players field of a Game object.'
+        ) && originalWarn(msg);
   });
 
   afterAll(() => {
@@ -94,7 +110,9 @@ describe('Rendering PlayersBox', () => {
     });
 
     test('should open and close remove player dialog', () => {
-      const removeButton = screen.getByTestId(`${mockGame7.players[0].displayName}-remove-button`);
+      const removeButton = screen.getByTestId(
+        `${mockGame7.players[0].displayName}-remove-button`
+      );
       userEvent.click(removeButton);
       screen.getByText(WARNING_DIALOG_TITLE);
 
@@ -112,13 +130,17 @@ describe('Rendering PlayersBox', () => {
     });
 
     test('should remove player', async () => {
-      const removeButton = screen.getByTestId(`${mockGame7.players[0].displayName}-remove-button`);
+      const removeButton = screen.getByTestId(
+        `${mockGame7.players[0].displayName}-remove-button`
+      );
       userEvent.click(removeButton);
 
       const confirmButton = screen.getByRole('button', { name: 'REMOVE' });
       userEvent.click(confirmButton);
       await waitOneTick();
-      expect(screen.queryByText(mockGame7.players[0].displayName)).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(mockGame7.players[0].displayName)
+      ).not.toBeInTheDocument();
     });
   });
 });

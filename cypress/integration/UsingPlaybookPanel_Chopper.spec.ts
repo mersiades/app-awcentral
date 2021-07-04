@@ -32,15 +32,36 @@ describe('Using the PlaybookPanel as a Chopper', () => {
   it('should render GangBox correctly and navigate to edit gang page', () => {
     cy.get('div[data-testid="Gang-box"]').scrollIntoView();
     cy.get('div[data-testid="Gang-box"]').within(() => {
-      cy.get('div[data-testid="gang-size-box"]').should('contain.text', SIZE_TEXT);
-      cy.get('div[data-testid="gang-size-box"]').should('contain.text', 'MEDIUM');
-      cy.get('div[data-testid="gang-harm-box"]').should('contain.text', HARM_TEXT);
+      cy.get('div[data-testid="gang-size-box"]').should(
+        'contain.text',
+        SIZE_TEXT
+      );
+      cy.get('div[data-testid="gang-size-box"]').should(
+        'contain.text',
+        'MEDIUM'
+      );
+      cy.get('div[data-testid="gang-harm-box"]').should(
+        'contain.text',
+        HARM_TEXT
+      );
       cy.get('div[data-testid="gang-harm-box"]').should('contain.text', '3');
-      cy.get('div[data-testid="gang-armor-box"]').should('contain.text', ARMOR_TEXT);
+      cy.get('div[data-testid="gang-armor-box"]').should(
+        'contain.text',
+        ARMOR_TEXT
+      );
       cy.get('div[data-testid="gang-armor-box"]').should('contain.text', '1');
-      cy.get('div[data-testid="gang-tags-box"]').should('contain.text', TAGS_TEXT);
-      cy.get('div[data-testid="gang-tags-box"]').should('contain.text', 'savage');
-      cy.get('div[data-testid="gang-tags-box"]').should('contain.text', 'vulnerable: breakdown');
+      cy.get('div[data-testid="gang-tags-box"]').should(
+        'contain.text',
+        TAGS_TEXT
+      );
+      cy.get('div[data-testid="gang-tags-box"]').should(
+        'contain.text',
+        'savage'
+      );
+      cy.get('div[data-testid="gang-tags-box"]').should(
+        'contain.text',
+        'vulnerable: breakdown'
+      );
       cy.contains(GANG_MOVES).should('be.visible');
 
       cy.get('svg[aria-label="Edit"]').click();
@@ -75,11 +96,17 @@ describe('Using the PlaybookPanel as a Chopper', () => {
       cy.contains('Tags: fast, responsive, lazy').should('be.visible');
       cy.get('div[data-testid="speed-box"]').should('contain.text', SPEED_TEXT);
       cy.get('div[data-testid="speed-box"]').should('contain.text', '0');
-      cy.get('div[data-testid="handling-box"]').should('contain.text', HANDLING_TEXT);
+      cy.get('div[data-testid="handling-box"]').should(
+        'contain.text',
+        HANDLING_TEXT
+      );
       cy.get('div[data-testid="handling-box"]').should('contain.text', '1');
       cy.get('div[data-testid="armor-box"]').should('contain.text', ARMOR_TEXT);
       cy.get('div[data-testid="armor-box"]').should('contain.text', '0');
-      cy.get('div[data-testid="massive-box"]').should('contain.text', MASSIVE_TEXT);
+      cy.get('div[data-testid="massive-box"]').should(
+        'contain.text',
+        MASSIVE_TEXT
+      );
       cy.get('div[data-testid="massive-box"]').should('contain.text', '0');
 
       cy.get('svg[aria-label="Edit"]').click();
@@ -121,7 +148,12 @@ describe('Using the PlaybookPanel as a Chopper', () => {
   });
 
   it(`should show message for the ${PACK_ALPHA_NAME} character move`, () => {
-    cy.checkRollMove('Dog', PACK_ALPHA_NAME, 'when you try to impose your will on your gang, roll+hard.', StatType.hard);
+    cy.checkRollMove(
+      'Dog',
+      PACK_ALPHA_NAME,
+      'when you try to impose your will on your gang, roll+hard.',
+      StatType.hard
+    );
   });
 
   it(`should show message for the ${FUCKING_THIEVES_NAME} character move`, () => {

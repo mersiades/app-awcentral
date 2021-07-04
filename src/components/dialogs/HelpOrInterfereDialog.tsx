@@ -4,7 +4,12 @@ import { useParams } from 'react-router-dom';
 import { Box, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
-import { HeadingWS, ParagraphWS, ButtonWS, helpOrInterfereBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  helpOrInterfereBackground,
+} from '../../config/grommetConfig';
 import PERFORM_HELP_OR_INTERFERE_MOVE, {
   PerformHelpOrInterfereMoveData,
   PerformHelpOrInterfereMoveVars,
@@ -20,25 +25,43 @@ interface HelpOrInterfereDialogProps {
   handleClose: () => void;
 }
 
-const HelpOrInterfereDialog: FC<HelpOrInterfereDialogProps> = ({ move, buttonTitle, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const HelpOrInterfereDialog: FC<HelpOrInterfereDialogProps> = ({
+  move,
+  buttonTitle,
+  handleClose,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [targetId, setTargetId] = useState('');
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performHelpOrInterfereMove, { loading: performingHelpOrInterfereMove }] =
-    useMutation<PerformHelpOrInterfereMoveData, PerformHelpOrInterfereMoveVars>(PERFORM_HELP_OR_INTERFERE_MOVE);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [
+    performHelpOrInterfereMove,
+    { loading: performingHelpOrInterfereMove },
+  ] = useMutation<
+    PerformHelpOrInterfereMoveData,
+    PerformHelpOrInterfereMoveVars
+  >(PERFORM_HELP_OR_INTERFERE_MOVE);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
+  // ----------------------------- Component functions ------------------------- //
+  const characters =
+    otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
 
-  const handleHelpOrInterfereMove = async (move: Move | CharacterMove, targetId: string) => {
-    if (!!userGameRole && !!character && !character.isDead && !performingHelpOrInterfereMove) {
+  const handleHelpOrInterfereMove = async (
+    move: Move | CharacterMove,
+    targetId: string
+  ) => {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingHelpOrInterfereMove
+    ) {
       try {
         performHelpOrInterfereMove({
           variables: {
@@ -57,15 +80,20 @@ const HelpOrInterfereDialog: FC<HelpOrInterfereDialogProps> = ({ move, buttonTit
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
-    <DialogWrapper background={helpOrInterfereBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={helpOrInterfereBackground}
+      handleClose={handleClose}
+    >
       <Box gap="12px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
         </HeadingWS>
-        <ParagraphWS alignSelf="start">Who are you helping or interfering?</ParagraphWS>
+        <ParagraphWS alignSelf="start">
+          Who are you helping or interfering?
+        </ParagraphWS>
         <Select
           id="target-character-input"
           aria-label="target-character-input"
@@ -81,14 +109,19 @@ const HelpOrInterfereDialog: FC<HelpOrInterfereDialogProps> = ({ move, buttonTit
             label="CANCEL"
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
             label={buttonTitle.toUpperCase()}
             primary
-            onClick={() => !!targetId && !performingHelpOrInterfereMove && handleHelpOrInterfereMove(move, targetId)}
+            onClick={() =>
+              !!targetId &&
+              !performingHelpOrInterfereMove &&
+              handleHelpOrInterfereMove(move, targetId)
+            }
             disabled={!targetId || performingHelpOrInterfereMove}
           />
         </Box>

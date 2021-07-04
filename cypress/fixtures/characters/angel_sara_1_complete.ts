@@ -8,8 +8,18 @@ import {
   angel_sara_1_hxstat_3,
   angel_sara_1_hxstat_4,
 } from '../hxStats/angel_sara_1_hxstats';
-import { mockLookAngel1, mockLookAngel2, mockLookAngel3, mockLookAngel4, mockLookAngel5 } from '../looks/angelLooks';
-import { mockSixthSense, mockHealingTouch, mockAngelSpecial } from '../characterMoves/angelCharacterMoves';
+import {
+  mockLookAngel1,
+  mockLookAngel2,
+  mockLookAngel3,
+  mockLookAngel4,
+  mockLookAngel5,
+} from '../looks/angelLooks';
+import {
+  mockSixthSense,
+  mockHealingTouch,
+  mockAngelSpecial,
+} from '../characterMoves/angelCharacterMoves';
 import { angel_sara_1_playbookUnique } from '../playbookUniques/angelPlaybookUniques';
 
 // Belongs on mock game 1 & 7
@@ -34,9 +44,20 @@ const angel_sara_1_complete: Character = {
   mustChangePlaybook: false,
   battleVehicles: [],
   vehicles: [],
-  hxBlock: [angel_sara_1_hxstat_1, angel_sara_1_hxstat_2, angel_sara_1_hxstat_3, angel_sara_1_hxstat_4],
+  hxBlock: [
+    angel_sara_1_hxstat_1,
+    angel_sara_1_hxstat_2,
+    angel_sara_1_hxstat_3,
+    angel_sara_1_hxstat_4,
+  ],
   gear: ['Shotgun', 'Rusty screwdriver'],
-  looks: [mockLookAngel1, mockLookAngel2, mockLookAngel3, mockLookAngel4, mockLookAngel5],
+  looks: [
+    mockLookAngel1,
+    mockLookAngel2,
+    mockLookAngel3,
+    mockLookAngel4,
+    mockLookAngel5,
+  ],
   characterMoves: [mockSixthSense, mockHealingTouch, mockAngelSpecial],
   improvementMoves: [],
   futureImprovementMoves: [],

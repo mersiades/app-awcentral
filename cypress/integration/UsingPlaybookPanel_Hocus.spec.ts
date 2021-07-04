@@ -1,5 +1,10 @@
 import { StatType } from '../../src/@types/enums';
-import { APPLY_TEXT, FRENZY_NAME, HOCUS_SPECIAL_NAME, FORTUNES_NAME } from '../../src/config/constants';
+import {
+  APPLY_TEXT,
+  FRENZY_NAME,
+  HOCUS_SPECIAL_NAME,
+  FORTUNES_NAME,
+} from '../../src/config/constants';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import game1 from '../fixtures/games/game1';
 describe('Using the PlaybookPanel as a Hocus', () => {
@@ -16,13 +21,23 @@ describe('Using the PlaybookPanel as a Hocus', () => {
   });
 
   it('should render FollowersBox correctly and navigate to edit Followers page', () => {
-    const description = 'Your cult is about 10 followers. When you travel, they travel with you.';
+    const description =
+      'Your cult is about 10 followers. When you travel, they travel with you.';
     cy.get('div[data-testid="Followers-box"]').scrollIntoView();
     cy.get('div[data-testid="Followers-box"]').within(() => {
-      cy.get('div[data-testid="description-tags-box"]').should('contain', description);
+      cy.get('div[data-testid="description-tags-box"]').should(
+        'contain',
+        description
+      );
       cy.get('div[data-testid="fortune-box"]').should('contain', 'fortune+2');
-      cy.get('div[data-testid="surplus-tags-box"]').should('contain', '1-barter');
-      cy.get('div[data-testid="want-tags-box"]').should('contain', 'hungry, judgement');
+      cy.get('div[data-testid="surplus-tags-box"]').should(
+        'contain',
+        '1-barter'
+      );
+      cy.get('div[data-testid="want-tags-box"]').should(
+        'contain',
+        'hungry, judgement'
+      );
 
       cy.get('div[data-testid="barter-box"]').within(() => {
         cy.get('h2[aria-label="barter-value"]').should('contain', '2');
@@ -50,11 +65,17 @@ describe('Using the PlaybookPanel as a Hocus', () => {
   });
 
   it(`should show message for the ${FRENZY_NAME} character move`, () => {
-    cy.checkRollMove('Vision', FRENZY_NAME, 'When you speak the truth to a mob, roll+weird.', StatType.weird);
+    cy.checkRollMove(
+      'Vision',
+      FRENZY_NAME,
+      'When you speak the truth to a mob, roll+weird.',
+      StatType.weird
+    );
   });
 
   it(`should show message for the ${HOCUS_SPECIAL_NAME} character move and add a hold`, () => {
-    const moveDescSnippet = 'If you and another character have sex, you each get 1 hold.';
+    const moveDescSnippet =
+      'If you and another character have sex, you each get 1 hold.';
     cy.get('div[data-testid="moves-box"]').scrollIntoView();
     cy.contains(decapitalize(HOCUS_SPECIAL_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
@@ -71,7 +92,10 @@ describe('Using the PlaybookPanel as a Hocus', () => {
     cy.contains('button', APPLY_TEXT).click();
     cy.contains('button', APPLY_TEXT).should('not.exist');
     const messageTitle = `VISION: ${HOCUS_SPECIAL_NAME}`;
-    cy.checkMoveMessage(messageTitle, 'Vision and Phoenix had sex. They have both gained 1 hold');
+    cy.checkMoveMessage(
+      messageTitle,
+      'Vision and Phoenix had sex. They have both gained 1 hold'
+    );
     cy.get('div[data-testid="hold-circle"]').should('have.length', 1);
   });
 

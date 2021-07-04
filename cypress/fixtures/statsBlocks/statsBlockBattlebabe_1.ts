@@ -41,5 +41,11 @@ export const statBattlebabeWeird_1: CharacterStat = {
 export const statsBlockBattlebabe_1: StatsBlock = {
   id: 'battlebabe-stats-block-1-id',
   statsOptionId: '60a7301f6a012a4e90170ec2',
-  stats: [statBattlebabeCool_1, statBattlebabeHard_1, statBattlebabeHot_1, statBattlebabeSharp_1, statBattlebabeWeird_1],
+  stats: [
+    statBattlebabeCool_1,
+    statBattlebabeHard_1,
+    statBattlebabeHot_1,
+    statBattlebabeSharp_1,
+    statBattlebabeWeird_1,
+  ],
 };

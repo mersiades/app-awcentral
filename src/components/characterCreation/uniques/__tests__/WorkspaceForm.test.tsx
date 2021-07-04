@@ -5,7 +5,12 @@ import { screen } from '@testing-library/react';
 
 import WorkspaceForm from '../WorkspaceForm';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
-import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
+import {
+  blankCharacter,
+  mockCharacter2,
+  mockGame5,
+  mockKeycloakUserInfo1,
+} from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQuerySavvyhead } from '../../../../tests/mockQueries';
 import { PlaybookUniques } from '../../../../@types/dataInterfaces';
@@ -25,7 +30,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -67,79 +75,113 @@ describe('Rendering WorkspaceForm', () => {
 
   describe('with a fresh Workspace', () => {
     beforeEach(async () => {
-      renderWithRouter(<WorkspaceForm />, `/character-creation/${mockGame5.id}`, {
-        isAuthenticated: true,
-        apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
-        injectedGame: generateGame(mockPlaybookUniqueSavvyhead),
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <WorkspaceForm />,
+        `/character-creation/${mockGame5.id}`,
+        {
+          isAuthenticated: true,
+          apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
+          injectedGame: generateGame(mockPlaybookUniqueSavvyhead),
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
 
     test('should render WorkspaceForm in initial state', () => {
       screen.getByTestId('workspace-form');
-      screen.getByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S WORKSPACE` });
+      screen.getByRole('heading', {
+        name: `${mockCharacter2.name?.toUpperCase()}'S WORKSPACE`,
+      });
       screen.getByRole('heading', { name: 'Projects' });
       screen.getByRole;
     });
 
     test('should enable SET button when form is completed', () => {
       screen.getByTestId('workspace-form');
-      let setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
-      const item1 = screen.getByTestId(`${mockWorkspaceCreator.workspaceItems[0]}-pill`);
-      const item2 = screen.getByTestId(`${mockWorkspaceCreator.workspaceItems[1]}-pill`);
-      const item3 = screen.getByTestId(`${mockWorkspaceCreator.workspaceItems[2]}-pill`);
+      let setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
+      const item1 = screen.getByTestId(
+        `${mockWorkspaceCreator.workspaceItems[0]}-pill`
+      );
+      const item2 = screen.getByTestId(
+        `${mockWorkspaceCreator.workspaceItems[1]}-pill`
+      );
+      const item3 = screen.getByTestId(
+        `${mockWorkspaceCreator.workspaceItems[2]}-pill`
+      );
 
       // Select first workspace item
       userEvent.click(item1);
 
       // Select second workspace item
       userEvent.click(item2);
-      setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toEqual(true);
 
       // Select second workspace item
       userEvent.click(item3);
-      setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toEqual(false);
     });
   });
 
   describe('with a Workspace with improvement', () => {
     beforeEach(async () => {
-      renderWithRouter(<WorkspaceForm />, `/character-creation/${mockGame5.id}`, {
-        isAuthenticated: true,
-        apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
-        injectedGame: generateGame(mockPlaybookUniqueSavvyhead_withImprovement),
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <WorkspaceForm />,
+        `/character-creation/${mockGame5.id}`,
+        {
+          isAuthenticated: true,
+          apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
+          injectedGame: generateGame(
+            mockPlaybookUniqueSavvyhead_withImprovement
+          ),
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
       await waitOneTick();
     });
 
     test('should show increased item count', () => {
       expect(screen.getByText('Choose 5:')).toBeInTheDocument();
-      expect(screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
+      expect(
+        screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)
+      ).toBeInTheDocument();
     });
   });
 
   describe('with a Workspace with both improvements', () => {
     beforeEach(async () => {
-      renderWithRouter(<WorkspaceForm />, `/character-creation/${mockGame5.id}`, {
-        isAuthenticated: true,
-        apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
-        injectedGame: generateGame(mockPlaybookUniqueSavvyhead_withBothImprovements),
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <WorkspaceForm />,
+        `/character-creation/${mockGame5.id}`,
+        {
+          isAuthenticated: true,
+          apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
+          injectedGame: generateGame(
+            mockPlaybookUniqueSavvyhead_withBothImprovements
+          ),
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
       await waitOneTick();
     });
 
     test('should show increased item count', () => {
       expect(screen.getByText('Choose 5:')).toBeInTheDocument();
-      expect(screen.getByText(INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT)).toBeInTheDocument();
+      expect(
+        screen.getByText(INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT)
+      ).toBeInTheDocument();
     });
   });
 });

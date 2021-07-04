@@ -1,5 +1,9 @@
 import { Vehicle } from '../../@types/dataInterfaces';
-import { BattleOptionType, VehicleFrameType, VehicleType } from '../../@types/enums';
+import {
+  BattleOptionType,
+  VehicleFrameType,
+  VehicleType,
+} from '../../@types/enums';
 
 export const mockVehicle1: Vehicle = {
   id: 'mock-vehicle-id-1',

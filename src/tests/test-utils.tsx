@@ -65,7 +65,9 @@ const ComponentProviders = ({
                 injectedCharacter={injectedCharacter}
               >
                 <McContentProvider injectedMcContent={injectedMcContent}>
-                  <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>{children}</KeycloakUserProvider>
+                  <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>
+                    {children}
+                  </KeycloakUserProvider>
                 </McContentProvider>
               </GameProvider>
             </ReactKeycloakProvider>
@@ -106,7 +108,9 @@ const AppProviders = ({
                 injectedCharacter={injectedCharacter}
               >
                 <McContentProvider injectedMcContent={injectedMcContent}>
-                  <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>{children}</KeycloakUserProvider>
+                  <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>
+                    {children}
+                  </KeycloakUserProvider>
                 </McContentProvider>
               </GameProvider>
             </ReactKeycloakProvider>
@@ -123,7 +127,10 @@ const AppProviders = ({
  * @param ui
  * @param options
  */
-const customRenderForApp = (ui: React.ReactElement, options?: Omit<RenderOptions, 'queries'> & CustomRenderOptions) =>
+const customRenderForApp = (
+  ui: React.ReactElement,
+  options?: Omit<RenderOptions, 'queries'> & CustomRenderOptions
+) =>
   render(ui, {
     wrapper: (props: any) => <AppProviders {...props} {...options} />,
     ...options,

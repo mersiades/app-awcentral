@@ -1,4 +1,8 @@
-import { JOIN_GAME_TEXT, JOIN_TEXT, NEW_GAME_TEXT } from '../../src/config/constants';
+import {
+  JOIN_GAME_TEXT,
+  JOIN_TEXT,
+  NEW_GAME_TEXT,
+} from '../../src/config/constants';
 import game3 from '../fixtures/games/game3';
 import dave from '../fixtures/users/dave';
 

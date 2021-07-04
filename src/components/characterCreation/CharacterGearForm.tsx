@@ -5,18 +5,37 @@ import { useHistory } from 'react-router-dom';
 import { Box, TextArea } from 'grommet';
 
 import Spinner from '../Spinner';
-import { accentColors, ButtonWS, HeadingWS, ParagraphWS, TextWS } from '../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  ParagraphWS,
+  TextWS,
+} from '../../config/grommetConfig';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../queries/playbookCreator';
 import SET_CHARACTER_BARTER, {
   getSetCharacterBarterOR,
   SetCharacterBarterData,
   SetCharacterBarterVars,
 } from '../../mutations/setCharacterBarter';
-import SET_CHARACTER_GEAR, { SetCharacterGearData, SetCharacterGearVars } from '../../mutations/setCharacterGear';
+import SET_CHARACTER_GEAR, {
+  SetCharacterGearData,
+  SetCharacterGearVars,
+} from '../../mutations/setCharacterGear';
 import { CharacterCreationSteps, PlaybookType } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
-import { ADD_TEXT, GEAR_FORM_INSTRUCTIONS, GEAR_TITLE, OPTIONS_TITLE, REMOVE_TEXT, SET_TEXT } from '../../config/constants';
+import {
+  ADD_TEXT,
+  GEAR_FORM_INSTRUCTIONS,
+  GEAR_TITLE,
+  OPTIONS_TITLE,
+  REMOVE_TEXT,
+  SET_TEXT,
+} from '../../config/constants';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 
 const GearUL = styled.ul`
@@ -27,36 +46,43 @@ const GearUL = styled.ul`
 `;
 
 const CharacterGearForm: FC = () => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const existingGear = character?.gear;
   const [gear, setGear] = useState<string[]>(existingGear || []);
   const [value, setValue] = useState('');
   const [showScrollDown, setShowScrollDown] = useState(false);
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
   const instructionsBoxRef = useRef<HTMLDivElement>(null);
 
-  // -------------------------------------------------- Graphql hooks ---------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(
-    PLAYBOOK_CREATOR,
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     // @ts-ignore
-    { variables: { playbookType: character?.playbook }, skip: !character?.playbook }
-  );
+    variables: { playbookType: character?.playbook },
+    skip: !character?.playbook,
+  });
   const pbCreator = pbCreatorData?.playbookCreator;
 
-  const [setCharacterGear, { loading: settingGear }] =
-    useMutation<SetCharacterGearData, SetCharacterGearVars>(SET_CHARACTER_GEAR);
+  const [setCharacterGear, { loading: settingGear }] = useMutation<
+    SetCharacterGearData,
+    SetCharacterGearVars
+  >(SET_CHARACTER_GEAR);
 
-  const [setCharacterBarter, { loading: settingBarter }] =
-    useMutation<SetCharacterBarterData, SetCharacterBarterVars>(SET_CHARACTER_BARTER);
+  const [setCharacterBarter, { loading: settingBarter }] = useMutation<
+    SetCharacterBarterData,
+    SetCharacterBarterVars
+  >(SET_CHARACTER_BARTER);
 
-  // ------------------------------------------ Component functions and variables ------------------------------------------ //
+  // ----------------------------- Component functions ------------------------- //
 
   const handleScroll = (e: any) => {
     if (!e.currentTarget) {
@@ -82,7 +108,11 @@ const CharacterGearForm: FC = () => {
     if (!!userGameRole && !!character && !character.isDead && !!game) {
       try {
         await setCharacterGear({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, gear },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            gear,
+          },
           optimisticResponse: {
             __typename: 'Mutation',
             setCharacterGear: {
@@ -95,13 +125,19 @@ const CharacterGearForm: FC = () => {
         // Only set barter on gear form if barter is not initialised (barter === -1)
         if (character.barter === -1) {
           setCharacterBarter({
-            variables: { gameRoleId: userGameRole.id, characterId: character.id, amount },
+            variables: {
+              gameRoleId: userGameRole.id,
+              characterId: character.id,
+              amount,
+            },
             optimisticResponse: getSetCharacterBarterOR(character.id, amount),
           });
         }
         // Skip playbookUniques form if Driver
         const nextStep =
-          character.playbook === PlaybookType.driver ? CharacterCreationSteps.selectMoves : CharacterCreationSteps.setUnique;
+          character.playbook === PlaybookType.driver
+            ? CharacterCreationSteps.selectMoves
+            : CharacterCreationSteps.setUnique;
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set gear');
@@ -115,11 +151,14 @@ const CharacterGearForm: FC = () => {
     }
   };
 
-  // ------------------------------------------------------ Effects  --------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   useEffect(() => {
     if (instructionsBoxRef.current) {
-      if (instructionsBoxRef.current.scrollHeight > instructionsBoxRef.current.offsetHeight) {
+      if (
+        instructionsBoxRef.current.scrollHeight >
+        instructionsBoxRef.current.offsetHeight
+      ) {
         setShowScrollDown(true);
       } else {
         setShowScrollDown(false);
@@ -129,7 +168,7 @@ const CharacterGearForm: FC = () => {
     return () => {};
   }, [instructionsBoxRef, pbCreator]);
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderGearIntro = () => {
     if (!!pbCreator?.gearInstructions.gearIntro) {
@@ -138,7 +177,10 @@ const CharacterGearForm: FC = () => {
   };
 
   const renderYouGetItem = () => {
-    if (!!pbCreator?.gearInstructions?.youGetItems && pbCreator.gearInstructions.youGetItems.length > 0) {
+    if (
+      !!pbCreator?.gearInstructions?.youGetItems &&
+      pbCreator.gearInstructions.youGetItems.length > 0
+    ) {
       return (
         <GearUL aria-label="items-you-get-list">
           {pbCreator.gearInstructions.youGetItems.map((item, index) => (
@@ -146,10 +188,14 @@ const CharacterGearForm: FC = () => {
               data-testid={`${item}-listitem`}
               aria-label={`you-get-item-${index}`}
               key={index}
-              // @ts-ignore
-              onMouseOver={(e: React.MouseEvent<HTMLLIElement>) => (e.target.style.color = '#CD3F3E')}
-              // @ts-ignore
-              onMouseOut={(e: React.MouseEvent<HTMLLIElement>) => (e.target.style.color = '#FFF')}
+              onMouseOver={(e: React.MouseEvent<HTMLLIElement>) =>
+                // @ts-ignore
+                (e.target.style.color = '#CD3F3E')
+              }
+              onMouseOut={(e: React.MouseEvent<HTMLLIElement>) =>
+                // @ts-ignore
+                (e.target.style.color = '#FFF')
+              }
               onClick={() => setValue(item)}
             >
               {item}
@@ -177,10 +223,14 @@ const CharacterGearForm: FC = () => {
               data-testid={`${item}-chooseable-listitem`}
               aria-label={`chooseable-listitem-${index}`}
               key={index}
-              // @ts-ignore
-              onMouseOver={(e: React.MouseEvent<HTMLLIElement>) => (e.target.style.color = '#CD3F3E')}
-              // @ts-ignore
-              onMouseOut={(e: React.MouseEvent<HTMLLIElement>) => (e.target.style.color = '#FFF')}
+              onMouseOver={(e: React.MouseEvent<HTMLLIElement>) =>
+                // @ts-ignore
+                (e.target.style.color = '#CD3F3E')
+              }
+              onMouseOut={(e: React.MouseEvent<HTMLLIElement>) =>
+                // @ts-ignore
+                (e.target.style.color = '#FFF')
+              }
               onClick={() => setValue(item)}
             >
               {item}
@@ -214,18 +264,29 @@ const CharacterGearForm: FC = () => {
             crustReady={crustReady}
             textAlign="center"
             style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
-          >{`WHAT IS ${!!character?.name ? character.name.toUpperCase() : '...'}'S GEAR?`}</HeadingWS>
+          >{`WHAT IS ${
+            !!character?.name ? character.name.toUpperCase() : '...'
+          }'S GEAR?`}</HeadingWS>
           <ButtonWS
             primary
             data-testid="set-gear-button"
-            label={settingGear || settingBarter ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : SET_TEXT}
+            label={
+              settingGear || settingBarter ? (
+                <Spinner fillColor="#FFF" width="37px" height="36px" />
+              ) : (
+                SET_TEXT
+              )
+            }
             onClick={() =>
               !settingBarter &&
               !settingGear &&
               !!pbCreator &&
               handleSubmitGear(gear, pbCreator.gearInstructions.startingBarter)
             }
-            disabled={gear.length < 1 || JSON.stringify(gear) === JSON.stringify(existingGear)}
+            disabled={
+              gear.length < 1 ||
+              JSON.stringify(gear) === JSON.stringify(existingGear)
+            }
           />
         </Box>
 
@@ -238,10 +299,18 @@ const CharacterGearForm: FC = () => {
             gridArea="instructions-box"
             overflow="auto"
             onScroll={(e) => handleScroll(e)}
-            style={showScrollDown ? { boxShadow: `0px -10px 10px -8px ${accentColors[0]} inset` } : undefined}
+            style={
+              showScrollDown
+                ? { boxShadow: `0px -10px 10px -8px ${accentColors[0]} inset` }
+                : undefined
+            }
             pad="6px"
           >
-            <HeadingWS level={4} alignSelf="center" margin={{ vertical: '6px' }}>
+            <HeadingWS
+              level={4}
+              alignSelf="center"
+              margin={{ vertical: '6px' }}
+            >
               {OPTIONS_TITLE}
             </HeadingWS>
             {renderGearIntro()}
@@ -255,7 +324,11 @@ const CharacterGearForm: FC = () => {
           </Box>
           <Box fill gridArea="gear-box" pad="6px">
             <Box fill="horizontal">
-              <HeadingWS level={4} alignSelf="center" margin={{ vertical: '6px' }}>
+              <HeadingWS
+                level={4}
+                alignSelf="center"
+                margin={{ vertical: '6px' }}
+              >
                 {GEAR_TITLE}
               </HeadingWS>
             </Box>
@@ -266,10 +339,14 @@ const CharacterGearForm: FC = () => {
                     data-testid={`${item}-interim-listitem`}
                     aria-label={`interim-list-item-${index}`}
                     key={index}
-                    // @ts-ignore
-                    onMouseOver={(e: React.MouseEvent<HTMLLIElement>) => (e.target.style.color = '#CD3F3E')}
-                    // @ts-ignore
-                    onMouseOut={(e: React.MouseEvent<HTMLLIElement>) => (e.target.style.color = '#FFF')}
+                    onMouseOver={(e: React.MouseEvent<HTMLLIElement>) =>
+                      // @ts-ignore
+                      (e.target.style.color = '#CD3F3E')
+                    }
+                    onMouseOut={(e: React.MouseEvent<HTMLLIElement>) =>
+                      // @ts-ignore
+                      (e.target.style.color = '#FFF')
+                    }
                     onClick={() => setValue(item)}
                   >
                     {item}
@@ -283,10 +360,17 @@ const CharacterGearForm: FC = () => {
                 placeholder="Edit or type item"
                 fill
                 value={value}
-                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                  setValue(e.target.value)
+                }
               />
             </Box>
-            <Box direction="row" fill="horizontal" gap="6px" margin={{ top: '6px' }}>
+            <Box
+              direction="row"
+              fill="horizontal"
+              gap="6px"
+              margin={{ top: '6px' }}
+            >
               <ButtonWS
                 secondary
                 label={ADD_TEXT}

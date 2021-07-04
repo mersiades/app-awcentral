@@ -5,7 +5,13 @@ import { Box, FormField, Select, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
 import { StyledMarkdown } from '../styledComponents';
-import { HeadingWS, ParagraphWS, ButtonWS, RedBox, healHarmBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  RedBox,
+  healHarmBackground,
+} from '../../config/grommetConfig';
 import PERFORM_HEAL_HARM_MOVE, {
   PerformHealHarmMoveData,
   PerformHealHarmMoveVars,
@@ -21,24 +27,34 @@ interface HealHarmDialogProps {
 }
 
 const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [otherCharacterId, setotherCharacterId] = useState('');
   const [harm, setHarm] = useState(0);
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performHealHarmMove, { loading: performingHealHarmMove }] =
-    useMutation<PerformHealHarmMoveData, PerformHealHarmMoveVars>(PERFORM_HEAL_HARM_MOVE);
+    useMutation<PerformHealHarmMoveData, PerformHealHarmMoveVars>(
+      PERFORM_HEAL_HARM_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
+  // ----------------------------- Component functions ------------------------- //
+  const characters =
+    otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleHealHarmMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead && !performingHealHarmMove && harm > 0 && !!otherCharacterId) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingHealHarmMove &&
+      harm > 0 &&
+      !!otherCharacterId
+    ) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
         let isMatch = false;
         gameRole.characters.forEach((character) => {
@@ -68,7 +84,7 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
     <DialogWrapper background={healHarmBackground} handleClose={handleClose}>
@@ -77,7 +93,14 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
           {move.name}
         </HeadingWS>
         <StyledMarkdown>{move.description}</StyledMarkdown>
-        <Box fill direction="row" align="start" justify="between" pad="12px" gap="12px">
+        <Box
+          fill
+          direction="row"
+          align="start"
+          justify="between"
+          pad="12px"
+          gap="12px"
+        >
           <Box fill>
             <ParagraphWS alignSelf="start">Who did you heal?</ParagraphWS>
             <Select
@@ -92,8 +115,16 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
             />
           </Box>
           <Box fill>
-            <ParagraphWS alignSelf="center">...and how much did you heal?</ParagraphWS>
-            <RedBox alignSelf="center" width="150px" align="center" justify="between" pad="24px">
+            <ParagraphWS alignSelf="center">
+              ...and how much did you heal?
+            </ParagraphWS>
+            <RedBox
+              alignSelf="center"
+              width="150px"
+              align="center"
+              justify="between"
+              pad="24px"
+            >
               <FormField>
                 <TextInput
                   type="number"
@@ -111,14 +142,20 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
             label="CANCEL"
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
             label="APPLY"
             primary
-            onClick={() => !performingHealHarmMove && harm > 0 && !!otherCharacterId && handleHealHarmMove()}
+            onClick={() =>
+              !performingHealHarmMove &&
+              harm > 0 &&
+              !!otherCharacterId &&
+              handleHealHarmMove()
+            }
             disabled={performingHealHarmMove || harm === 0 || !otherCharacterId}
           />
         </Box>

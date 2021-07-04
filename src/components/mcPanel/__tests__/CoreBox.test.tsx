@@ -21,7 +21,9 @@ describe('Rendering CoreBox', () => {
   });
 
   test('should reveal and hide sub-components', async () => {
-    const openButton = await screen.findByTestId(`${boxTitle.toLowerCase()}-down-chevron`);
+    const openButton = await screen.findByTestId(
+      `${boxTitle.toLowerCase()}-down-chevron`
+    );
     userEvent.click(openButton);
     screen.getByRole('heading', { name: mockMcContent.core[0].title });
     screen.getByRole('heading', { name: mockMcContent.core[1].title });

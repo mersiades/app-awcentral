@@ -5,7 +5,12 @@ import { Box, RadioButtonGroup, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
 import { StyledMarkdown } from '../styledComponents';
-import { HeadingWS, ParagraphWS, ButtonWS, justGiveMotiveDialogBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  justGiveMotiveDialogBackground,
+} from '../../config/grommetConfig';
 import PERFORM_JUST_GIVE_MOTIVATION_MOVE, {
   PerformJustGiveMotivationMoveData,
   PerformJustGiveMotivationMoveVars,
@@ -21,29 +26,41 @@ interface JustGiveMotiveDialogProps {
   handleClose: () => void;
 }
 
-const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({
+  move,
+  handleClose,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [targetId, setTargetId] = useState<string | undefined>();
   const [target, setTarget] = useState<'PC' | 'NPC'>('NPC');
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [performJustGiveMotivationMove, { loading: performingJustGiveMotivationMove }] = useMutation<
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [
+    performJustGiveMotivationMove,
+    { loading: performingJustGiveMotivationMove },
+  ] = useMutation<
     PerformJustGiveMotivationMoveData,
     PerformJustGiveMotivationMoveVars
   >(PERFORM_JUST_GIVE_MOTIVATION_MOVE);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
+  // ----------------------------- Component functions ------------------------- //
+  const characters =
+    otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
 
   const handleJustGiveMotivationMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead && !performingJustGiveMotivationMove) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingJustGiveMotivationMove
+    ) {
       try {
         await performJustGiveMotivationMove({
           variables: {
@@ -61,9 +78,12 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({ move, handleClose
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
-    <DialogWrapper background={justGiveMotiveDialogBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={justGiveMotiveDialogBackground}
+      handleClose={handleClose}
+    >
       <Box gap="12px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
@@ -71,7 +91,9 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({ move, handleClose
         <StyledMarkdown>{move.description}</StyledMarkdown>
         <Box direction="row" gap="24px">
           <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">What are you acting against?</ParagraphWS>
+            <ParagraphWS alignSelf="start">
+              What are you acting against?
+            </ParagraphWS>
             <RadioButtonGroup
               justify="around"
               alignSelf="start"
@@ -86,7 +108,9 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({ move, handleClose
           </Box>
           {target === 'PC' && (
             <Box fill align="start" justify="start">
-              <ParagraphWS alignSelf="start">What are you acting against?</ParagraphWS>
+              <ParagraphWS alignSelf="start">
+                What are you acting against?
+              </ParagraphWS>
               <Select
                 id="target-character-input"
                 aria-label="target-character-input"
@@ -105,15 +129,21 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({ move, handleClose
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
             label={ROLL_TEXT}
             primary
-            onClick={() => !performingJustGiveMotivationMove && handleJustGiveMotivationMove()}
-            disabled={performingJustGiveMotivationMove || (target === 'PC' && !targetId)}
+            onClick={() =>
+              !performingJustGiveMotivationMove &&
+              handleJustGiveMotivationMove()
+            }
+            disabled={
+              performingJustGiveMotivationMove || (target === 'PC' && !targetId)
+            }
           />
         </Box>
       </Box>

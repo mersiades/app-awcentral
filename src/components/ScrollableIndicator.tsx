@@ -22,15 +22,17 @@ const move = keyframes`
   }
 `;
 
-const ContainerBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(() => {
-  return css`
-    position: absolute;
-    bottom: 48px;
-    right: 24px;
-    width: 24px;
-    height: 24px;
-  `;
-});
+const ContainerBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(
+  () => {
+    return css`
+      position: absolute;
+      bottom: 48px;
+      right: 24px;
+      width: 24px;
+      height: 24px;
+    `;
+  }
+);
 
 const Chevron = styled.div`
   position: absolute;

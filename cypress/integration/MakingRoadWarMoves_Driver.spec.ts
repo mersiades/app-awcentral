@@ -27,7 +27,8 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
   });
 
   it(`should show a ${BOARD_VEHICLE_NAME} move message`, () => {
-    const moveDescSnippet = 'To board a moving vehicle, roll+cool, minus its speed.';
+    const moveDescSnippet =
+      'To board a moving vehicle, roll+cool, minus its speed.';
     const messageTitle = `${characterName?.toUpperCase()}: ${BOARD_VEHICLE_NAME}`;
     cy.contains(decapitalize(BOARD_VEHICLE_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
@@ -49,7 +50,8 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
   });
 
   it(`should show a ${OUTDISTANCE_VEHICLE_NAME} move message`, () => {
-    const moveDescSnippet = 'When you try to outdistance another vehicle, roll+cool,';
+    const moveDescSnippet =
+      'When you try to outdistance another vehicle, roll+cool,';
     const messageTitle = `${characterName?.toUpperCase()}: ${OUTDISTANCE_VEHICLE_NAME}`;
     cy.contains(decapitalize(OUTDISTANCE_VEHICLE_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
@@ -71,7 +73,8 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
   });
 
   it(`should show a ${OVERTAKE_VEHICLE_NAME} move message`, () => {
-    const moveDescSnippet = 'When you try to overtake another vehicle, roll+cool';
+    const moveDescSnippet =
+      'When you try to overtake another vehicle, roll+cool';
     const messageTitle = `${characterName?.toUpperCase()}: ${OVERTAKE_VEHICLE_NAME}`;
     cy.contains(decapitalize(OVERTAKE_VEHICLE_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
@@ -93,7 +96,8 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
   });
 
   it(`should show a ${DEAL_WITH_TERRAIN_NAME} move message`, () => {
-    const moveDescSnippet = 'When you have to deal with bad terrain, roll+cool,';
+    const moveDescSnippet =
+      'When you have to deal with bad terrain, roll+cool,';
     const messageTitle = `${characterName?.toUpperCase()}: ${DEAL_WITH_TERRAIN_NAME}`;
     cy.contains(decapitalize(DEAL_WITH_TERRAIN_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
@@ -110,6 +114,11 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
   });
 
   it(`should show a ${SHOULDER_ANOTHER_VEHICLE_NAME} move message`, () => {
-    cy.checkRollMove(characterName, SHOULDER_ANOTHER_VEHICLE_NAME, 'To shoulder another vehicle, roll+cool.', StatType.cool);
+    cy.checkRollMove(
+      characterName,
+      SHOULDER_ANOTHER_VEHICLE_NAME,
+      'To shoulder another vehicle, roll+cool.',
+      StatType.cool
+    );
   });
 });

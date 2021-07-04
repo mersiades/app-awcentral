@@ -23,10 +23,14 @@ describe('Rendering ContentItemBox', () => {
   });
 
   test('should reveal and hide content when clicking title', () => {
-    userEvent.click(screen.getByRole('heading', { name: mockContentItem1.title }));
+    userEvent.click(
+      screen.getByRole('heading', { name: mockContentItem1.title })
+    );
     screen.getByTestId(`${mockContentItem1.title}-up-icon`);
     screen.getByText(mockContentItem1.content);
-    userEvent.click(screen.getByRole('heading', { name: mockContentItem1.title }));
+    userEvent.click(
+      screen.getByRole('heading', { name: mockContentItem1.title })
+    );
     screen.getByTestId(`${mockContentItem1.title}-down-icon`);
   });
 });

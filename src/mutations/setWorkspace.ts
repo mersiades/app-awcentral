@@ -1,6 +1,10 @@
 import { gql } from '@apollo/client';
 import { WorkspaceInput } from '../@types';
-import { Character, PlaybookUniques, Workspace } from '../@types/dataInterfaces';
+import {
+  Character,
+  PlaybookUniques,
+  Workspace,
+} from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetWorkspaceData {
@@ -21,7 +25,10 @@ export interface SetWorkspaceVars {
   workspace: WorkspaceInput;
 }
 
-export const getSetWorkspaceOR = (character: Character, workspaceInput: WorkspaceInput): SetWorkspaceData => {
+export const getSetWorkspaceOR = (
+  character: Character,
+  workspaceInput: WorkspaceInput
+): SetWorkspaceData => {
   const optimisticPlaybookUniques: PlaybookUniques = {
     id: character.playbookUniques ? character.playbookUniques.id : 'temp-id-1',
     type: UniqueTypes.workspace,
@@ -29,7 +36,9 @@ export const getSetWorkspaceOR = (character: Character, workspaceInput: Workspac
       ...workspaceInput,
       id: workspaceInput.id ? workspaceInput.id : 'temp-id-2',
       uniqueType: UniqueTypes.workspace,
-      projects: character.playbookUniques?.workspace ? character.playbookUniques.workspace.projects : [],
+      projects: character.playbookUniques?.workspace
+        ? character.playbookUniques.workspace.projects
+        : [],
       __typename: 'Workspace',
     },
     __typename: 'PlaybookUniques',
@@ -45,8 +54,16 @@ export const getSetWorkspaceOR = (character: Character, workspaceInput: Workspac
 };
 
 const SET_WORKSPACE = gql`
-  mutation SetWorkspace($gameRoleId: String!, $characterId: String!, $workspace: WorkspaceInput!) {
-    setWorkspace(gameRoleId: $gameRoleId, characterId: $characterId, workspace: $workspace) {
+  mutation SetWorkspace(
+    $gameRoleId: String!
+    $characterId: String!
+    $workspace: WorkspaceInput!
+  ) {
+    setWorkspace(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      workspace: $workspace
+    ) {
       id
       playbookUniques {
         id

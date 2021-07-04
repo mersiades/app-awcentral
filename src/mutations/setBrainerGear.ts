@@ -22,7 +22,10 @@ export interface SetBrainerGearVars {
   brainerGear: string[];
 }
 
-export const setBrainerGearOR = (character: Character, brainerGear: string[]): SetBrainerGearData => ({
+export const setBrainerGearOR = (
+  character: Character,
+  brainerGear: string[]
+): SetBrainerGearData => ({
   setBrainerGear: {
     id: character.id,
     name: character.name || 'temp-name',
@@ -31,9 +34,11 @@ export const setBrainerGearOR = (character: Character, brainerGear: string[]): S
       id: character.playbookUniques?.id || 'temp-id',
       type: UniqueTypes.brainerGear,
       brainerGear: {
-        id: character.playbookUniques?.brainerGear?.id || 'temp-brainer-gear-id',
+        id:
+          character.playbookUniques?.brainerGear?.id || 'temp-brainer-gear-id',
         uniqueType: UniqueTypes.brainerGear,
-        allowedItemsCount: character.playbookUniques?.brainerGear?.allowedItemsCount || 2,
+        allowedItemsCount:
+          character.playbookUniques?.brainerGear?.allowedItemsCount || 2,
         brainerGear,
       },
     },
@@ -42,8 +47,16 @@ export const setBrainerGearOR = (character: Character, brainerGear: string[]): S
 });
 
 const SET_BRAINER_GEAR = gql`
-  mutation SetBrainerGear($gameRoleId: String!, $characterId: String!, $brainerGear: [String]!) {
-    setBrainerGear(gameRoleId: $gameRoleId, characterId: $characterId, brainerGear: $brainerGear) {
+  mutation SetBrainerGear(
+    $gameRoleId: String!
+    $characterId: String!
+    $brainerGear: [String]!
+  ) {
+    setBrainerGear(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      brainerGear: $brainerGear
+    ) {
       id
       name
       playbook

@@ -1,4 +1,9 @@
-import { ADD_NPC_TEXT, ADD_TEXT, EDIT_TEXT, SET_TEXT } from '../../src/config/constants';
+import {
+  ADD_NPC_TEXT,
+  ADD_TEXT,
+  EDIT_TEXT,
+  SET_TEXT,
+} from '../../src/config/constants';
 import game7 from '../fixtures/games/game7';
 
 interface CheckAddingNpcOptions {

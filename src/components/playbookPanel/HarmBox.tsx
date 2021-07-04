@@ -3,7 +3,14 @@ import { Box, CheckBox } from 'grommet';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import Spinner from '../Spinner';
-import { getCircle, getSector, oclock12, oclock3, oclock6, oclock9 } from '../HarmClock';
+import {
+  getCircle,
+  getSector,
+  oclock12,
+  oclock3,
+  oclock6,
+  oclock9,
+} from '../HarmClock';
 import { TextWS } from '../../config/grommetConfig';
 import { HarmInput } from '../../@types';
 import { useGame } from '../../contexts/gameContext';
@@ -17,15 +24,17 @@ import DeathMovesBox from './DeathMovesBox';
 import { HARM_TITLE, STABILIZED_TEXT } from '../../config/constants';
 
 const HarmBox: FC = () => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { userGameRole, character } = useGame();
   const harm = character?.harm;
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [setCharacterHarm, { loading: settingHarm }] =
-    useMutation<SetCharacterHarmData, SetCharacterHarmVars>(SET_CHARACTER_HARM);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [setCharacterHarm, { loading: settingHarm }] = useMutation<
+    SetCharacterHarmData,
+    SetCharacterHarmVars
+  >(SET_CHARACTER_HARM);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const circle = getCircle(200);
 
   const handleSetHarm = async (harmInput: HarmInput) => {
@@ -35,7 +44,11 @@ const HarmBox: FC = () => {
         delete harmInput.__typename;
 
         await setCharacterHarm({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, harm: harmInput },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            harm: harmInput,
+          },
           optimisticResponse: getSetCharacterHarmOR(character, harmInput),
         });
       } catch (error) {
@@ -57,7 +70,7 @@ const HarmBox: FC = () => {
     }
   };
 
-  // ------------------------------------------------------- Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <CollapsiblePanelBox open title={HARM_TITLE}>
       <Box
@@ -129,7 +142,10 @@ const HarmBox: FC = () => {
                 <CheckBox
                   label={STABILIZED_TEXT}
                   checked={harm.isStabilized}
-                  onClick={() => !settingHarm && handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })}
+                  onClick={() =>
+                    !settingHarm &&
+                    handleSetHarm({ ...harm, isStabilized: !harm.isStabilized })
+                  }
                 />
               </Box>
               <Box margin={{ top: '12px' }} fill>

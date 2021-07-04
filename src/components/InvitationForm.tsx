@@ -5,8 +5,18 @@ import { Mail } from 'grommet-icons';
 import { Box, Form, FormField, TextInput, TextArea } from 'grommet';
 
 import CloseButton from './CloseButton';
-import { accentColors, ButtonWS, HeadingWS, ParagraphWS, TextWS } from '../config/grommetConfig';
-import ADD_INVITEE, { AddInviteeData, AddInviteeVars, getAddInviteeOR } from '../mutations/addInvitee';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  ParagraphWS,
+  TextWS,
+} from '../config/grommetConfig';
+import ADD_INVITEE, {
+  AddInviteeData,
+  AddInviteeVars,
+  getAddInviteeOR,
+} from '../mutations/addInvitee';
 import { useGame } from '../contexts/gameContext';
 import { useFonts } from '../contexts/fontContext';
 import { copyToClipboard } from '../helpers/copyToClipboard';
@@ -31,21 +41,27 @@ interface InvitationFormProps {
 
 const baseUrl = process.env.REACT_APP_ROOT_URL;
 
-const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = '', showMessageOnly }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [formValues, setFormValues] = useState<{ email: string }>({ email: existingEmail });
+const InvitationForm: FC<InvitationFormProps> = ({
+  handleClose,
+  existingEmail = '',
+  showMessageOnly,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
+  const [formValues, setFormValues] = useState<{ email: string }>({
+    email: existingEmail,
+  });
   const [message, setMessage] = useState(existingEmail);
   const [hasSubmitted, setHasSubmitted] = useState(showMessageOnly);
   const [errorMessage, setErrorMessage] = useState('');
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game } = useGame();
   const { crustReady } = useFonts();
   const { email: mcEmail } = useKeycloakUser();
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [addInvitee] = useMutation<AddInviteeData, AddInviteeVars>(ADD_INVITEE);
-  // ------------------------------------------------ Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const handleAddInvitee = async (email: string) => {
     const lowercaseEmail = email.toLowerCase();
     if (game?.invitees.includes(lowercaseEmail)) {
@@ -71,13 +87,13 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
     }
   };
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     const defaultMessage = `Hi. Please join our Apocalypse World game on AW Central.\n\n- Go to ${baseUrl}/join-game\n- Log in (or register) with ${formValues.email}\n- Join the game called ${game?.name}`;
     hasSubmitted && setMessage(defaultMessage);
   }, [hasSubmitted, game, gameId, formValues, setMessage]);
 
-  // ------------------------------------------------------- Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderMessage = () => {
     return (
@@ -100,13 +116,31 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
         margin={{ horizontal: '0px', bottom: '6px', top: '12px' }}
       >{`${INVITE_A_PLAYER_TO_TEXT} ${game?.name}`}</HeadingWS>
       {hasSubmitted ? (
-        <Box width="520px" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+        <Box
+          width="520px"
+          animation={{
+            type: 'fadeIn',
+            delay: 0,
+            duration: 500,
+            size: 'xsmall',
+          }}
+        >
           <ParagraphWS fill margin="6px">
             {TELL_HOW_JOIN_GAME_TEXT}
           </ParagraphWS>
-          <Box border={{ color: accentColors[0] }} pad="12px" background="transparent" gap="12px">
+          <Box
+            border={{ color: accentColors[0] }}
+            pad="12px"
+            background="transparent"
+            gap="12px"
+          >
             {renderMessage()}
-            <ButtonWS fill="horizontal" secondary label="COPY TO CLIPBOARD" onClick={() => copyToClipboard(message)} />
+            <ButtonWS
+              fill="horizontal"
+              secondary
+              label="COPY TO CLIPBOARD"
+              onClick={() => copyToClipboard(message)}
+            />
             <ButtonWS
               primary
               label={ADD_ANOTHER_TEXT}
@@ -118,7 +152,14 @@ const InvitationForm: FC<InvitationFormProps> = ({ handleClose, existingEmail = 
           </Box>
         </Box>
       ) : (
-        <Box animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+        <Box
+          animation={{
+            type: 'fadeIn',
+            delay: 0,
+            duration: 500,
+            size: 'xsmall',
+          }}
+        >
           <ParagraphWS margin="6px">{ADD_EMAIL_ADDRESS_TEXT}</ParagraphWS>
           <Form
             value={formValues}

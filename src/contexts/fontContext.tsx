@@ -22,13 +22,20 @@ interface FontsProviderProps {
  * loaded or not. This is used for rendering a fallback font and styling
  * to minimise the impact of flash-of-unstyled-text (FOUT)
  */
-const FontsContext = createContext<IFontContext>({ vtksReady: false, crustReady: false });
+const FontsContext = createContext<IFontContext>({
+  vtksReady: false,
+  crustReady: false,
+});
 
 export const useFonts = () => useContext(FontsContext);
 
 export const FontsConsumer = FontsContext.Consumer;
 
-export const FontsProvider: FC<FontsProviderProps> = ({ children, isVtksReady = false, isCrustReady = false }) => {
+export const FontsProvider: FC<FontsProviderProps> = ({
+  children,
+  isVtksReady = false,
+  isCrustReady = false,
+}) => {
   const [vtksReady, setVtksReady] = useState(isVtksReady);
   const [crustReady, setCrustReady] = useState(isCrustReady);
 
@@ -47,5 +54,9 @@ export const FontsProvider: FC<FontsProviderProps> = ({ children, isVtksReady = 
     () => setCrustReady(true),
     () => console.warn('crust failed to load')
   );
-  return <FontsContext.Provider value={{ vtksReady, crustReady }}>{children}</FontsContext.Provider>;
+  return (
+    <FontsContext.Provider value={{ vtksReady, crustReady }}>
+      {children}
+    </FontsContext.Provider>
+  );
 };
