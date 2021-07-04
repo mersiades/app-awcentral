@@ -1,19 +1,22 @@
-import React, { FC, useCallback, useEffect, useReducer } from 'react';
-import { union } from 'lodash';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useParams } from 'react-router-dom';
-import { Character, GameRole } from '../../@types/dataInterfaces';
-import { ThreatMapItemType, ThreatMapLocation } from '../../@types/enums';
-import { useGame } from '../../contexts/gameContext';
-import { useKeycloakUser } from '../../contexts/keycloakUserContext';
-import ThreatMapPage from '../../pages/ThreatMapPage';
+import {
+  createContext,
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+} from 'react';
 import { useMutation } from '@apollo/client';
+import { union } from 'lodash';
+
+import { useGame } from './gameContext';
+import { ThreatMapItemType, ThreatMapLocation } from '../@types/enums';
 import CHANGE_CHARACTER_POSITION, {
   ChangeCharacterPositionData,
   changeCharacterPositionOR,
   ChangeCharacterPositionVars,
-} from '../../mutations/changeCharacterPosition';
+} from '../mutations/changeCharacterPosition';
+import { GameRole } from '../@types/dataInterfaces';
 
 export interface ThreatMapItem {
   type: ThreatMapItemType;
@@ -47,9 +50,13 @@ interface ThreatMapState {
   notAssigned: ThreatMapItem[];
 }
 
-interface Action {
-  type: 'SET_CHARACTERS';
-  payload?: any;
+interface ThreatMapContext extends ThreatMapState {
+  changingCharacterPosition: boolean;
+  handleCharacterPositionChange?: (
+    gameRoleId: string,
+    characterId: string,
+    newPosition: ThreatMapLocation
+  ) => void;
 }
 
 const initialState: ThreatMapState = {
@@ -72,6 +79,26 @@ const initialState: ThreatMapState = {
   fartherIn: [],
   notAssigned: [],
 };
+
+const initialContext: ThreatMapContext = {
+  ...initialState,
+  changingCharacterPosition: false,
+};
+
+interface ThreatMapProviderProps {
+  children: JSX.Element;
+}
+
+interface Action {
+  type: 'SET_CHARACTERS';
+  payload?: any;
+}
+
+const threatMapContext = createContext<ThreatMapContext>(initialContext);
+
+export const useThreatMap = () => useContext(threatMapContext);
+
+export const ThreatMapConsumer = threatMapContext.Consumer;
 
 const updateState = (oldState: ThreatMapState, newState: ThreatMapState) => {
   const addOrRemoveItem = (
@@ -132,18 +159,13 @@ const threatMapReducer = (
   }
 };
 
-const ThreatMapData: FC = () => {
+export const ThreatMapProvider: FC<ThreatMapProviderProps> = ({ children }) => {
   // ----------------------------- Component state ------------------------------ //
   const [state, dispatch] = useReducer(threatMapReducer, initialState);
   console.log(`state`, state);
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const { gameId } = useParams<{ gameId: string }>();
-
   // ----------------------------- Hooks ---------------------------------------- //
-  const { game, allPlayerGameRoles, setGameContext } = useGame();
-  const { id: userId } = useKeycloakUser();
-  console.log(`game`, game);
+  const { game, allPlayerGameRoles } = useGame();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const [changeCharacterPosition, { loading: changingCharacterPosition }] =
@@ -160,15 +182,8 @@ const ThreatMapData: FC = () => {
   ) => {
     if (!!game) {
       try {
-        console.log(
-          'changeCharacterPosition',
-          gameId,
-          gameRoleId,
-          characterId,
-          newPosition
-        );
         await changeCharacterPosition({
-          variables: { gameId, gameRoleId, characterId, newPosition },
+          variables: { gameId: game.id, gameRoleId, characterId, newPosition },
           optimisticResponse: changeCharacterPositionOR(
             game,
             characterId,
@@ -269,12 +284,6 @@ const ThreatMapData: FC = () => {
   );
 
   // ----------------------------- Effects ---------------------------------------- //
-  // Sets the GameContext
-  useEffect(() => {
-    if (!!gameId && !!userId && !!setGameContext) {
-      setGameContext(gameId, userId);
-    }
-  }, [gameId, userId, setGameContext]);
 
   // Assign characters to map segments
   useEffect(() => {
@@ -291,13 +300,14 @@ const ThreatMapData: FC = () => {
 
   // ----------------------------- Render ---------------------------------------- //
   return (
-    <DndProvider backend={HTML5Backend}>
-      <ThreatMapPage
-        {...state}
-        handleCharacterPositionChange={handleCharacterPositionChange}
-      />
-    </DndProvider>
+    <threatMapContext.Provider
+      value={{
+        ...state,
+        handleCharacterPositionChange,
+        changingCharacterPosition,
+      }}
+    >
+      {children}
+    </threatMapContext.Provider>
   );
 };
-
-export default ThreatMapData;

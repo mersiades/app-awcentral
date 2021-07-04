@@ -1,34 +1,29 @@
 import React, { FC } from 'react';
+import { rgba } from 'polished';
 import { useDrop } from 'react-dnd';
 import { Box } from 'grommet';
 
-import { ThreatMapCharacterItem, ThreatMapItem } from './ThreatMapData';
-import { rgba } from 'polished';
+import {
+  ThreatMapCharacterItem,
+  useThreatMap,
+} from '../../contexts/threatMapContext';
 import { ThreatMapLocation } from '../../@types/enums';
 
-interface UnassignedThreatsProps {
-  notAssigned: ThreatMapItem[];
-  handleCharacterPositionChange: (
-    gameRoleId: string,
-    characterId: string,
-    newPosition: ThreatMapLocation
-  ) => void;
-}
-
-const UnassignedThreats: FC<UnassignedThreatsProps> = ({
-  notAssigned,
-  handleCharacterPositionChange,
-}) => {
+const UnassignedThreats: FC = () => {
+  // ----------------------------- Hooks ---------------------------------------- //
+  const { handleCharacterPositionChange } = useThreatMap();
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const [{ isOver }, drop] = useDrop(
     () => ({
       accept: 'THREAT_MAP_ITEM',
       drop: (item: ThreatMapCharacterItem) => {
         console.log(`item`, item);
-        handleCharacterPositionChange(
-          item.gameRoleId,
-          item.characterId,
-          ThreatMapLocation.notAssigned
-        );
+        !!handleCharacterPositionChange &&
+          handleCharacterPositionChange(
+            item.gameRoleId,
+            item.characterId,
+            ThreatMapLocation.notAssigned
+          );
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
@@ -36,7 +31,6 @@ const UnassignedThreats: FC<UnassignedThreatsProps> = ({
     }),
     []
   );
-  console.log(`notAssigned`, notAssigned);
   return (
     <Box
       ref={drop}

@@ -3,7 +3,7 @@ import { useDrag } from 'react-dnd';
 import { Box, Text } from 'grommet';
 import { Pan } from 'grommet-icons';
 
-import { ThreatMapItem } from './ThreatMapData';
+import { ThreatMapItem } from '../../contexts/threatMapContext';
 
 interface ThreatMapItemPillProps {
   item: ThreatMapItem;

@@ -1,43 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Box, BoxProps } from 'grommet';
 import styled, { css } from 'styled-components';
 
-import { useWindowSize } from '../../hooks/useWindowSize';
 import ThreatMapLabels from './ThreatMapLabels';
 import ThreatMapDropSegments from './ThreatMapDropSegments';
-import { FC } from 'react';
-import { ThreatMapItem } from './ThreatMapData';
 import ThreatMapItemPill from './ThreatMapItemPill';
-import { ThreatMapLocation } from '../../@types/enums';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { useThreatMap } from '../../contexts/threatMapContext';
 
 export interface WindowWidths {
   readonly windowHeight: number;
   readonly windowWidth: number;
-}
-
-interface ThreatMapProps {
-  center: ThreatMapItem[];
-  closerNorth: ThreatMapItem[];
-  fatherNorth: ThreatMapItem[];
-  closerUp: ThreatMapItem[];
-  fartherUp: ThreatMapItem[];
-  closerEast: ThreatMapItem[];
-  fartherEast: ThreatMapItem[];
-  closerOut: ThreatMapItem[];
-  fartherOut: ThreatMapItem[];
-  closerSouth: ThreatMapItem[];
-  fartherSouth: ThreatMapItem[];
-  closerDown: ThreatMapItem[];
-  fatherDown: ThreatMapItem[];
-  closerWest: ThreatMapItem[];
-  fartherWest: ThreatMapItem[];
-  closerIn: ThreatMapItem[];
-  fartherIn: ThreatMapItem[];
-  handleCharacterPositionChange: (
-    gameRoleId: string,
-    characterId: string,
-    newPosition: ThreatMapLocation
-  ) => void;
 }
 
 const CenterCircle = styled(
@@ -92,11 +65,10 @@ const CenterPillContainer = styled(
   `;
 });
 
-const ThreatMap: FC<ThreatMapProps> = ({ center }) => {
+const ThreatMap: FC = () => {
   // ----------------------------- Hooks ---------------------------------------- //
   const [width, height] = useWindowSize();
-
-  console.log(`center`, center);
+  const { center } = useThreatMap();
 
   // ----------------------------- Render ---------------------------------------- //
   return (

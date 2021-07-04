@@ -1,38 +1,13 @@
+import React, { FC, useEffect } from 'react';
 import { Box, BoxProps } from 'grommet';
-import React from 'react';
-import { FC } from 'react';
+import { useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { ThreatMapLocation } from '../@types/enums';
-import ThreatMap from '../components/threatMap/ThreatMap';
-import { ThreatMapItem } from '../components/threatMap/ThreatMapData';
-import UnassignedThreats from '../components/threatMap/UnassignedThreats';
-import { useWindowSize } from '../hooks/useWindowSize';
 
-interface ThreatMapPageProps {
-  center: ThreatMapItem[];
-  closerNorth: ThreatMapItem[];
-  fatherNorth: ThreatMapItem[];
-  closerUp: ThreatMapItem[];
-  fartherUp: ThreatMapItem[];
-  closerEast: ThreatMapItem[];
-  fartherEast: ThreatMapItem[];
-  closerOut: ThreatMapItem[];
-  fartherOut: ThreatMapItem[];
-  closerSouth: ThreatMapItem[];
-  fartherSouth: ThreatMapItem[];
-  closerDown: ThreatMapItem[];
-  fatherDown: ThreatMapItem[];
-  closerWest: ThreatMapItem[];
-  fartherWest: ThreatMapItem[];
-  closerIn: ThreatMapItem[];
-  fartherIn: ThreatMapItem[];
-  notAssigned: ThreatMapItem[];
-  handleCharacterPositionChange: (
-    gameRoleId: string,
-    characterId: string,
-    newPosition: ThreatMapLocation
-  ) => void;
-}
+import ThreatMap from '../components/threatMap/ThreatMap';
+import UnassignedThreats from '../components/threatMap/UnassignedThreats';
+import { useGame } from '../contexts/gameContext';
+import { useKeycloakUser } from '../contexts/keycloakUserContext';
+import { useWindowSize } from '../hooks/useWindowSize';
 
 const background = {
   color: 'black',
@@ -73,13 +48,28 @@ const UnassignedThreatsContainer = styled(
   `;
 });
 
-const ThreatMapPage: FC<ThreatMapPageProps> = ({
-  notAssigned,
-  handleCharacterPositionChange,
-  ...props
-}) => {
+const ThreatMapPage: FC = () => {
+  // ----------------------------- 3rd party hooks ------------------------------- //
+  const { gameId } = useParams<{ gameId: string }>();
+
+  // ----------------------------- Hooks ---------------------------------------- //
+  const { setGameContext } = useGame();
+  const { id: userId } = useKeycloakUser();
   const [width, height] = useWindowSize();
+
+  // ----------------------------- Component functions ------------------------- //
   const isLandscape = width > height;
+
+  // ----------------------------- Effects ---------------------------------------- //
+  // Sets the GameContext
+  useEffect(() => {
+    if (!!gameId && !!userId && !!setGameContext) {
+      setGameContext(gameId, userId);
+    }
+  }, [gameId, userId, setGameContext]);
+
+  // ----------------------------- Render ---------------------------------------- //
+
   return (
     <Box
       fill
@@ -88,16 +78,10 @@ const ThreatMapPage: FC<ThreatMapPageProps> = ({
       justify="center"
     >
       <UnassignedThreatsContainer fill justify="center" align="center">
-        <UnassignedThreats
-          notAssigned={notAssigned}
-          handleCharacterPositionChange={handleCharacterPositionChange}
-        />
+        <UnassignedThreats />
       </UnassignedThreatsContainer>
       <ThreatMapContainer background={background} flex="grow">
-        <ThreatMap
-          {...props}
-          handleCharacterPositionChange={handleCharacterPositionChange}
-        />
+        <ThreatMap />
       </ThreatMapContainer>
     </Box>
   );
