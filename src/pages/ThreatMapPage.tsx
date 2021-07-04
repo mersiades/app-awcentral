@@ -1,8 +1,32 @@
 import { Box, BoxProps } from 'grommet';
 import React from 'react';
+import { FC } from 'react';
 import styled, { css } from 'styled-components';
-import ThreatMapData from '../components/threatMap/ThreatMapData';
+import ThreatMap from '../components/threatMap/ThreatMap';
+import { ThreatMapItem } from '../components/threatMap/ThreatMapData';
+import UnassignedThreats from '../components/threatMap/UnassignedThreats';
 import { useWindowSize } from '../hooks/useWindowSize';
+
+interface ThreatMapPageProps {
+  center: ThreatMapItem[];
+  closerNorth: ThreatMapItem[];
+  fatherNorth: ThreatMapItem[];
+  closerUp: ThreatMapItem[];
+  fartherUp: ThreatMapItem[];
+  closerEast: ThreatMapItem[];
+  fartherEast: ThreatMapItem[];
+  closerOut: ThreatMapItem[];
+  fartherOut: ThreatMapItem[];
+  closerSouth: ThreatMapItem[];
+  fartherSouth: ThreatMapItem[];
+  closerDown: ThreatMapItem[];
+  fatherDown: ThreatMapItem[];
+  closerWest: ThreatMapItem[];
+  fartherWest: ThreatMapItem[];
+  closerIn: ThreatMapItem[];
+  fartherIn: ThreatMapItem[];
+  notAssigned: ThreatMapItem[];
+}
 
 const background = {
   color: 'black',
@@ -28,7 +52,7 @@ const ThreatMapContainer = styled(
   `;
 });
 
-const ThreatFormContainer = styled(
+const UnassignedThreatsContainer = styled(
   Box as React.FC<BoxProps & JSX.IntrinsicElements['div']>
 )(() => {
   return css`
@@ -43,7 +67,7 @@ const ThreatFormContainer = styled(
   `;
 });
 
-const ThreatMapPage = () => {
+const ThreatMapPage: FC<ThreatMapPageProps> = ({ notAssigned, ...props }) => {
   const [width, height] = useWindowSize();
   const isLandscape = width > height;
   return (
@@ -53,11 +77,11 @@ const ThreatMapPage = () => {
       direction={isLandscape ? 'row' : 'column'}
       justify="center"
     >
-      <ThreatFormContainer border fill justify="center" align="center">
-        New threat form
-      </ThreatFormContainer>
-      <ThreatMapContainer border background={background} flex="grow">
-        <ThreatMapData />
+      <UnassignedThreatsContainer fill justify="center" align="center">
+        <UnassignedThreats notAssigned={notAssigned} />
+      </UnassignedThreatsContainer>
+      <ThreatMapContainer background={background} flex="grow">
+        <ThreatMap {...props} />
       </ThreatMapContainer>
     </Box>
   );

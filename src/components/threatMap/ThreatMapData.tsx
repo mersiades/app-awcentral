@@ -1,11 +1,13 @@
-import { union } from 'lodash';
 import React, { FC, useCallback, useEffect, useReducer } from 'react';
+import { union } from 'lodash';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useParams } from 'react-router-dom';
 import { Character } from '../../@types/dataInterfaces';
 import { ThreatMapItemType, ThreatMapLocation } from '../../@types/enums';
 import { useGame } from '../../contexts/gameContext';
 import { useKeycloakUser } from '../../contexts/keycloakUserContext';
-import ThreatMap from './ThreatMap';
+import ThreatMapPage from '../../pages/ThreatMapPage';
 
 export interface ThreatMapItem {
   label: string;
@@ -232,7 +234,11 @@ const ThreatMapData: FC = () => {
   }, [allPlayerGameRoles, filterIntoSegments]);
 
   // ----------------------------- Render ---------------------------------------- //
-  return <ThreatMap {...state} />;
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <ThreatMapPage {...state} />
+    </DndProvider>
+  );
 };
 
 export default ThreatMapData;

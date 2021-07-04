@@ -32,7 +32,6 @@ interface ThreatMapProps {
   fartherWest: ThreatMapItem[];
   closerIn: ThreatMapItem[];
   fartherIn: ThreatMapItem[];
-  notAssigned: ThreatMapItem[];
 }
 
 const CenterCircle = styled(
@@ -97,7 +96,6 @@ const ThreatMap: FC<ThreatMapProps> = ({ center }) => {
   return (
     <>
       <CenterCircle windowHeight={height} windowWidth={width} />
-
       <ThreatMapDropSegments />
       <ThreatMapLabels />
       <CenterPillContainer
