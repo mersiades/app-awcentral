@@ -2,6 +2,7 @@ import { Box, BoxProps } from 'grommet';
 import React from 'react';
 import { FC } from 'react';
 import styled, { css } from 'styled-components';
+import { ThreatMapLocation } from '../@types/enums';
 import ThreatMap from '../components/threatMap/ThreatMap';
 import { ThreatMapItem } from '../components/threatMap/ThreatMapData';
 import UnassignedThreats from '../components/threatMap/UnassignedThreats';
@@ -26,6 +27,11 @@ interface ThreatMapPageProps {
   closerIn: ThreatMapItem[];
   fartherIn: ThreatMapItem[];
   notAssigned: ThreatMapItem[];
+  handleCharacterPositionChange: (
+    gameRoleId: string,
+    characterId: string,
+    newPosition: ThreatMapLocation
+  ) => void;
 }
 
 const background = {
@@ -67,7 +73,11 @@ const UnassignedThreatsContainer = styled(
   `;
 });
 
-const ThreatMapPage: FC<ThreatMapPageProps> = ({ notAssigned, ...props }) => {
+const ThreatMapPage: FC<ThreatMapPageProps> = ({
+  notAssigned,
+  handleCharacterPositionChange,
+  ...props
+}) => {
   const [width, height] = useWindowSize();
   const isLandscape = width > height;
   return (
@@ -78,10 +88,16 @@ const ThreatMapPage: FC<ThreatMapPageProps> = ({ notAssigned, ...props }) => {
       justify="center"
     >
       <UnassignedThreatsContainer fill justify="center" align="center">
-        <UnassignedThreats notAssigned={notAssigned} />
+        <UnassignedThreats
+          notAssigned={notAssigned}
+          handleCharacterPositionChange={handleCharacterPositionChange}
+        />
       </UnassignedThreatsContainer>
       <ThreatMapContainer background={background} flex="grow">
-        <ThreatMap {...props} />
+        <ThreatMap
+          {...props}
+          handleCharacterPositionChange={handleCharacterPositionChange}
+        />
       </ThreatMapContainer>
     </Box>
   );

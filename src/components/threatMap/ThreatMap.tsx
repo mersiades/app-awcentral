@@ -8,6 +8,7 @@ import ThreatMapDropSegments from './ThreatMapDropSegments';
 import { FC } from 'react';
 import { ThreatMapItem } from './ThreatMapData';
 import ThreatMapItemPill from './ThreatMapItemPill';
+import { ThreatMapLocation } from '../../@types/enums';
 
 export interface WindowWidths {
   readonly windowHeight: number;
@@ -32,6 +33,11 @@ interface ThreatMapProps {
   fartherWest: ThreatMapItem[];
   closerIn: ThreatMapItem[];
   fartherIn: ThreatMapItem[];
+  handleCharacterPositionChange: (
+    gameRoleId: string,
+    characterId: string,
+    newPosition: ThreatMapLocation
+  ) => void;
 }
 
 const CenterCircle = styled(

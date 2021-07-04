@@ -2,18 +2,34 @@ import React, { FC } from 'react';
 import { useDrop } from 'react-dnd';
 import { Box } from 'grommet';
 
-import { ThreatMapItem } from './ThreatMapData';
+import { ThreatMapCharacterItem, ThreatMapItem } from './ThreatMapData';
 import { rgba } from 'polished';
+import { ThreatMapLocation } from '../../@types/enums';
 
 interface UnassignedThreatsProps {
   notAssigned: ThreatMapItem[];
+  handleCharacterPositionChange: (
+    gameRoleId: string,
+    characterId: string,
+    newPosition: ThreatMapLocation
+  ) => void;
 }
 
-const UnassignedThreats: FC<UnassignedThreatsProps> = ({ notAssigned }) => {
+const UnassignedThreats: FC<UnassignedThreatsProps> = ({
+  notAssigned,
+  handleCharacterPositionChange,
+}) => {
   const [{ isOver }, drop] = useDrop(
     () => ({
       accept: 'THREAT_MAP_ITEM',
-      drop: () => {},
+      drop: (item: ThreatMapCharacterItem) => {
+        console.log(`item`, item);
+        handleCharacterPositionChange(
+          item.gameRoleId,
+          item.characterId,
+          ThreatMapLocation.notAssigned
+        );
+      },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
       }),

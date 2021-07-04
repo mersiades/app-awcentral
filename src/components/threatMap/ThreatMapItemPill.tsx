@@ -15,6 +15,7 @@ const ThreatMapItemPill: FC<ThreatMapItemPillProps> = ({ item }) => {
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
+    item,
   }));
 
   return (

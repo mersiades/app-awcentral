@@ -3,15 +3,27 @@ import { union } from 'lodash';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useParams } from 'react-router-dom';
-import { Character } from '../../@types/dataInterfaces';
+import { Character, GameRole } from '../../@types/dataInterfaces';
 import { ThreatMapItemType, ThreatMapLocation } from '../../@types/enums';
 import { useGame } from '../../contexts/gameContext';
 import { useKeycloakUser } from '../../contexts/keycloakUserContext';
 import ThreatMapPage from '../../pages/ThreatMapPage';
+import { useMutation } from '@apollo/client';
+import CHANGE_CHARACTER_POSITION, {
+  ChangeCharacterPositionData,
+  changeCharacterPositionOR,
+  ChangeCharacterPositionVars,
+} from '../../mutations/changeCharacterPosition';
 
 export interface ThreatMapItem {
+  type: ThreatMapItemType;
   label: string;
   position: ThreatMapLocation;
+}
+
+export interface ThreatMapCharacterItem extends ThreatMapItem {
+  characterId: string;
+  gameRoleId: string;
 }
 
 interface ThreatMapState {
@@ -124,22 +136,67 @@ const ThreatMapData: FC = () => {
   // ----------------------------- Component state ------------------------------ //
   const [state, dispatch] = useReducer(threatMapReducer, initialState);
   console.log(`state`, state);
-  // ----------------------------- Hooks ---------------------------------------- //
-
-  const { allPlayerGameRoles, setGameContext } = useGame();
-  const { id: userId } = useKeycloakUser();
 
   // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
+  // ----------------------------- Hooks ---------------------------------------- //
+  const { game, allPlayerGameRoles, setGameContext } = useGame();
+  const { id: userId } = useKeycloakUser();
+  console.log(`game`, game);
+
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [changeCharacterPosition, { loading: changingCharacterPosition }] =
+    useMutation<ChangeCharacterPositionData, ChangeCharacterPositionVars>(
+      CHANGE_CHARACTER_POSITION
+    );
+
   // ----------------------------- Component functions ------------------------- //
+
+  const handleCharacterPositionChange = async (
+    gameRoleId: string,
+    characterId: string,
+    newPosition: ThreatMapLocation
+  ) => {
+    if (!!game) {
+      try {
+        console.log(
+          'changeCharacterPosition',
+          gameId,
+          gameRoleId,
+          characterId,
+          newPosition
+        );
+        await changeCharacterPosition({
+          variables: { gameId, gameRoleId, characterId, newPosition },
+          optimisticResponse: changeCharacterPositionOR(
+            game,
+            characterId,
+            newPosition
+          ),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   const convertCharacterToThreatMapItem = (
-    characters: Character[]
-  ): ThreatMapItem[] => {
-    return characters.map((ch) => ({
-      label: !!ch.name ? ch.name : 'unnamed character',
-      position: ch.mapPosition,
-    }));
+    gameRoles: GameRole[]
+  ): ThreatMapCharacterItem[] => {
+    const items: ThreatMapCharacterItem[] = [];
+    gameRoles.forEach((gameRole) => {
+      gameRole.characters.forEach((ch) => {
+        items.push({
+          type: ThreatMapItemType.character,
+          label: !!ch.name ? ch.name : 'unnamed character',
+          position: ch.mapPosition,
+          characterId: ch.id,
+          gameRoleId: gameRole.id,
+        });
+      });
+    });
+    return items;
   };
 
   const filterIntoSegments = useCallback(
@@ -222,13 +279,12 @@ const ThreatMapData: FC = () => {
   // Assign characters to map segments
   useEffect(() => {
     if (!!allPlayerGameRoles) {
-      const characters = allPlayerGameRoles
-        .map((gameRole) => gameRole.characters)
-        .flat();
-
       dispatch({
         type: 'SET_CHARACTERS',
-        payload: filterIntoSegments(characters, ThreatMapItemType.character),
+        payload: filterIntoSegments(
+          allPlayerGameRoles,
+          ThreatMapItemType.character
+        ),
       });
     }
   }, [allPlayerGameRoles, filterIntoSegments]);
@@ -236,7 +292,10 @@ const ThreatMapData: FC = () => {
   // ----------------------------- Render ---------------------------------------- //
   return (
     <DndProvider backend={HTML5Backend}>
-      <ThreatMapPage {...state} />
+      <ThreatMapPage
+        {...state}
+        handleCharacterPositionChange={handleCharacterPositionChange}
+      />
     </DndProvider>
   );
 };
