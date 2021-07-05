@@ -1,19 +1,23 @@
 import { gql } from '@apollo/client';
-import { Game } from '../@types/dataInterfaces';
+import { Game, GameRole } from '../@types/dataInterfaces';
 import { ThreatMapLocation } from '../@types/enums';
+
+interface ChangeCharacterPositionCharacter {
+  id: string;
+  mapPosition: ThreatMapLocation;
+  __typename: 'Character';
+}
+
+interface ChangeCharacterPositionGameRole {
+  id: string;
+  characters: ChangeCharacterPositionCharacter[];
+  __typename: 'GameRole';
+}
 
 export interface ChangeCharacterPositionData {
   changeCharacterPosition: {
     id: string;
-    gameRoles: {
-      id: string;
-      characters: {
-        id: string;
-        mapPosition: ThreatMapLocation;
-        __typename: 'Character';
-      };
-      __typename: 'GameRole';
-    };
+    gameRoles: ChangeCharacterPositionGameRole[];
     __typename: 'Game';
   };
 }
@@ -30,28 +34,28 @@ export const changeCharacterPositionOR = (
   characterId: string,
   newPosition: ThreatMapLocation
 ): ChangeCharacterPositionData => {
-  const gameRoles = game.gameRoles.map((gameRole) => {
-    const characters = gameRole.characters.map((character) => ({
+  const getCharacters = (gameRole: GameRole) => {
+    return gameRole.characters.map((character) => ({
       id: character.id,
       mapPosition:
         character.id === characterId ? newPosition : character.mapPosition,
-      __typename: 'Character',
+      __typename: 'Character' as const,
     }));
+  };
 
+  const gameRoles = game.gameRoles.map((gameRole) => {
     return {
       id: gameRole.id,
-      characters,
-      __typename: 'GameRole',
+      characters: getCharacters(gameRole),
+      __typename: 'GameRole' as const,
     };
   });
 
-  console.log(`gameRoles`, gameRoles);
   return {
     changeCharacterPosition: {
       id: game.id,
-      // @ts-ignore
       gameRoles,
-      __typename: 'Game',
+      __typename: 'Game' as const,
     },
   };
 };

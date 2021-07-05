@@ -1,8 +1,43 @@
-import { Box, BoxProps } from 'grommet';
 import React from 'react';
+import { rgba } from 'polished';
+import { useDrop } from 'react-dnd';
 import styled, { css } from 'styled-components';
-import { useWindowSize } from '../../hooks/useWindowSize';
+import { Box, BoxProps } from 'grommet';
+
 import { WindowWidths } from './ThreatMap';
+import {
+  ThreatMapCharacterItem,
+  useThreatMap,
+} from '../../contexts/threatMapContext';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { ThreatMapLocation } from '../../@types/enums';
+
+const CenterCircle = styled(
+  Box as React.FC<WindowWidths & BoxProps & JSX.IntrinsicElements['div']>
+)(({ windowWidth, windowHeight }) => {
+  const isLandscape = windowWidth > windowHeight;
+  const width = isLandscape ? windowHeight * 0.34 : windowWidth * 0.34;
+  const height = isLandscape ? windowHeight * 0.34 : windowWidth * 0.34;
+  const left = isLandscape
+    ? windowHeight * 0.5 - width / 2
+    : windowWidth * 0.5 - width / 2;
+  const top = isLandscape
+    ? windowHeight * 0.5 - width / 2
+    : windowWidth * 0.5 - width / 2;
+  return css`
+    position: absolute;
+    left: ${left}px;
+    top: ${top}px;
+    z-index: 2;
+    width: ${width}px;
+    height: ${height}px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3), 0 0 10px 1px rgba(0, 0, 0, 0.2),
+      0 0 5px 1px rgba(0, 0, 0, 0.3) inset,
+      0 0 10px 1px rgba(0, 0, 0, 0.2) inset;
+  `;
+});
 
 const CloserCircle = styled(
   Box as React.FC<WindowWidths & BoxProps & JSX.IntrinsicElements['div']>
@@ -42,17 +77,14 @@ const getCloserSegment = (
       width: 100%;
       height: 100%;
       border-left: 2px solid white;
-      background: transparent;
       border-radius: 0 100% 0 0;
+      z-index: 2;
       transform-origin: bottom left;
       transform: rotate(${rotation}deg) skewX(${skew}deg);
       clip-path: polygon(${polygonPoints});
       box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3),
         0 0 10px 1px rgba(0, 0, 0, 0.2), 0 0 5px 1px rgba(0, 0, 0, 0.3) inset,
         0 0 10px 1px rgba(0, 0, 0, 0.2) inset;
-      &:hover {
-        background-color: rgba(76, 104, 76, 0.33);
-      }
     `;
   });
 
@@ -69,7 +101,6 @@ const getFartherSegment = (
       width: 100%;
       height: 100%;
       border-left: 2px solid white;
-      background: transparent;
       border-radius: 0 100% 0 0;
       transform-origin: bottom left;
       transform: rotate(${rotation}deg) skewX(${skew}deg);
@@ -77,9 +108,6 @@ const getFartherSegment = (
       box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3),
         0 0 10px 1px rgba(0, 0, 0, 0.2), 0 0 5px 1px rgba(0, 0, 0, 0.3) inset,
         0 0 10px 1px rgba(0, 0, 0, 0.2) inset;
-      &:hover {
-        background-color: rgba(76, 104, 76, 0.33);
-      }
     `;
   });
 
@@ -168,19 +196,216 @@ const FartherInSegment = getFartherSegment(
 const ThreatMapDropSegments = () => {
   // ----------------------------- Hooks ---------------------------------------- //
   const [width, height] = useWindowSize();
+  const { handleCharacterPositionChange } = useThreatMap();
+
+  // ----------------------------- 3rd party hooks ------------------------------- //
+  const [{ isOver: isOverCenterCircle }, centerCircle] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.center
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverCloserNorth }, closerNorth] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.closerNorth
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverCloserUp }, closerUp] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.closerUp
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverCloserEast }, closerEast] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.closerEast
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverCloserOut }, closerOut] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.closerOut
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverCloserSouth }, closerSouth] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.closerSouth
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverCloserDown }, closerDown] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.closerDown
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverCloserWest }, closerWest] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.closerWest
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverCloserIn }, closerIn] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.closerIn
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const getBackground = (isOver: boolean) =>
+    isOver ? { color: rgba(76, 104, 76, 0.33) } : {};
 
   // ----------------------------- Render ---------------------------------------- //
   return (
     <>
+      <CenterCircle
+        ref={centerCircle}
+        background={getBackground(isOverCenterCircle)}
+        windowHeight={height}
+        windowWidth={width}
+      />
       <CloserCircle windowHeight={height} windowWidth={width}>
-        <CloserNorthSegment />
-        <CloserUpSegment />
-        <CloserEastSegment />
-        <CloserOutSegment />
-        <CloserSouthSegment />
-        <CloserDownSegment />
-        <CloserWestSegment />
-        <CloserInSegment />
+        <CloserNorthSegment
+          ref={closerNorth}
+          background={getBackground(isOverCloserNorth)}
+        />
+        <CloserUpSegment
+          ref={closerUp}
+          background={getBackground(isOverCloserUp)}
+        />
+        <CloserEastSegment
+          ref={closerEast}
+          background={getBackground(isOverCloserEast)}
+        />
+        <CloserOutSegment
+          ref={closerOut}
+          background={getBackground(isOverCloserOut)}
+        />
+        <CloserSouthSegment
+          ref={closerSouth}
+          background={getBackground(isOverCloserSouth)}
+        />
+        <CloserDownSegment
+          ref={closerDown}
+          background={getBackground(isOverCloserDown)}
+        />
+        <CloserWestSegment
+          ref={closerWest}
+          background={getBackground(isOverCloserWest)}
+        />
+        <CloserInSegment
+          ref={closerIn}
+          background={getBackground(isOverCloserIn)}
+        />
       </CloserCircle>
       <FartherNorthSegment />
       <FartherUpSegment />

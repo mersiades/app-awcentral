@@ -53,7 +53,7 @@ const ThreatMapPage: FC = () => {
   const { gameId } = useParams<{ gameId: string }>();
 
   // ----------------------------- Hooks ---------------------------------------- //
-  const { setGameContext } = useGame();
+  const { game, setGameContext } = useGame();
   const { id: userId } = useKeycloakUser();
   const [width, height] = useWindowSize();
 
@@ -63,10 +63,10 @@ const ThreatMapPage: FC = () => {
   // ----------------------------- Effects ---------------------------------------- //
   // Sets the GameContext
   useEffect(() => {
-    if (!!gameId && !!userId && !!setGameContext) {
+    if (!game && !!gameId && !!userId && !!setGameContext) {
       setGameContext(gameId, userId);
     }
-  }, [gameId, userId, setGameContext]);
+  }, [game, gameId, userId, setGameContext]);
 
   // ----------------------------- Render ---------------------------------------- //
 

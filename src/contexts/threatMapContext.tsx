@@ -7,7 +7,7 @@ import {
   useReducer,
 } from 'react';
 import { useMutation } from '@apollo/client';
-import { union } from 'lodash';
+import { difference } from 'lodash';
 
 import { useGame } from './gameContext';
 import { ThreatMapItemType, ThreatMapLocation } from '../@types/enums';
@@ -16,16 +16,17 @@ import CHANGE_CHARACTER_POSITION, {
   changeCharacterPositionOR,
   ChangeCharacterPositionVars,
 } from '../mutations/changeCharacterPosition';
-import { GameRole } from '../@types/dataInterfaces';
+import { Game, GameRole } from '../@types/dataInterfaces';
 
 export interface ThreatMapItem {
   type: ThreatMapItemType;
+  id: string;
+  game: Game;
   label: string;
   position: ThreatMapLocation;
 }
 
 export interface ThreatMapCharacterItem extends ThreatMapItem {
-  characterId: string;
   gameRoleId: string;
 }
 
@@ -53,6 +54,7 @@ interface ThreatMapState {
 interface ThreatMapContext extends ThreatMapState {
   changingCharacterPosition: boolean;
   handleCharacterPositionChange?: (
+    game: Game,
     gameRoleId: string,
     characterId: string,
     newPosition: ThreatMapLocation
@@ -105,44 +107,38 @@ const updateState = (oldState: ThreatMapState, newState: ThreatMapState) => {
     oldItems: ThreatMapItem[],
     newItems: ThreatMapItem[]
   ) => {
-    // TODO: remove items from old segment
-    // TODO: add items to new segment
-    return union(oldItems, newItems);
-    // let items: ThreatMapItem[] = []
-    // newItems.forEach((newItem) => {
-    //   if (oldItems.map((oldItem)  => oldItem.label).includes(newItem.label)) {
-    //      items.push
-    //   }
-    // })
-    // // The items are new
-    // if ()
+    // Which items in old are not included in new?
+    const differenceOldNew = difference(oldItems, newItems);
 
-    // // If an item has been removed
+    // Which items in new are not included in old?
+    const differenceNewOld = difference(newItems, oldItems);
 
-    // // Nothing has changed
+    if (differenceNewOld < differenceOldNew) {
+      return differenceNewOld;
+    }
 
-    // return items
+    return newItems;
   };
 
   return {
     center: addOrRemoveItem(oldState.center, newState.center),
-    closerNorth: [],
-    fatherNorth: [],
-    closerUp: [],
-    fartherUp: [],
-    closerEast: [],
-    fartherEast: [],
-    closerOut: [],
-    fartherOut: [],
-    closerSouth: [],
-    fartherSouth: [],
-    closerDown: [],
-    fatherDown: [],
-    closerWest: [],
-    fartherWest: [],
-    closerIn: [],
-    fartherIn: [],
-    notAssigned: [],
+    closerNorth: addOrRemoveItem(oldState.closerNorth, newState.closerNorth),
+    fatherNorth: addOrRemoveItem(oldState.fatherNorth, newState.fatherNorth),
+    closerUp: addOrRemoveItem(oldState.closerUp, newState.closerUp),
+    fartherUp: addOrRemoveItem(oldState.fartherUp, newState.fartherUp),
+    closerEast: addOrRemoveItem(oldState.closerEast, newState.closerEast),
+    fartherEast: addOrRemoveItem(oldState.fartherEast, newState.fartherEast),
+    closerOut: addOrRemoveItem(oldState.closerOut, newState.closerOut),
+    fartherOut: addOrRemoveItem(oldState.fartherOut, newState.fartherOut),
+    closerSouth: addOrRemoveItem(oldState.closerSouth, newState.closerSouth),
+    fartherSouth: addOrRemoveItem(oldState.fartherSouth, newState.fartherSouth),
+    closerDown: addOrRemoveItem(oldState.closerDown, newState.closerDown),
+    fatherDown: addOrRemoveItem(oldState.fatherDown, newState.fatherDown),
+    closerWest: addOrRemoveItem(oldState.closerWest, newState.closerWest),
+    fartherWest: addOrRemoveItem(oldState.fartherWest, newState.fartherWest),
+    closerIn: addOrRemoveItem(oldState.closerIn, newState.closerIn),
+    fartherIn: addOrRemoveItem(oldState.fartherIn, newState.fartherIn),
+    notAssigned: addOrRemoveItem(oldState.notAssigned, newState.notAssigned),
   };
 };
 
@@ -162,7 +158,6 @@ const threatMapReducer = (
 export const ThreatMapProvider: FC<ThreatMapProviderProps> = ({ children }) => {
   // ----------------------------- Component state ------------------------------ //
   const [state, dispatch] = useReducer(threatMapReducer, initialState);
-  console.log(`state`, state);
 
   // ----------------------------- Hooks ---------------------------------------- //
   const { game, allPlayerGameRoles } = useGame();
@@ -176,43 +171,47 @@ export const ThreatMapProvider: FC<ThreatMapProviderProps> = ({ children }) => {
   // ----------------------------- Component functions ------------------------- //
 
   const handleCharacterPositionChange = async (
+    game: Game,
     gameRoleId: string,
     characterId: string,
     newPosition: ThreatMapLocation
   ) => {
-    if (!!game) {
-      try {
-        await changeCharacterPosition({
-          variables: { gameId: game.id, gameRoleId, characterId, newPosition },
-          optimisticResponse: changeCharacterPositionOR(
-            game,
-            characterId,
-            newPosition
-          ),
-        });
-      } catch (error) {
-        console.error(error);
-      }
+    const optimisticResponse = changeCharacterPositionOR(
+      game,
+      characterId,
+      newPosition
+    );
+    try {
+      await changeCharacterPosition({
+        variables: { gameId: game.id, gameRoleId, characterId, newPosition },
+        optimisticResponse,
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const convertCharacterToThreatMapItem = (
-    gameRoles: GameRole[]
-  ): ThreatMapCharacterItem[] => {
-    const items: ThreatMapCharacterItem[] = [];
-    gameRoles.forEach((gameRole) => {
-      gameRole.characters.forEach((ch) => {
-        items.push({
-          type: ThreatMapItemType.character,
-          label: !!ch.name ? ch.name : 'unnamed character',
-          position: ch.mapPosition,
-          characterId: ch.id,
-          gameRoleId: gameRole.id,
+  const convertCharacterToThreatMapItem = useCallback(
+    (gameRoles: GameRole[]): ThreatMapCharacterItem[] => {
+      const items: ThreatMapCharacterItem[] = [];
+      if (!!game) {
+        gameRoles.forEach((gameRole) => {
+          gameRole.characters.forEach((ch) => {
+            items.push({
+              game,
+              type: ThreatMapItemType.character,
+              label: !!ch.name ? ch.name : 'unnamed character',
+              position: ch.mapPosition,
+              id: ch.id,
+              gameRoleId: gameRole.id,
+            });
+          });
         });
-      });
-    });
-    return items;
-  };
+      }
+      return items;
+    },
+    [game]
+  );
 
   const filterIntoSegments = useCallback(
     (data: any[], itemType: ThreatMapItemType): ThreatMapState => {
@@ -280,7 +279,7 @@ export const ThreatMapProvider: FC<ThreatMapProviderProps> = ({ children }) => {
         ),
       };
     },
-    []
+    [convertCharacterToThreatMapItem]
   );
 
   // ----------------------------- Effects ---------------------------------------- //

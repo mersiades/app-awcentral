@@ -13,80 +13,178 @@ export interface WindowWidths {
   readonly windowWidth: number;
 }
 
-const CenterCircle = styled(
-  Box as React.FC<WindowWidths & BoxProps & JSX.IntrinsicElements['div']>
-)(({ windowWidth, windowHeight }) => {
-  const isLandscape = windowWidth > windowHeight;
-  const width = isLandscape ? windowHeight * 0.34 : windowWidth * 0.34;
-  const height = isLandscape ? windowHeight * 0.34 : windowWidth * 0.34;
-  const left = isLandscape
-    ? windowHeight * 0.5 - width / 2
-    : windowWidth * 0.5 - width / 2;
-  const top = isLandscape
-    ? windowHeight * 0.5 - width / 2
-    : windowWidth * 0.5 - width / 2;
-  return css`
-    position: absolute;
-    left: ${left}px;
-    top: ${top}px;
-    z-index: 2;
-    width: ${width}px;
-    height: ${height}px;
-    border-radius: 50%;
-    border: 2px solid white;
-    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3), 0 0 10px 1px rgba(0, 0, 0, 0.2),
-      0 0 5px 1px rgba(0, 0, 0, 0.3) inset,
-      0 0 10px 1px rgba(0, 0, 0, 0.2) inset;
-    &:hover {
-      background-color: rgba(76, 104, 76, 0.33);
-    }
-  `;
-});
+const getPillContainer = (
+  leftRatio: number,
+  topRatio: number,
+  heightRatio: number,
+  widthRatio: number
+) =>
+  styled(
+    Box as React.FC<WindowWidths & BoxProps & JSX.IntrinsicElements['div']>
+  )(({ windowWidth, windowHeight }) => {
+    const isLandscape = windowWidth > windowHeight;
+    const width = isLandscape
+      ? windowHeight * widthRatio
+      : windowWidth * widthRatio;
+    const height = isLandscape
+      ? windowHeight * heightRatio
+      : windowWidth * heightRatio;
 
-const CenterPillContainer = styled(
-  Box as React.FC<WindowWidths & BoxProps & JSX.IntrinsicElements['div']>
-)(({ windowWidth, windowHeight }) => {
-  const isLandscape = windowWidth > windowHeight;
-  const width = windowWidth * 0.2;
-  const height = windowHeight * 0.2;
-  const left = isLandscape
-    ? windowHeight * 0.5 - width / 2
-    : windowWidth * 0.5 - width / 2;
-  const top = isLandscape
-    ? windowHeight * 0.53 - height / 2
-    : windowWidth * 0.53 - height / 2;
+    const left = isLandscape
+      ? windowHeight * leftRatio - width / 2
+      : windowWidth * leftRatio - width / 2;
+    const top = isLandscape
+      ? windowHeight * topRatio - height / 2
+      : windowWidth * topRatio - height / 2;
 
-  return css`
-    position: absolute;
-    left: ${left}px;
-    top: ${top}px;
-    width: ${width}px;
-    background: transparent;
-  `;
-});
+    return css`
+      position: absolute;
+      left: ${left}px;
+      top: ${top}px;
+      width: ${width}px;
+      height: ${height}px;
+      background: transparent;
+    `;
+  });
+
+const CenterPillContainer = getPillContainer(0.5, 0.5, 0.15, 0.3);
+const CloserNorthPillContainer = getPillContainer(0.5, 0.255, 0.15, 0.18);
+const CloserUpPillContainer = getPillContainer(0.68, 0.32, 0.11, 0.13);
+const CloserEastPillContainer = getPillContainer(0.75, 0.5, 0.18, 0.15);
+const CloserOutPillContainer = getPillContainer(0.68, 0.68, 0.11, 0.13);
+const CloserSouthPillContainer = getPillContainer(0.5, 0.745, 0.15, 0.18);
+const CloserDownPillContainer = getPillContainer(0.32, 0.68, 0.11, 0.13);
+const CloserWestPillContainer = getPillContainer(0.25, 0.5, 0.18, 0.15);
+const CloserInPillContainer = getPillContainer(0.32, 0.32, 0.11, 0.13);
 
 const ThreatMap: FC = () => {
   // ----------------------------- Hooks ---------------------------------------- //
   const [width, height] = useWindowSize();
-  const { center } = useThreatMap();
+  const {
+    center,
+    closerNorth,
+    closerUp,
+    closerEast,
+    closerOut,
+    closerSouth,
+    closerDown,
+    closerWest,
+    closerIn,
+  } = useThreatMap();
 
   // ----------------------------- Render ---------------------------------------- //
   return (
     <>
-      <CenterCircle windowHeight={height} windowWidth={width} />
       <ThreatMapDropSegments />
       <ThreatMapLabels />
       <CenterPillContainer
         direction="row"
         justify="around"
+        align="center"
         wrap
         windowHeight={height}
         windowWidth={width}
       >
         {center.map((item) => (
-          <ThreatMapItemPill key={item.label} item={item} />
+          <ThreatMapItemPill key={item.id} item={item} />
         ))}
       </CenterPillContainer>
+      <CloserNorthPillContainer
+        direction="row"
+        justify="around"
+        align="center"
+        wrap
+        windowHeight={height}
+        windowWidth={width}
+      >
+        {closerNorth.map((item) => (
+          <ThreatMapItemPill key={item.id} item={item} />
+        ))}
+      </CloserNorthPillContainer>
+      <CloserUpPillContainer
+        direction="row"
+        justify="around"
+        align="center"
+        wrap
+        windowHeight={height}
+        windowWidth={width}
+      >
+        {closerUp.map((item) => (
+          <ThreatMapItemPill key={item.id} item={item} />
+        ))}
+      </CloserUpPillContainer>
+      <CloserEastPillContainer
+        direction="row-reverse"
+        justify="around"
+        align="center"
+        wrap
+        windowHeight={height}
+        windowWidth={width}
+      >
+        {closerEast.map((item) => (
+          <ThreatMapItemPill key={item.id} item={item} />
+        ))}
+      </CloserEastPillContainer>
+      <CloserOutPillContainer
+        direction="row-reverse"
+        justify="around"
+        align="center"
+        wrap
+        windowHeight={height}
+        windowWidth={width}
+      >
+        {closerOut.map((item) => (
+          <ThreatMapItemPill key={item.id} item={item} />
+        ))}
+      </CloserOutPillContainer>
+      <CloserSouthPillContainer
+        direction="row"
+        justify="around"
+        align="center"
+        wrap
+        windowHeight={height}
+        windowWidth={width}
+      >
+        {closerSouth.map((item) => (
+          <ThreatMapItemPill key={item.id} item={item} />
+        ))}
+      </CloserSouthPillContainer>
+      <CloserDownPillContainer
+        direction="row"
+        justify="around"
+        align="center"
+        wrap
+        windowHeight={height}
+        windowWidth={width}
+      >
+        {closerDown.map((item) => (
+          <ThreatMapItemPill key={item.id} item={item} />
+        ))}
+      </CloserDownPillContainer>
+      <CloserWestPillContainer
+        direction="row"
+        justify="around"
+        align="center"
+        wrap
+        windowHeight={height}
+        windowWidth={width}
+      >
+        {closerWest.map((item) => (
+          <ThreatMapItemPill key={item.id} item={item} />
+        ))}
+      </CloserWestPillContainer>
+      <CloserInPillContainer
+        direction="row"
+        justify="around"
+        align="center"
+        wrap
+        windowHeight={height}
+        windowWidth={width}
+      >
+        {closerIn.map((item) => (
+          <ThreatMapItemPill key={item.id} item={item} />
+        ))}
+      </CloserInPillContainer>
     </>
   );
 };
