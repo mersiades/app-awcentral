@@ -102,6 +102,7 @@ const getFartherSegment = (
       height: 100%;
       border-left: 2px solid white;
       border-radius: 0 100% 0 0;
+      z-index: 2;
       transform-origin: bottom left;
       transform: rotate(${rotation}deg) skewX(${skew}deg);
       clip-path: polygon(${polygonPoints});
@@ -361,6 +362,150 @@ const ThreatMapDropSegments = () => {
     []
   );
 
+  const [{ isOver: isOverFartherNorth }, fartherNorth] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.fartherNorth
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverFartherEast }, fartherEast] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.fartherEast
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverFartherSouth }, fartherSouth] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.fartherSouth
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverFartherWest }, fartherWest] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.fartherWest
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverFartherUp }, fartherUp] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.fartherUp
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverFartherOut }, fartherOut] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.fartherOut
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverFartherDown }, fartherDown] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.fartherDown
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  const [{ isOver: isOverFartherIn }, fartherIn] = useDrop(
+    () => ({
+      accept: 'THREAT_MAP_ITEM',
+      drop: (item: ThreatMapCharacterItem) =>
+        !!handleCharacterPositionChange &&
+        handleCharacterPositionChange(
+          item.game,
+          item.gameRoleId,
+          item.id,
+          ThreatMapLocation.fartherIn
+        ),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
   const getBackground = (isOver: boolean) =>
     isOver ? { color: rgba(76, 104, 76, 0.33) } : {};
 
@@ -407,14 +552,38 @@ const ThreatMapDropSegments = () => {
           background={getBackground(isOverCloserIn)}
         />
       </CloserCircle>
-      <FartherNorthSegment />
-      <FartherUpSegment />
-      <FartherEastSegment />
-      <FartherOutSegment />
-      <FartherSouthSegment />
-      <FartherDownSegment />
-      <FartherWestSegment />
-      <FartherInSegment />
+      <FartherNorthSegment
+        ref={fartherNorth}
+        background={getBackground(isOverFartherNorth)}
+      />
+      <FartherUpSegment
+        ref={fartherUp}
+        background={getBackground(isOverFartherUp)}
+      />
+      <FartherEastSegment
+        ref={fartherEast}
+        background={getBackground(isOverFartherEast)}
+      />
+      <FartherOutSegment
+        ref={fartherOut}
+        background={getBackground(isOverFartherOut)}
+      />
+      <FartherSouthSegment
+        ref={fartherSouth}
+        background={getBackground(isOverFartherSouth)}
+      />
+      <FartherDownSegment
+        ref={fartherDown}
+        background={getBackground(isOverFartherDown)}
+      />
+      <FartherWestSegment
+        ref={fartherWest}
+        background={getBackground(isOverFartherWest)}
+      />
+      <FartherInSegment
+        ref={fartherIn}
+        background={getBackground(isOverFartherIn)}
+      />
     </>
   );
 };

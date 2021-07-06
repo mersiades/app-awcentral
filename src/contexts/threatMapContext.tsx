@@ -33,7 +33,7 @@ export interface ThreatMapCharacterItem extends ThreatMapItem {
 interface ThreatMapState {
   center: ThreatMapItem[];
   closerNorth: ThreatMapItem[];
-  fatherNorth: ThreatMapItem[];
+  fartherNorth: ThreatMapItem[];
   closerUp: ThreatMapItem[];
   fartherUp: ThreatMapItem[];
   closerEast: ThreatMapItem[];
@@ -43,7 +43,7 @@ interface ThreatMapState {
   closerSouth: ThreatMapItem[];
   fartherSouth: ThreatMapItem[];
   closerDown: ThreatMapItem[];
-  fatherDown: ThreatMapItem[];
+  fartherDown: ThreatMapItem[];
   closerWest: ThreatMapItem[];
   fartherWest: ThreatMapItem[];
   closerIn: ThreatMapItem[];
@@ -64,7 +64,7 @@ interface ThreatMapContext extends ThreatMapState {
 const initialState: ThreatMapState = {
   center: [],
   closerNorth: [],
-  fatherNorth: [],
+  fartherNorth: [],
   closerUp: [],
   fartherUp: [],
   closerEast: [],
@@ -74,7 +74,7 @@ const initialState: ThreatMapState = {
   closerSouth: [],
   fartherSouth: [],
   closerDown: [],
-  fatherDown: [],
+  fartherDown: [],
   closerWest: [],
   fartherWest: [],
   closerIn: [],
@@ -123,7 +123,7 @@ const updateState = (oldState: ThreatMapState, newState: ThreatMapState) => {
   return {
     center: addOrRemoveItem(oldState.center, newState.center),
     closerNorth: addOrRemoveItem(oldState.closerNorth, newState.closerNorth),
-    fatherNorth: addOrRemoveItem(oldState.fatherNorth, newState.fatherNorth),
+    fartherNorth: addOrRemoveItem(oldState.fartherNorth, newState.fartherNorth),
     closerUp: addOrRemoveItem(oldState.closerUp, newState.closerUp),
     fartherUp: addOrRemoveItem(oldState.fartherUp, newState.fartherUp),
     closerEast: addOrRemoveItem(oldState.closerEast, newState.closerEast),
@@ -133,7 +133,7 @@ const updateState = (oldState: ThreatMapState, newState: ThreatMapState) => {
     closerSouth: addOrRemoveItem(oldState.closerSouth, newState.closerSouth),
     fartherSouth: addOrRemoveItem(oldState.fartherSouth, newState.fartherSouth),
     closerDown: addOrRemoveItem(oldState.closerDown, newState.closerDown),
-    fatherDown: addOrRemoveItem(oldState.fatherDown, newState.fatherDown),
+    fartherDown: addOrRemoveItem(oldState.fartherDown, newState.fartherDown),
     closerWest: addOrRemoveItem(oldState.closerWest, newState.closerWest),
     fartherWest: addOrRemoveItem(oldState.fartherWest, newState.fartherWest),
     closerIn: addOrRemoveItem(oldState.closerIn, newState.closerIn),
@@ -229,8 +229,8 @@ export const ThreatMapProvider: FC<ThreatMapProviderProps> = ({ children }) => {
         closerNorth: items.filter(
           (item) => item.position === ThreatMapLocation.closerNorth
         ),
-        fatherNorth: items.filter(
-          (item) => item.position === ThreatMapLocation.fatherNorth
+        fartherNorth: items.filter(
+          (item) => item.position === ThreatMapLocation.fartherNorth
         ),
         closerUp: items.filter(
           (item) => item.position === ThreatMapLocation.closerUp
@@ -259,8 +259,8 @@ export const ThreatMapProvider: FC<ThreatMapProviderProps> = ({ children }) => {
         closerDown: items.filter(
           (item) => item.position === ThreatMapLocation.closerDown
         ),
-        fatherDown: items.filter(
-          (item) => item.position === ThreatMapLocation.fatherDown
+        fartherDown: items.filter(
+          (item) => item.position === ThreatMapLocation.fartherDown
         ),
         closerWest: items.filter(
           (item) => item.position === ThreatMapLocation.closerWest

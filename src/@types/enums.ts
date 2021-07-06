@@ -174,7 +174,7 @@ export enum ScriptChangeType {
 export enum ThreatMapLocation {
   center = 'CENTER',
   closerNorth = 'CLOSER_NORTH',
-  fatherNorth = 'FARTHER_NORTH',
+  fartherNorth = 'FARTHER_NORTH',
   closerUp = 'CLOSER_UP',
   fartherUp = 'FARTHER_UP',
   closerEast = 'CLOSER_EAST',
@@ -184,7 +184,7 @@ export enum ThreatMapLocation {
   closerSouth = 'CLOSER_SOUTH',
   fartherSouth = 'FARTHER_SOUTH',
   closerDown = 'CLOSER_DOWN',
-  fatherDown = 'FARTHER_DOWN',
+  fartherDown = 'FARTHER_DOWN',
   closerWest = 'CLOSER_WEST',
   fartherWest = 'FARTHER_WEST',
   closerIn = 'CLOSER_IN',
