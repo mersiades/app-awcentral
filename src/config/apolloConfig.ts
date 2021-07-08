@@ -30,22 +30,22 @@ export const apolloClient = new ApolloClient({
   link: apolloLink,
   cache: new InMemoryCache({
     typePolicies: {
-      Game: {
-        fields: {
-          players: {
-            // @ts-ignore
-            merge(existing = [], incoming: any[]) {
-              return [...incoming];
-            },
-          },
-          gameMessages: {
-            // @ts-ignore
-            merge(existing = [], incoming: any[]) {
-              return [...incoming];
-            },
-          },
-        },
-      },
+      // Game: {
+      //   fields: {
+      //     players: {
+      //       // @ts-ignore
+      //       merge(existing = [], incoming: any[]) {
+      //         return [...incoming];
+      //       },
+      //     },
+      //     gameMessages: {
+      //       // @ts-ignore
+      //       merge(existing = [], incoming: any[]) {
+      //         return [...incoming];
+      //       },
+      //     },
+      //   },
+      // },
       Character: {
         fields: {
           looks: {

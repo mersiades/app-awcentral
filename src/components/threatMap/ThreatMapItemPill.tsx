@@ -3,17 +3,13 @@ import { useDrag } from 'react-dnd';
 import { Box, Text } from 'grommet';
 import { Pan } from 'grommet-icons';
 
-import { ThreatMapItem, useThreatMap } from '../../contexts/threatMapContext';
-import Spinner from '../Spinner';
+import { ThreatMapItem } from '../../contexts/threatMapContext';
 
 interface ThreatMapItemPillProps {
   item: ThreatMapItem;
 }
 
 const ThreatMapItemPill: FC<ThreatMapItemPillProps> = ({ item }) => {
-  // ----------------------------- Hooks ---------------------------------------- //
-  const { changingCharacterPosition } = useThreatMap();
-
   // ----------------------------- 3rd party hooks ------------------------------- //
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'THREAT_MAP_ITEM',
@@ -23,6 +19,7 @@ const ThreatMapItemPill: FC<ThreatMapItemPillProps> = ({ item }) => {
     }),
     item,
   }));
+
   // ----------------------------- Render ---------------------------------------- //
   return (
     <Box
@@ -42,15 +39,7 @@ const ThreatMapItemPill: FC<ThreatMapItemPillProps> = ({ item }) => {
       gap="6px"
       height="24px"
     >
-      {changingCharacterPosition ? (
-        <Spinner fillColor="white" height="14px" width="14px" />
-      ) : (
-        <Pan
-          color="white"
-          size="14px"
-          a11yTitle={`${item.label}-movable-pill`}
-        />
-      )}
+      <Pan color="white" size="14px" a11yTitle={`${item.label}-movable-pill`} />
       <Text size="small" style={{ paddingTop: '2px' }}>
         {item.label}
       </Text>

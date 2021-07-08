@@ -76,6 +76,7 @@ const ThreatMapPage: FC = () => {
       background="black"
       direction={isLandscape ? 'row' : 'column'}
       justify="center"
+      style={{ overflow: 'hidden' }}
     >
       <UnassignedThreatsContainer fill justify="center" align="center">
         <UnassignedThreats />

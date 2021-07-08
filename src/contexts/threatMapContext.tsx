@@ -176,15 +176,14 @@ export const ThreatMapProvider: FC<ThreatMapProviderProps> = ({ children }) => {
     characterId: string,
     newPosition: ThreatMapLocation
   ) => {
-    const optimisticResponse = changeCharacterPositionOR(
-      game,
-      characterId,
-      newPosition
-    );
     try {
-      await changeCharacterPosition({
+      changeCharacterPosition({
         variables: { gameId: game.id, gameRoleId, characterId, newPosition },
-        optimisticResponse,
+        optimisticResponse: changeCharacterPositionOR(
+          game,
+          characterId,
+          newPosition
+        ),
       });
     } catch (error) {
       console.error(error);
@@ -194,6 +193,7 @@ export const ThreatMapProvider: FC<ThreatMapProviderProps> = ({ children }) => {
   const convertCharacterToThreatMapItem = useCallback(
     (gameRoles: GameRole[]): ThreatMapCharacterItem[] => {
       const items: ThreatMapCharacterItem[] = [];
+
       if (!!game) {
         gameRoles.forEach((gameRole) => {
           gameRole.characters.forEach((ch) => {
@@ -208,6 +208,7 @@ export const ThreatMapProvider: FC<ThreatMapProviderProps> = ({ children }) => {
           });
         });
       }
+
       return items;
     },
     [game]
