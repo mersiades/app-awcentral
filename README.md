@@ -49,12 +49,11 @@ Builds for production, staging and demo environments can be built using:
 However, CircleCI is configured to deploy to S3 buckets whenever there is a commit (including merges) to the master branch. It takes the following steps:
 
 - Automatically build and deploy the `staging` version
-- Build the `demo` version
-- Wait for manual approval before deploying `demo` version
+- Build the `production` version
+- Wait for manual approval before deploying `production` version
   - this gives you the opportunity to visit the `staging` version at https://app-staging.aw-central.com and check that everything is working as it should.
   - note that you made need to do a CloudFront invalidation before you can see changes at app-staging.aw-central.com
-- Deploy `demo` version upon manual approval (via CircleCI web interface)
-- Automatically build and deploy `production` version.
+- Deploy `production` version upon manual approval (via CircleCI web interface)
 
 Therefore, the preferred deployment procedure is:
 
@@ -62,7 +61,7 @@ Therefore, the preferred deployment procedure is:
 - When finished, issue pull request
 - If good, merge pull request into `master`
 - Check staging environment for problems
-- If all good, approve deployment of `demo` version (and subsequently `prod` version) at CircleCI web interface (app.circleci.com)
+- If all good, approve deployment of `prod` version at CircleCI web interface (app.circleci.com)
 
 ### Amplitude
 

@@ -17,7 +17,7 @@ interface RootProps {
 }
 
 // @ts-ignore istanbul ignore else
-const checkLoginIframe = window.Cypress ? false : true;
+const shouldCheckFrame = window.Cypress ? false : true;
 
 /**
  * This component wraps <App/> with all the Providers it needs.
@@ -29,14 +29,15 @@ const Root: FC<RootProps> = ({ children }) => {
         <FontsProvider>
           <FontsConsumer>
             {(context) => {
-              // The Grommet theme needs the font values, so using the Consumer here immediately.
+              // The Grommet theme needs the font values,
+              // so using the Consumer here immediately.
               return (
                 <Grommet theme={theme(context.vtksReady)} full>
                   <ReactKeycloakProvider
                     authClient={keycloak}
                     initOptions={{
                       onLoad: 'login-required',
-                      checkLoginIframe,
+                      checkLoginIframe: shouldCheckFrame,
                     }}
                   >
                     <GameProvider>
