@@ -34,7 +34,7 @@ describe('Editing game details from the MC Page', () => {
   it('should set a new game comms app', () => {
     const mockApp = 'Discord';
 
-    cy.get('input[aria-label="app-input"]').click();
+    cy.get('[aria-label="app-input"]').click();
     cy.contains(mockApp).click();
     cy.get('button[name="set-app-button"]').click();
     cy.get('div[data-testid="Mock Game 7-box"]').within(() => {

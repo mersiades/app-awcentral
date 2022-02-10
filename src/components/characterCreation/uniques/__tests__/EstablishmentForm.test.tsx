@@ -117,7 +117,7 @@ describe('Rendering EstablishmentForm', () => {
       });
       screen.getByRole('button', { name: 'SET' });
       screen.getAllByRole('button', { name: 'ADD' });
-      screen.getAllByRole('button', { name: 'Open Drop' });
+      // screen.getAllByRole('button', { name: 'select-interest-input' });
       screen.getByRole('textbox', { name: 'main-attraction-input' });
       screen.getByRole('textbox', { name: 'additional-regular-input' });
       screen.getByRole('textbox', { name: 'best-regular-input' });
@@ -312,9 +312,11 @@ describe('Rendering EstablishmentForm', () => {
         screen.getByRole('heading', { name: RESOLVE_INTEREST_DIALOG_TITLE })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole('button', { name: 'Open Drop' })
+        screen.getByRole('button', { name: 'select-interest-input' })
       ).toBeInTheDocument();
-      userEvent.click(screen.getByRole('button', { name: 'Open Drop' }));
+      userEvent.click(
+        screen.getByRole('button', { name: 'select-interest-input' })
+      );
       expect(screen.getAllByRole('menuitem')).toHaveLength(3);
       userEvent.click(screen.getAllByRole('menuitem')[0]);
       const input = screen.getByRole('textbox', {

@@ -54,7 +54,7 @@ describe('Rendering ScriptChangeDialog', () => {
     await waitOneTick();
   });
 
-  test('should display all the Script Change content', () => {
+  test('should type a comment, click an option, and close the dialog', () => {
     expect(
       screen.getByRole('heading', { name: SCRIPT_CHANGE_TITLE })
     ).toBeInTheDocument();
@@ -93,13 +93,11 @@ describe('Rendering ScriptChangeDialog', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(SCRIPT_CHANGE_REWIND_CONTENT)).toBeInTheDocument();
     expect(screen.getByText(SCRIPT_CHANGE_FRAME_CONTENT)).toBeInTheDocument();
-  });
 
-  test('should type a comment, click an option, and close the dialog', () => {
     const mockComment = 'My comment is ...';
-    const commentInput = screen.getByRole('textbox', {
+    const commentInput = screen.getAllByRole('textbox', {
       name: SCRIPT_CHANGE_COMMENT_INPUT_ID,
-    }) as HTMLInputElement;
+    })[0] as HTMLInputElement;
     userEvent.type(commentInput, mockComment);
     expect(commentInput.value).toEqual(mockComment);
 
