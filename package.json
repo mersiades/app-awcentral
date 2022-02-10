@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.2.2",
     "@react-keycloak/web": "^3.4.0",
-    "@testing-library/user-event": "^13.0.16",
+    "@testing-library/user-event": "^13.5.0",
     "amplitude-js": "^8.2.3",
     "apollo-link-http": "^1.5.17",
     "dayjs": "^1.10.3",
@@ -58,10 +58,10 @@
     ]
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.9.5",
+    "@cypress/code-coverage": "^3.9.12",
     "@cypress/instrument-cra": "^1.4.0",
-    "@testing-library/jest-dom": "^5.11.1",
-    "@testing-library/react": "^11.2.2",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.2",
     "@types/amplitude-js": "^8.0.0",
     "@types/fontfaceobserver": "^0.0.6",
     "@types/jest": "^26.0.20",
@@ -76,7 +76,7 @@
     "@types/styled-components": "^5.1.7",
     "@types/uuid": "^8.3.0",
     "apollo": "^2.32.11",
-    "cypress": "^7.2.0",
+    "cypress": "^9.4.1",
     "cypress-graphql-mock-network": "^0.3.0",
     "cypress-keycloak-commands": "^1.2.0",
     "env-cmd": "^10.1.0",
