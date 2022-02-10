@@ -97,13 +97,13 @@ describe('Rendering ScriptChangeDialog', () => {
 
   test('should type a comment, click an option, and close the dialog', () => {
     const mockComment = 'My comment is ...';
-    const commentInput = screen.getByRole('textbox', {
+    const commentInput = screen.getAllByRole('textbox', {
       name: SCRIPT_CHANGE_COMMENT_INPUT_ID,
-    }) as HTMLInputElement;
+    })[0] as HTMLInputElement;
     userEvent.type(commentInput, mockComment);
     expect(commentInput.value).toEqual(mockComment);
 
-    userEvent.click(screen.getByTestId(`${ScriptChangeType.pause}-tile`));
+    userEvent.click(screen.getAllByTestId(`${ScriptChangeType.pause}-tile`)[1]);
 
     expect(mockHandleClose).toHaveBeenCalled();
   });
