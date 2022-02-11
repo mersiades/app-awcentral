@@ -239,8 +239,8 @@ describe('Using the PlaybookPanel as an Angel', () => {
 
     // Check HARD decreased
     cy.get('h2[aria-label="hard-value"]').should('include.text', '-1');
-    cy.get('input[aria-label="come back with -1hard checkbox"]').should(
-      'be.checked'
+    cy.get('[aria-label="come back with -1hard checkbox"]').within(() =>
+      cy.get('input').should('be.checked')
     );
 
     // Uncheck -1hard option and check
@@ -252,8 +252,8 @@ describe('Using the PlaybookPanel as an Angel', () => {
       'include.text',
       '0'
     );
-    cy.get('input[aria-label="come back with -1hard checkbox"]').should(
-      'not.be.checked'
+    cy.get('[aria-label="come back with -1hard checkbox"]').within(() =>
+      cy.get('input').should('not.be.checked')
     );
   });
 
@@ -269,9 +269,9 @@ describe('Using the PlaybookPanel as an Angel', () => {
     cy.contains(DO_IT_TEXT).click();
     cy.contains(ADD_WEIRD_1_TEXT).should('not.exist');
     cy.get('h2[aria-label="weird-value"]').should('include.text', '0');
-    cy.get(
-      'input[aria-label="come back with +1weird (max+3) checkbox"]'
-    ).should('be.checked');
+    cy.get('[aria-label="come back with +1weird (max+3) checkbox"]').within(
+      () => cy.get('input').should('be.checked')
+    );
 
     // Uncheck +1weird option and check
     cy.contains('come back with +1weird').should('be.visible');
@@ -280,9 +280,9 @@ describe('Using the PlaybookPanel as an Angel', () => {
     cy.contains(DO_IT_TEXT).click();
     cy.contains(REMOVE_WEIRD_1_TEXT).should('not.exist');
     cy.get('h2[aria-label="weird-value"]').should('include.text', '-1');
-    cy.get(
-      'input[aria-label="come back with +1weird (max+3) checkbox"]'
-    ).should('not.be.checked');
+    cy.get('[aria-label="come back with +1weird (max+3) checkbox"]').within(
+      () => cy.get('input').should('not.be.checked')
+    );
   });
 
   it('should mark character as dead when life untenable, then unmark', () => {

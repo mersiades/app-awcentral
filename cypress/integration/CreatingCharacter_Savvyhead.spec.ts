@@ -82,20 +82,20 @@ describe('Creating a new Savvyhead Character', () => {
       .should('contain', VEHICLES_TITLE)
       .should('contain', '...');
 
-    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).check({
-      force: true,
-    });
-    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).should(
-      'be.checked'
+    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).within(() =>
+      cy.get('input').check({ force: true })
     );
-    cy.get(`input[aria-label="${thingsSpeakMoveName}-checkbox"]`).check({
-      force: true,
-    });
-    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).should(
-      'be.checked'
+    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).within(() =>
+      cy.get('input').should('be.checked')
     );
-    cy.get(`input[aria-label="${thingsSpeakMoveName}-checkbox"]`).should(
-      'be.checked'
+    cy.get(`[aria-label="${thingsSpeakMoveName}-checkbox"]`).within(() =>
+      cy.get('input').check({ force: true })
+    );
+    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).within(() =>
+      cy.get('input').should('be.checked')
+    );
+    cy.get(`[aria-label="${thingsSpeakMoveName}-checkbox"]`).within(() =>
+      cy.get('input').should('be.checked')
     );
   });
 });
