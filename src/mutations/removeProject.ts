@@ -14,8 +14,16 @@ export interface RemoveProjectVars {
 }
 
 const REMOVE_PROJECT = gql`
-  mutation RemoveProject($gameRoleId: String!, $characterId: String!, $project: ProjectInput!) {
-    removeProject(gameRoleId: $gameRoleId, characterId: $characterId, project: $project) {
+  mutation RemoveProject(
+    $gameRoleId: String!
+    $characterId: String!
+    $project: ProjectInput!
+  ) {
+    removeProject(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      project: $project
+    ) {
       id
       name
       playbook

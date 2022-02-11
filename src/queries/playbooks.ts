@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { Playbook } from '../@types/staticDataInterfaces';
 
 export interface PlaybooksData {
-  playbooks: Playbook[]
+  playbooks: Playbook[];
 }
 
 const PLAYBOOKS = gql`
@@ -16,6 +16,6 @@ const PLAYBOOKS = gql`
       playbookImageUrl
     }
   }
-`
+`;
 
-export default PLAYBOOKS
+export default PLAYBOOKS;

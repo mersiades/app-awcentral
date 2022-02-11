@@ -3,7 +3,12 @@ import { Box, CheckBox } from 'grommet';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { useGame } from '../../contexts/gameContext';
-import { brandColor, ButtonWS, HeadingWS, TextWS } from '../../config/grommetConfig';
+import {
+  brandColor,
+  ButtonWS,
+  HeadingWS,
+  TextWS,
+} from '../../config/grommetConfig';
 import { useFonts } from '../../contexts/fontContext';
 import styled from 'styled-components';
 import CharacterImprovementDialog from '../dialogs/CharacterImprovementDialog';
@@ -61,20 +66,22 @@ export const IMPROVEMENT_INSTRUCTIONS =
   'Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, an experience circle will be marked. When the 5th is marked, you can make an improvement.';
 
 const ImprovementBox: FC<ImprovementBoxProps> = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [showDialog, setShowDialog] = useState(false);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { character, userGameRole } = useGame();
   const experience = character?.experience;
   const allowedImprovements = character?.allowedImprovements;
   const { crustReady } = useFonts();
 
-  // ------------------------------------------------------ GraphQL -------------------------------------------------------- //
-  const [spendExperience, { loading: spendingExperience }] =
-    useMutation<SpendExperienceData, SpendExperienceVars>(SPEND_EXPERIENCE);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [spendExperience, { loading: spendingExperience }] = useMutation<
+    SpendExperienceData,
+    SpendExperienceVars
+  >(SPEND_EXPERIENCE);
 
-  // ------------------------------------------------ Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   let experiences: { filled: boolean }[] = [];
   let overflow: number | undefined;
 
@@ -93,12 +100,20 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
   let unAllocatedImprovements: number | undefined;
   if (allowedImprovements !== undefined && !!character) {
     unAllocatedImprovements =
-      allowedImprovements - (character.improvementMoves.length + character.futureImprovementMoves.length);
+      allowedImprovements -
+      (character.improvementMoves.length +
+        character.futureImprovementMoves.length);
   }
 
   const handleClickImprove = async () => {
     // spend experience if necessary
-    if (!!userGameRole && !!character && !character.isDead && experience !== undefined && experience >= 5) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      experience !== undefined &&
+      experience >= 5
+    ) {
       try {
         await spendExperience({
           variables: { gameRoleId: userGameRole.id, characterId: character.id },
@@ -115,21 +130,42 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
 
   return (
     <CollapsiblePanelBox open title="Improvement">
-      <Box fill="horizontal" align="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
-        {showDialog && <CharacterImprovementDialog handleClose={() => setShowDialog(false)} />}
+      <Box
+        fill="horizontal"
+        align="start"
+        animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+      >
+        {showDialog && (
+          <CharacterImprovementDialog
+            handleClose={() => setShowDialog(false)}
+          />
+        )}
         <Box fill="horizontal" pad="12px">
           <TextWS>{IMPROVEMENT_INSTRUCTIONS}</TextWS>
           {experience !== undefined && (
-            <Box fill="horizontal" direction="row" align="center" justify="between">
+            <Box
+              fill="horizontal"
+              direction="row"
+              align="center"
+              justify="between"
+            >
               <HeadingWS level={4} crustReady={crustReady}>
                 Experience
               </HeadingWS>
-              <Box direction="row" align="center" gap="6px" margin={{ horizontal: '6px' }}>
+              <Box
+                direction="row"
+                align="center"
+                gap="6px"
+                margin={{ horizontal: '6px' }}
+              >
                 {experiences?.map((ex, index) =>
                   ex.filled ? (
                     <FilledExperience key={index} data-testid="filled-circle" />
                   ) : (
-                    <UnfilledExperience key={index} data-testid="unfilled-circle" />
+                    <UnfilledExperience
+                      key={index}
+                      data-testid="unfilled-circle"
+                    />
                   )
                 )}
                 {!!overflow && <OverflowPill>{`+ ${overflow}`}</OverflowPill>}
@@ -143,7 +179,12 @@ const ImprovementBox: FC<ImprovementBoxProps> = () => {
             </Box>
           )}
           {character?.improvementMoves.map((move) => (
-            <CheckBox key={move.id} label={<StyledMarkdown>{move.description}</StyledMarkdown>} checked disabled />
+            <CheckBox
+              key={move.id}
+              label={<StyledMarkdown>{move.description}</StyledMarkdown>}
+              checked
+              disabled
+            />
           ))}
         </Box>
       </Box>

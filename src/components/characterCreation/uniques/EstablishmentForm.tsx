@@ -7,8 +7,19 @@ import { Box, CheckBox, Select, Text } from 'grommet';
 
 import Spinner from '../../Spinner';
 import { StyledMarkdown } from '../../styledComponents';
-import { accentColors, ButtonWS, HeadingWS, ParagraphWS, RedBox, TextInputWS, TextWS } from '../../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  ParagraphWS,
+  RedBox,
+  TextInputWS,
+  TextWS,
+} from '../../../config/grommetConfig';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../../queries/playbookCreator';
 import SET_ESTABLISHMENT, {
   getSetEstablishmentOR,
   SetEstablishmentData,
@@ -20,24 +31,21 @@ import { SecurityOption } from '../../../@types/staticDataInterfaces';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { CastCrew } from '../../../@types/dataInterfaces';
-import { ADJUST_MAESTROD_UNIQUE_2_NAME, INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
+import {
+  ADD_TEXT,
+  ADJUST_MAESTROD_UNIQUE_2_NAME,
+  ATMOSPHERE_INSTRUCTIONS,
+  ATTRACTIONS_INSTRUCTIONS,
+  CAST_CREW_INSTRUCTIONS,
+  INCREASED_BY_IMPROVEMENT_TEXT,
+  INTERESTED_NPCS_INSTRUCTIONS,
+  REGULARS_INSTRUCTIONS,
+  RESOLVED_INTEREST_TEXT,
+  SELECT_SIDE_ATTRACTIONS,
+  SET_TEXT,
+} from '../../../config/constants';
 import EstablishmentInterestResolutionDialog from '../../dialogs/EstablishmentInterestResolutionDialog';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
-
-const ATTRACTIONS_INSTRUCTIONS =
-  'Your establishment features one main attraction supported by 2 side attractions (like a bar features drinks, supported by music and easy food). Choose one to be your main act and 2 for lube:';
-
-const CAST_CREW_INSTRUCTIONS =
-  "Your cast & crew can consist entirely of the other players' characters, with their agreement, or entirely of NPCs, or any mix. If it includes any NPCs, sketch them out - names and the 1-line descriptions - with the MC. Make sure they suit your establishment's scene.";
-
-const REGULARS_INSTRUCTIONS = '_**Your regulars**_ include these 5 NPCs (at least): Lamprey, Ba, Camo, Toyota and Lits.';
-
-const ATMOSPHERE_INSTRUCTIONS = "_**For your establishment's atmosphere**_, choose 3 or 4:";
-
-const INTERESTED_NPCS_INSTRUCTIONS =
-  'These 3 NPCs (at least) have an _**interest in your establishment**_: Been, Rolfball, Gams.';
-
-export const RESOLVED_INTEREST_TEXT = 'Interest resolved';
 
 interface EstablishmentBoxWrapperProps {
   children: JSX.Element;
@@ -45,7 +53,11 @@ interface EstablishmentBoxWrapperProps {
   width?: string;
 }
 
-export const EstablishmentBoxWrapper: FC<EstablishmentBoxWrapperProps> = ({ children, title, width = '200px' }) => (
+export const EstablishmentBoxWrapper: FC<EstablishmentBoxWrapperProps> = ({
+  children,
+  title,
+  width = '200px',
+}) => (
   <Box
     data-testid={`${title.toLowerCase()}-box`}
     align="center"
@@ -67,11 +79,17 @@ interface AttractionsBoxProps {
   width?: string;
 }
 
-export const AttractionsBox: FC<AttractionsBoxProps> = ({ mainAttraction, sideAttractions, width }) => (
+export const AttractionsBox: FC<AttractionsBoxProps> = ({
+  mainAttraction,
+  sideAttractions,
+  width,
+}) => (
   <EstablishmentBoxWrapper title="Attractions" width={width}>
     <>
       {!!mainAttraction && <TextWS>Main: {mainAttraction}</TextWS>}
-      {sideAttractions.length > 0 && <TextWS>Side: {sideAttractions.join(', ')}</TextWS>}
+      {sideAttractions.length > 0 && (
+        <TextWS>Side: {sideAttractions.join(', ')}</TextWS>
+      )}
     </>
   </EstablishmentBoxWrapper>
 );
@@ -81,7 +99,10 @@ interface AtmosphereBoxProps {
   width?: string;
 }
 
-export const AtmosphereBox: FC<AtmosphereBoxProps> = ({ atmospheres, width }) => (
+export const AtmosphereBox: FC<AtmosphereBoxProps> = ({
+  atmospheres,
+  width,
+}) => (
   <EstablishmentBoxWrapper title="Atmosphere" width={width}>
     <>{atmospheres.length > 0 && <TextWS>{atmospheres.join(', ')}</TextWS>}</>
   </EstablishmentBoxWrapper>
@@ -94,7 +115,12 @@ interface RegularsBoxProps {
   width?: string;
 }
 
-export const RegularsBox: FC<RegularsBoxProps> = ({ regulars, bestRegular, worstRegular, width }) => (
+export const RegularsBox: FC<RegularsBoxProps> = ({
+  regulars,
+  bestRegular,
+  worstRegular,
+  width,
+}) => (
   <EstablishmentBoxWrapper title="Regulars" width={width}>
     <>
       {regulars.length > 0 && <TextWS>{regulars.join(', ')}</TextWS>}
@@ -121,7 +147,9 @@ export const InterestedPartiesBox: FC<InterestedPartiesBoxProps> = ({
 }) => (
   <EstablishmentBoxWrapper title="Interested NPCs" width={width}>
     <>
-      {interestedParties.length > 0 && <TextWS>{interestedParties.join(', ')}</TextWS>}
+      {interestedParties.length > 0 && (
+        <TextWS>{interestedParties.join(', ')}</TextWS>
+      )}
       {!!wantsInOnIt && <TextWS>{wantsInOnIt} wants in on it</TextWS>}
       {!!oweForIt && <TextWS>You owe {oweForIt} for it</TextWS>}
       {!!wantsItGone && <TextWS>{wantsItGone} wants it gone</TextWS>}
@@ -134,11 +162,16 @@ interface SecurityBoxProps {
   width?: string;
 }
 
-export const SecurityBox: FC<SecurityBoxProps> = ({ securityOptions, width }) => (
+export const SecurityBox: FC<SecurityBoxProps> = ({
+  securityOptions,
+  width,
+}) => (
   <EstablishmentBoxWrapper title="Security" width={width}>
     <>
       {securityOptions.length > 0 &&
-        securityOptions.map((opt: SecurityOption) => <TextWS key={opt.id}>{opt.description}</TextWS>)}
+        securityOptions.map((opt: SecurityOption) => (
+          <TextWS key={opt.id}>{opt.description}</TextWS>
+        ))}
     </>
   </EstablishmentBoxWrapper>
 );
@@ -149,7 +182,11 @@ interface CastCrewBoxProps {
 
 export const CastCrewBox: FC<CastCrewBoxProps> = ({ castAndCrew }) => (
   <EstablishmentBoxWrapper title="Cast & Crew">
-    <>{castAndCrew.length > 0 && <TextWS>{castAndCrew.map((cc: CastCrew) => cc.name).join(', ')}</TextWS>}</>
+    <>
+      {castAndCrew.length > 0 && (
+        <TextWS>{castAndCrew.map((cc: CastCrew) => cc.name).join(', ')}</TextWS>
+      )}
+    </>
   </EstablishmentBoxWrapper>
 );
 
@@ -175,7 +212,10 @@ interface Action {
   payload?: any;
 }
 
-const establishmentFormReducer = (state: EstablishmentInput, action: Action) => {
+const establishmentFormReducer = (
+  state: EstablishmentInput,
+  action: Action
+) => {
   switch (action.type) {
     case 'SET_EXISTING_ESTABLISHMENT':
       return {
@@ -195,7 +235,9 @@ const establishmentFormReducer = (state: EstablishmentInput, action: Action) => 
     case 'REMOVE_SIDE_ATTRACTION':
       return {
         ...state,
-        sideAttractions: state.sideAttractions.filter((attr) => attr !== action.payload),
+        sideAttractions: state.sideAttractions.filter(
+          (attr) => attr !== action.payload
+        ),
       };
     case 'ADD_SIDE_ATTRACTION':
       return {
@@ -205,7 +247,9 @@ const establishmentFormReducer = (state: EstablishmentInput, action: Action) => 
     case 'REMOVE_ATMOSPHERE':
       return {
         ...state,
-        atmospheres: state.atmospheres.filter((atmos) => atmos !== action.payload),
+        atmospheres: state.atmospheres.filter(
+          (atmos) => atmos !== action.payload
+        ),
       };
     case 'ADD_ATMOSPHERE':
       return {
@@ -250,7 +294,9 @@ const establishmentFormReducer = (state: EstablishmentInput, action: Action) => 
     case 'REMOVE_SECURITY_OPTION':
       return {
         ...state,
-        securityOptions: state.securityOptions.filter((opt) => opt.id !== action.payload.id),
+        securityOptions: state.securityOptions.filter(
+          (opt) => opt.id !== action.payload.id
+        ),
       };
     case 'ADD_SECURITY_OPTION':
       return {
@@ -285,7 +331,7 @@ const initialState: EstablishmentInput = {
 };
 
 const EstablishmentForm: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [
     {
       securitiesCount,
@@ -310,25 +356,34 @@ const EstablishmentForm: FC = () => {
   const [crewName, setCrewName] = useState('');
   const [crewDesc, setCrewDesc] = useState('');
   const [needsInterestResolution, setNeedsInterestResolution] = useState(false);
-  const [hasResolveInterestImprovement, setHasResolveInterestImprovement] = useState(false);
+  const [hasResolveInterestImprovement, setHasResolveInterestImprovement] =
+    useState(false);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     variables: { playbookType: PlaybookType.maestroD },
   });
-  const establishmentCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.establishmentCreator;
-  const [setEstablishment, { loading: settingEstablishment }] =
-    useMutation<SetEstablishmentData, SetEstablishmentVars>(SET_ESTABLISHMENT);
+  const establishmentCreator =
+    pbCreatorData?.playbookCreator.playbookUniqueCreator?.establishmentCreator;
+  const [setEstablishment, { loading: settingEstablishment }] = useMutation<
+    SetEstablishmentData,
+    SetEstablishmentVars
+  >(SET_ESTABLISHMENT);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const securityValues = securityOptions.map((opt: SecurityOption) => opt.value);
+  // ----------------------------- Component functions ------------------------- //
+  const securityValues = securityOptions.map(
+    (opt: SecurityOption) => opt.value
+  );
 
   const isEstablishmentComplete = (): boolean => {
     if (hasResolveInterestImprovement) {
@@ -355,7 +410,8 @@ const EstablishmentForm: FC = () => {
         regulars.length >= 5 &&
         interestedParties.length >= 3 &&
         securityValues.length > 0 &&
-        securityValues.reduce((a: number, b: number) => a + b) === securitiesCount &&
+        securityValues.reduce((a: number, b: number) => a + b) ===
+          securitiesCount &&
         castAndCrew.length > 0
       );
     } else {
@@ -371,7 +427,8 @@ const EstablishmentForm: FC = () => {
         regulars.length >= 5 &&
         interestedParties.length >= 3 &&
         securityValues.length > 0 &&
-        securityValues.reduce((a: number, b: number) => a + b) === securitiesCount &&
+        securityValues.reduce((a: number, b: number) => a + b) ===
+          securitiesCount &&
         castAndCrew.length > 0
       );
     }
@@ -380,12 +437,18 @@ const EstablishmentForm: FC = () => {
   const handleSubmitEstablishment = async () => {
     if (!!userGameRole && !!character && !!game && isEstablishmentComplete()) {
       // @ts-ignore
-      const securityNoTypename = securityOptions.map((so: SecurityOption) => omit(so, ['__typename']));
+      const securityNoTypename = securityOptions.map((so: SecurityOption) =>
+        omit(so, ['__typename'])
+      );
       // @ts-ignore
-      const crewNoTypename = castAndCrew.map((cc: CastCrew) => omit(cc, ['__typename']));
+      const crewNoTypename = castAndCrew.map((cc: CastCrew) =>
+        omit(cc, ['__typename'])
+      );
 
       const establishmentInput: EstablishmentInput = {
-        id: character.playbookUniques?.establishment ? character.playbookUniques.establishment.id : undefined,
+        id: character.playbookUniques?.establishment
+          ? character.playbookUniques.establishment.id
+          : undefined,
         mainAttraction,
         bestRegular,
         worstRegular,
@@ -403,12 +466,21 @@ const EstablishmentForm: FC = () => {
 
       try {
         setEstablishment({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, establishment: establishmentInput },
-          optimisticResponse: getSetEstablishmentOR(character, establishmentInput),
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            establishment: establishmentInput,
+          },
+          optimisticResponse: getSetEstablishmentOR(
+            character,
+            establishmentInput
+          ),
         });
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
+          history.push(
+            `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
+          );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
       } catch (error) {
@@ -419,7 +491,9 @@ const EstablishmentForm: FC = () => {
 
   const handleMainAttractionSelect = (attraction: string) => {
     if (!!establishmentCreator) {
-      setWorkingAttractions(() => establishmentCreator?.attractions.filter((attr) => attr !== attraction));
+      setWorkingAttractions(() =>
+        establishmentCreator?.attractions.filter((attr) => attr !== attraction)
+      );
       dispatch({ type: 'SET_MAIN_ATTRACTION', payload: attraction });
       if (sideAttractions.includes(attraction)) {
         dispatch({ type: 'REMOVE_SIDE_ATTRACTION', payload: attraction });
@@ -431,7 +505,9 @@ const EstablishmentForm: FC = () => {
     if (!!establishmentCreator) {
       if (sideAttractions.includes(attraction)) {
         dispatch({ type: 'REMOVE_SIDE_ATTRACTION', payload: attraction });
-      } else if (sideAttractions.length < establishmentCreator.sideAttractionCount) {
+      } else if (
+        sideAttractions.length < establishmentCreator.sideAttractionCount
+      ) {
         dispatch({ type: 'ADD_SIDE_ATTRACTION', payload: attraction });
       }
     }
@@ -462,7 +538,8 @@ const EstablishmentForm: FC = () => {
       dispatch({ type: 'REMOVE_SECURITY_OPTION', payload: option });
     } else if (
       securityValues.length === 0 ||
-      securityValues.reduce((a: number, b: number) => a + b) + option.value <= securitiesCount
+      securityValues.reduce((a: number, b: number) => a + b) + option.value <=
+        securitiesCount
     ) {
       dispatch({ type: 'ADD_SECURITY_OPTION', payload: option });
     }
@@ -479,15 +556,20 @@ const EstablishmentForm: FC = () => {
     setCrewDesc('');
   };
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   // Set workingAttractions when component mounts
   useEffect(() => {
     if (!!establishmentCreator && !character?.playbookUniques?.establishment) {
       setWorkingAttractions(establishmentCreator.attractions);
-    } else if (!!establishmentCreator && !!character?.playbookUniques?.establishment) {
+    } else if (
+      !!establishmentCreator &&
+      !!character?.playbookUniques?.establishment
+    ) {
       const { mainAttraction } = character.playbookUniques.establishment;
-      const filteredAttractions = establishmentCreator.attractions.filter((attr) => attr !== mainAttraction);
+      const filteredAttractions = establishmentCreator.attractions.filter(
+        (attr) => attr !== mainAttraction
+      );
       setWorkingAttractions(filteredAttractions);
     }
   }, [character, establishmentCreator]);
@@ -495,7 +577,10 @@ const EstablishmentForm: FC = () => {
   // Set existing or blank Establishment when component mounts
   useEffect(() => {
     if (!!character?.playbookUniques?.establishment) {
-      dispatch({ type: 'SET_EXISTING_ESTABLISHMENT', payload: character.playbookUniques.establishment });
+      dispatch({
+        type: 'SET_EXISTING_ESTABLISHMENT',
+        payload: character.playbookUniques.establishment,
+      });
     } else if (!!establishmentCreator) {
       dispatch({
         type: 'SET_DEFAULT_ESTABLISHMENT',
@@ -510,7 +595,11 @@ const EstablishmentForm: FC = () => {
 
   // Calculates whether the user needs to resolve an interest in the Establishment
   useEffect(() => {
-    if (character?.improvementMoves.some((move) => move.name === ADJUST_MAESTROD_UNIQUE_2_NAME)) {
+    if (
+      character?.improvementMoves.some(
+        (move) => move.name === ADJUST_MAESTROD_UNIQUE_2_NAME
+      )
+    ) {
       setHasResolveInterestImprovement(true);
       if (!!wantsInOnIt && !!wantsItGone && !!oweForIt) {
         setNeedsInterestResolution(true);
@@ -523,13 +612,17 @@ const EstablishmentForm: FC = () => {
     }
   }, [character, oweForIt, wantsInOnIt, wantsItGone]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderPills = (atmosphere: string) => (
     <Box
       data-testid={`${atmosphere}-pill`}
       key={atmosphere}
-      background={atmospheres.includes(atmosphere) ? { color: '#698D70', dark: true } : '#4C684C'}
+      background={
+        atmospheres.includes(atmosphere)
+          ? { color: '#698D70', dark: true }
+          : '#4C684C'
+      }
       round="medium"
       pad={{ top: '3px', bottom: '1px', horizontal: '12px' }}
       margin={{ vertical: '3px', horizontal: '3px' }}
@@ -552,7 +645,11 @@ const EstablishmentForm: FC = () => {
       style={{ maxWidth: '763px' }}
     >
       {needsInterestResolution && (
-        <EstablishmentInterestResolutionDialog oweForIt={oweForIt} wantsInOnIt={wantsInOnIt} wantsItGone={wantsItGone} />
+        <EstablishmentInterestResolutionDialog
+          oweForIt={oweForIt}
+          wantsInOnIt={wantsInOnIt}
+          wantsItGone={wantsItGone}
+        />
       )}
       <Box direction="row" fill="horizontal" align="center" justify="between">
         <HeadingWS
@@ -560,10 +657,18 @@ const EstablishmentForm: FC = () => {
           level={2}
           alignSelf="center"
           style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
-        >{`${!!character?.name ? character.name?.toUpperCase() : '...'}'S ESTABLISHMENT`}</HeadingWS>
+        >{`${
+          !!character?.name ? character.name?.toUpperCase() : '...'
+        }'S ESTABLISHMENT`}</HeadingWS>
         <ButtonWS
           primary
-          label={settingEstablishment ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
+          label={
+            settingEstablishment ? (
+              <Spinner fillColor="#FFF" width="36px" height="36px" />
+            ) : (
+              SET_TEXT
+            )
+          }
           onClick={() => !settingEstablishment && handleSubmitEstablishment()}
           disabled={settingEstablishment || !isEstablishmentComplete()}
           style={{ height: '45px' }}
@@ -571,7 +676,10 @@ const EstablishmentForm: FC = () => {
       </Box>
       <Box fill="horizontal" direction="row" justify="between" gap="12px">
         <Box>
-          <ParagraphWS style={{ maxWidth: '500px' }} margin={{ top: '0px', bottom: '3px' }}>
+          <ParagraphWS
+            style={{ maxWidth: '500px' }}
+            margin={{ top: '0px', bottom: '3px' }}
+          >
             {ATTRACTIONS_INSTRUCTIONS}
           </ParagraphWS>
           <Select
@@ -584,14 +692,20 @@ const EstablishmentForm: FC = () => {
             onChange={(e) => handleMainAttractionSelect(e.value)}
           />
 
-          <ParagraphWS margin={{ top: '12px', bottom: '3px' }}>Select side attractions:</ParagraphWS>
+          <ParagraphWS margin={{ top: '12px', bottom: '3px' }}>
+            {SELECT_SIDE_ATTRACTIONS + ':'}
+          </ParagraphWS>
           <Box direction="row" wrap gap="6px">
             {workingAttractions.map((attr, index) => (
               <CheckBox
                 key={attr + index.toString()}
                 name={attr}
                 checked={sideAttractions.includes(attr)}
-                label={<TextWS style={{ minWidth: '90px', height: '20px' }}>{attr}</TextWS>}
+                label={
+                  <TextWS style={{ minWidth: '90px', height: '20px' }}>
+                    {attr}
+                  </TextWS>
+                }
                 value={attr}
                 onChange={(e) => handleSelectSideAttraction(e.target.value)}
                 style={{ marginBottom: '3px' }}
@@ -599,18 +713,33 @@ const EstablishmentForm: FC = () => {
             ))}
           </Box>
         </Box>
-        <AttractionsBox mainAttraction={mainAttraction} sideAttractions={sideAttractions} />
+        <AttractionsBox
+          mainAttraction={mainAttraction}
+          sideAttractions={sideAttractions}
+        />
       </Box>
-      <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
+      <Box
+        fill="horizontal"
+        justify="between"
+        gap="12px"
+        margin={{ top: '6px' }}
+      >
         <StyledMarkdown>{ATMOSPHERE_INSTRUCTIONS}</StyledMarkdown>
         <Box direction="row" gap="12px">
           <Box direction="row" wrap>
-            {establishmentCreator?.atmospheres.map((atmosphere) => renderPills(atmosphere))}
+            {establishmentCreator?.atmospheres.map((atmosphere) =>
+              renderPills(atmosphere)
+            )}
           </Box>
           <AtmosphereBox atmospheres={atmospheres} />
         </Box>
       </Box>
-      <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
+      <Box
+        fill="horizontal"
+        justify="between"
+        gap="12px"
+        margin={{ top: '6px' }}
+      >
         <StyledMarkdown>{REGULARS_INSTRUCTIONS}</StyledMarkdown>
         <Box direction="row" justify="between" align="center" gap="12px">
           <Box gap="12px">
@@ -619,12 +748,14 @@ const EstablishmentForm: FC = () => {
                 aria-label="additional-regular-input"
                 placeholder="Add regular (optional)"
                 value={regularName}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setRegularName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setRegularName(e.target.value)
+                }
               />
               <ButtonWS
                 id="add-additional-regular-button"
                 secondary
-                label="ADD"
+                label={ADD_TEXT}
                 disabled={!regularName || regulars.includes(regularName)}
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none', width: '100px' }}
@@ -632,30 +763,47 @@ const EstablishmentForm: FC = () => {
               />
             </Box>
             <Box direction="row" fill align="center" gap="12px">
-              <TextWS style={{ minWidth: '250px' }}>{establishmentCreator?.regularsQuestions[0]}</TextWS>
+              <TextWS style={{ minWidth: '250px' }}>
+                {establishmentCreator?.regularsQuestions[0]}
+              </TextWS>
               <Select
                 aria-label="best-regular-input"
                 placeholder="Select regular"
                 value={bestRegular}
                 options={regulars.filter((reg: string) => reg !== worstRegular)}
-                onChange={(e) => dispatch({ type: 'SET_BEST_REGULAR', payload: e.value })}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_BEST_REGULAR', payload: e.value })
+                }
               />
             </Box>
             <Box direction="row" fill align="center" gap="12px">
-              <TextWS style={{ minWidth: '250px' }}>{establishmentCreator?.regularsQuestions[1]}</TextWS>
+              <TextWS style={{ minWidth: '250px' }}>
+                {establishmentCreator?.regularsQuestions[1]}
+              </TextWS>
               <Select
                 aria-label="worst-regular-input"
                 placeholder="Select regular"
                 value={worstRegular}
                 options={regulars.filter((reg: string) => reg !== bestRegular)}
-                onChange={(e) => dispatch({ type: 'SET_WORST_REGULAR', payload: e.value })}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_WORST_REGULAR', payload: e.value })
+                }
               />
             </Box>
           </Box>
-          <RegularsBox regulars={regulars} bestRegular={bestRegular} worstRegular={worstRegular} />
+          <RegularsBox
+            regulars={regulars}
+            bestRegular={bestRegular}
+            worstRegular={worstRegular}
+          />
         </Box>
       </Box>
-      <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
+      <Box
+        fill="horizontal"
+        justify="between"
+        gap="12px"
+        margin={{ top: '6px' }}
+      >
         <StyledMarkdown>{INTERESTED_NPCS_INSTRUCTIONS}</StyledMarkdown>
         <Box direction="row" justify="between" gap="12px">
           <Box gap="12px">
@@ -664,57 +812,86 @@ const EstablishmentForm: FC = () => {
                 aria-label="additional-interested-npc-input"
                 placeholder="Add interested NPC (optional)"
                 value={interestedNpcName}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setInterestedNpcName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setInterestedNpcName(e.target.value)
+                }
               />
               <ButtonWS
                 secondary
                 id="add-additional-interest-npc-button"
-                label="ADD"
-                disabled={!interestedNpcName || interestedParties.includes(interestedNpcName)}
+                label={ADD_TEXT}
+                disabled={
+                  !interestedNpcName ||
+                  interestedParties.includes(interestedNpcName)
+                }
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none', width: '100px' }}
                 onClick={() => handleAddInterestedNpc()}
               />
             </Box>
             <Box direction="row" fill align="center" gap="12px">
-              <TextWS style={{ minWidth: '250px' }}>{establishmentCreator?.interestedPartyQuestions[0]}</TextWS>
+              <TextWS style={{ minWidth: '250px' }}>
+                {establishmentCreator?.interestedPartyQuestions[0]}
+              </TextWS>
               {hasResolveInterestImprovement && !wantsInOnIt ? (
-                <TextWS color={accentColors[0]}>{RESOLVED_INTEREST_TEXT}</TextWS>
+                <TextWS color={accentColors[0]}>
+                  {RESOLVED_INTEREST_TEXT}
+                </TextWS>
               ) : (
                 <Select
                   aria-label="wants-in-on-it-input"
                   placeholder="Select NPC"
                   value={wantsInOnIt}
-                  options={interestedParties.filter((npc: string) => npc !== oweForIt && npc !== wantsItGone)}
-                  onChange={(e) => dispatch({ type: 'SET_WANTS_IN', payload: e.value })}
+                  options={interestedParties.filter(
+                    (npc: string) => npc !== oweForIt && npc !== wantsItGone
+                  )}
+                  onChange={(e) =>
+                    dispatch({ type: 'SET_WANTS_IN', payload: e.value })
+                  }
                 />
               )}
             </Box>
             <Box direction="row" fill align="center" gap="12px">
-              <TextWS style={{ minWidth: '250px' }}>{establishmentCreator?.interestedPartyQuestions[1]}</TextWS>
+              <TextWS style={{ minWidth: '250px' }}>
+                {establishmentCreator?.interestedPartyQuestions[1]}
+              </TextWS>
               {hasResolveInterestImprovement && !oweForIt ? (
-                <TextWS color={accentColors[0]}>{RESOLVED_INTEREST_TEXT}</TextWS>
+                <TextWS color={accentColors[0]}>
+                  {RESOLVED_INTEREST_TEXT}
+                </TextWS>
               ) : (
                 <Select
                   aria-label="owes-for-it-input"
                   placeholder="Select NPC"
                   value={oweForIt}
-                  options={interestedParties.filter((npc: string) => npc !== wantsInOnIt && npc !== wantsItGone)}
-                  onChange={(e) => dispatch({ type: 'SET_OWES_FOR_IT', payload: e.value })}
+                  options={interestedParties.filter(
+                    (npc: string) => npc !== wantsInOnIt && npc !== wantsItGone
+                  )}
+                  onChange={(e) =>
+                    dispatch({ type: 'SET_OWES_FOR_IT', payload: e.value })
+                  }
                 />
               )}
             </Box>
             <Box direction="row" fill align="center" gap="12px">
-              <TextWS style={{ minWidth: '250px' }}>{establishmentCreator?.interestedPartyQuestions[2]}</TextWS>
+              <TextWS style={{ minWidth: '250px' }}>
+                {establishmentCreator?.interestedPartyQuestions[2]}
+              </TextWS>
               {hasResolveInterestImprovement && !wantsItGone ? (
-                <TextWS color={accentColors[0]}>{RESOLVED_INTEREST_TEXT}</TextWS>
+                <TextWS color={accentColors[0]}>
+                  {RESOLVED_INTEREST_TEXT}
+                </TextWS>
               ) : (
                 <Select
                   aria-label="wants-it-gone-input"
                   placeholder="Select NPC"
                   value={wantsItGone}
-                  options={interestedParties.filter((npc: string) => npc !== wantsInOnIt && npc !== oweForIt)}
-                  onChange={(e) => dispatch({ type: 'SET_WANTS_IT_GONE', payload: e.value })}
+                  options={interestedParties.filter(
+                    (npc: string) => npc !== wantsInOnIt && npc !== oweForIt
+                  )}
+                  onChange={(e) =>
+                    dispatch({ type: 'SET_WANTS_IT_GONE', payload: e.value })
+                  }
                 />
               )}
             </Box>
@@ -727,23 +904,33 @@ const EstablishmentForm: FC = () => {
           />
         </Box>
       </Box>
-      <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
+      <Box
+        fill="horizontal"
+        justify="between"
+        gap="12px"
+        margin={{ top: '6px' }}
+      >
         <Box direction="row" align="center" gap="12px">
           <strong>
             <em>
               <ParagraphWS>{`For security, choose ${securitiesCount}`}</ParagraphWS>
             </em>
           </strong>
-          {!!establishmentCreator && securitiesCount > establishmentCreator?.defaultSecuritiesCount && (
-            <ParagraphWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
-          )}
+          {!!establishmentCreator &&
+            securitiesCount > establishmentCreator?.defaultSecuritiesCount && (
+              <ParagraphWS color={accentColors[0]}>
+                {INCREASED_BY_IMPROVEMENT_TEXT}
+              </ParagraphWS>
+            )}
         </Box>
         <Box direction="row" justify="between">
           <Box gap="12px">
             {establishmentCreator?.securityOptions.map((option) => (
               <CheckBox
                 key={option.id}
-                checked={securityOptions.map((opt: SecurityOption) => opt.id).includes(option.id)}
+                checked={securityOptions
+                  .map((opt: SecurityOption) => opt.id)
+                  .includes(option.id)}
                 label={
                   <TextWS>
                     {option.description}
@@ -757,7 +944,12 @@ const EstablishmentForm: FC = () => {
           <SecurityBox securityOptions={securityOptions} />
         </Box>
       </Box>
-      <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '6px' }}>
+      <Box
+        fill="horizontal"
+        justify="between"
+        gap="12px"
+        margin={{ top: '6px' }}
+      >
         <StyledMarkdown>{CAST_CREW_INSTRUCTIONS}</StyledMarkdown>
         <Box direction="row" justify="between" gap="12px">
           <Box gap="12px" flex="grow">
@@ -766,12 +958,14 @@ const EstablishmentForm: FC = () => {
                 aria-label="crew-name-input"
                 placeholder="Name"
                 value={crewName}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setCrewName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setCrewName(e.target.value)
+                }
               />
               <ButtonWS
                 id="add-crew-member-button"
                 secondary
-                label="ADD"
+                label={ADD_TEXT}
                 disabled={!crewName}
                 fill="horizontal"
                 style={{ outline: 'none', boxShadow: 'none', width: '100px' }}
@@ -782,7 +976,9 @@ const EstablishmentForm: FC = () => {
               aria-label="crew-description-input"
               placeholder="Short description"
               value={crewDesc}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setCrewDesc(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setCrewDesc(e.target.value)
+              }
             />
           </Box>
           <CastCrewBox castAndCrew={castAndCrew} />

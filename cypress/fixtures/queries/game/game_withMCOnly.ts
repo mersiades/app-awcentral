@@ -1,6 +1,11 @@
 import { Game } from '../../../../src/@types/dataInterfaces';
 import { RoleType } from '../../../../src/@types/enums';
-import { MOCK_GAME_1_ID, MOCK_GAME_1_NAME, MOCK_USER_1_ID, MOCK_USER_1_NAME } from '../../constants';
+import {
+  MOCK_GAME_1_ID,
+  MOCK_GAME_1_NAME,
+  MOCK_USER_1_ID,
+  MOCK_USER_1_NAME,
+} from '../../constants';
 
 const game_withMcOnly: Game = {
   id: MOCK_GAME_1_ID,

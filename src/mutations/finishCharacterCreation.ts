@@ -21,8 +21,14 @@ export const getFinishCharacterCreationOR = (character: Character) => ({
 });
 
 const FINISH_CHARACTER_CREATION = gql`
-  mutation FinishCharacterCreation($gameRoleId: String!, $characterId: String!) {
-    finishCharacterCreation(gameRoleId: $gameRoleId, characterId: $characterId) {
+  mutation FinishCharacterCreation(
+    $gameRoleId: String!
+    $characterId: String!
+  ) {
+    finishCharacterCreation(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+    ) {
       id
       name
       playbook

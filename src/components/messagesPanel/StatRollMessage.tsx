@@ -15,23 +15,56 @@ export interface StatRollMessageProps {
   ticker: number;
 }
 
-const StatRollMessage: FC<StatRollMessageProps> = ({ message, messagesLength, index, ticker }) => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+const StatRollMessage: FC<StatRollMessageProps> = ({
+  message,
+  messagesLength,
+  index,
+  ticker,
+}) => {
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady, vtksReady } = useFonts();
 
   return (
-    <MoveMessage message={message} messagesLength={messagesLength} index={index} ticker={ticker}>
+    <MoveMessage
+      message={message}
+      messagesLength={messagesLength}
+      index={index}
+      ticker={ticker}
+    >
       <Box fill>
-        <Box fill="horizontal" direction="row" align="center" justify="center" pad="12px">
-          <Box direction="row" align="center" justify="center" width="90%" wrap gap="3px">
+        <Box
+          fill="horizontal"
+          direction="row"
+          align="center"
+          justify="center"
+          pad="12px"
+        >
+          <Box
+            direction="row"
+            align="center"
+            justify="center"
+            width="90%"
+            wrap
+            gap="3px"
+          >
             {getDiceImage(message.roll1)}
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               +
             </HeadingWS>
             {getDiceImage(message.roll2)}
             {!!message.modifierStatName && (
               <>
-                <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+                <HeadingWS
+                  crustReady={crustReady}
+                  level={2}
+                  color="brand"
+                  margin="3px"
+                >
                   +
                 </HeadingWS>
                 <Box align="center" justify="between" pad="12px">
@@ -49,7 +82,12 @@ const StatRollMessage: FC<StatRollMessageProps> = ({ message, messagesLength, in
             )}
             {message.additionalModifierName && (
               <>
-                <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+                <HeadingWS
+                  crustReady={crustReady}
+                  level={2}
+                  color="brand"
+                  margin="3px"
+                >
                   +
                 </HeadingWS>
                 <Box align="center" justify="between" pad="12px">
@@ -67,7 +105,12 @@ const StatRollMessage: FC<StatRollMessageProps> = ({ message, messagesLength, in
             )}
             {message.usedPlusOneForward && (
               <>
-                <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+                <HeadingWS
+                  crustReady={crustReady}
+                  level={2}
+                  color="brand"
+                  margin="3px"
+                >
                   +
                 </HeadingWS>
                 <Box align="center" justify="between" pad="12px">
@@ -83,11 +126,27 @@ const StatRollMessage: FC<StatRollMessageProps> = ({ message, messagesLength, in
                 </Box>
               </>
             )}
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               =
             </HeadingWS>
-            <Box align="center" justify="between" pad={{ vertical: '12px', horizontal: '24px' }}>
-              <HeadingWS vtksReady={vtksReady} level={1} color="brand" margin="3px" style={{ fontSize: '80px' }}>
+            <Box
+              align="center"
+              justify="between"
+              pad={{ vertical: '12px', horizontal: '24px' }}
+            >
+              <HeadingWS
+                aria-label="final-roll-result"
+                vtksReady={vtksReady}
+                level={1}
+                color="brand"
+                margin="3px"
+                style={{ fontSize: '80px' }}
+              >
                 {message.rollResult}
               </HeadingWS>
             </Box>

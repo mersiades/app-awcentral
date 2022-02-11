@@ -14,8 +14,16 @@ export interface SetBattleVehicleVars {
 }
 
 const SET_BATTLE_VEHICLE = gql`
-  mutation SetBattleVehicle($gameRoleId: String!, $characterId: String!, $battleVehicle: BattleVehicleInput!) {
-    setBattleVehicle(gameRoleId: $gameRoleId, characterId: $characterId, battleVehicle: $battleVehicle) {
+  mutation SetBattleVehicle(
+    $gameRoleId: String!
+    $characterId: String!
+    $battleVehicle: BattleVehicleInput!
+  ) {
+    setBattleVehicle(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      battleVehicle: $battleVehicle
+    ) {
       id
       name
       playbook

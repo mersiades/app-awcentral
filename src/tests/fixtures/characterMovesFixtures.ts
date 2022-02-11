@@ -12,7 +12,11 @@ import {
   SHARP_2_MAX_NAME,
   WEIRD_2_MAX_NAME,
 } from '../../config/constants';
-import { dummyStatModifier, dummyRollModifier, dummyMoveAction } from './dummyData';
+import {
+  dummyStatModifier,
+  dummyRollModifier,
+  dummyMoveAction,
+} from './dummyData';
 
 import {
   mockCoolMax2Mod,
@@ -145,7 +149,8 @@ export const mockInfirmaryCM: CharacterMove = {
 export const mockProfessionalCompassionCM: CharacterMove = {
   id: 'angel-character-move-id-4',
   name: 'PROFESSIONAL COMPASSION',
-  description: 'you can roll+sharp instead of roll+Hx when you help someone who’s rolling.',
+  description:
+    'you can roll+sharp instead of roll+Hx when you help someone who’s rolling.',
   kind: MoveType.character,
   playbook: PlaybookType.angel,
   stat: StatType.hx,

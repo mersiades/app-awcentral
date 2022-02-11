@@ -67,7 +67,13 @@ export const sectorBase: SectorBaseStyles = {
   cursor: 'pointer',
 };
 
-export const getSector = (value: number, comparator: number, rotate: number, skewY: number, isStabilized: boolean) => {
+export const getSector = (
+  value: number,
+  comparator: number,
+  rotate: number,
+  skewY: number,
+  isStabilized: boolean
+) => {
   const highlightColor = isStabilized ? accentColors[0] : brandColor;
   return {
     ...sectorBase,
@@ -107,7 +113,13 @@ export const oclock9: OClockStyles = {
   left: 0,
 };
 
-const HarmClock: FC<HarmClockProps> = ({ harmValue, isStabilized, diameter = 200, showNumbers = true, margin = 50 }) => {
+const HarmClock: FC<HarmClockProps> = ({
+  harmValue,
+  isStabilized,
+  diameter = 200,
+  showNumbers = true,
+  margin = 50,
+}) => {
   const circle = getCircle(diameter);
 
   return (
@@ -121,7 +133,11 @@ const HarmClock: FC<HarmClockProps> = ({ harmValue, isStabilized, diameter = 200
         data-testid="harm-clock"
         align="center"
         justify="center"
-        style={{ position: 'relative', width: `${diameter + margin}px`, height: `${diameter + margin}px` }}
+        style={{
+          position: 'relative',
+          width: `${diameter + margin}px`,
+          height: `${diameter + margin}px`,
+        }}
       >
         {showNumbers && (
           <>
@@ -141,12 +157,30 @@ const HarmClock: FC<HarmClockProps> = ({ harmValue, isStabilized, diameter = 200
         )}
 
         <div style={circle}>
-          <div data-testid="harm-sector-0" style={getSector(harmValue, 0, 0, 0, isStabilized)} />
-          <div data-testid="harm-sector-1" style={getSector(harmValue, 1, 90, 0, isStabilized)} />
-          <div data-testid="harm-sector-2" style={getSector(harmValue, 2, 180, 0, isStabilized)} />
-          <div data-testid="harm-sector-3" style={getSector(harmValue, 3, 270, -60, isStabilized)} />
-          <div data-testid="harm-sector-4" style={getSector(harmValue, 4, 300, -60, isStabilized)} />
-          <div data-testid="harm-sector-5" style={getSector(harmValue, 5, 330, -60, isStabilized)} />
+          <div
+            data-testid="harm-sector-0"
+            style={getSector(harmValue, 0, 0, 0, isStabilized)}
+          />
+          <div
+            data-testid="harm-sector-1"
+            style={getSector(harmValue, 1, 90, 0, isStabilized)}
+          />
+          <div
+            data-testid="harm-sector-2"
+            style={getSector(harmValue, 2, 180, 0, isStabilized)}
+          />
+          <div
+            data-testid="harm-sector-3"
+            style={getSector(harmValue, 3, 270, -60, isStabilized)}
+          />
+          <div
+            data-testid="harm-sector-4"
+            style={getSector(harmValue, 4, 300, -60, isStabilized)}
+          />
+          <div
+            data-testid="harm-sector-5"
+            style={getSector(harmValue, 5, 330, -60, isStabilized)}
+          />
         </div>
       </Box>
     </Box>

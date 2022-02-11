@@ -20,7 +20,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -65,13 +68,17 @@ describe('Rendering AngelKitForm', () => {
 
     await screen.findByTestId('angel-kit-form');
 
-    await screen.findByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S ANGEL KIT` });
+    await screen.findByRole('heading', {
+      name: `${mockCharacter2.name?.toUpperCase()}'S ANGEL KIT`,
+    });
     screen.getByRole('heading', { name: 'Stock' });
-    const setButton = screen.getByRole('button', { name: /SET/i }) as HTMLButtonElement;
+    const setButton = screen.getByRole('button', {
+      name: /SET/i,
+    }) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(false);
 
-    expect(screen.getByRole('heading', { name: 'stock-value' }).textContent).toEqual(
-      mockAngelKitCreator.startingStock.toString()
-    );
+    expect(
+      screen.getByRole('heading', { name: 'stock-value' }).textContent
+    ).toEqual(mockAngelKitCreator.startingStock.toString());
   });
 });

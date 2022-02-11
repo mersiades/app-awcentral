@@ -8,7 +8,10 @@ interface PrivateRootProps {
   exact?: boolean;
 }
 
-const PrivateRoute: FC<PrivateRootProps> = ({ component: Component, ...rest }) => {
+const PrivateRoute: FC<PrivateRootProps> = ({
+  component: Component,
+  ...rest
+}) => {
   const { keycloak } = useKeycloak();
 
   /**
@@ -23,7 +26,14 @@ const PrivateRoute: FC<PrivateRootProps> = ({ component: Component, ...rest }) =
   /**
    * As a fallback option, redirect unauthorised users to LandingPage
    */
-  return <Route {...rest} render={(props) => (keycloak.authenticated ? <Component {...props} /> : <Redirect to="/" />)} />;
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        keycloak.authenticated ? <Component {...props} /> : <Redirect to="/" />
+      }
+    />
+  );
 };
 
 export default PrivateRoute;

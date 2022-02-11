@@ -2,40 +2,59 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import { Box, TextArea } from 'grommet';
 
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
-import { ButtonWS, CustomUL, HeadingWS, RedBox, TextInputWS, TextWS } from '../../config/grommetConfig';
+import {
+  ButtonWS,
+  CustomUL,
+  HeadingWS,
+  RedBox,
+  TextInputWS,
+  TextWS,
+} from '../../config/grommetConfig';
 import { Project } from '../../@types/dataInterfaces';
 import { useGame } from '../../contexts/gameContext';
 import { StyledMarkdown } from '../styledComponents';
 import { useFonts } from '../../contexts/fontContext';
 import { AddCircle, Edit, SubtractCircle, Trash } from 'grommet-icons';
 import { useMutation } from '@apollo/client';
-import ADD_PROJECT, { AddProjectData, AddProjectVars } from '../../mutations/addProject';
+import ADD_PROJECT, {
+  AddProjectData,
+  AddProjectVars,
+} from '../../mutations/addProject';
 import { ProjectInput } from '../../@types';
 import { UniqueTypes } from '../../@types/enums';
 import WarningDialog from '../dialogs/WarningDialog';
-import REMOVE_PROJECT, { RemoveProjectData, RemoveProjectVars } from '../../mutations/removeProject';
+import REMOVE_PROJECT, {
+  RemoveProjectData,
+  RemoveProjectVars,
+} from '../../mutations/removeProject';
 
 interface WorkShopBoxProps {
   navigateToCharacterCreation: (step: string) => void;
 }
 
 const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [showAddProject, setShowAddProject] = useState(false);
   const [projectId, setProjectId] = useState('');
   const [projectName, setProjectName] = useState('');
   const [projectNotes, setProjectNotes] = useState('');
   const [showWarningDialog, setShowWarningDialog] = useState(false);
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
 
-  const [addProject, { loading: addingProject }] = useMutation<AddProjectData, AddProjectVars>(ADD_PROJECT);
-  const [removeProject, { loading: removingProject }] = useMutation<RemoveProjectData, RemoveProjectVars>(REMOVE_PROJECT);
+  const [addProject, { loading: addingProject }] = useMutation<
+    AddProjectData,
+    AddProjectVars
+  >(ADD_PROJECT);
+  const [removeProject, { loading: removingProject }] = useMutation<
+    RemoveProjectData,
+    RemoveProjectVars
+  >(REMOVE_PROJECT);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const workspace = character?.playbookUniques?.workspace;
 
   const resetProject = () => {
@@ -45,7 +64,13 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
   };
 
   const handleAddProject = async () => {
-    if (!!character && !!userGameRole && !!projectName && !!workspace && !character.isDead) {
+    if (
+      !!character &&
+      !!userGameRole &&
+      !!projectName &&
+      !!workspace &&
+      !character.isDead
+    ) {
       const projectInput: ProjectInput = {
         id: !!projectId ? projectId : undefined,
         name: projectName,
@@ -57,13 +82,20 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
         type: UniqueTypes.workspace,
         workspace: {
           ...workspace,
-          projects: [...workspace.projects, { ...projectInput, id: projectInput.id || 'temporary-id' }],
+          projects: [
+            ...workspace.projects,
+            { ...projectInput, id: projectInput.id || 'temporary-id' },
+          ],
         },
       };
 
       try {
         await addProject({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, project: projectInput },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            project: projectInput,
+          },
           optimisticResponse: {
             __typename: 'Mutation',
             addProject: {
@@ -102,13 +134,19 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
         type: UniqueTypes.workspace,
         workspace: {
           ...workspace,
-          projects: workspace.projects.filter((project) => project.id !== projectId),
+          projects: workspace.projects.filter(
+            (project) => project.id !== projectId
+          ),
         },
       };
 
       try {
         await removeProject({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, project: projectInput },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            project: projectInput,
+          },
           optimisticResponse: {
             __typename: 'Mutation',
             removeProject: {
@@ -126,7 +164,7 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
     }
   };
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <CollapsiblePanelBox
       open
@@ -134,7 +172,11 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
       navigateToCharacterCreation={navigateToCharacterCreation}
       targetCreationStep="6"
     >
-      <Box fill="horizontal" align="start" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+      <Box
+        fill="horizontal"
+        align="start"
+        animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+      >
         {showWarningDialog && (
           <WarningDialog
             title="Delete project?"
@@ -148,7 +190,12 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
           />
         )}
         <div>
-          <Box align="center" style={{ float: 'right' }} margin={{ left: '12px', bottom: '12px' }} width="50%">
+          <Box
+            align="center"
+            style={{ float: 'right' }}
+            margin={{ left: '12px', bottom: '12px' }}
+            width="50%"
+          >
             <RedBox pad="12px">
               <CustomUL>
                 {workspace?.workspaceItems.map((item) => (
@@ -158,7 +205,11 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
             </RedBox>
             <TextWS weight={600}>Workshop items</TextWS>
           </Box>
-          <StyledMarkdown>{!!workspace?.workspaceInstructions ? workspace.workspaceInstructions : '...'}</StyledMarkdown>
+          <StyledMarkdown>
+            {!!workspace?.workspaceInstructions
+              ? workspace.workspaceInstructions
+              : '...'}
+          </StyledMarkdown>
         </div>
         <Box direction="row">
           <HeadingWS crustReady={crustReady} level={3}>
@@ -166,7 +217,11 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
           </HeadingWS>
           <Box margin={{ horizontal: '24px' }} justify="center" align="center">
             {showAddProject && !projectId ? (
-              <SubtractCircle color="brand" style={{ cursor: 'pointer' }} onClick={() => setShowAddProject(false)} />
+              <SubtractCircle
+                color="brand"
+                style={{ cursor: 'pointer' }}
+                onClick={() => setShowAddProject(false)}
+              />
             ) : (
               <AddCircle
                 color="brand"
@@ -180,12 +235,23 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
           </Box>
         </Box>
         {showAddProject && (
-          <Box fill="horizontal" gap="12px" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+          <Box
+            fill="horizontal"
+            gap="12px"
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
+          >
             <Box direction="row" fill="horizontal" align="center" gap="12px">
               <TextInputWS
                 placeholder="Name"
                 value={projectName}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setProjectName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setProjectName(e.target.value)
+                }
                 style={{ flex: 1 }}
               />
               <ButtonWS
@@ -193,20 +259,42 @@ const WorkshopBox: FC<WorkShopBoxProps> = ({ navigateToCharacterCreation }) => {
                 label={!!projectId ? 'UPDATE' : 'ADD'}
                 disabled={!projectName || !!addingProject}
                 fill="horizontal"
-                style={{ outline: 'none', boxShadow: 'none', width: !!projectId ? '128px' : '100px', flex: 'grow' }}
+                style={{
+                  outline: 'none',
+                  boxShadow: 'none',
+                  width: !!projectId ? '128px' : '100px',
+                  flex: 'grow',
+                }}
                 onClick={() => !addingProject && handleAddProject()}
               />
             </Box>
             <TextArea
               placeholder="Notes"
               value={projectNotes}
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setProjectNotes(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                setProjectNotes(e.target.value)
+              }
             />
           </Box>
         )}
         {workspace?.projects.map((project: Project) => (
-          <Box key={project.id} fill="horizontal" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
-            <Box direction="row" fill="horizontal" justify="between" align="end" gap="12px">
+          <Box
+            key={project.id}
+            fill="horizontal"
+            animation={{
+              type: 'fadeIn',
+              delay: 0,
+              duration: 500,
+              size: 'xsmall',
+            }}
+          >
+            <Box
+              direction="row"
+              fill="horizontal"
+              justify="between"
+              align="end"
+              gap="12px"
+            >
               <HeadingWS level={4} margin={{ bottom: '3px' }}>
                 {project.name}
               </HeadingWS>

@@ -13,8 +13,16 @@ export interface SetCharacterPlaybookVars {
 }
 
 const SET_CHARACTER_PLAYBOOK = gql`
-  mutation SetCharacterPlaybook($gameRoleId: String!, $characterId: String!, $playbookType: PlaybookType!) {
-    setCharacterPlaybook(gameRoleId: $gameRoleId, characterId: $characterId, playbookType: $playbookType) {
+  mutation SetCharacterPlaybook(
+    $gameRoleId: String!
+    $characterId: String!
+    $playbookType: PlaybookType!
+  ) {
+    setCharacterPlaybook(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      playbookType: $playbookType
+    ) {
       id
       name
       playbook

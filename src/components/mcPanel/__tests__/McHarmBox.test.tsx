@@ -21,7 +21,9 @@ describe('Rendering McHarmBox', () => {
   });
 
   test('should reveal and hide sub-components', async () => {
-    const openButton = await screen.findByTestId(`${boxTitle.toLowerCase()}-down-chevron`);
+    const openButton = await screen.findByTestId(
+      `${boxTitle.toLowerCase()}-down-chevron`
+    );
     await screen.findByRole('heading', { name: boxTitle });
     userEvent.click(openButton);
     screen.getByRole('heading', { name: mockMcContent.harm[0].title });

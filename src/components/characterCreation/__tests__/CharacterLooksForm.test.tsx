@@ -5,7 +5,12 @@ import { screen } from '@testing-library/react';
 
 import CharacterLooksForm from '../CharacterLooksForm';
 import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
-import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
+import {
+  blankCharacter,
+  mockCharacter2,
+  mockGame5,
+  mockKeycloakUserInfo1,
+} from '../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../tests/test-utils';
 import {
   mockPlaybookCreator,
@@ -30,7 +35,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -69,28 +77,34 @@ describe('Rendering CharacterLooksForm', () => {
 
   describe('with no Looks on Character', () => {
     beforeEach(async () => {
-      renderWithRouter(<CharacterLooksForm />, `/character-creation/${mockGame5.id}?step=3`, {
-        isAuthenticated: true,
-        injectedGame: generateGame([]),
-        apolloMocks: [
-          mockPlaybookCreator,
-          mockSetCharacterLook1,
-          mockSetCharacterLook2,
-          mockSetCharacterLook3,
-          mockSetCharacterLook4,
-          mockSetCharacterLook5,
-          mockSetCharacterLook6,
-        ],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <CharacterLooksForm />,
+        `/character-creation/${mockGame5.id}?step=3`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame([]),
+          apolloMocks: [
+            mockPlaybookCreator,
+            mockSetCharacterLook1,
+            mockSetCharacterLook2,
+            mockSetCharacterLook3,
+            mockSetCharacterLook4,
+            mockSetCharacterLook5,
+            mockSetCharacterLook6,
+          ],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
 
     test('should render CharacterLooksForm in initial state', () => {
       screen.getByTestId('character-looks-form');
-      screen.getByRole('heading', { name: `WHAT DOES ${mockCharacter2.name?.toUpperCase()} LOOK LIKE?` });
+      screen.getByRole('heading', {
+        name: `WHAT DOES ${mockCharacter2.name?.toUpperCase()} LOOK LIKE?`,
+      });
       screen.getByRole('heading', { name: 'GENDER' });
       screen.getByRole('heading', { name: 'CLOTHES' });
       screen.getByRole('heading', { name: 'FACE' });
@@ -119,7 +133,9 @@ describe('Rendering CharacterLooksForm', () => {
 
     test('should set Look using text input', () => {
       screen.getByTestId('character-looks-form');
-      const genderInput = screen.getByRole('textbox', { name: 'gender-input' }) as HTMLInputElement;
+      const genderInput = screen.getByRole('textbox', {
+        name: 'gender-input',
+      }) as HTMLInputElement;
       userEvent.type(genderInput, mockLookAngel1.look);
       expect(genderInput.value).toEqual(mockLookAngel1.look);
       const setButton = screen.getByRole('button', { name: 'SET' });
@@ -130,13 +146,17 @@ describe('Rendering CharacterLooksForm', () => {
 
   describe('with 2 Looks already on the Character', () => {
     beforeEach(async () => {
-      renderWithRouter(<CharacterLooksForm />, `/character-creation/${mockGame5.id}?step=3`, {
-        isAuthenticated: true,
-        injectedGame: generateGame([mockLookAngel1, mockLookAngel3]),
-        apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <CharacterLooksForm />,
+        `/character-creation/${mockGame5.id}?step=3`,
+        {
+          isAuthenticated: true,
+          injectedGame: generateGame([mockLookAngel1, mockLookAngel3]),
+          apolloMocks: [mockPlaybookCreator],
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
@@ -144,7 +164,9 @@ describe('Rendering CharacterLooksForm', () => {
     test('should be able to type a Look', () => {
       const customFaceLook = 'custom-face-look';
       userEvent.click(screen.getByRole('heading', { name: 'FACE' }));
-      const faceInput = screen.getByRole('textbox', { name: 'face-input' }) as HTMLInputElement;
+      const faceInput = screen.getByRole('textbox', {
+        name: 'face-input',
+      }) as HTMLInputElement;
       userEvent.type(faceInput, customFaceLook);
       expect(faceInput.value).toEqual(customFaceLook);
     });

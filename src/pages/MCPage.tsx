@@ -1,6 +1,14 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Box, Tabs, Tab, ThemeContext, Collapsible, Carousel, ResponsiveContext } from 'grommet';
+import {
+  Box,
+  Tabs,
+  Tab,
+  ThemeContext,
+  Collapsible,
+  Carousel,
+  ResponsiveContext,
+} from 'grommet';
 import { useMutation, useQuery } from '@apollo/client';
 
 import GamePanel from '../components/gamePanel/GamePanel';
@@ -25,8 +33,14 @@ import {
 } from '../components/styledComponents';
 import ALL_MOVES, { AllMovesData } from '../queries/allMoves';
 import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
-import DELETE_GAME, { DeleteGameData, DeleteGameVars } from '../mutations/deleteGame';
-import REMOVE_INVITEE, { RemoveInviteeData, RemoveInviteeVars } from '../mutations/removeInvitee';
+import DELETE_GAME, {
+  DeleteGameData,
+  DeleteGameVars,
+} from '../mutations/deleteGame';
+import REMOVE_INVITEE, {
+  RemoveInviteeData,
+  RemoveInviteeVars,
+} from '../mutations/removeInvitee';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { useGame } from '../contexts/gameContext';
 import { customTabStyles } from '../config/grommetConfig';
@@ -58,7 +72,7 @@ const MCPage: FC = () => {
   const maxSidePanel = 3;
   const sidePanelWidth = 33;
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   /**
    * Number that indicates what should be shown in the right panel
    * 0 - ThreatsPanel
@@ -75,33 +89,42 @@ const MCPage: FC = () => {
    * 3 - None, side panel is closed
    */
   const [sidePanel, setSidePanel] = useState<number>(0);
-  const [leftPanel, setLeftPanel] = useState<LeftPanelState>({ type: 'MESSAGES' });
+  const [leftPanel, setLeftPanel] = useState<LeftPanelState>({
+    type: 'MESSAGES',
+  });
   const [showDeleteGameDialog, setShowDeleteGameDialog] = useState(false);
   const [showGoToPreGameDialog, setShowGoToPreGameDialog] = useState(false);
   let hasShownGotToPreGameDialog = useRef(false);
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
 
   const { gameId } = useParams<{ gameId: string }>();
   const history = useHistory();
   const size = React.useContext(ResponsiveContext);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, setGameContext } = useGame();
   const { id: userId } = useKeycloakUser();
   const { tickerData } = useMcContent();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
   const allMoves = allMovesData?.allMoves;
   const [deleteGame] = useMutation<DeleteGameData, DeleteGameVars>(DELETE_GAME);
 
-  const [removeInvitee] = useMutation<RemoveInviteeData, RemoveInviteeVars>(REMOVE_INVITEE);
+  const [removeInvitee] = useMutation<RemoveInviteeData, RemoveInviteeVars>(
+    REMOVE_INVITEE
+  );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
 
   const handleDeleteGame = () => {
-    deleteGame({ variables: { gameId }, refetchQueries: [{ query: GAMEROLES_BY_USER_ID, variables: { id: userId } }] });
+    deleteGame({
+      variables: { gameId },
+      refetchQueries: [
+        { query: GAMEROLES_BY_USER_ID, variables: { id: userId } },
+      ],
+    });
     history.push('/menu');
   };
 
@@ -111,7 +134,7 @@ const MCPage: FC = () => {
     }
   };
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   // Kick the User off the page if they are not a mc of the game
   useEffect(() => {
@@ -131,21 +154,33 @@ const MCPage: FC = () => {
 
   // Show GoToPreGameDialog if game hasn't finished pre-game
   useEffect(() => {
-    if (!!game && !game?.hasFinishedPreGame && !hasShownGotToPreGameDialog.current) {
+    if (
+      !!game &&
+      !game?.hasFinishedPreGame &&
+      !hasShownGotToPreGameDialog.current
+    ) {
       setShowGoToPreGameDialog(true);
     }
   }, [game, game?.hasFinishedPreGame]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   const renderLeftPanel = () => {
     switch (leftPanel.type) {
       case 'GAME_FORM':
-        return <GameForm handleClose={() => setLeftPanel({ type: 'MESSAGES' })} />;
+        return (
+          <GameForm handleClose={() => setLeftPanel({ type: 'MESSAGES' })} />
+        );
       case 'INVITATION_FORM':
         return (
           <InvitationForm
-            handleClose={() => setLeftPanel({ type: 'MESSAGES', existingEmail: '', showMessageOnly: false })}
+            handleClose={() =>
+              setLeftPanel({
+                type: 'MESSAGES',
+                existingEmail: '',
+                showMessageOnly: false,
+              })
+            }
             existingEmail={leftPanel.existingEmail}
             showMessageOnly={leftPanel.showMessageOnly}
           />
@@ -158,7 +193,9 @@ const MCPage: FC = () => {
   };
   return (
     <Box fill background={background}>
-      {game?.showFirstSession && game.hasFinishedPreGame && <FirstSessionDialog />}
+      {game?.showFirstSession && game.hasFinishedPreGame && (
+        <FirstSessionDialog />
+      )}
       {!!game && showDeleteGameDialog && (
         <WarningDialog
           title="Delete game?"
@@ -188,13 +225,25 @@ const MCPage: FC = () => {
                 handleRemoveInvitee={handleRemoveInvitee}
               />
             )}
-            {sidePanel === 1 && !!allMoves && <MovesPanel allMoves={allMoves} />}
+            {sidePanel === 1 && !!allMoves && (
+              <MovesPanel allMoves={allMoves} />
+            )}
             {sidePanel === 2 && <McPanel />}
           </SidePanel>
         </Collapsible>
-        <MainContainer fill sidePanel={sidePanel} maxPanels={maxSidePanel} shinkWidth={sidePanelWidth}>
+        <MainContainer
+          fill
+          sidePanel={sidePanel}
+          maxPanels={maxSidePanel}
+          shinkWidth={sidePanelWidth}
+        >
           <LeftMainContainer fill rightPanel={rightPanel}>
-            <Box fill align="center" justify="center" pad={{ horizontal: '12px' }}>
+            <Box
+              fill
+              align="center"
+              justify="center"
+              pad={{ horizontal: '12px' }}
+            >
               {renderLeftPanel()}
             </Box>
           </LeftMainContainer>
@@ -206,7 +255,13 @@ const MCPage: FC = () => {
           </RightMainContainer>
         </MainContainer>
       </div>
-      <Footer direction="row" justify="between" align="center" height={`${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT}px`} wrap>
+      <Footer
+        direction="row"
+        justify="between"
+        align="center"
+        height={`${GAME_PAGE_BOTTOM_NAVBAR_HEIGHT}px`}
+        wrap
+      >
         <ThemeContext.Extend value={customTabStyles}>
           <Tabs
             activeIndex={sidePanel}
@@ -238,7 +293,12 @@ const MCPage: FC = () => {
             </Carousel>
           )}
           <Box direction="row" align="center" gap="12px">
-            <Tabs activeIndex={rightPanel} onActive={(tab) => (tab === rightPanel ? setRightPanel(2) : setRightPanel(tab))}>
+            <Tabs
+              activeIndex={rightPanel}
+              onActive={(tab) =>
+                tab === rightPanel ? setRightPanel(2) : setRightPanel(tab)
+              }
+            >
               <Tab title="Threats" name="threats" />
               <Tab title="NPCs" name="npcs" />
             </Tabs>

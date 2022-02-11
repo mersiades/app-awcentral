@@ -1,10 +1,16 @@
-import { CustomWeapons, PlaybookUniques } from '../../../src/@types/dataInterfaces';
+import {
+  CustomWeapons,
+  PlaybookUniques,
+} from '../../../src/@types/dataInterfaces';
 import { UniqueTypes } from '../../../src/@types/enums';
 
 export const mockCustomWeapons_1: CustomWeapons = {
   id: '60a730246a012a4e90170fd6',
   uniqueType: 'CUSTOM_WEAPONS' as UniqueTypes,
-  weapons: ['antique rifle (2-harm, load, valuable', 'Ornate staff (1-harm, valuable)'],
+  weapons: [
+    'antique rifle (2-harm, load, valuable',
+    'Ornate staff (1-harm, valuable)',
+  ],
   __typename: 'CustomWeapons',
 };
 

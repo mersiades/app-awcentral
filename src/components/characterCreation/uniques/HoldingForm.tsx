@@ -9,12 +9,32 @@ import DoubleRedBox from '../../DoubleRedBox';
 import RedTagsBox from '../../RedTagsBox';
 import SingleRedBox from '../../SingleRedBox';
 import { StyledMarkdown } from '../../styledComponents';
-import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
-import SET_HOLDING, { getSetHoldingOR, SetHoldingData, SetHoldingVars } from '../../../mutations/setHolding';
-import { CharacterCreationSteps, GangSize, HoldingSize, PlaybookType } from '../../../@types/enums';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  ParagraphWS,
+} from '../../../config/grommetConfig';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../../queries/playbookCreator';
+import SET_HOLDING, {
+  getSetHoldingOR,
+  SetHoldingData,
+  SetHoldingVars,
+} from '../../../mutations/setHolding';
+import {
+  CharacterCreationSteps,
+  GangSize,
+  HoldingSize,
+  PlaybookType,
+} from '../../../@types/enums';
 import { HoldingInput } from '../../../@types';
-import { GangOption, HoldingOption } from '../../../@types/staticDataInterfaces';
+import {
+  GangOption,
+  HoldingOption,
+} from '../../../@types/staticDataInterfaces';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { updateTags, unUpdateTags } from '../../../helpers/updateTags';
@@ -97,7 +117,7 @@ const HoldingForm: FC = () => {
     selectedStrengths: [],
     selectedWeaknesses: [],
   };
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [
     {
       strengthsCount,
@@ -119,31 +139,44 @@ const HoldingForm: FC = () => {
   const [vehicleCount, setVehicleCount] = useState(4);
   const [battleVehicleCount, setBattleVehicleCount] = useState(4);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     variables: { playbookType: PlaybookType.hardholder },
   });
 
-  const holdingCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.holdingCreator;
-  const [setHolding, { loading: settingHolding }] = useMutation<SetHoldingData, SetHoldingVars>(SET_HOLDING);
+  const holdingCreator =
+    pbCreatorData?.playbookCreator.playbookUniqueCreator?.holdingCreator;
+  const [setHolding, { loading: settingHolding }] = useMutation<
+    SetHoldingData,
+    SetHoldingVars
+  >(SET_HOLDING);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const handleSubmitHolding = async () => {
     if (!!userGameRole && !!character && !!game) {
       // @ts-ignore
-      const strengthsNoTypename = selectedStrengths.map((str: GangOption) => omit(str, ['__typename']));
+      const strengthsNoTypename = selectedStrengths.map((str: GangOption) =>
+        omit(str, ['__typename'])
+      );
       // @ts-ignore
-      const weaknessesNoTypename = selectedWeaknesses.map((wk: GangOption) => omit(wk, ['__typename']));
+      const weaknessesNoTypename = selectedWeaknesses.map((wk: GangOption) =>
+        omit(wk, ['__typename'])
+      );
 
       const holdingInput: HoldingInput = {
-        id: character?.playbookUniques?.holding ? character.playbookUniques.holding.id : undefined,
+        id: character?.playbookUniques?.holding
+          ? character.playbookUniques.holding.id
+          : undefined,
         selectedStrengths: strengthsNoTypename,
         selectedWeaknesses: weaknessesNoTypename,
         weaknessesCount,
@@ -175,7 +208,9 @@ const HoldingForm: FC = () => {
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
+          history.push(
+            `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
+          );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
       } catch (error) {
@@ -211,7 +246,10 @@ const HoldingForm: FC = () => {
     }
 
     if (!!option.gangTagChange) {
-      update = { ...update, gangTags: updateTags(gangTags, [option.gangTagChange]) };
+      update = {
+        ...update,
+        gangTags: updateTags(gangTags, [option.gangTagChange]),
+      };
     }
 
     if (option.gangHarmChange > -2) {
@@ -233,14 +271,21 @@ const HoldingForm: FC = () => {
     dispatch({ type: 'UPDATE_HOLDING', payload: update });
   };
 
-  const removeOption = (option: HoldingOption, type: 'strength' | 'weakness') => {
+  const removeOption = (
+    option: HoldingOption,
+    type: 'strength' | 'weakness'
+  ) => {
     let update: Partial<HoldingInput> =
       type === 'strength'
         ? {
-            selectedStrengths: selectedStrengths.filter((str: HoldingOption) => str.id !== option.id),
+            selectedStrengths: selectedStrengths.filter(
+              (str: HoldingOption) => str.id !== option.id
+            ),
           }
         : {
-            selectedWeaknesses: selectedWeaknesses.filter((str: HoldingOption) => str.id !== option.id),
+            selectedWeaknesses: selectedWeaknesses.filter(
+              (str: HoldingOption) => str.id !== option.id
+            ),
           };
 
     if (option.surplusChange > -2) {
@@ -264,7 +309,10 @@ const HoldingForm: FC = () => {
     }
 
     if (!!option.gangTagChange) {
-      update = { ...update, gangTags: unUpdateTags(gangTags, [option.gangTagChange]) };
+      update = {
+        ...update,
+        gangTags: unUpdateTags(gangTags, [option.gangTagChange]),
+      };
     }
 
     if (option.gangHarmChange > -2) {
@@ -272,7 +320,10 @@ const HoldingForm: FC = () => {
     }
 
     if (option.newArmorBonus > -1) {
-      update = { ...update, gangDefenseArmorBonus: holdingCreator?.defaultArmorBonus };
+      update = {
+        ...update,
+        gangDefenseArmorBonus: holdingCreator?.defaultArmorBonus,
+      };
     }
 
     if (option.newVehicleCount > -1) {
@@ -280,7 +331,8 @@ const HoldingForm: FC = () => {
     }
 
     if (option.newBattleVehicleCount > -1) {
-      !!holdingCreator && setBattleVehicleCount(holdingCreator.defaultBattleVehicleCount);
+      !!holdingCreator &&
+        setBattleVehicleCount(holdingCreator.defaultBattleVehicleCount);
     }
 
     dispatch({ type: 'UPDATE_HOLDING', payload: update });
@@ -288,7 +340,11 @@ const HoldingForm: FC = () => {
 
   const handleStrengthSelect = (option: HoldingOption) => {
     if (!!holdingCreator) {
-      if (selectedStrengths.map((str: HoldingOption) => str.id).includes(option.id)) {
+      if (
+        selectedStrengths
+          .map((str: HoldingOption) => str.id)
+          .includes(option.id)
+      ) {
         removeOption(option, 'strength');
       } else if (selectedStrengths.length < strengthsCount) {
         addOption(option, 'strength');
@@ -298,7 +354,9 @@ const HoldingForm: FC = () => {
 
   const handleWeaknessSelect = (option: HoldingOption) => {
     if (!!holdingCreator) {
-      if (selectedWeaknesses.map((wk: HoldingOption) => wk.id).includes(option.id)) {
+      if (
+        selectedWeaknesses.map((wk: HoldingOption) => wk.id).includes(option.id)
+      ) {
         removeOption(option, 'weakness');
       } else if (selectedWeaknesses.length < weaknessesCount) {
         addOption(option, 'weakness');
@@ -306,12 +364,16 @@ const HoldingForm: FC = () => {
     }
   };
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     if (!!character?.playbookUniques?.holding) {
-      dispatch({ type: 'SET_EXISTING_HOLDING', payload: character.playbookUniques.holding });
+      dispatch({
+        type: 'SET_EXISTING_HOLDING',
+        payload: character.playbookUniques.holding,
+      });
       setVehicleCount(character.vehicleCount);
-      !!holdingCreator && setBattleVehicleCount(holdingCreator.defaultBattleVehicleCount);
+      !!holdingCreator &&
+        setBattleVehicleCount(holdingCreator.defaultBattleVehicleCount);
     } else if (!!holdingCreator) {
       const defaultState: HoldingFormState = {
         holdingSize: holdingCreator.defaultHoldingSize,
@@ -336,7 +398,7 @@ const HoldingForm: FC = () => {
     }
   }, [character, holdingCreator]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   if (!holdingCreator) {
     return null;
@@ -352,15 +414,27 @@ const HoldingForm: FC = () => {
       margin={{ bottom: '24px' }}
     >
       <Box direction="row" fill="horizontal" align="center" justify="between">
-        <HeadingWS crustReady={crustReady} level={2} style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}>{`${
+        <HeadingWS
+          crustReady={crustReady}
+          level={2}
+          style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
+        >{`${
           !!character?.name ? character.name?.toUpperCase() : '...'
         }'S HOLDING`}</HeadingWS>
         <ButtonWS
           primary
-          label={settingHolding ? <Spinner fillColor="#FFF" width="36px" height="36px" /> : 'SET'}
+          label={
+            settingHolding ? (
+              <Spinner fillColor="#FFF" width="36px" height="36px" />
+            ) : (
+              'SET'
+            )
+          }
           onClick={() => !settingHolding && handleSubmitHolding()}
           disabled={
-            settingHolding || selectedStrengths.length !== strengthsCount || selectedWeaknesses.length !== weaknessesCount
+            settingHolding ||
+            selectedStrengths.length !== strengthsCount ||
+            selectedWeaknesses.length !== weaknessesCount
           }
         />
       </Box>
@@ -368,7 +442,9 @@ const HoldingForm: FC = () => {
       <Box direction="row" align="center" gap="12px">
         <ParagraphWS>Then, choose {strengthsCount}:</ParagraphWS>
         {strengthsCount > holdingCreator.defaultStrengthsCount && (
-          <ParagraphWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+          <ParagraphWS color={accentColors[0]}>
+            {INCREASED_BY_IMPROVEMENT_TEXT}
+          </ParagraphWS>
         )}
       </Box>
       <Box direction="row" fill="horizontal" gap="12px">
@@ -378,7 +454,9 @@ const HoldingForm: FC = () => {
               return (
                 <CheckBox
                   key={option.id}
-                  checked={selectedStrengths.map((str: HoldingOption) => str.id).includes(option.id)}
+                  checked={selectedStrengths
+                    .map((str: HoldingOption) => str.id)
+                    .includes(option.id)}
                   label={option.description}
                   onChange={() => handleStrengthSelect(option)}
                 />
@@ -387,7 +465,9 @@ const HoldingForm: FC = () => {
           <Box direction="row" align="center" gap="12px">
             <ParagraphWS>And choose {weaknessesCount}:</ParagraphWS>
             {weaknessesCount < holdingCreator.defaultWeaknessesCount && (
-              <ParagraphWS color={accentColors[0]}>{DECREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+              <ParagraphWS color={accentColors[0]}>
+                {DECREASED_BY_IMPROVEMENT_TEXT}
+              </ParagraphWS>
             )}
           </Box>
 
@@ -396,25 +476,58 @@ const HoldingForm: FC = () => {
               return (
                 <CheckBox
                   key={option.id}
-                  checked={selectedWeaknesses.map((wk: HoldingOption) => wk.id).includes(option.id)}
+                  checked={selectedWeaknesses
+                    .map((wk: HoldingOption) => wk.id)
+                    .includes(option.id)}
                   label={option.description}
                   onChange={() => handleWeaknessSelect(option)}
                 />
               );
             })}
         </Box>
-        <Box align="center" width="200px" flex="grow" fill="vertical" style={{ maxWidth: '200px' }}>
-          <DoubleRedBox value={holdingSize} label="Holding Size" width="200px" height="90px" />
-          <DoubleRedBox value={`+${surplus}barter`} label="Surplus" width="200px" height="90px" />
+        <Box
+          align="center"
+          width="200px"
+          flex="grow"
+          fill="vertical"
+          style={{ maxWidth: '200px' }}
+        >
+          <DoubleRedBox
+            value={holdingSize}
+            label="Holding Size"
+            width="200px"
+            height="90px"
+          />
+          <DoubleRedBox
+            value={`+${surplus}barter`}
+            label="Surplus"
+            width="200px"
+            height="90px"
+          />
           <RedTagsBox tags={wants} label="Wants" width="200px" height="150px" />
           <RedTagsBox tags={gigs} label="Gigs" width="200px" height="200px" />
-          <DoubleRedBox value={`+${gangDefenseArmorBonus}armor`} label="Defense bonus" width="200px" height="90px" />
-          <DoubleRedBox value={gangSize} label="Gang Size" width="200px" height="90px" />
+          <DoubleRedBox
+            value={`+${gangDefenseArmorBonus}armor`}
+            label="Defense bonus"
+            width="200px"
+            height="90px"
+          />
+          <DoubleRedBox
+            value={gangSize}
+            label="Gang Size"
+            width="200px"
+            height="90px"
+          />
           <Box fill="horizontal" direction="row" justify="around" flex="grow">
             <SingleRedBox value={gangHarm} label="Harm" />
             <SingleRedBox value={gangArmor} label="Armor" />
           </Box>
-          <RedTagsBox tags={gangTags} label="Tags" width="200px" height="90px" />
+          <RedTagsBox
+            tags={gangTags}
+            label="Tags"
+            width="200px"
+            height="90px"
+          />
         </Box>
       </Box>
     </Box>

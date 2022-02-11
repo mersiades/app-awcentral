@@ -6,13 +6,17 @@ import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { ButtonWS, TextWS } from '../../config/grommetConfig';
 import { useGame } from '../../contexts/gameContext';
 import { copyToClipboard } from '../../helpers/copyToClipboard';
+import { ALSO_PLAY_AT_TEXT, ALSO_PLAY_ON_TEXT } from '../../config/constants';
 
 interface GameBoxProps {
   handleShowGameForm: () => void;
   setShowDeleteGameDialog: (show: boolean) => void;
 }
 
-const GameBox: FC<GameBoxProps> = ({ handleShowGameForm: showGameForm, setShowDeleteGameDialog }) => {
+const GameBox: FC<GameBoxProps> = ({
+  handleShowGameForm: showGameForm,
+  setShowDeleteGameDialog,
+}) => {
   const { game } = useGame();
 
   const renderComms = () => {
@@ -20,14 +24,14 @@ const GameBox: FC<GameBoxProps> = ({ handleShowGameForm: showGameForm, setShowDe
       if (!!game.commsApp) {
         return (
           <Box>
-            <TextWS>{`Also play on ${game.commsApp}`}</TextWS>
+            <TextWS>{`${ALSO_PLAY_ON_TEXT} ${game.commsApp}`}</TextWS>
             <TextWS truncate>{`at ${game.commsUrl}`}</TextWS>
           </Box>
         );
       } else {
         return (
           <Box>
-            <TextWS>{`Also play at:`}</TextWS>
+            <TextWS>{`${ALSO_PLAY_AT_TEXT}:`}</TextWS>
             <TextWS truncate>{game.commsUrl}</TextWS>
           </Box>
         );
@@ -35,13 +39,16 @@ const GameBox: FC<GameBoxProps> = ({ handleShowGameForm: showGameForm, setShowDe
     } else if (!!game?.commsApp) {
       return (
         <Box>
-          <TextWS>{`Also play on ${game.commsApp}`}</TextWS>
+          <TextWS>{`${ALSO_PLAY_ON_TEXT} ${game.commsApp}`}</TextWS>
         </Box>
       );
     }
   };
   return (
-    <CollapsiblePanelBox title={!!game ? game.name : 'Game'} onEdit={showGameForm}>
+    <CollapsiblePanelBox
+      title={!!game ? game.name : 'Game'}
+      onEdit={showGameForm}
+    >
       <Box
         data-testid="game-box"
         fill="horizontal"
@@ -52,7 +59,13 @@ const GameBox: FC<GameBoxProps> = ({ handleShowGameForm: showGameForm, setShowDe
       >
         <Box direction="row" align="center" gap="12px">
           {renderComms()}
-          {game?.commsUrl && <Copy color="accent-1" onClick={() => copyToClipboard(game.commsUrl)} cursor="pointer" />}
+          {game?.commsUrl && (
+            <Copy
+              color="accent-1"
+              onClick={() => copyToClipboard(game.commsUrl)}
+              cursor="pointer"
+            />
+          )}
         </Box>
         <ButtonWS
           label="DELETE GAME"

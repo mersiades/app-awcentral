@@ -1,5 +1,14 @@
-import { MoveActionType, MoveType, PlaybookType, RollType, StatType } from '../../../src/@types/enums';
-import { CharacterMove, MoveAction } from '../../../src/@types/staticDataInterfaces';
+import {
+  MoveActionType,
+  MoveType,
+  PlaybookType,
+  RollType,
+  StatType,
+} from '../../../src/@types/enums';
+import {
+  CharacterMove,
+  MoveAction,
+} from '../../../src/@types/staticDataInterfaces';
 
 export const mockDangerousAndSexyMoveAction: MoveAction = {
   id: '60a730106a012a4e90170bc8',

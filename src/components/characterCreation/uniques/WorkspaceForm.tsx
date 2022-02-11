@@ -4,48 +4,74 @@ import { useHistory } from 'react-router-dom';
 import { Box, Text } from 'grommet';
 
 import { StyledMarkdown } from '../../styledComponents';
-import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  ParagraphWS,
+} from '../../../config/grommetConfig';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../../queries/playbookCreator';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
-import SET_WORKSPACE, { getSetWorkspaceOR, SetWorkspaceData, SetWorkspaceVars } from '../../../mutations/setWorkspace';
+import SET_WORKSPACE, {
+  getSetWorkspaceOR,
+  SetWorkspaceData,
+  SetWorkspaceVars,
+} from '../../../mutations/setWorkspace';
 import Spinner from '../../Spinner';
 import { WorkspaceInput } from '../../../@types';
 import {
   INCREASED_BY_IMPROVEMENT_TEXT,
   INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT,
+  ITEMS_INSTRUCTIONS,
   LIFE_SUPPORT_TEXT,
+  PROJECTS_TITLE,
+  SET_TEXT,
 } from '../../../config/constants';
 import { omit } from 'lodash';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
 
-const ITEMS_INSTRUCTIONS = 'Choose which of the following your workspace includes.';
-
 const WorkspaceForm: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [items, setItems] = useState<string[]>([]);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { character, game, userGameRole } = useGame();
   const { crustReady } = useFonts();
   const workspace = character?.playbookUniques?.workspace;
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     variables: { playbookType: PlaybookType.savvyhead },
   });
-  const workspaceCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.workspaceCreator;
+  const workspaceCreator =
+    pbCreatorData?.playbookCreator.playbookUniqueCreator?.workspaceCreator;
 
-  const [setWorkspace, { loading: settingWorkspace }] = useMutation<SetWorkspaceData, SetWorkspaceVars>(SET_WORKSPACE);
+  const [setWorkspace, { loading: settingWorkspace }] = useMutation<
+    SetWorkspaceData,
+    SetWorkspaceVars
+  >(SET_WORKSPACE);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
 
   const handleSubmitWorkspace = async () => {
-    if (!!userGameRole && !!character && !!game && !!workspaceCreator && !!workspace) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !!game &&
+      !!workspaceCreator &&
+      !!workspace
+    ) {
       const workspaceInput: WorkspaceInput = {
         ...omit(workspace, '__typename'),
         workspaceItems: items,
@@ -53,12 +79,18 @@ const WorkspaceForm: FC = () => {
 
       try {
         setWorkspace({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, workspace: workspaceInput },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            workspace: workspaceInput,
+          },
           optimisticResponse: getSetWorkspaceOR(character, workspaceInput),
         });
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
+          history.push(
+            `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
+          );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
       } catch (error) {
@@ -78,7 +110,7 @@ const WorkspaceForm: FC = () => {
     }
   };
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   // Set existing Workspace when component mounts
   useEffect(() => {
@@ -87,7 +119,7 @@ const WorkspaceForm: FC = () => {
     }
   }, [workspace]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   if (!workspace) {
     return null;
@@ -97,7 +129,9 @@ const WorkspaceForm: FC = () => {
     <Box
       data-testid={`${item}-pill`}
       key={item}
-      background={items.includes(item) ? { color: '#698D70', dark: true } : '#4C684C'}
+      background={
+        items.includes(item) ? { color: '#698D70', dark: true } : '#4C684C'
+      }
       round="medium"
       pad={{ top: '3px', bottom: '1px', horizontal: '12px' }}
       margin={{ vertical: '3px', horizontal: '3px' }}
@@ -121,31 +155,55 @@ const WorkspaceForm: FC = () => {
       gap="12px"
     >
       <Box direction="row" fill="horizontal" align="center" justify="between">
-        <HeadingWS crustReady={crustReady} level={2} style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}>{`${
+        <HeadingWS
+          crustReady={crustReady}
+          level={2}
+          style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
+        >{`${
           !!character?.name ? character.name?.toUpperCase() : '...'
         }'S WORKSPACE`}</HeadingWS>
         <ButtonWS
           primary
-          label={settingWorkspace ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
-          onClick={() => !settingWorkspace && items.length === workspace.itemsCount && handleSubmitWorkspace()}
+          label={
+            settingWorkspace ? (
+              <Spinner fillColor="#FFF" width="37px" height="36px" />
+            ) : (
+              SET_TEXT
+            )
+          }
+          onClick={() =>
+            !settingWorkspace &&
+            items.length === workspace.itemsCount &&
+            handleSubmitWorkspace()
+          }
           disabled={settingWorkspace || items.length !== workspace.itemsCount}
           style={{ height: '45px' }}
         />
       </Box>
 
-      <Box fill="horizontal" justify="between" gap="12px" margin={{ top: '0px' }}>
-        <ParagraphWS margin={{ bottom: '6px' }}>{ITEMS_INSTRUCTIONS}</ParagraphWS>
+      <Box
+        fill="horizontal"
+        justify="between"
+        gap="12px"
+        margin={{ top: '0px' }}
+      >
+        <ParagraphWS margin={{ bottom: '6px' }}>
+          {ITEMS_INSTRUCTIONS}
+        </ParagraphWS>
         <Box direction="row" align="center" gap="12px">
           <ParagraphWS margin={{ vertical: '0px' }}>{`Choose ${
-            items.includes(LIFE_SUPPORT_TEXT) ? workspace.itemsCount - 1 : workspace.itemsCount
+            items.includes(LIFE_SUPPORT_TEXT)
+              ? workspace.itemsCount - 1
+              : workspace.itemsCount
           }:`}</ParagraphWS>
-          {!!workspaceCreator && workspaceCreator?.defaultItemsCount < workspace.itemsCount && (
-            <ParagraphWS margin={{ vertical: '0px' }} color={accentColors[0]}>
-              {items.includes(LIFE_SUPPORT_TEXT)
-                ? INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT
-                : INCREASED_BY_IMPROVEMENT_TEXT}
-            </ParagraphWS>
-          )}
+          {!!workspaceCreator &&
+            workspaceCreator?.defaultItemsCount < workspace.itemsCount && (
+              <ParagraphWS margin={{ vertical: '0px' }} color={accentColors[0]}>
+                {items.includes(LIFE_SUPPORT_TEXT)
+                  ? INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT
+                  : INCREASED_BY_IMPROVEMENT_TEXT}
+              </ParagraphWS>
+            )}
         </Box>
         <Box direction="row" gap="12px">
           <Box direction="row" wrap>
@@ -154,12 +212,18 @@ const WorkspaceForm: FC = () => {
         </Box>
       </Box>
       <StyledMarkdown>
-        {workspaceCreator?.workspaceInstructions ? workspaceCreator.workspaceInstructions : '...'}
+        {workspaceCreator?.workspaceInstructions
+          ? workspaceCreator.workspaceInstructions
+          : '...'}
       </StyledMarkdown>
       <HeadingWS crustReady={crustReady} level={3}>
-        Projects
+        {PROJECTS_TITLE}
       </HeadingWS>
-      <StyledMarkdown>{workspaceCreator?.projectInstructions ? workspaceCreator.projectInstructions : '...'}</StyledMarkdown>
+      <StyledMarkdown>
+        {workspaceCreator?.projectInstructions
+          ? workspaceCreator.projectInstructions
+          : '...'}
+      </StyledMarkdown>
     </Box>
   );
 };

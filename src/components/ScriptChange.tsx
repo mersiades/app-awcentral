@@ -9,18 +9,37 @@ interface ScriptChangeProps {
   isPreview?: boolean;
 }
 
-const ScriptChange: FC<ScriptChangeProps & BoxProps> = ({ isPreview = false, height = '64px', width = '64px' }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const ScriptChange: FC<ScriptChangeProps & BoxProps> = ({
+  isPreview = false,
+  height = '64px',
+  width = '64px',
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [showDialog, setShowDialog] = useState(false);
 
-  // ------------------------------------------------------- Render ------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
-    <Box height={height} width={width} align="center" justify="center" margin={{ horizontal: '12px' }}>
-      {showDialog && <ScriptChangeDialog handleClose={() => setShowDialog(false)} isPreview={isPreview} />}
+    <Box
+      height={height}
+      width={width}
+      align="center"
+      justify="center"
+      margin={{ horizontal: '12px' }}
+    >
+      {showDialog && (
+        <ScriptChangeDialog
+          handleClose={() => setShowDialog(false)}
+          isPreview={isPreview}
+        />
+      )}
       <img
         aria-label="script-change-button"
         src={scriptChangeIcon}
-        style={{ height: height as string, width: width as string, cursor: 'pointer' }}
+        style={{
+          height: height as string,
+          width: width as string,
+          cursor: 'pointer',
+        }}
         onClick={() => setShowDialog(true)}
         alt="Script Change icon"
       />

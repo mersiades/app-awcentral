@@ -8,35 +8,47 @@ import Spinner from '../Spinner';
 import DeathDialog from '../dialogs/DeathDialog';
 import { TextWS } from '../../config/grommetConfig';
 import DEATH_MOVES, { DeathMovesData } from '../../queries/deathMoves';
-import SET_DEATH_MOVES, { getSetDeathMovesOR, SetDeathMovesData, SetDeathMovesVars } from '../../mutations/setDeathMoves';
+import SET_DEATH_MOVES, {
+  getSetDeathMovesOR,
+  SetDeathMovesData,
+  SetDeathMovesVars,
+} from '../../mutations/setDeathMoves';
 import { useGame } from '../../contexts/gameContext';
 import { Move } from '../../@types/staticDataInterfaces';
-import { DEATH_CHANGE_PLAYBOOK_NAME, LIFE_UNTENABLE_INSTRUCTIONS } from '../../config/constants';
+import {
+  DEATH_CHANGE_PLAYBOOK_NAME,
+  LIFE_UNTENABLE_INSTRUCTIONS,
+} from '../../config/constants';
 
 const DeathMovesBox = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [selectedMoves, setSelectedMoves] = useState<string[]>([]);
   const [addedMoves, setAddedMoves] = useState<string[]>([]);
   const [removedMoves, setRemovedMoves] = useState<string[]>([]);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { userGameRole, character } = useGame();
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const { data: deathMovesData } = useQuery<DeathMovesData>(DEATH_MOVES);
   const deathMoves = deathMovesData?.deathMoves;
 
-  const [setDeathMoves, { loading: settingDeathMoves }] = useMutation<SetDeathMovesData, SetDeathMovesVars>(SET_DEATH_MOVES);
+  const [setDeathMoves, { loading: settingDeathMoves }] = useMutation<
+    SetDeathMovesData,
+    SetDeathMovesVars
+  >(SET_DEATH_MOVES);
 
-  // ------------------------------------------------ Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
 
   const handleSelectMove = (move: Move) => {
     if (selectedMoves.some((moveName) => moveName === move.name)) {
-      setSelectedMoves(selectedMoves.filter((moveName) => moveName !== move.name));
+      setSelectedMoves(
+        selectedMoves.filter((moveName) => moveName !== move.name)
+      );
     } else {
       setSelectedMoves([...selectedMoves, move.name]);
     }
@@ -60,8 +72,17 @@ const DeathMovesBox = () => {
     if (!!userGameRole && !!character) {
       try {
         await setDeathMoves({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, moveNames: selectedMoves },
-          optimisticResponse: getSetDeathMovesOR(character, selectedMoves, removedMoves, addedMoves),
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            moveNames: selectedMoves,
+          },
+          optimisticResponse: getSetDeathMovesOR(
+            character,
+            selectedMoves,
+            removedMoves,
+            addedMoves
+          ),
         });
         redirectAfterSet();
       } catch (error) {
@@ -70,7 +91,7 @@ const DeathMovesBox = () => {
     }
   };
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   // Whenever selectedMoves changes, finds which moves are different
   useEffect(() => {
@@ -94,7 +115,7 @@ const DeathMovesBox = () => {
     !!character && setSelectedMoves(character.deathMoves.map((mv) => mv.name));
   }, [character]);
 
-  // ------------------------------------------------------- Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
     <Box fill gap="6px">
@@ -116,9 +137,11 @@ const DeathMovesBox = () => {
         deathMoves.map((move) => (
           <CheckBox
             key={move.id}
+            aria-label={`${move.description.trimEnd()} checkbox`}
             label={move.description}
             checked={selectedMoves.some((moveName) => moveName === move.name)}
             onClick={() => handleSelectMove(move)}
+            disabled={settingDeathMoves}
           />
         ))
       ) : (

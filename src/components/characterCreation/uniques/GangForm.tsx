@@ -3,15 +3,31 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Box, CheckBox } from 'grommet';
 
 import Spinner from '../../Spinner';
-import { accentColors, ButtonWS, HeadingWS, ParagraphWS } from '../../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../../queries/playbookCreator';
+import {
+  accentColors,
+  ButtonWS,
+  HeadingWS,
+  ParagraphWS,
+} from '../../../config/grommetConfig';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../../queries/playbookCreator';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
 import { useHistory } from 'react-router-dom';
-import { CharacterCreationSteps, GangSize, PlaybookType } from '../../../@types/enums';
+import {
+  CharacterCreationSteps,
+  GangSize,
+  PlaybookType,
+} from '../../../@types/enums';
 import { GangOption } from '../../../@types/staticDataInterfaces';
 import { Gang } from '../../../@types/dataInterfaces';
-import SET_GANG, { getSetGangOR, SetGangData, SetGangVars } from '../../../mutations/setGang';
+import SET_GANG, {
+  getSetGangOR,
+  SetGangData,
+  SetGangVars,
+} from '../../../mutations/setGang';
 import { GangInput } from '../../../@types';
 import { omit } from 'lodash';
 import DoubleRedBox from '../../DoubleRedBox';
@@ -34,7 +50,12 @@ interface GangFormState {
 }
 
 interface Action {
-  type: 'SET_EXISTING_GANG' | 'ADD_STRENGTH' | 'REMOVE_STRENGTH' | 'REMOVE_WEAKNESS' | 'ADD_WEAKNESS';
+  type:
+    | 'SET_EXISTING_GANG'
+    | 'ADD_STRENGTH'
+    | 'REMOVE_STRENGTH'
+    | 'REMOVE_WEAKNESS'
+    | 'ADD_WEAKNESS';
   payload?: any;
 }
 
@@ -82,7 +103,10 @@ const gangFormReducer = (state: GangFormState, action: Action) => {
         return {
           ...state,
           strengths: [...state.strengths, action.payload],
-          tags: tagPrefix === '-' ? state.tags.filter((t) => t !== tag) : [...state.tags, tag],
+          tags:
+            tagPrefix === '-'
+              ? state.tags.filter((t) => t !== tag)
+              : [...state.tags, tag],
         };
       } else {
         return {
@@ -96,19 +120,25 @@ const gangFormReducer = (state: GangFormState, action: Action) => {
           case GangSize.medium:
             return {
               ...state,
-              strengths: state.strengths.filter((opt) => opt.id !== action.payload.id),
+              strengths: state.strengths.filter(
+                (opt) => opt.id !== action.payload.id
+              ),
               size: GangSize.small,
             };
           case '+1harm':
             return {
               ...state,
-              strengths: state.strengths.filter((opt) => opt.id !== action.payload.id),
+              strengths: state.strengths.filter(
+                (opt) => opt.id !== action.payload.id
+              ),
               harm: 2,
             };
           case '+1armor':
             return {
               ...state,
-              strengths: state.strengths.filter((opt) => opt.id !== action.payload.id),
+              strengths: state.strengths.filter(
+                (opt) => opt.id !== action.payload.id
+              ),
               armor: 1,
             };
           default:
@@ -119,8 +149,13 @@ const gangFormReducer = (state: GangFormState, action: Action) => {
         tag = action.payload.tag.substring(1);
         return {
           ...state,
-          strengths: state.strengths.filter((opt) => opt.id !== action.payload.id),
-          tags: tagPrefix === '-' ? [...state.tags, tag] : state.tags.filter((t) => t !== tag),
+          strengths: state.strengths.filter(
+            (opt) => opt.id !== action.payload.id
+          ),
+          tags:
+            tagPrefix === '-'
+              ? [...state.tags, tag]
+              : state.tags.filter((t) => t !== tag),
         };
       } else {
         return {
@@ -135,7 +170,10 @@ const gangFormReducer = (state: GangFormState, action: Action) => {
       return {
         ...state,
         weaknesses: [...state.weaknesses, action.payload],
-        tags: tagPrefix === '-' ? state.tags.filter((t) => t !== tag) : [...state.tags, tag],
+        tags:
+          tagPrefix === '-'
+            ? state.tags.filter((t) => t !== tag)
+            : [...state.tags, tag],
       };
     case 'REMOVE_WEAKNESS':
       tagPrefix = action.payload.tag[0];
@@ -143,7 +181,10 @@ const gangFormReducer = (state: GangFormState, action: Action) => {
       return {
         ...state,
         weaknesses: state.weaknesses.filter((w) => w.id !== action.payload.id),
-        tags: tagPrefix === '-' ? [...state.tags, tag] : state.tags.filter((t) => t !== tag),
+        tags:
+          tagPrefix === '-'
+            ? [...state.tags, tag]
+            : state.tags.filter((t) => t !== tag),
       };
     default:
       return state;
@@ -159,32 +200,44 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
     weaknesses: [],
     tags: ['savage'],
   };
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [{ size, harm, armor, strengths, weaknesses, tags }, dispatch] = useReducer(gangFormReducer, initialState);
+  // ----------------------------- Component state ------------------------------ //
+  const [{ size, harm, armor, strengths, weaknesses, tags }, dispatch] =
+    useReducer(gangFormReducer, initialState);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
   const allowedStrengths = character?.playbookUniques?.gang?.allowedStrengths;
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(PLAYBOOK_CREATOR, {
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     variables: { playbookType: PlaybookType.chopper },
   });
-  const gangCreator = pbCreatorData?.playbookCreator.playbookUniqueCreator?.gangCreator;
-  const [setGang, { loading: settingGang }] = useMutation<SetGangData, SetGangVars>(SET_GANG);
+  const gangCreator =
+    pbCreatorData?.playbookCreator.playbookUniqueCreator?.gangCreator;
+  const [setGang, { loading: settingGang }] = useMutation<
+    SetGangData,
+    SetGangVars
+  >(SET_GANG);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const handleSubmitGang = async () => {
     if (!!userGameRole && !!character && !!game && !!allowedStrengths) {
       // @ts-ignore
-      const strengthsNoTypename = strengths.map((str: GangOption) => omit(str, ['__typename']));
+      const strengthsNoTypename = strengths.map((str: GangOption) =>
+        omit(str, ['__typename'])
+      );
       // @ts-ignore
-      const weaknessesNoTypename = weaknesses.map((wk: GangOption) => omit(wk, ['__typename']));
+      const weaknessesNoTypename = weaknesses.map((wk: GangOption) =>
+        omit(wk, ['__typename'])
+      );
 
       const gangInput: GangInput = {
         id: existingGang ? existingGang.id : undefined,
@@ -199,13 +252,19 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
 
       try {
         setGang({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, gang: gangInput },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            gang: gangInput,
+          },
           optimisticResponse: getSetGangOR(character, gangInput),
         });
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`);
+          history.push(
+            `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
+          );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
       } catch (error) {
@@ -234,14 +293,17 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
     }
   };
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     if (!!character?.playbookUniques?.gang) {
-      dispatch({ type: 'SET_EXISTING_GANG', payload: character.playbookUniques.gang });
+      dispatch({
+        type: 'SET_EXISTING_GANG',
+        payload: character.playbookUniques.gang,
+      });
     }
   }, [character]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   if (!allowedStrengths || !gangCreator) {
     return null;
   }
@@ -256,17 +318,28 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
       margin={{ bottom: '24px' }}
     >
       <Box direction="row" fill="horizontal" align="center" justify="between">
-        <HeadingWS crustReady={crustReady} level={2} style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}>{`${
+        <HeadingWS
+          crustReady={crustReady}
+          level={2}
+          style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
+        >{`${
           !!character?.name ? character.name?.toUpperCase() : '...'
         }'S GANG`}</HeadingWS>
         <ButtonWS
           primary
-          label={settingGang ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+          label={
+            settingGang ? (
+              <Spinner fillColor="#FFF" width="37px" height="36px" />
+            ) : (
+              'SET'
+            )
+          }
           onClick={() => !settingGang && handleSubmitGang()}
           disabled={
             settingGang ||
             (!!gangCreator && strengths.length < allowedStrengths) ||
-            (!!gangCreator && weaknesses.length < gangCreator.weaknessChoiceCount)
+            (!!gangCreator &&
+              weaknesses.length < gangCreator.weaknessChoiceCount)
           }
         />
       </Box>
@@ -278,7 +351,9 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
       <Box direction="row" align="center" gap="12px">
         <ParagraphWS>{`Then, choose ${allowedStrengths}:`}</ParagraphWS>
         {allowedStrengths > gangCreator.strengthChoiceCount && (
-          <ParagraphWS color={accentColors[0]}>{INCREASED_BY_IMPROVEMENT_TEXT}</ParagraphWS>
+          <ParagraphWS color={accentColors[0]}>
+            {INCREASED_BY_IMPROVEMENT_TEXT}
+          </ParagraphWS>
         )}
       </Box>
       <Box direction="row" fill="horizontal" gap="12px">
@@ -289,21 +364,27 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
                 <CheckBox
                   key={option.id}
                   aria-label={`option-${option.description}`}
-                  checked={strengths.map((str: GangOption) => str.id).includes(option.id)}
+                  checked={strengths
+                    .map((str: GangOption) => str.id)
+                    .includes(option.id)}
                   label={option.description}
                   onChange={() => handleStrengthSelect(option)}
                   style={{ marginBottom: '3px' }}
                 />
               );
             })}
-          <ParagraphWS>And choose {!!gangCreator ? gangCreator?.weaknessChoiceCount : 1}:</ParagraphWS>
+          <ParagraphWS>
+            And choose {!!gangCreator ? gangCreator?.weaknessChoiceCount : 1}:
+          </ParagraphWS>
           {!!gangCreator &&
             gangCreator.weaknesses.map((option) => {
               return (
                 <CheckBox
                   key={option.id}
                   aria-label={`option-${option.description}`}
-                  checked={weaknesses.map((wk: GangOption) => wk.id).includes(option.id)}
+                  checked={weaknesses
+                    .map((wk: GangOption) => wk.id)
+                    .includes(option.id)}
                   label={option.description}
                   onChange={() => handleWeaknessSelect(option)}
                   style={{ marginBottom: '3px' }}
@@ -311,7 +392,13 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
               );
             })}
         </Box>
-        <Box align="center" width="150px" flex="grow" fill="vertical" style={{ maxWidth: '150px' }}>
+        <Box
+          align="center"
+          width="150px"
+          flex="grow"
+          fill="vertical"
+          style={{ maxWidth: '150px' }}
+        >
           <DoubleRedBox value={size} label="Size" width="150px" height="100%" />
           <Box fill="horizontal" direction="row" justify="between" flex="grow">
             <SingleRedBox value={harm} label="Harm" />

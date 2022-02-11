@@ -4,7 +4,9 @@ import { Box, BoxProps, Text } from 'grommet';
 import styled, { css } from 'styled-components';
 import { accentColors } from '../config/grommetConfig';
 
-export const PillBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>)(() => {
+export const PillBox = styled(
+  Box as FC<BoxProps & JSX.IntrinsicElements['div']>
+)(() => {
   return css`
     background-color: ${accentColors[2]};
     padding: 12px;
@@ -16,7 +18,7 @@ export const PillBox = styled(Box as FC<BoxProps & JSX.IntrinsicElements['div']>
 });
 
 const Plus1ForwardPill: FC = () => (
-  <PillBox align="center" justify="center">
+  <PillBox aria-label="+1forward token" align="center" justify="center">
     <Text style={{ cursor: 'default' }}>
       <strong>+1forward</strong>
     </Text>

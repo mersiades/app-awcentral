@@ -19,20 +19,26 @@ interface StatsBoxProps {
 }
 
 const StatsBox: FC<StatsBoxProps> = ({ navigateToCharacterCreation }) => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { userGameRole, character } = useGame();
   const stats = character?.statsBlock?.stats;
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [toggleStatHighlight, { loading: togglingHighlight }] =
-    useMutation<ToggleStatHighlightData, ToggleStatHighlightVars>(TOGGLE_STAT_HIGHLIGHT);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [toggleStatHighlight, { loading: togglingHighlight }] = useMutation<
+    ToggleStatHighlightData,
+    ToggleStatHighlightVars
+  >(TOGGLE_STAT_HIGHLIGHT);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const handleToggleHighlight = async (stat: StatType) => {
     if (!!userGameRole && !!character && !character.isDead) {
       try {
         await toggleStatHighlight({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, stat },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            stat,
+          },
           optimisticResponse: getToggleStatHighlightOR(character, stat),
         });
       } catch (error) {
@@ -64,7 +70,9 @@ const StatsBox: FC<StatsBoxProps> = ({ navigateToCharacterCreation }) => {
               <StatBox
                 key={stat.id}
                 stat={stat}
-                handleClick={() => !togglingHighlight && handleToggleHighlight(stat.stat)}
+                handleClick={() =>
+                  !togglingHighlight && handleToggleHighlight(stat.stat)
+                }
               />
             );
           })

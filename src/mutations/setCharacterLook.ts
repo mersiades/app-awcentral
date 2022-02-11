@@ -26,9 +26,17 @@ export interface SetCharacterLookVars {
   look: LookInput;
 }
 
-export const getSetCharacterLookOR = (character: Character, lookInput: LookInput): SetCharacterLookData => {
+export const getSetCharacterLookOR = (
+  character: Character,
+  lookInput: LookInput
+): SetCharacterLookData => {
   const optimisticLooks: SetCharacterLookData_Look[] = [
-    { id: 'temp-id', look: lookInput.look, category: lookInput.category, __typename: 'Look' },
+    {
+      id: 'temp-id',
+      look: lookInput.look,
+      category: lookInput.category,
+      __typename: 'Look',
+    },
   ];
   const existingLooks = character.looks.map((look) => ({
     id: look.id,
@@ -54,8 +62,16 @@ export const getSetCharacterLookOR = (character: Character, lookInput: LookInput
 };
 
 const SET_CHARACTER_LOOK = gql`
-  mutation SetCharacterLook($gameRoleId: String!, $characterId: String!, $look: LookInput!) {
-    setCharacterLook(gameRoleId: $gameRoleId, characterId: $characterId, look: $look) {
+  mutation SetCharacterLook(
+    $gameRoleId: String!
+    $characterId: String!
+    $look: LookInput!
+  ) {
+    setCharacterLook(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      look: $look
+    ) {
       id
       name
       playbook

@@ -1,6 +1,10 @@
 import { gql } from '@apollo/client';
 import { FollowersInput } from '../@types';
-import { Character, Followers, PlaybookUniques } from '../@types/dataInterfaces';
+import {
+  Character,
+  Followers,
+  PlaybookUniques,
+} from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
 export interface SetFollowersData {
@@ -22,16 +26,27 @@ export interface SetFollowersVars {
   followers: FollowersInput;
 }
 
-export const getSetFollowerOR = (character: Character, followersInput: FollowersInput): SetFollowersData => {
+export const getSetFollowerOR = (
+  character: Character,
+  followersInput: FollowersInput
+): SetFollowersData => {
   const optimisticPlaybookUniques: PlaybookUniques = {
-    id: character.playbookUniques?.id ? character.playbookUniques.id : 'temp-id-1',
+    id: character.playbookUniques?.id
+      ? character.playbookUniques.id
+      : 'temp-id-1',
     type: UniqueTypes.followers,
     followers: {
       ...followersInput,
       id: followersInput.id ? followersInput.id : 'temp-id-2',
       uniqueType: UniqueTypes.followers,
-      selectedStrengths: followersInput.selectedStrengths.map((opt) => ({ ...opt, __typename: 'FollowersOption' })),
-      selectedWeaknesses: followersInput.selectedWeaknesses.map((opt) => ({ ...opt, __typename: 'FollowersOption' })),
+      selectedStrengths: followersInput.selectedStrengths.map((opt) => ({
+        ...opt,
+        __typename: 'FollowersOption',
+      })),
+      selectedWeaknesses: followersInput.selectedWeaknesses.map((opt) => ({
+        ...opt,
+        __typename: 'FollowersOption',
+      })),
       __typename: 'Followers',
     },
     __typename: 'PlaybookUniques',
@@ -48,8 +63,16 @@ export const getSetFollowerOR = (character: Character, followersInput: Followers
 };
 
 const SET_FOLLOWERS = gql`
-  mutation SetFollowers($gameRoleId: String!, $characterId: String!, $followers: FollowersInput!) {
-    setFollowers(gameRoleId: $gameRoleId, characterId: $characterId, followers: $followers) {
+  mutation SetFollowers(
+    $gameRoleId: String!
+    $characterId: String!
+    $followers: FollowersInput!
+  ) {
+    setFollowers(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      followers: $followers
+    ) {
       id
       playbookUniques {
         id

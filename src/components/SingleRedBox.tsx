@@ -20,10 +20,25 @@ interface SingleRedBoxProps {
  * also renders red arrows for increasing/decreasing the value.
  * @param
  */
-const SingleRedBox: FC<SingleRedBoxProps> = ({ value, label, loading, onIncrease, onDecrease, width }) => {
+const SingleRedBox: FC<SingleRedBoxProps> = ({
+  value,
+  label,
+  loading,
+  onIncrease,
+  onDecrease,
+  width,
+}) => {
   const { crustReady } = useFonts();
   return (
-    <Box align="center" justify="between" height="90px" width={width} gap="6px" margin={{ bottom: '6px' }}>
+    <Box
+      data-testid={`${label.toLowerCase()}-box`}
+      align="center"
+      justify="between"
+      height="90px"
+      width={width}
+      gap="6px"
+      margin={{ bottom: '6px' }}
+    >
       <Box aria-label={`${label}-hx`} direction="row">
         <RedBox align="center" width="50px" fill="vertical" justify="center">
           <HeadingWS
@@ -36,7 +51,11 @@ const SingleRedBox: FC<SingleRedBoxProps> = ({ value, label, loading, onIncrease
           </HeadingWS>
         </RedBox>
         {!!onIncrease && !!onDecrease && loading !== undefined && (
-          <IncreaseDecreaseButtons loading={loading} onIncrease={onIncrease} onDecrease={onDecrease} />
+          <IncreaseDecreaseButtons
+            loading={loading}
+            onIncrease={onIncrease}
+            onDecrease={onDecrease}
+          />
         )}
       </Box>
       <TextWS style={{ fontWeight: 600 }}>{label}</TextWS>

@@ -13,8 +13,16 @@ export interface SetVehicleCountVars {
 }
 
 const SET_VEHICLE_COUNT = gql`
-  mutation SetVehicleCount($gameRoleId: String!, $characterId: String!, $vehicleCount: Int!) {
-    setVehicleCount(gameRoleId: $gameRoleId, characterId: $characterId, vehicleCount: $vehicleCount) {
+  mutation SetVehicleCount(
+    $gameRoleId: String!
+    $characterId: String!
+    $vehicleCount: Int!
+  ) {
+    setVehicleCount(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      vehicleCount: $vehicleCount
+    ) {
       id
       vehicleCount
     }

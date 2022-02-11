@@ -1,4 +1,12 @@
-import React, { ChangeEvent, FC, Reducer, useContext, useEffect, useReducer, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  Reducer,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 import { shuffle } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
 import { Box, FormField, ResponsiveContext, Select, TextArea } from 'grommet';
@@ -6,14 +14,26 @@ import { Box, FormField, ResponsiveContext, Select, TextArea } from 'grommet';
 import Spinner from '../Spinner';
 import DialogWrapper from '../DialogWrapper';
 import { StyledMarkdown } from '../styledComponents';
-import { ButtonWS, TextInputWS, TextWS, threatDialogBackground } from '../../config/grommetConfig';
-import THREAT_CREATOR, { ThreatCreatorData, ThreatCreatorVars } from '../../queries/threatCreator';
-import ADD_THREAT, { AddThreatData, AddThreatVars } from '../../mutations/addThreat';
+import {
+  ButtonWS,
+  TextInputWS,
+  TextWS,
+  threatDialogBackground,
+} from '../../config/grommetConfig';
+import THREAT_CREATOR, {
+  ThreatCreatorData,
+  ThreatCreatorVars,
+} from '../../queries/threatCreator';
+import ADD_THREAT, {
+  AddThreatData,
+  AddThreatVars,
+} from '../../mutations/addThreat';
 import { ThreatType } from '../../@types/enums';
 import { ThreatInput } from '../../@types';
 import { Threat } from '../../@types/dataInterfaces';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
+import { SET_TEXT } from '../../config/constants';
 
 interface ThreatDialogProps {
   handleClose: () => void;
@@ -33,7 +53,10 @@ interface Action {
   payload?: any;
 }
 
-const threatFormReducer: Reducer<ThreatFormState, Action> = (state: ThreatFormState, action: Action) => {
+const threatFormReducer: Reducer<ThreatFormState, Action> = (
+  state: ThreatFormState,
+  action: Action
+) => {
   switch (action.type) {
     case 'SET_KIND':
       return {
@@ -66,30 +89,43 @@ const threatFormReducer: Reducer<ThreatFormState, Action> = (state: ThreatFormSt
   }
 };
 
-const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) => {
+const ThreatDialog: FC<ThreatDialogProps> = ({
+  handleClose,
+  existingThreat,
+}) => {
   const initialState: ThreatFormState = {
     name: !!existingThreat ? existingThreat.name : '',
-    threatKind: !!existingThreat ? existingThreat.threatKind : ThreatType.warlord,
+    threatKind: !!existingThreat
+      ? existingThreat.threatKind
+      : ThreatType.warlord,
     impulse: !!existingThreat ? existingThreat.impulse : '',
-    description: !!existingThreat?.description ? existingThreat.description : '',
+    description: !!existingThreat?.description
+      ? existingThreat.description
+      : '',
     stakes: !!existingThreat?.stakes ? existingThreat.stakes : '',
   };
 
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [{ name, threatKind, impulse, description, stakes }, dispatch] = useReducer(threatFormReducer, initialState);
+  // ----------------------------- Component state ------------------------------ //
+  const [{ name, threatKind, impulse, description, stakes }, dispatch] =
+    useReducer(threatFormReducer, initialState);
   const [filteredNames, setFilteredNames] = useState<string[]>([]);
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { mcGameRole } = useGame();
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const size = useContext(ResponsiveContext);
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data } = useQuery<ThreatCreatorData, ThreatCreatorVars>(THREAT_CREATOR);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data } = useQuery<ThreatCreatorData, ThreatCreatorVars>(
+    THREAT_CREATOR
+  );
   const threatCreator = data?.threatCreator;
-  const [addThreat, { loading: addingThreat }] = useMutation<AddThreatData, AddThreatVars>(ADD_THREAT);
-  // ---------------------------------------- Component functions and variables ------------------------------------------ //
+  const [addThreat, { loading: addingThreat }] = useMutation<
+    AddThreatData,
+    AddThreatVars
+  >(ADD_THREAT);
+  // ----------------------------- Component functions ------------------------- //
 
   const handleSetThreat = async () => {
     if (!!mcGameRole) {
@@ -112,23 +148,29 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
     }
   };
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     if (!!threatCreator) {
-      const filteredNames = threatCreator.threatNames.filter((n) => n.toLowerCase().includes(name.toLowerCase()));
+      const filteredNames = threatCreator.threatNames.filter((n) =>
+        n.toLowerCase().includes(name.toLowerCase())
+      );
       setFilteredNames(filteredNames);
     }
   }, [threatCreator, name]);
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   const renderInstructions = () => (
     <>
       <StyledMarkdown>
-        {!!threatCreator?.createThreatInstructions ? threatCreator.createThreatInstructions : '...'}
+        {!!threatCreator?.createThreatInstructions
+          ? threatCreator.createThreatInstructions
+          : '...'}
       </StyledMarkdown>
       <TextWS alignSelf="start">Essential threats:</TextWS>
       <StyledMarkdown>
-        {!!threatCreator?.essentialThreatInstructions ? threatCreator.essentialThreatInstructions : '...'}
+        {!!threatCreator?.essentialThreatInstructions
+          ? threatCreator.essentialThreatInstructions
+          : '...'}
       </StyledMarkdown>
     </>
   );
@@ -142,10 +184,16 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
             name="threatName"
             value={name}
             size="xlarge"
-            suggestions={name === '' ? shuffle(threatCreator.threatNames) : filteredNames}
-            onChange={(e) => dispatch({ type: 'SET_NAME', payload: e.target.value })}
+            suggestions={
+              name === '' ? shuffle(threatCreator.threatNames) : filteredNames
+            }
+            onChange={(e) =>
+              dispatch({ type: 'SET_NAME', payload: e.target.value })
+            }
             // @ts-ignore
-            onSuggestionSelect={({ suggestion }) => dispatch({ type: 'SET_NAME', payload: suggestion })}
+            onSuggestionSelect={({ suggestion }) =>
+              dispatch({ type: 'SET_NAME', payload: suggestion })
+            }
           />
         )}
       </FormField>
@@ -154,20 +202,24 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
 
   const renderTypeForm = () => (
     <Box flex="grow">
-      <FormField label="Kind" name="threatKype" width="100%">
+      <FormField label="Kind" name="threatType" width="100%">
         <Select
           placeholder="Select threat kind"
-          name="threatKype"
+          name="threatType"
           options={Object.values(ThreatType)}
           value={threatKind}
-          onChange={({ option }) => dispatch({ type: 'SET_KIND', payload: option })}
+          onChange={({ option }) =>
+            dispatch({ type: 'SET_KIND', payload: option })
+          }
         />
       </FormField>
     </Box>
   );
 
   const renderImpulseForm = () => {
-    const impulses = threatCreator?.threats.find((threat) => threat.threatType === threatKind)?.impulses;
+    const impulses = threatCreator?.threats.find(
+      (threat) => threat.threatType === threatKind
+    )?.impulses;
     return (
       <Box flex="grow">
         <FormField label="Impulse" name="impulses" width="100%">
@@ -177,7 +229,9 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
               name="impulses"
               options={impulses}
               value={impulse}
-              onChange={({ option }) => dispatch({ type: 'SET_IMPULSE', payload: option })}
+              onChange={({ option }) =>
+                dispatch({ type: 'SET_IMPULSE', payload: option })
+              }
             />
           )}
         </FormField>
@@ -194,7 +248,9 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
           fill
           size="xlarge"
           value={stakes}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => dispatch({ type: 'SET_STAKES', payload: e.target.value })}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            dispatch({ type: 'SET_STAKES', payload: e.target.value })
+          }
           style={{ whiteSpace: 'pre-wrap' }}
         />
       </FormField>
@@ -210,27 +266,46 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
           fill
           size="xlarge"
           value={description}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => dispatch({ type: 'SET_DESC', payload: e.target.value })}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            dispatch({ type: 'SET_DESC', payload: e.target.value })
+          }
           style={{ whiteSpace: 'pre-wrap' }}
         />
       </FormField>
     </Box>
   );
 
-  const renderSpacer = () => <Box fill="horizontal" height="200px" flex="grow" />;
+  const renderSpacer = () => (
+    <Box fill="horizontal" height="200px" flex="grow" />
+  );
 
   const renderButton = () => (
     <ButtonWS
       primary
       fill="horizontal"
-      label={addingThreat ? <Spinner fillColor="#FFF" width="100%" height="36px" /> : 'SET'}
-      onClick={() => !addingThreat && !!name && !!threatKind && !!impulse && handleSetThreat()}
+      label={
+        addingThreat ? (
+          <Spinner fillColor="#FFF" width="100%" height="36px" />
+        ) : (
+          SET_TEXT
+        )
+      }
+      onClick={() =>
+        !addingThreat &&
+        !!name &&
+        !!threatKind &&
+        !!impulse &&
+        handleSetThreat()
+      }
       disabled={!!addingThreat || !name || !threatKind || !impulse}
     />
   );
 
   return (
-    <DialogWrapper background={threatDialogBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={threatDialogBackground}
+      handleClose={handleClose}
+    >
       {size !== 'large' ? (
         <Box fill gap="12px" overflow="auto">
           {renderInstructions()}
@@ -244,7 +319,13 @@ const ThreatDialog: FC<ThreatDialogProps> = ({ handleClose, existingThreat }) =>
         </Box>
       ) : (
         <Box fill direction="row" gap="12px">
-          <Box style={{ minWidth: '60vw' }} direction="row" align="center" justify="around" wrap>
+          <Box
+            style={{ minWidth: '60vw' }}
+            direction="row"
+            align="center"
+            justify="around"
+            wrap
+          >
             <Box width="25vw">{renderTypeForm()}</Box>
             <Box width="25vw">{renderNameForm()}</Box>
             <Box width="25vw">{renderImpulseForm()}</Box>

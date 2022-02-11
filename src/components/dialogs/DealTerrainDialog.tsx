@@ -5,7 +5,12 @@ import { Box, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
 import { StyledMarkdown } from '../styledComponents';
-import { HeadingWS, ParagraphWS, ButtonWS, dealTerrainDialogBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  dealTerrainDialogBackground,
+} from '../../config/grommetConfig';
 import PERFORM_SPEED_ROLL_MOVE, {
   PerformSpeedRollMoveData,
   PerformSpeedRollMoveVars,
@@ -17,28 +22,34 @@ import { Vehicle } from '../../@types/dataInterfaces';
 import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
 import { VehicleType } from '../../@types/enums';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { CANCEL_TEXT, DRIVE_TEXT } from '../../config/constants';
 
 interface DealTerrainDialogProps {
   move: Move | CharacterMove;
   handleClose: () => void;
 }
 
-const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const DealTerrainDialog: FC<DealTerrainDialogProps> = ({
+  move,
+  handleClose,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [myHandling, setMyHandling] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | undefined>();
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performSpeedRollMove, { loading: performingSpeedRollMove }] =
-    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(PERFORM_SPEED_ROLL_MOVE);
+    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(
+      PERFORM_SPEED_ROLL_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const otherVehicle: Vehicle = {
     id: 'other-vehicle-id',
     vehicleType: VehicleType.car,
@@ -55,7 +66,13 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
   };
 
   const handleSpeedRollMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead && !performingSpeedRollMove && !!myHandling) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingSpeedRollMove &&
+      !!myHandling
+    ) {
       const modifier = parseInt(myHandling);
       try {
         await performSpeedRollMove({
@@ -75,16 +92,16 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   const renderVehicleChoice = () => {
     if (!!character && character.vehicles.length > 0) {
       return (
         <Box fill align="start" justify="start">
           <ParagraphWS alignSelf="start">What are you driving?</ParagraphWS>
           <Select
-            id="target-character-input"
-            aria-label="target-character-input"
-            name="target-character"
+            id="my=vehicle-input"
+            aria-label="my vehicle select"
+            name="my-vehicle"
             placeholder="My vehicle"
             options={[...character.vehicles, otherVehicle]}
             labelKey="name"
@@ -100,9 +117,9 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
           />
           {selectedVehicle?.id === 'other-vehicle-id' && (
             <Select
-              id="target-character-input"
-              aria-label="target-character-input"
-              name="target-character"
+              id="other-vehicle-input"
+              aria-label="other-vehicle-select"
+              name="my-handling"
               placeholder="My handling"
               options={['0', '1', '2', '3']}
               value={myHandling}
@@ -115,11 +132,13 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
     } else if (!!character) {
       return (
         <Box fill align="start" justify="start">
-          <ParagraphWS alignSelf="start">What is the speed of your vehicle?</ParagraphWS>
+          <ParagraphWS alignSelf="start">
+            What is the handling of your vehicle?
+          </ParagraphWS>
           <Select
-            id="target-character-input"
-            aria-label="target-character-input"
-            name="target-character"
+            id="unknown-vehicle-input"
+            aria-label="unknown vehicle handling select"
+            name="unknown-vehicle-handling"
             placeholder="My handling"
             options={['0', '1', '2', '3']}
             value={myHandling}
@@ -131,7 +150,10 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
   };
 
   return (
-    <DialogWrapper background={dealTerrainDialogBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={dealTerrainDialogBackground}
+      handleClose={handleClose}
+    >
       <Box gap="12px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
@@ -142,15 +164,16 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({ move, handleClose }) =>
         </Box>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
-            label={'DRIVE'}
+            label={DRIVE_TEXT}
             primary
             onClick={() => !performingSpeedRollMove && handleSpeedRollMove()}
             disabled={performingSpeedRollMove || !myHandling}

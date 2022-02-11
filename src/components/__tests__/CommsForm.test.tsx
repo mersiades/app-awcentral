@@ -26,7 +26,10 @@ describe('Rendering CommsForm', () => {
 
   beforeEach(async () => {
     customRenderForComponent(
-      <CommsForm setCreationStep={mockSetCreationStep} setHasSkippedComms={mockSetHasSkippedComms} />,
+      <CommsForm
+        setCreationStep={mockSetCreationStep}
+        setHasSkippedComms={mockSetHasSkippedComms}
+      />,
       {
         isAuthenticated: true,
         apolloMocks: [mockGameQuery],
@@ -39,30 +42,36 @@ describe('Rendering CommsForm', () => {
   test('should render CommsForm in initial state', () => {
     screen.getByRole('heading', { name: 'COMMS' });
     screen.getAllByRole('button', { name: /SET/i }); // aria role was showing up as 'Set' in CircleCI
-    screen.getByRole('button', { name: 'Open Drop' });
+    screen.getByRole('button', { name: 'set-app' });
     // screen.getByRole('button', { name: /LATER/i }); // This is failing in CircleCi
     screen.getByRole('textbox', { name: 'comms-url-input' });
     screen.getByRole('textbox', { name: 'comms-app-input' });
   });
 
   test('should enable SET button after selecting comms app', () => {
-    screen.getByRole('button', { name: 'Open Drop' }) as HTMLButtonElement;
+    screen.getByRole('button', { name: 'set-app' }) as HTMLButtonElement;
     // FAILING: selectOptions() isn't finding any options. I think because using Grommet's Select wrapped around an HTML select
     // userEvent.selectOptions(dropButton, 'Discord');
   });
 
   test('should enable SET button after entering comms url', () => {
     const mockUrl = 'https://mockurl.com';
-    const urlInput = screen.getByRole('textbox', { name: 'comms-url-input' }) as HTMLInputElement;
+    const urlInput = screen.getByRole('textbox', {
+      name: 'comms-url-input',
+    }) as HTMLInputElement;
 
     userEvent.type(urlInput, mockUrl);
     expect(urlInput.value).toEqual(mockUrl);
-    const setButton = screen.getAllByRole('button', { name: /SET/i })[1] as HTMLButtonElement;
+    const setButton = screen.getAllByRole('button', {
+      name: /SET/i,
+    })[1] as HTMLButtonElement;
     expect(setButton.disabled).toEqual(false);
   });
 
   test('should skip CommsForm', () => {
-    const laterButton = screen.getByRole('button', { name: /LATER/i }) as HTMLButtonElement;
+    const laterButton = screen.getByRole('button', {
+      name: /LATER/i,
+    }) as HTMLButtonElement;
 
     userEvent.click(laterButton);
 

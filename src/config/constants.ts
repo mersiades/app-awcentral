@@ -4,55 +4,129 @@ export const EMAIL_REGEX = new RegExp(
   /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
 );
 
+// Form validation
+export const NO_MC_AS_PLAYER_TEXT = 'MC cannot also be player';
+export const PLAYER_ALREADY_INVITED_TEXT = 'Player already invited';
+export const PLAYER_ALREADY_JOINED_GAME_TEXT = 'Player already joined game';
+
 // The names of specific moves
+// Basic moves
 export const UNDER_FIRE_NAME = 'DO SOMETHING UNDER FIRE';
-export const INFLICT_HARM_NAME = 'INFLICT HARM ON PC';
-export const HEAL_HARM_NAME = 'HEAL PC HARM';
-export const ANGEL_SPECIAL_NAME = 'ANGEL SPECIAL';
-export const BATTLEBABE_SPECIAL_NAME = 'BATTLEBABE SPECIAL';
-export const BRAINER_SPECIAL_NAME = 'BRAINER SPECIAL';
-export const CHOPPER_SPECIAL_NAME = 'CHOPPER SPECIAL';
-export const DRIVER_SPECIAL_NAME = 'DRIVER SPECIAL';
-export const GUNLUGGER_SPECIAL_NAME = 'GUNLUGGER SPECIAL';
-export const HARDHOLDER_SPECIAL_NAME = 'HARDHOLDER SPECIAL';
-export const HOCUS_SPECIAL_NAME = 'HOCUS SPECIAL';
-export const MAESTROD_SPECIAL_NAME = "MAESTRO D' SPECIAL";
-export const SAVVYHEAD_SPECIAL_NAME = 'SAVVYHEAD SPECIAL';
-export const SKINNER_SPECIAL_NAME = 'SKINNER SPECIAL';
-export const MAKE_WANT_KNOWN_NAME = 'MAKE WANT KNOWN';
-export const HELP_OR_INTERFERE_NAME = 'HELP OR INTERFERE WITH SOMEONE';
-export const STABILIZE_AND_HEAL_NAME = 'STABILIZE AND HEAL SOMEONE';
-export const SPEED_RECOVERY_NAME = 'SPEED THE RECOVERY OF SOMEONE';
-export const REVIVE_SOMEONE_NAME = 'REVIVE SOMEONE';
-export const TREAT_NPC_NAME = 'TREAT AN NPC';
-export const COLLECTOR_NAME = 'COLLECTOR';
-export const OTHER_CAR_TANK_NAME = 'MY OTHER CAR IS A TANK';
 export const GO_AGGRO_NAME = 'GO AGGRO ON SOMEONE';
 export const SUCKER_SOMEONE_NAME = 'SUCKER SOMEONE';
+export const DO_BATTLE_NAME = 'DO BATTLE';
+export const SEDUCE_OR_MANIP_NAME = 'SEDUCE OR MANIPULATE SOMEONE';
+export const HELP_OR_INTERFERE_NAME = 'HELP OR INTERFERE WITH SOMEONE';
+export const READ_A_SITCH_NAME = 'READ A SITCH';
+export const READ_PERSON_NAME = 'READ A PERSON'; // Can earn holds
+export const OPEN_BRAIN_NAME = 'OPEN YOUR BRAIN';
+export const LIFESTYLE_GIGS_NAME = 'LIFESTYLE AND GIGS';
+export const SESSION_END_NAME = 'SESSION END';
+
+// Peripheral moves
+export const SUFFER_HARM_NAME = 'SUFFER HARM';
+export const SUFFER_V_HARM = 'SUFFER V-HARM';
+export const INFLICT_HARM_NAME = 'INFLICT HARM ON PC';
+export const HEAL_HARM_NAME = 'HEAL PC HARM';
+export const GIVE_BARTER_NAME = 'GIVE BARTER';
+export const GO_MARKET_NAME = 'GO TO THE MARKET';
+export const MAKE_WANT_KNOWN_NAME = 'MAKE WANT KNOWN';
+export const INSIGHT_NAME = 'INSIGHT';
+export const AUGURY_NAME = 'AUGURY';
+export const CHANGE_HIGHLIGHTED_STAT_NAME = 'CHANGE HIGHLIGHTED STATS';
+
+// Battle moves
+export const EXCHANGE_HARM_NAME = 'EXCHANGE HARM';
+export const SEIZE_BY_FORCE_NAME = 'SEIZE BY FORCE';
+export const ASSAULT_POSITION_NAME = 'ASSAULT A POSITION';
+export const KEEP_HOLD_OF_SOMETHING_NAME = 'KEEP HOLD OF SOMETHING';
+export const FIGHT_FREE_NAME = 'FIGHT FREE';
+export const DEFEND_SOMEONE_NAME = 'DEFEND SOMEONE';
+export const DO_SINGLE_COMBAT_NAME = 'DO SINGLE COMBAT';
+export const LAY_DOWN_FIRE_NAME = 'LAY DOWN FIRE';
+export const STAND_OVERWATCH_NAME = 'STAND OVERWATCH';
+export const KEEP_EYE_OUT_NAME = 'KEEP AN EYE OUT'; // Earns holds
+export const BE_THE_BAIT_NAME = 'BE THE BAIT';
+export const BE_THE_CAT_NAME = 'BE THE CAT';
+export const BE_THE_MOUSE_NAME = 'BE THE MOUSE';
 export const CAT_OR_MOUSE_NAME = 'CAT OR MOUSE';
-export const REPUTATION_NAME = 'REPUTATION';
-export const COMBAT_DRIVER_NAME = 'COMBAT DRIVER';
+
+// Road war moves
 export const BOARD_VEHICLE_NAME = 'BOARD A MOVING VEHICLE';
 export const OUTDISTANCE_VEHICLE_NAME = 'OUTDISTANCE ANOTHER VEHICLE';
 export const OVERTAKE_VEHICLE_NAME = 'OVERTAKE ANOTHER VEHICLE';
 export const DEAL_WITH_TERRAIN_NAME = 'DEAL WITH BAD TERRAIN';
+export const SHOULDER_ANOTHER_VEHICLE_NAME = 'SHOULDER ANOTHER VEHICLE';
+
+// Angel moves
+export const ANGEL_SPECIAL_NAME = 'ANGEL SPECIAL';
+export const HEALING_TOUCH_NAME = 'HEALING TOUCH';
+
+// Battlebabe moves
+export const BATTLEBABE_SPECIAL_NAME = 'BATTLEBABE SPECIAL';
+
+// Brainer moves
+export const BRAINER_SPECIAL_NAME = 'BRAINER SPECIAL';
+export const BRAIN_RECEPTIVITY_NAME = 'CASUAL BRAIN RECEPTIVITY';
+
+// Chopper moves
+export const CHOPPER_SPECIAL_NAME = 'CHOPPER SPECIAL';
+export const FUCKING_THIEVES_NAME = 'FUCKING THIEVES';
+export const PACK_ALPHA_NAME = 'PACK ALPHA';
+
+// Driver moves
+export const DRIVER_SPECIAL_NAME = 'DRIVER SPECIAL';
+export const COLLECTOR_NAME = 'COLLECTOR';
+export const OTHER_CAR_TANK_NAME = 'MY OTHER CAR IS A TANK';
+
+// Gunlugger moves
+export const GUNLUGGER_SPECIAL_NAME = 'GUNLUGGER SPECIAL';
+
+// Hardholder moves
+export const HARDHOLDER_SPECIAL_NAME = 'HARDHOLDER SPECIAL';
 export const LEADERSHIP_NAME = 'LEADERSHIP';
 export const WEALTH_NAME = 'WEALTH';
+
+// Hocus moves
+export const HOCUS_SPECIAL_NAME = 'HOCUS SPECIAL';
 export const FORTUNES_NAME = 'FORTUNES';
-export const PACK_ALPHA_NAME = 'PACK ALPHA';
-export const LOST_NAME = 'LOST';
+
+// Maestro D' moves
+export const MAESTROD_SPECIAL_NAME = "MAESTRO D' SPECIAL";
+
+// Savvyhead moves
+export const SAVVYHEAD_SPECIAL_NAME = 'SAVVYHEAD SPECIAL';
+export const THINGS_SPEAK_NAME = 'THINGS SPEAK';
+
+// Skinner moves
+export const SKINNER_SPECIAL_NAME = 'SKINNER SPECIAL';
 export const ARTFUL_NAME = 'ARTFUL & GRACIOUS';
 export const HYPNOTIC_NAME = 'HYPNOTIC';
+
+// Angelkit moves
+export const STABILIZE_AND_HEAL_NAME = 'STABILIZE AND HEAL SOMEONE';
+export const SPEED_RECOVERY_NAME = 'SPEED THE RECOVERY OF SOMEONE';
+export const REVIVE_SOMEONE_NAME = 'REVIVE SOMEONE';
+export const TREAT_NPC_NAME = 'TREAT AN NPC';
+
+export const REPUTATION_NAME = 'REPUTATION';
+export const COMBAT_DRIVER_NAME = 'COMBAT DRIVER';
+
+export const LOST_NAME = 'LOST';
+
 export const JUST_GIVE_MOTIVE_NAME = 'JUST GIVE ME A MOTIVE';
-export const SUFFER_V_HARM = 'SUFFER V-HARM';
+
 export const SIXTH_SENSE_NAME = 'SIXTH SENSE';
 export const INFIRMARY_NAME = 'INFIRMARY';
 export const ICE_COLD_NAME = 'ICE COLD';
-export const BRAIN_RECEPTIVITY_NAME = 'CASUAL BRAIN RECEPTIVITY';
-export const FUCKING_THIEVES_NAME = 'FUCKING THIEVES';
+
 export const BATTLE_HARDENED_NAME = 'BATTLE-HARDENED';
 export const FUCK_THIS_SHIT_NAME = 'FUCK THIS SHIT';
 export const BATTLEFIELD_INSTINCTS_NAME = 'BATTLEFIELD INSTINCTS';
+export const FRENZY_NAME = 'FRENZY';
+export const CHARISMATIC_NAME = 'CHARISMATIC';
+export const WACKNUT_NAME = 'FUCKING WACKNUT';
+export const CALL_THIS_HOT_NAME = 'YOU CALL THIS HOT?';
 
 // IMPROVE_STAT move names
 export const SHARP_2_MAX_NAME = 'SHARP MAX 2';
@@ -157,7 +231,10 @@ export const ADJUST_UNIQUE_IMPROVEMENT_NAMES = [
 // ADD_OTHER_PB_MOVE move names
 export const ADD_OTHER_PB_MOVE_1_NAME = 'ADD MOVE FROM OTHER PLAYBOOK 1';
 export const ADD_OTHER_PB_MOVE_2_NAME = 'ADD MOVE FROM OTHER PLAYBOOK 2';
-export const ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES = [ADD_OTHER_PB_MOVE_1_NAME, ADD_OTHER_PB_MOVE_2_NAME];
+export const ADD_OTHER_PB_MOVE_IMPROVEMENT_NAMES = [
+  ADD_OTHER_PB_MOVE_1_NAME,
+  ADD_OTHER_PB_MOVE_2_NAME,
+];
 
 // ADD_UNIQUE move names
 export const ADD_GANG_LEADERSHIP_NAME = 'ADD GANG AND LEADERSHIP';
@@ -192,8 +269,7 @@ export const DEATH_CHANGE_PLAYBOOK_NAME = 'DEATH CHANGE PLAYBOOK';
 export const DIE_NAME = 'DIE';
 
 // Moves that can earn holds
-export const READ_PERSON_NAME = 'READ A PERSON';
-export const KEEP_EYE_OUT_NAME = 'KEEP AN EYE OUT';
+
 export const DANGEROUS_AND_SEXY_NAME = 'DANGEROUS & SEXY';
 export const BRAINSCAN_NAME = 'DEEP BRAIN SCAN';
 export const PUPPET_STRINGS_NAME = 'IN BRAIN PUPPET STRINGS';
@@ -225,6 +301,18 @@ export const APPLY_TEXT = 'APPLY';
 export const DO_IT_TEXT = 'DO IT';
 export const STABILIZE_TEXT = 'STABILIZE';
 export const INVITE_PLAYER_TEXT = 'INVITE PLAYER';
+export const ADD_ANOTHER_TEXT = 'INVITE ANOTHER';
+export const BOARD_TEXT = 'BOARD';
+export const OUTDISTANCE_TEXT = 'OUTDISTANCE';
+export const OVERTAKE_TEXT = 'OVERTAKE';
+export const DRIVE_TEXT = 'DRIVE';
+export const SPEED_RECOVERY_TEXT = 'SPEED RECOVERY';
+export const REVIVE_TEXT = 'REVIVE';
+export const TREAT_TEXT = 'TREAT';
+export const ROLL_TEXT = 'ROLL';
+export const SUBMIT_TEXT = 'SUBMIT';
+export const LATER_TEXT = 'LATER';
+export const FINISH_TEXT = 'FINISH';
 
 // ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
 
@@ -238,14 +326,18 @@ export const VEHICLES_TITLE = 'Vehicles';
 export const BATTLE_VEHICLES_TITLE = 'Battle Vehicles';
 export const HX_TITLE = 'Hx';
 
-export const IMPROVE_DRIVER_FOR_WORKSPACE_TEXT = 'Improve Driver to get workspace';
+export const IMPROVE_DRIVER_FOR_WORKSPACE_TEXT =
+  'Improve Driver to get workspace';
 
-export const START_PLAY_WITH_VEHICLE_TEXT = 'If you’d like to start play with a vehicle, get with the MC.';
+export const START_PLAY_WITH_VEHICLE_TEXT =
+  'If you’d like to start play with a vehicle, get with the MC.';
 
-export const START_PLAY_WITH_BATTLE_VEHICLE_TEXT = 'If you’d like to start play with a battle vehicle, get with the MC.';
+export const START_PLAY_WITH_BATTLE_VEHICLE_TEXT =
+  'If you’d like to start play with a battle vehicle, get with the MC.';
 
 export const INCREASED_BY_IMPROVEMENT_TEXT = '(increased by improvement)';
-export const INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT = '(increased by improvement, life support already included)';
+export const INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT =
+  '(increased by improvement, life support already included)';
 export const DECREASED_BY_IMPROVEMENT_TEXT = '(decreased by improvement)';
 
 export const LIFE_SUPPORT_TEXT = 'a life support unit';
@@ -268,9 +360,10 @@ export const WEIRD_TEXT = 'WEIRD';
 
 export const NEW_GAME_TEXT = 'NEW GAME';
 export const WELCOME_JUNGLE_TEXT = 'Welcome to the jungle, baby.';
-export const GET_STARTED_TEXT = "Once everyone's ready, punch NEXT to get started.";
+export const GET_STARTED_TEXT =
+  "Once everyone's ready, punch NEXT to get started.";
 
-export const CHOOSE_YOUR_PLAYBOOK_TEXT = 'Choose your playbook';
+export const CHOOSE_YOUR_PLAYBOOK_TEXT = 'CHOOSE YOUR PLAYBOOK';
 export const NEW_PLAYER_INTRO_TEXT =
   'You should probably wait for your MC and the rest of your crew, tho. No headstarts for nobody in Apocalypse World.';
 export const CHANGED_PLAYBOOK_INTRO_TEXT =
@@ -278,7 +371,8 @@ export const CHANGED_PLAYBOOK_INTRO_TEXT =
 
 export const CHOOSE_STAT_SET_TEXT = 'Choose a set:';
 
-export const GEAR_FORM_INSTRUCTIONS = 'Select an item to add, edit or delete it, or just type your own.';
+export const GEAR_FORM_INSTRUCTIONS =
+  'Select an item to add, edit or delete it, or just type your own.';
 export const OPTIONS_TITLE = 'Options';
 
 export const DEFAULT_MOVES_TITLE = 'Default moves';
@@ -286,7 +380,8 @@ export const DEFAULT_MOVES_TITLE = 'Default moves';
 export const HX_VALIDATION_TEXT = 'Enter digits from -2 to 3';
 
 export const PRE_GAME_INCOMPLETE_TITLE = 'Game not started';
-export const PRE_GAME_INCOMPLETE_TEXT_MC = 'Pre-game stage is not complete. Go to pre-game page?';
+export const PRE_GAME_INCOMPLETE_TEXT_MC =
+  'Pre-game stage is not complete. Go to pre-game page?';
 
 // ----------------------------------------------- SCRIPT CHANGE --------------------------------------------- //
 export const SCRIPT_CHANGE_TITLE = 'Script Change';
@@ -319,16 +414,24 @@ export const MIX_AND_MATCH_TEXT = "Mix'n'match. Edit directly if necessary.";
 
 // ----------------------------------------------- PRE_GAME PAGE--------------------------------------------- //
 
-export const MC_INSTRUCTIONS_1 = 'Use this time to build the world you will play in.';
-export const MC_INSTRUCTIONS_2 = 'Ask your players lots of questions about their characters and the world.';
-export const MC_INSTRUCTIONS_3 = 'While the players are making their characters, here are some things to get out up-front:';
-export const CHARACTER_CREATION_TIP_1 = "Your characters don't have to be friends, but they should definitely be allies.";
-export const CHARACTER_CREATION_TIP_2 = 'Your characters are unique in Apocalypse World.';
-export const CHARACTER_CREATION_TIP_3 = '1-armor can be armor or clothing. 2-armor is armor.';
+export const MC_INSTRUCTIONS_1 =
+  'Use this time to build the world you will play in.';
+export const MC_INSTRUCTIONS_2 =
+  'Ask your players lots of questions about their characters and the world.';
+export const MC_INSTRUCTIONS_3 =
+  'While the players are making their characters, here are some things to get out up-front:';
+export const CHARACTER_CREATION_TIP_1 =
+  "Your characters don't have to be friends, but they should definitely be allies.";
+export const CHARACTER_CREATION_TIP_2 =
+  'Your characters are unique in Apocalypse World.';
+export const CHARACTER_CREATION_TIP_3 =
+  '1-armor can be armor or clothing. 2-armor is armor.';
 export const CHARACTER_CREATION_TIP_4 = 'Is ';
 export const CHARACTER_CREATION_TIP_5 = 'barter';
-export const CHARACTER_CREATION_TIP_6 = ' a medium of exchange? What do you use?';
-export const CHARACTER_CREATION_TIP_7 = "I'm not out to get you. I'm here to find out what's going to happen. Same as you!";
+export const CHARACTER_CREATION_TIP_6 =
+  ' a medium of exchange? What do you use?';
+export const CHARACTER_CREATION_TIP_7 =
+  "I'm not out to get you. I'm here to find out what's going to happen. Same as you!";
 
 export const PRE_GAME_SCRIPT_CHANGE_INSTRUCTIONS =
   'AW Central uses Script Change as a communication tool to help everyone feel safe and comfortable while they play. On AW Central, Script Change can be used via the Script Change icon (seen here), which sits in the bottom-right corner of the _**main game page**_. You can click the Script Change icon on _**this**_ page to get a preview of what Script Change is like.';
@@ -340,7 +443,8 @@ export const PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS =
 // ----------------------------------------------- VEHICLE FORM --------------------------------------------- //
 export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
 export const GIVE_VEHICLE_NAME_TEXT = 'Give your vehicle a name';
-export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT = '(make/model, nickname, whatever)';
+export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT =
+  '(make/model, nickname, whatever)';
 export const STRENGTHS_TEXT = 'Strengths';
 export const WEAKNESSES_TEXT = 'Weaknesses';
 export const LOOKS_TEXT = 'Looks';
@@ -366,10 +470,12 @@ export const ADD_HARD_MINUS_1_TEXT = 'reduce your HARD stat by 1';
 export const REMOVE_HARD_MINUS_1_TEXT = 'increase your HARD stat by 1';
 export const ADD_WEIRD_1_TEXT = 'increase your WEIRD stat by 1';
 export const REMOVE_WEIRD_1_TEXT = 'reduce to your WEIRD stat by 1';
-export const ADD_CHANGE_PLAYBOOK_TEXT_1 = 'change your playbook. You will lose your';
+export const ADD_CHANGE_PLAYBOOK_TEXT_1 =
+  'change your playbook. You will lose your';
 export const ADD_CHANGE_PLAYBOOK_TEXT_2 =
   "your default moves and your gear. You'll also lose your base stats, but you'll keep any stat bonus you might have. And you'll keep everything else, and will be able to add everything from a new playbook";
-export const REMOVE_CHANGE_PLAYBOOK_TEXT = "have no effect. You can't un-change a playbook";
+export const REMOVE_CHANGE_PLAYBOOK_TEXT =
+  "have no effect. You can't un-change a playbook";
 export const ADD_DIE_TEXT_1 = 'mark';
 export const ADD_DIE_TEXT_2 = 'as dead';
 export const REMOVE_DIE_TEXT_1 = 'bring';
@@ -386,18 +492,36 @@ export const ANGEL_KIT_TEXT = 'Angel kit';
 export const STOCK_TEXT = 'Stock';
 export const SUPPLIER_TEXT = 'Supplier';
 
+// ----------------------------------------------- GANG BOX --------------------------------------------- //
+export const SIZE_TEXT = 'Size';
+export const HARM_TEXT = 'Harm';
+export const ARMOR_TEXT = 'Armor';
+export const TAGS_TEXT = 'Tags';
+export const GANG_MOVES = 'Gang moves';
+
+// ----------------------------------------------- VEHICLES BOX --------------------------------------------- //
+export const SPEED_TEXT = 'Speed';
+export const HANDLING_TEXT = 'Handling';
+export const MASSIVE_TEXT = 'Massive';
+
 // ----------------------------------------------- STABILIZE DIALOG --------------------------------------------- //
 export const HOW_MUCH_STOCK_TEXT = 'How much stock do you use?';
 export const CURRENT_STOCK_1_TEXT = 'You currently have';
 export const CURRENT_STOCK_2_TEXT = 'stock';
 
+// ----------------------------------------------- SPEED RECOVERY DIALOG ------------------------------------------- //
+export const USE_STOCK_TEXT = 'Do they want you to use any stock?';
+
 // ----------------------------------------------- GAME PANEL --------------------------------------------- //
 export const PLAYERS_TEXT = 'Players';
 export const INVITATIONS_TEXT = 'Invitations';
-export const DELETE_PLAYER_WARNING_TEXT = 'This cannot be undone. Their character will be deleted.';
+export const DELETE_PLAYER_WARNING_TEXT =
+  'This cannot be undone. Their character will be deleted.';
 export const NO_PLAYER_TEXT = 'No players yet';
 export const WARNING_DIALOG_TITLE = 'Remove player?';
 export const NO_PENDING_INVITATIONS_TEXT = 'No pending invitations';
+export const ALSO_PLAY_AT_TEXT = 'Also play at';
+export const ALSO_PLAY_ON_TEXT = 'Also play on';
 
 // ----------------------------------------------- MC PANEL --------------------------------------------- //
 export const CORE_BOX_TITLE = 'The master of ceremonies';
@@ -410,7 +534,52 @@ export const THREATS_TEXT = 'Threats';
 
 // ----------------------------------------------- NPCS PANEL --------------------------------------------- //
 export const NPCS_TEXT = 'NPCs';
+export const ADD_NPC_TEXT = 'Add NPC';
+export const EDIT_TEXT = 'Edit';
 
 // ----------------------------------------------- CHARACTER PREVIEW --------------------------------------------- //
 export const HIGHLIGHTED_STATS_TEXT = 'Highlighted stats';
 export const NO_STATS_HIGHLIGHTED_TEXT = 'No stats highlighted';
+
+// ----------------------------------------------- INVITATION FORM --------------------------------------------- //
+export const INVITE_A_PLAYER_TO_TEXT = 'Invite a player to';
+export const ADD_EMAIL_ADDRESS_TEXT =
+  "First, add the player's email address to the game";
+export const TELL_HOW_JOIN_GAME_TEXT =
+  'Let your player know how to join your game. You can edit the instructions below (if you want) and then copy and paste into an email, Discord chat etc.';
+
+// ----------------------------------------------- FOLLOWERS FORM --------------------------------------------- //
+export const CHARACTERIZE_THEM_TEXT = 'Characterize them';
+export const IF_YOU_TRAVEL_TEXT = 'If you travel, they';
+
+// ----------------------------------------------- ESTABLISHMENT FORM --------------------------------------------- //
+export const ATTRACTIONS_INSTRUCTIONS =
+  'Your establishment features one main attraction supported by 2 side attractions (like a bar features drinks, supported by music and easy food). Choose one to be your main act and 2 for lube:';
+
+export const CAST_CREW_INSTRUCTIONS =
+  "Your cast & crew can consist entirely of the other players' characters, with their agreement, or entirely of NPCs, or any mix. If it includes any NPCs, sketch them out - names and the 1-line descriptions - with the MC. Make sure they suit your establishment's scene.";
+
+export const REGULARS_INSTRUCTIONS =
+  '_**Your regulars**_ include these 5 NPCs (at least): Lamprey, Ba, Camo, Toyota and Lits.';
+
+export const ATMOSPHERE_INSTRUCTIONS =
+  "_**For your establishment's atmosphere**_, choose 3 or 4:";
+
+export const INTERESTED_NPCS_INSTRUCTIONS =
+  'These 3 NPCs (at least) have an _**interest in your establishment**_: Been, Rolfball, Gams.';
+
+export const RESOLVED_INTEREST_TEXT = 'Interest resolved';
+
+export const SELECT_SIDE_ATTRACTIONS = 'Select side attractions';
+
+// ----------------------------------------------- WORKSPACE FORM --------------------------------------------- //
+export const ITEMS_INSTRUCTIONS =
+  'Choose which of the following your workspace includes.';
+export const PROJECTS_TITLE = 'Projects';
+
+// ----------------------------------------------- SKINNER GEAR FORM --------------------------------------------- //
+export const GRACIOUS_WEAPONS = 'Gracious weapons';
+export const LUXE_GEAR = 'Luxe gear';
+
+// ----------------------------------------------- CREATE GAME FORM --------------------------------------------- //
+export const CREATE_GAME_INSTRUCTIONS = 'Create a game with you as the MC';

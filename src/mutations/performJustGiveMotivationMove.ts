@@ -13,8 +13,18 @@ export interface PerformJustGiveMotivationMoveVars {
 }
 
 const PERFORM_JUST_GIVE_MOTIVATION_MOVE = gql`
-  mutation PerformJustGiveMotivationMove($gameId: String!, $gameRoleId: String!, $characterId: String!, $targetId: String) {
-    performJustGiveMotivationMove(gameId: $gameId, gameRoleId: $gameRoleId, characterId: $characterId, targetId: $targetId) {
+  mutation PerformJustGiveMotivationMove(
+    $gameId: String!
+    $gameRoleId: String!
+    $characterId: String!
+    $targetId: String
+  ) {
+    performJustGiveMotivationMove(
+      gameId: $gameId
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      targetId: $targetId
+    ) {
       id
       gameMessages {
         id

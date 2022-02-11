@@ -26,7 +26,10 @@ const GamePanel: FC<GamePanelProps> = ({
         setShowDeleteGameDialog={setShowDeleteGameDialog}
       />
       <PlayersBox />
-      <InvitationsBox handleShowInvitationForm={handleShowInvitationForm} handleRemoveInvitee={handleRemoveInvitee} />
+      <InvitationsBox
+        handleShowInvitationForm={handleShowInvitationForm}
+        handleRemoveInvitee={handleRemoveInvitee}
+      />
     </Box>
   );
 };

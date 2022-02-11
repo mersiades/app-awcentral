@@ -10,7 +10,12 @@ interface DoubleRedBoxProps {
   height?: string;
 }
 
-const DoubleRedBox: FC<DoubleRedBoxProps> = ({ value, label, width, height = '90px' }) => {
+const DoubleRedBox: FC<DoubleRedBoxProps> = ({
+  value,
+  label,
+  width,
+  height = '90px',
+}) => {
   const { crustReady } = useFonts();
   return (
     <Box

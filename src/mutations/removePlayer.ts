@@ -4,7 +4,12 @@ import { Game } from '../@types/dataInterfaces';
 export interface RemovePlayerData {
   removePlayer: {
     id: string;
-    players: { id: string; displayName: string; __typename: 'User' }[];
+    players: {
+      id: string;
+      email: string;
+      displayName: string;
+      __typename: 'User';
+    }[];
     __typename?: 'Game';
   };
 }
@@ -14,7 +19,10 @@ export interface RemovePlayerVars {
   playerId: string;
 }
 
-export const getRemovePlayerOR = (game: Game, playerId: string): RemovePlayerData => {
+export const getRemovePlayerOR = (
+  game: Game,
+  playerId: string
+): RemovePlayerData => {
   const filteredPlayers = game.players
     .filter((player) => player.id !== playerId)
     .map((player) => ({ ...player, __typename: 'User' as const }));
@@ -34,6 +42,7 @@ const REMOVE_PLAYER = gql`
       id
       players {
         id
+        email
         displayName
       }
     }

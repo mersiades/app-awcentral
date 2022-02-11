@@ -1,4 +1,9 @@
-import { GangSize, HoldingSize, PlaybookType, UniqueTypes } from '../../@types/enums';
+import {
+  GangSize,
+  HoldingSize,
+  PlaybookType,
+  UniqueTypes,
+} from '../../@types/enums';
 import {
   BrainerGearCreator,
   EstablishmentCreator,
@@ -69,7 +74,8 @@ export const mockPlaybookCreatorBrainer: PlaybookCreator = {
   id: 'brainer-playbook-creator-id',
   playbookType: PlaybookType.brainer,
   movesInstructions: 'You get all the basic moves. Choose 2 driver moves.',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  hxInstructions:
+    'Everyone introduces their characters by name, look and outlook...',
   playbookUniqueCreator: mockUniqueCreatorBrainer,
 };
 
@@ -107,8 +113,16 @@ export const mockEstablishmentCreator: EstablishmentCreator = {
   regularsNames: ['Lamprey', 'Ba', 'Camo', 'Toyota', 'Lits'],
   regularsQuestions: ["Who's your worst regular?", "Who's your best regular?"],
   interestedPartyNames: ['Been', 'Rolfball', 'Gams'],
-  interestedPartyQuestions: ['Who wants in on it?', 'Who do you owe for it?', 'Who wants it gone?'],
-  securityOptions: [mockSecurityOption1, mockSecurityOption2, mockSecurityOption3],
+  interestedPartyQuestions: [
+    'Who wants in on it?',
+    'Who do you owe for it?',
+    'Who wants it gone?',
+  ],
+  securityOptions: [
+    mockSecurityOption1,
+    mockSecurityOption2,
+    mockSecurityOption3,
+  ],
   __typename: 'EstablishmentCreator',
 };
 
@@ -123,7 +137,8 @@ export const mockUniqueCreatorMaestroD: PlaybookUniqueCreator = {
 
 export const strengthOption1: FollowersOption = {
   id: 'strength-option-id-1',
-  description: 'Your followers are dedicated to you. Surplus: +1barter, and replace want: desertion with want: hungry.',
+  description:
+    'Your followers are dedicated to you. Surplus: +1barter, and replace want: desertion with want: hungry.',
   newNumberOfFollowers: -1,
   surplusBarterChange: 1,
   fortuneChange: -1,
@@ -134,7 +149,8 @@ export const strengthOption1: FollowersOption = {
 
 export const strengthOption2: FollowersOption = {
   id: 'strength-option-id-2',
-  description: 'Your followers are rigorous and argumentative. Surplus: +insight.',
+  description:
+    'Your followers are rigorous and argumentative. Surplus: +insight.',
   newNumberOfFollowers: -1,
   surplusBarterChange: -2,
   fortuneChange: -1,
@@ -145,7 +161,8 @@ export const strengthOption2: FollowersOption = {
 
 export const weaknessOption1: FollowersOption = {
   id: 'weakness-option-id-1',
-  description: 'Your followers disdain law, peace, reason and society. Surplus: +violence.',
+  description:
+    'Your followers disdain law, peace, reason and society. Surplus: +violence.',
   newNumberOfFollowers: -1,
   surplusBarterChange: -2,
   fortuneChange: -1,
@@ -167,15 +184,22 @@ export const weaknessOption2: FollowersOption = {
 
 export const mockFollowersCreator: FollowersCreator = {
   id: 'followers-creator-id',
-  instructions: 'By default you have around 20 followers, loyal to you but not fanatical.',
+  instructions:
+    'By default you have around 20 followers, loyal to you but not fanatical.',
   defaultNumberOfFollowers: 20,
-  defaultSurplusBarter: 1,
+  defaultSurplusBarterCount: 1,
   defaultFortune: 1,
   defaultStrengthsCount: 2,
   defaultWeaknessesCount: 2,
   travelOptions: ['travel with you', 'congregate'],
-  characterizationOptions: ['your cult', 'your scene', 'your family', 'your staff'],
+  characterizationOptions: [
+    'your cult',
+    'your scene',
+    'your family',
+    'your staff',
+  ],
   defaultWants: ['desertion'],
+  defaultSurplus: ['1-barter'],
   strengthOptions: [strengthOption1, strengthOption2],
   weaknessOptions: [weaknessOption1, weaknessOption2],
   __typename: 'FollowersCreator',
@@ -208,7 +232,8 @@ export const mockGangOption2: GangOption = {
 
 export const mockGangOption3: GangOption = {
   id: 'mock-gang-option-id-3',
-  description: 'your gang is in significant debt to someone powerful. Vulnerable: obligation.',
+  description:
+    'your gang is in significant debt to someone powerful. Vulnerable: obligation.',
   modifier: '',
   tag: '+vulnerable: obligation',
   __typename: 'GangOption',
@@ -216,7 +241,8 @@ export const mockGangOption3: GangOption = {
 
 export const mockGangOption4: GangOption = {
   id: 'mock-gang-option-id-4',
-  description: 'your gang consists of 30 or so violent bastards. Medium instead of small.',
+  description:
+    'your gang consists of 30 or so violent bastards. Medium instead of small.',
   modifier: 'MEDIUM',
   tag: '',
   __typename: 'GangOption',
@@ -247,7 +273,8 @@ export const mockUniqueCreatorChopper: PlaybookUniqueCreator = {
 
 export const holdingOption1: HoldingOption = {
   id: 'holding-option-id-1',
-  description: 'your population in large, 200-300 souls. Surplus: +1barter, want: +disease',
+  description:
+    'your population in large, 200-300 souls. Surplus: +1barter, want: +disease',
   surplusChange: 1,
   wantChange: ['+disease'],
   newHoldingSize: HoldingSize.large,
@@ -263,7 +290,8 @@ export const holdingOption1: HoldingOption = {
 
 export const holdingOption2: HoldingOption = {
   id: 'holding-option-id-2',
-  description: 'for gigs, add a bustling, widely-known market commons. Surplus: +1barter, want: +strangers',
+  description:
+    'for gigs, add a bustling, widely-known market commons. Surplus: +1barter, want: +strangers',
   surplusChange: 1,
   wantChange: ['+strangers'],
   newHoldingSize: '' as HoldingSize,
@@ -295,7 +323,8 @@ export const holdingOption3: HoldingOption = {
 
 export const holdingOption4: HoldingOption = {
   id: 'holding-option-id-4',
-  description: 'your armory is sophisticated and extensive. Your gang gets +1harm.',
+  description:
+    'your armory is sophisticated and extensive. Your gang gets +1harm.',
   surplusChange: -2,
   wantChange: [],
   newHoldingSize: '' as HoldingSize,
@@ -311,7 +340,8 @@ export const holdingOption4: HoldingOption = {
 
 export const holdingOption5: HoldingOption = {
   id: 'holding-option-id-5',
-  description: 'your population is decadent and perverse. Surplus: -1barter, want: +savagery.',
+  description:
+    'your population is decadent and perverse. Surplus: -1barter, want: +savagery.',
   surplusChange: -1,
   wantChange: ['+savagery'],
   newHoldingSize: '' as HoldingSize,
@@ -327,7 +357,8 @@ export const holdingOption5: HoldingOption = {
 
 export const holdingOption6: HoldingOption = {
   id: 'holding-option-id-6',
-  description: 'your garage is for shit. It has only 4 vehicles, and only 2 of them are suitable for battle.',
+  description:
+    'your garage is for shit. It has only 4 vehicles, and only 2 of them are suitable for battle.',
   surplusChange: -2,
   wantChange: [],
   newHoldingSize: '' as HoldingSize,
@@ -358,7 +389,12 @@ export const mockHoldingCreator: HoldingCreator = {
   defaultGangTag: 'unruly',
   defaultStrengthsCount: 4,
   defaultWeaknessesCount: 2,
-  strengthOptions: [holdingOption1, holdingOption2, holdingOption3, holdingOption4],
+  strengthOptions: [
+    holdingOption1,
+    holdingOption2,
+    holdingOption3,
+    holdingOption4,
+  ],
   weaknessOptions: [holdingOption5, holdingOption6],
   __typename: 'HoldingCreator',
 };
@@ -394,8 +430,7 @@ export const mockLuxeItem1: SkinnerGearItem = {
 export const mockLuxeItem2: SkinnerGearItem = {
   id: 'skinner-gear-item-id-4',
   item: 'eyeglasses (worn valuable)',
-  note:
-    'You may use these for +1sharp when your eyesight matters, but if you do, without them you get -1sharp when your eyesight matters.',
+  note: 'You may use these for +1sharp when your eyesight matters, but if you do, without them you get -1sharp when your eyesight matters.',
 };
 
 export const mockSkinnerGearCreator: SkinnerGearCreator = {
@@ -421,8 +456,14 @@ export const mockWeaponsCreator: WeaponsCreator = {
   bfoGunOptionCount: 1,
   seriousGunOptionCount: 2,
   backupWeaponsOptionCount: 1,
-  bigFuckOffGuns: ['silenced sniper rifle (3-harm far hi-tech)', 'mg (3-harm close/far area messy)'],
-  seriousGuns: ['hunting rifle (3-harm far loud)', 'shotgun (3-harm close messy)'],
+  bigFuckOffGuns: [
+    'silenced sniper rifle (3-harm far hi-tech)',
+    'mg (3-harm close/far area messy)',
+  ],
+  seriousGuns: [
+    'hunting rifle (3-harm far loud)',
+    'shotgun (3-harm close messy)',
+  ],
   backupWeapons: ['9mm (2-harm close loud)', 'big-ass knife (2-harm hand)'],
   __typename: 'WeaponsCreator',
 };
@@ -439,9 +480,16 @@ export const mockUniqueCreatorGunlugger: PlaybookUniqueCreator = {
 export const mockWorkspaceCreator: WorkspaceCreator = {
   id: 'workspace-creator-id',
   defaultItemsCount: 3,
-  workspaceInstructions: 'When you go into your workspace and dedicate yourself to making a thing, or ...',
-  projectInstructions: "During play, it's your job to have your character start and pursue projects...",
-  workspaceItems: ['a garage', 'a darkroom', 'a controlled growing environment', 'skilled labor (Carna, Thuy, Pamming eg)'],
+  workspaceInstructions:
+    'When you go into your workspace and dedicate yourself to making a thing, or ...',
+  projectInstructions:
+    "During play, it's your job to have your character start and pursue projects...",
+  workspaceItems: [
+    'a garage',
+    'a darkroom',
+    'a controlled growing environment',
+    'skilled labor (Carna, Thuy, Pamming eg)',
+  ],
   __typename: 'WorkspaceCreator',
 };
 

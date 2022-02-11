@@ -5,7 +5,12 @@ import { Box, RadioButtonGroup, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
 import { StyledMarkdown } from '../styledComponents';
-import { HeadingWS, ParagraphWS, ButtonWS, chopperSpecialBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  chopperSpecialBackground,
+} from '../../config/grommetConfig';
 import PERFORM_CHOPPER_SPECIAL_MOVE, {
   PerformChopperSpecialMoveData,
   PerformChopperSpecialMoveVars,
@@ -14,29 +19,36 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { APPLY_TEXT, CANCEL_TEXT } from '../../config/constants';
 
 interface ChopperSpecialDialogProps {
   move: Move | CharacterMove;
   handleClose: () => void;
 }
 
-const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({
+  move,
+  handleClose,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [otherCharacterId, setotherCharacterId] = useState('');
   const [hxChange, setHxChange] = useState<string | undefined>();
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performChopperSpecialMove, { loading: performingChopperSpecialMove }] =
-    useMutation<PerformChopperSpecialMoveData, PerformChopperSpecialMoveVars>(PERFORM_CHOPPER_SPECIAL_MOVE);
+    useMutation<PerformChopperSpecialMoveData, PerformChopperSpecialMoveVars>(
+      PERFORM_CHOPPER_SPECIAL_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
-  const characters = otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
+  // ----------------------------- Component functions ------------------------- //
+  const characters =
+    otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleChopperSpecialMove = async () => {
     if (
       !!userGameRole &&
@@ -75,9 +87,12 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
-    <DialogWrapper background={chopperSpecialBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={chopperSpecialBackground}
+      handleClose={handleClose}
+    >
       <Box gap="12px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
@@ -85,7 +100,9 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose
         <StyledMarkdown>{move.description}</StyledMarkdown>
         <Box direction="row" gap="24px">
           <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">Who did you have sex with?</ParagraphWS>
+            <ParagraphWS alignSelf="start">
+              Who did you have sex with?
+            </ParagraphWS>
             <Select
               id="target-character-input"
               aria-label="target-character-input"
@@ -98,7 +115,9 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose
             />
           </Box>
           <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">How do they want your Hx to change?</ParagraphWS>
+            <ParagraphWS alignSelf="start">
+              How do they want your Hx to change?
+            </ParagraphWS>
             <RadioButtonGroup
               direction="row"
               justify="around"
@@ -112,18 +131,25 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({ move, handleClose
         </Box>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
           <ButtonWS
-            label="CANCEL"
+            label={CANCEL_TEXT}
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
-            label="APPLY"
+            label={APPLY_TEXT}
             primary
-            onClick={() => !performingChopperSpecialMove && !!otherCharacterId && handleChopperSpecialMove()}
-            disabled={performingChopperSpecialMove || !otherCharacterId}
+            onClick={() =>
+              !performingChopperSpecialMove &&
+              !!otherCharacterId &&
+              handleChopperSpecialMove()
+            }
+            disabled={
+              performingChopperSpecialMove || !otherCharacterId || !hxChange
+            }
           />
         </Box>
       </Box>

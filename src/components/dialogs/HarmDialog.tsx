@@ -4,7 +4,13 @@ import { useMutation } from '@apollo/client';
 import { Box, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
-import { HeadingWS, ParagraphWS, ButtonWS, RedBox, sufferHarmBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  ButtonWS,
+  RedBox,
+  sufferHarmBackground,
+} from '../../config/grommetConfig';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
@@ -21,20 +27,22 @@ interface HarmDialogProps {
 }
 
 const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [harm, setHarm] = useState(0);
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performSufferHarmMove, { loading: performingSufferHarmMove }] =
-    useMutation<PerformSufferHarmMoveData, PerformSufferHarmMoveVars>(PERFORM_SUFFER_HARM_MOVE);
+    useMutation<PerformSufferHarmMoveData, PerformSufferHarmMoveVars>(
+      PERFORM_SUFFER_HARM_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const currentHarm = character?.harm;
 
   const handleSufferHarmMove = async (move: Move | CharacterMove) => {
@@ -42,7 +50,12 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
       console.warn("You're dead");
       return;
     }
-    if (!!userGameRole && !!character && !character.isDead && !performingSufferHarmMove) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingSufferHarmMove
+    ) {
       try {
         await performSufferHarmMove({
           variables: {
@@ -61,7 +74,7 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
     <DialogWrapper background={sufferHarmBackground} handleClose={handleClose}>
@@ -69,13 +82,27 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
         </HeadingWS>
-        <Box fill direction="row" align="start" justify="between" pad="12px" gap="12px">
+        <Box
+          fill
+          direction="row"
+          align="start"
+          justify="between"
+          pad="12px"
+          gap="12px"
+        >
           <Box fill>
             <ParagraphWS alignSelf="center">Your current harm</ParagraphWS>
-            {!!currentHarm && <HarmClock harmValue={currentHarm.value} isStabilized={currentHarm.isStabilized} />}
+            {!!currentHarm && (
+              <HarmClock
+                harmValue={currentHarm.value}
+                isStabilized={currentHarm.isStabilized}
+              />
+            )}
           </Box>
           <Box fill>
-            <ParagraphWS alignSelf="center">How much harm did you suffer? (after armor, if you’re wearing any)</ParagraphWS>
+            <ParagraphWS alignSelf="center">
+              How much harm did you suffer? (after armor, if you’re wearing any)
+            </ParagraphWS>
             <RedBox
               alignSelf="center"
               width="150px"
@@ -101,14 +128,17 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
             label="CANCEL"
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
             label="ROLL"
             primary
-            onClick={() => !!harm && !performingSufferHarmMove && handleSufferHarmMove(move)}
+            onClick={() =>
+              !!harm && !performingSufferHarmMove && handleSufferHarmMove(move)
+            }
             disabled={!harm || performingSufferHarmMove}
           />
         </Box>

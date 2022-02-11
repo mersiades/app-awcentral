@@ -6,7 +6,10 @@ import { Box } from 'grommet';
 import Spinner from './Spinner';
 import { brandColor, ButtonWS, TextWS } from '../config/grommetConfig';
 import { GameForInviteeGame } from '../queries/gamesForInvitee';
-import ADD_USER_TO_GAME, { AddUserToGameData, AddUserToGameVars } from '../mutations/addUserToGame';
+import ADD_USER_TO_GAME, {
+  AddUserToGameData,
+  AddUserToGameVars,
+} from '../mutations/addUserToGame';
 import { RoleType } from '../@types/enums';
 import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { JOIN_TEXT, NO_INVITATIONS_TEXT } from '../config/constants';
@@ -19,11 +22,17 @@ interface InvitationsListProps {
 const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
   const history = useHistory();
   const { id: userId, username: displayName, email } = useKeycloakUser();
-  const [addUserToGame, { loading }] = useMutation<AddUserToGameData, AddUserToGameVars>(ADD_USER_TO_GAME);
+  const [addUserToGame, { loading }] = useMutation<
+    AddUserToGameData,
+    AddUserToGameVars
+  >(ADD_USER_TO_GAME);
 
   const handleJoinGame = async (gameId: string) => {
-    // @ts-ignore
-    await addUserToGame({ variables: { userId, displayName, email, gameId }, skip: !userId });
+    await addUserToGame({
+      // @ts-ignore
+      variables: { userId, displayName, email, gameId },
+      skip: !userId,
+    });
     logAmpEvent('join game');
     history.push(`/character-creation/${gameId}`, { role: RoleType.player });
   };
@@ -67,7 +76,13 @@ const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
     <Box>
       {games.map((game) => {
         return (
-          <Box data-testid="invitation-list-item" key={game.id} direction="row" justify="between" align="center">
+          <Box
+            data-testid="invitation-list-item"
+            key={game.id}
+            direction="row"
+            justify="between"
+            align="center"
+          >
             <Box direction="column" fill="horizontal">
               <TextWS weight="bold" size="xlarge" truncate>
                 {game.name}

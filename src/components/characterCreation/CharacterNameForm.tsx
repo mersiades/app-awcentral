@@ -5,41 +5,57 @@ import { Box, TextInput, Text, FormField } from 'grommet';
 
 import Spinner from '../Spinner';
 import { ButtonWS, HeadingWS } from '../../config/grommetConfig';
-import PLAYBOOK_CREATOR, { PlaybookCreatorData, PlaybookCreatorVars } from '../../queries/playbookCreator';
-import SET_CHARACTER_NAME, { SetCharacterNameData, SetCharacterNameVars } from '../../mutations/setCharacterName';
+import PLAYBOOK_CREATOR, {
+  PlaybookCreatorData,
+  PlaybookCreatorVars,
+} from '../../queries/playbookCreator';
+import SET_CHARACTER_NAME, {
+  SetCharacterNameData,
+  SetCharacterNameVars,
+} from '../../mutations/setCharacterName';
 import { CharacterCreationSteps } from '../../@types/enums';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { SET_TEXT } from '../../config/constants';
 
 const CharacterNameForm: FC = () => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
 
   const [selectedName, setSelectedName] = useState('');
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const { data: pbCreatorData } = useQuery<PlaybookCreatorData, PlaybookCreatorVars>(
-    PLAYBOOK_CREATOR,
+  // ----------------------------- GraphQL -------------------------------------- //
+  const { data: pbCreatorData } = useQuery<
+    PlaybookCreatorData,
+    PlaybookCreatorVars
+  >(PLAYBOOK_CREATOR, {
     // @ts-ignore
-    { variables: { playbookType: character?.playbook }, skip: !character?.playbook }
-  );
+    variables: { playbookType: character?.playbook },
+    skip: !character?.playbook,
+  });
 
   const names = pbCreatorData?.playbookCreator.names;
-  const [setCharacterName, { loading: settingName }] =
-    useMutation<SetCharacterNameData, SetCharacterNameVars>(SET_CHARACTER_NAME);
+  const [setCharacterName, { loading: settingName }] = useMutation<
+    SetCharacterNameData,
+    SetCharacterNameVars
+  >(SET_CHARACTER_NAME);
 
-  // ---------------------------------------- Component functions and variables ------------------------------------------ //
+  // ----------------------------- Component functions ------------------------- //
   const handleSubmitName = async () => {
     if (!!userGameRole && !!character && !character.isDead && !!game) {
       try {
         await setCharacterName({
-          variables: { gameRoleId: userGameRole.id, characterId: character.id, name: selectedName },
+          variables: {
+            gameRoleId: userGameRole.id,
+            characterId: character.id,
+            name: selectedName,
+          },
           optimisticResponse: {
             __typename: 'Mutation',
             setCharacterName: {
@@ -52,7 +68,9 @@ const CharacterNameForm: FC = () => {
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set name');
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectLooks}`);
+          history.push(
+            `/character-creation/${game.id}?step=${CharacterCreationSteps.selectLooks}`
+          );
         }
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       } catch (error) {
@@ -61,17 +79,19 @@ const CharacterNameForm: FC = () => {
     }
   };
 
-  // ------------------------------------------------------- Effects ------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
 
   useEffect(() => {
     !!character?.name && setSelectedName(character.name);
   }, [character]);
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   // Force navigation back to playbook selection if somehow the character doesn't have a playbook at this stage
   if (!!character && !!game && !character.playbook) {
-    history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectPlaybook}`);
+    history.push(
+      `/character-creation/${game.id}?step=${CharacterCreationSteps.selectPlaybook}`
+    );
     return <div />;
   }
 
@@ -91,11 +111,20 @@ const CharacterNameForm: FC = () => {
             level={2}
             style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
           >{`WHAT IS THE ${
-            !!character?.playbook ? decapitalize(character?.playbook).toUpperCase() : '...'
+            !!character?.playbook
+              ? decapitalize(character?.playbook).toUpperCase()
+              : '...'
           } CALLED?`}</HeadingWS>
           <ButtonWS
             primary
-            label={settingName ? <Spinner fillColor="#FFF" width="37px" height="36px" /> : 'SET'}
+            data-testid="set-name-button"
+            label={
+              settingName ? (
+                <Spinner fillColor="#FFF" width="37px" height="36px" />
+              ) : (
+                SET_TEXT
+              )
+            }
             disabled={selectedName === '' || settingName}
             onClick={() => !settingName && handleSubmitName()}
           />
@@ -116,7 +145,11 @@ const CharacterNameForm: FC = () => {
               <Box
                 data-testid={`${name.name}-pill`}
                 key={name.id}
-                background={name.name === selectedName ? { color: '#698D70', dark: true } : '#4C684C'}
+                background={
+                  name.name === selectedName
+                    ? { color: '#698D70', dark: true }
+                    : '#4C684C'
+                }
                 round="medium"
                 pad={{ top: '3px', bottom: '1px', horizontal: '12px' }}
                 margin={{ vertical: '3px', horizontal: '3px' }}

@@ -61,7 +61,15 @@ describe('Creating a new Battlebabe Character', () => {
     const face = 'smooth face';
     const eyes = 'frosty eyes';
     const body = 'sweet body';
-    cy.completeLooksForm(battlebabeNameUC, battlebabeName, gender, clothes, face, eyes, body);
+    cy.completeLooksForm(
+      battlebabeNameUC,
+      battlebabeName,
+      gender,
+      clothes,
+      face,
+      eyes,
+      body
+    );
     // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
     cy.setCharacterStat(battlebabeNameUC);
 
@@ -70,19 +78,26 @@ describe('Creating a new Battlebabe Character', () => {
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="stats-box"]').should('contain', STATS_TITLE);
-    cy.get('div[data-testid="gear-box"]').should('contain', GEAR_TITLE).should('contain', '...');
-    cy.get('div[data-testid="custom-weapons-box"]').should('contain', decapitalize(UniqueTypes.customWeapons));
+    cy.get('div[data-testid="gear-box"]')
+      .should('contain', GEAR_TITLE)
+      .should('contain', '...');
+    cy.get('div[data-testid="custom-weapons-box"]').should(
+      'contain',
+      decapitalize(UniqueTypes.customWeapons)
+    );
 
     cy.completeGearForm(battlebabeNameUC, battlebabeClothes, []);
 
     // ------------------------------------------ CustomWeaponsForm ------------------------------------------ //
     const handgun1 = 'handgun (2-harm, close, reload, loud)';
     const handgun2 = 'hi-powered handgun (2-harm, close, reload, loud, far)';
-    const handgun3 = 'hi-powered, scoped handgun (close, reload, loud, far, 3-harm)';
+    const handgun3 =
+      'hi-powered, scoped handgun (close, reload, loud, far, 3-harm)';
 
     const shotgun1 = 'shotgun (3-harm, close, reload, messy)';
     const shotgun2 = 'hi-powered shotgun (3-harm, close, reload, messy, far)';
-    const shotgun3 = 'hi-powered, scoped shotgun (close, reload, messy, far, 4-harm)';
+    const shotgun3 =
+      'hi-powered, scoped shotgun (close, reload, messy, far, 4-harm)';
     const shotgun4 = 'scoped shotgun (3-harm, close, reload, messy, far)';
 
     const rifle1 = 'rifle (2-harm, far, reload, loud)';
@@ -107,8 +122,14 @@ describe('Creating a new Battlebabe Character', () => {
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]').should('contain', battlebabeClothes);
-    cy.get('div[data-testid="custom-weapons-box"]').should('contain', decapitalize(UniqueTypes.customWeapons));
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(BATTLEBABE_SPECIAL_NAME));
+    cy.get('div[data-testid="custom-weapons-box"]').should(
+      'contain',
+      decapitalize(UniqueTypes.customWeapons)
+    );
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(BATTLEBABE_SPECIAL_NAME)
+    );
 
     // Check form functionality
     cy.contains('handgun').click();
@@ -230,56 +251,12 @@ describe('Creating a new Battlebabe Character', () => {
     cy.contains('Select 2').should('exist');
 
     // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]').should('contain', decapitalize(BATTLEBABE_SPECIAL_NAME));
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-
-    // Check form functionality
-    cy.contains(dangerousAndSexyMoveName).click();
-    cy.contains(iceColdMoveName).click();
-
-    // Submit form
-    cy.contains(SET_TEXT).click();
-
-    // ------------------------------------------ VehiclesForm ------------------------------------------ //
-    // Check form content
-    cy.contains('VEHICLES').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="moves-box"]')
-      .should('contain', MOVES_TITLE)
-      .should('contain', decapitalize(BATTLEBABE_SPECIAL_NAME))
-      .should('contain', dangerousAndSexyMoveName)
-      .should('contain', iceColdMoveName);
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-
-    // Pass on creating a vehicle
-    cy.contains(PASS_TEXT).click();
-
-    // ------------------------------------------ BattleVehiclesForm ------------------------------------------ //
-    // Check form content
-    cy.contains('BATTLE VEHICLES').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
-
-    // Pass on creating a vehicle
-    cy.contains(PASS_TEXT).click();
-
-    // ------------------------------------------ CharacterHxForm ------------------------------------------ //
-    // Check form content
-    cy.contains('WHAT HISTORY DOES SNOW HAVE?').should('exist');
-
-    // Check CharacterCreationStepper
-    cy.get('div[data-testid="vehicles-box"]').should('contain', VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="battle-vehicles-box"]').should('contain', BATTLE_VEHICLES_TITLE).should('contain', '...');
-    cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE).should('contain', '...');
-
-    // Hx form functionality tests in CreatingCharacter_Angel
-
-    // Submit form
-    // Should not allow progress to PreGamePage because need Hx with all characters
+    cy.get('div[data-testid="moves-box"]').should(
+      'contain',
+      decapitalize(BATTLEBABE_SPECIAL_NAME)
+    );
+    cy.get('div[data-testid="vehicles-box"]')
+      .should('contain', VEHICLES_TITLE)
+      .should('contain', '...');
   });
 });

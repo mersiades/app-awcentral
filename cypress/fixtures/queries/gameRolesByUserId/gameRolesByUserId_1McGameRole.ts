@@ -1,6 +1,11 @@
 import { RoleType } from '../../../../src/@types/enums';
 import { GameRolesByUserIdGameRoles } from '../../../../src/queries/gameRolesByUserId';
-import { MOCK_GAMEROLE_1_ID, MOCK_GAME_1_ID, MOCK_CHARACTER_1_ID, MOCK_GAME_1_NAME } from '../../constants';
+import {
+  MOCK_GAMEROLE_1_ID,
+  MOCK_GAME_1_ID,
+  MOCK_CHARACTER_1_ID,
+  MOCK_GAME_1_NAME,
+} from '../../constants';
 
 const gameRolesByUserId_1McGameRole: GameRolesByUserIdGameRoles[] = [
   {

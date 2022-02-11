@@ -4,7 +4,12 @@ import { InMemoryCache } from '@apollo/client';
 import userEvent from '@testing-library/user-event';
 
 import FollowersForm from '../FollowersForm';
-import { blankCharacter, mockCharacter2, mockGame5, mockKeycloakUserInfo1 } from '../../../../tests/mocks';
+import {
+  blankCharacter,
+  mockCharacter2,
+  mockGame5,
+  mockKeycloakUserInfo1,
+} from '../../../../tests/mocks';
 import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryHocus } from '../../../../tests/mockQueries';
@@ -20,7 +25,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -62,46 +70,76 @@ describe('Rendering FollowersForm', () => {
 
   describe('with a fresh Followers', () => {
     beforeEach(async () => {
-      renderWithRouter(<FollowersForm />, `/character-creation/${mockGame5.id}`, {
-        isAuthenticated: true,
-        apolloMocks: [mockPlayBookCreatorQueryHocus],
-        injectedGame: generateGame(mockPlaybookUniqueHocus),
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <FollowersForm />,
+        `/character-creation/${mockGame5.id}`,
+        {
+          isAuthenticated: true,
+          apolloMocks: [mockPlayBookCreatorQueryHocus],
+          injectedGame: generateGame(mockPlaybookUniqueHocus),
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
     test('should render FollowersForm in initial state', () => {
       screen.getByTestId('followers-form');
-      screen.getByRole('heading', { name: `${mockCharacter2.name?.toUpperCase()}'S FOLLOWERS` });
-      mockFollowersCreator.travelOptions.forEach((opt) => screen.getByRole('checkbox', { name: opt }));
-      mockFollowersCreator.strengthOptions.forEach((opt) => screen.getByRole('checkbox', { name: opt.description }));
-      mockFollowersCreator.weaknessOptions.forEach((opt) => screen.getByRole('checkbox', { name: opt.description }));
-      mockFollowersCreator.characterizationOptions.forEach((opt) => screen.getByTestId(`${opt}-pill`));
-      const fortuneValue = screen.getByRole('heading', { name: 'fortune-value' }) as HTMLHeadingElement;
+      screen.getByRole('heading', {
+        name: `${mockCharacter2.name?.toUpperCase()}'S FOLLOWERS`,
+      });
+      mockFollowersCreator.travelOptions.forEach((opt) =>
+        screen.getByRole('checkbox', { name: opt })
+      );
+      mockFollowersCreator.strengthOptions.forEach((opt) =>
+        screen.getByRole('checkbox', { name: opt.description })
+      );
+      mockFollowersCreator.weaknessOptions.forEach((opt) =>
+        screen.getByRole('checkbox', { name: opt.description })
+      );
+      mockFollowersCreator.characterizationOptions.forEach((opt) =>
+        screen.getByTestId(`${opt}-pill`)
+      );
+      const fortuneValue = screen.getByRole('heading', {
+        name: 'fortune-value',
+      }) as HTMLHeadingElement;
       expect(fortuneValue.textContent).toContain('1');
       screen.getByRole('button', { name: 'SET' });
     });
 
     test('should enable SET button after completing the form', () => {
-      let setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      let setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toEqual(true);
 
       // Select characterization
-      const characterization = screen.getByTestId(`${mockFollowersCreator.characterizationOptions[0]}-pill`);
+      const characterization = screen.getByTestId(
+        `${mockFollowersCreator.characterizationOptions[0]}-pill`
+      );
       userEvent.click(characterization);
       const descriptionBox = screen.getByTestId('description-tags-box');
-      expect(descriptionBox.textContent?.toLowerCase()).toContain(mockFollowersCreator.characterizationOptions[0]);
+      expect(descriptionBox.textContent?.toLowerCase()).toContain(
+        mockFollowersCreator.characterizationOptions[0]
+      );
 
       // Select travel option
-      const travelOption = screen.getByRole('checkbox', { name: mockFollowersCreator.travelOptions[0] });
+      const travelOption = screen.getByRole('checkbox', {
+        name: mockFollowersCreator.travelOptions[0],
+      });
       userEvent.click(travelOption);
-      expect(descriptionBox.textContent?.toLowerCase()).toContain(mockFollowersCreator.travelOptions[0]);
+      expect(descriptionBox.textContent?.toLowerCase()).toContain(
+        mockFollowersCreator.travelOptions[0]
+      );
 
       // Select two strengths
-      const strength1 = screen.getByRole('checkbox', { name: mockFollowersCreator.strengthOptions[0].description });
-      const strength2 = screen.getByRole('checkbox', { name: mockFollowersCreator.strengthOptions[1].description });
+      const strength1 = screen.getByRole('checkbox', {
+        name: mockFollowersCreator.strengthOptions[0].description,
+      });
+      const strength2 = screen.getByRole('checkbox', {
+        name: mockFollowersCreator.strengthOptions[1].description,
+      });
       const surplusBox = screen.getByTestId('surplus-tags-box');
       const wantBox = screen.getByTestId('want-tags-box');
       expect(wantBox.textContent).toContain('Want');
@@ -113,35 +151,47 @@ describe('Rendering FollowersForm', () => {
       expect(surplusBox.textContent).toContain('insight');
 
       // Select two weaknesses
-      const weakness1 = screen.getByRole('checkbox', { name: mockFollowersCreator.weaknessOptions[0].description });
-      const weakness2 = screen.getByRole('checkbox', { name: mockFollowersCreator.weaknessOptions[1].description });
+      const weakness1 = screen.getByRole('checkbox', {
+        name: mockFollowersCreator.weaknessOptions[0].description,
+      });
+      const weakness2 = screen.getByRole('checkbox', {
+        name: mockFollowersCreator.weaknessOptions[1].description,
+      });
       userEvent.click(weakness1);
       expect(surplusBox.textContent).toContain('violence');
       userEvent.click(weakness2);
       expect(surplusBox.textContent).toContain('1');
 
       // Check SET button is enabled
-      setButton = screen.getByRole('button', { name: 'SET' }) as HTMLButtonElement;
+      setButton = screen.getByRole('button', {
+        name: 'SET',
+      }) as HTMLButtonElement;
       expect(setButton.disabled).toEqual(false);
     });
   });
 
   describe('with a Followers with 1 improvement', () => {
     beforeEach(async () => {
-      renderWithRouter(<FollowersForm />, `/character-creation/${mockGame5.id}`, {
-        isAuthenticated: true,
-        apolloMocks: [mockPlayBookCreatorQueryHocus],
-        injectedGame: generateGame(mockPlaybookUniqueHocus_with1Improvement),
-        injectedUserId: mockKeycloakUserInfo1.sub,
-        cache,
-      });
+      renderWithRouter(
+        <FollowersForm />,
+        `/character-creation/${mockGame5.id}`,
+        {
+          isAuthenticated: true,
+          apolloMocks: [mockPlayBookCreatorQueryHocus],
+          injectedGame: generateGame(mockPlaybookUniqueHocus_with1Improvement),
+          injectedUserId: mockKeycloakUserInfo1.sub,
+          cache,
+        }
+      );
 
       await waitOneTick();
     });
 
     test('should render with increased strength count', () => {
       expect(screen.getByText('Choose 3:')).toBeInTheDocument();
-      expect(screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)).toBeInTheDocument();
+      expect(
+        screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)
+      ).toBeInTheDocument();
     });
   });
 });

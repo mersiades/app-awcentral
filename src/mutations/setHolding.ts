@@ -24,7 +24,10 @@ export interface SetHoldingVars {
   battleVehicleCount: number;
 }
 
-export const getSetHoldingOR = (character: Character, holdingInput: HoldingInput): SetHoldingData => {
+export const getSetHoldingOR = (
+  character: Character,
+  holdingInput: HoldingInput
+): SetHoldingData => {
   let optimisticPlaybookUniques: PlaybookUniques;
   if (!!character.playbookUniques?.holding) {
     optimisticPlaybookUniques = {
@@ -34,8 +37,14 @@ export const getSetHoldingOR = (character: Character, holdingInput: HoldingInput
         ...holdingInput,
         id: character.playbookUniques.holding.id,
         uniqueType: UniqueTypes.holding,
-        selectedStrengths: holdingInput.selectedStrengths.map((str) => ({ ...str, __typename: 'HoldingOption' })),
-        selectedWeaknesses: holdingInput.selectedWeaknesses.map((wk) => ({ ...wk, __typename: 'HoldingOption' })),
+        selectedStrengths: holdingInput.selectedStrengths.map((str) => ({
+          ...str,
+          __typename: 'HoldingOption',
+        })),
+        selectedWeaknesses: holdingInput.selectedWeaknesses.map((wk) => ({
+          ...wk,
+          __typename: 'HoldingOption',
+        })),
       },
       __typename: 'PlaybookUniques',
     };
@@ -47,8 +56,14 @@ export const getSetHoldingOR = (character: Character, holdingInput: HoldingInput
         ...holdingInput,
         id: 'temp-id-2',
         uniqueType: UniqueTypes.holding,
-        selectedStrengths: holdingInput.selectedStrengths.map((str) => ({ ...str, __typename: 'HoldingOption' })),
-        selectedWeaknesses: holdingInput.selectedWeaknesses.map((wk) => ({ ...wk, __typename: 'HoldingOption' })),
+        selectedStrengths: holdingInput.selectedStrengths.map((str) => ({
+          ...str,
+          __typename: 'HoldingOption',
+        })),
+        selectedWeaknesses: holdingInput.selectedWeaknesses.map((wk) => ({
+          ...wk,
+          __typename: 'HoldingOption',
+        })),
       },
       __typename: 'PlaybookUniques',
     };

@@ -11,9 +11,19 @@ export interface PrintMessageProps {
   ticker: number;
 }
 
-const PrintMessage: FC<PrintMessageProps> = ({ message, messagesLength, index, ticker }) => {
+const PrintMessage: FC<PrintMessageProps> = ({
+  message,
+  messagesLength,
+  index,
+  ticker,
+}) => {
   return (
-    <MoveMessage message={message} messagesLength={messagesLength} index={index} ticker={ticker}>
+    <MoveMessage
+      message={message}
+      messagesLength={messagesLength}
+      index={index}
+      ticker={ticker}
+    >
       <StyledMarkdown>{message.content}</StyledMarkdown>
     </MoveMessage>
   );

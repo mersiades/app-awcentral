@@ -6,7 +6,7 @@
     "auth_client_id": "app-awcentral"
   },
   "chromeWebSecurity": false,
-  "video": false,
+  "video": true,
   "retries": {
     "runMode": 3,
     "openMode": 0
@@ -23,9 +23,28 @@
     "CreatingCharacter_Chopper.spec.ts",
     "CreatingCharacter_Driver.spec.ts",
     "CreatingCharacter_Gunlugger.spec.ts",
+    "CreatingCharacter_Hardholder.spec.ts",
+    "CreatingCharacter_Hocus.spec.ts",
+    "CreatingCharacter_MaestroD.spec.ts",
+    "CreatingCharacter_Savvyhead.spec.ts",
+    "CreatingCharacter_Skinner.spec.ts",
     "UsingPreGamePage_player.spec.ts",
     "UsingPreGamePage_MC.spec.ts",
     "UsingPlaybookPanel_Angel.spec.ts",
-    "UsingMcPage.spec.ts"
+    "UsingPlaybookPanel_Chopper.spec.ts",
+    "UsingPlaybookPanel_Gunlugger.spec.ts",
+    "UsingPlaybookPanel_Hocus.spec.ts",
+    "UsingPlaybookPanel_MaestroD.spec.ts",
+    "MakingAngelAndAngelKitMoves.spec.ts",
+    "MakingBasicMoves_Battlebabe.spec.ts",
+    "MakingPeripheralMoves_Battlebabe.spec.ts",
+    "MakingBattleMoves_Battlebabe.spec.ts",
+    "MakingRoadWarMoves_Driver.spec.ts",
+    "UsingMcPage.spec.ts",
+    "EditingGameOnMcPage.spec.ts",
+    "InvitingPlayersOnMcPage.spec.ts",
+    "UsingMcPanel.spec.ts",
+    "UsingThreatsPanel.spec.ts",
+    "UsingNpcPanel.spec.ts"
   ]
 }

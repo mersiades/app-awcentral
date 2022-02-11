@@ -8,9 +8,17 @@ interface DialogWrapperProps {
   handleClose: () => void;
 }
 
-const DialogWrapper: FC<DialogWrapperProps> = ({ children, background, handleClose }) => {
+const DialogWrapper: FC<DialogWrapperProps> = ({
+  children,
+  background,
+  handleClose,
+}) => {
   return (
-    <Layer onEsc={handleClose} onClickOutside={handleClose} style={{ maxHeight: '99vh' }}>
+    <Layer
+      onEsc={handleClose}
+      onClickOutside={handleClose}
+      style={{ maxHeight: '99vh' }}
+    >
       <Box
         direction="column"
         fill

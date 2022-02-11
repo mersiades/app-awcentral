@@ -1,105 +1,62 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import { Box } from 'grommet';
+import styled, { css } from 'styled-components';
+import { useQuery } from '@apollo/client';
+import { Box, Tab, TabExtendedProps, Tabs, TabsExtendedProps } from 'grommet';
 
-import Spinner from '../Spinner';
-import WarningDialog from '../dialogs/WarningDialog';
-import { ButtonWS, HeadingWS, ParagraphWS } from '../../config/grommetConfig';
-import { StyledMarkdown } from '../styledComponents';
+import PlaybookDisplay from '../PlaybookDisplay';
+import { HeadingWS, ParagraphWS } from '../../config/grommetConfig';
 import PLAYBOOKS, { PlaybooksData } from '../../queries/playbooks';
-import SET_CHARACTER_PLAYBOOK, {
-  SetCharacterPlaybookData,
-  SetCharacterPlaybookVars,
-} from '../../mutations/setCharacterPlaybook';
-import { CharacterCreationSteps, PlaybookType } from '../../@types/enums';
 import { Playbook } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
+import {
+  CHOOSE_YOUR_PLAYBOOK_TEXT,
+  CHANGED_PLAYBOOK_INTRO_TEXT,
+  NEW_PLAYER_INTRO_TEXT,
+} from '../../config/constants';
+
 import '../../assets/styles/transitions.css';
-import { useHistory } from 'react-router-dom';
-import CHANGE_PLAYBOOK, {
-  ChangePlaybookData,
-  ChangePlaybookVars,
-  getChangePlaybookOR,
-} from '../../mutations/changePlaybook';
-import { CHOOSE_YOUR_PLAYBOOK_TEXT, CHANGED_PLAYBOOK_INTRO_TEXT, NEW_PLAYER_INTRO_TEXT } from '../../config/constants';
-import { logAmpEvent } from '../../config/amplitudeConfig';
+
+const StyledTab = styled(Tab as FC<TabExtendedProps>)(
+  () => css`
+    display: flex;
+    align-items: center;
+    color: blue;
+    & div {
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+  `
+);
+
+const StyledTabs = styled(Tabs as FC<TabsExtendedProps>)(
+  () => css`
+    width: 100%;
+    & div {
+      width: 100%;
+      justify-content: space-between;
+      text-align: center;
+    }
+  `
+);
 
 const CharacterPlaybookForm: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
-  const [selectedPlaybook, setSelectedPlaybook] = useState<Playbook | undefined>();
-  const [showIntro, setShowIntro] = useState(true);
+  // ----------------------------- Component state ------------------------------ //
   const [startFadeOut, setStartFadeOut] = useState(false);
   const [sortedPlaybooks, setSortedPlaybooks] = useState<Playbook[]>([]);
-  const [showSwitchWarning, setShowSwitchWarning] = useState<PlaybookType | undefined>();
-  const [showResetWarning, setShowResetWarning] = useState<PlaybookType | undefined>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
-  const { game, character, userGameRole } = useGame();
+  const [activeTab, setActiveTab] = useState(12);
+
+  // ----------------------------- Hooks ---------------------------------------- //
+  const { character } = useGame();
   const { crustReady } = useFonts();
 
-  // --------------------------------------------------3rd party hooks ----------------------------------------------------- //
-  const history = useHistory();
-
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const { data: playbooksData } = useQuery<PlaybooksData>(PLAYBOOKS);
   const playbooks = playbooksData?.playbooks;
 
-  const [setCharacterPlaybook, { loading: settingPlaybook }] =
-    useMutation<SetCharacterPlaybookData, SetCharacterPlaybookVars>(SET_CHARACTER_PLAYBOOK);
-
-  const [changePlaybook, { loading: changingPlaybook }] =
-    useMutation<ChangePlaybookData, ChangePlaybookVars>(CHANGE_PLAYBOOK);
-
-  // ---------------------------------------- Component functions and variables ------------------------------------------ //
-  const handlePlaybookClick = (playbook: Playbook) => {
-    setShowIntro(false);
-    setSelectedPlaybook(undefined);
-    setTimeout(() => setSelectedPlaybook(playbook), 0);
-  };
-
-  const checkPlaybookReset = (playbookType: PlaybookType) => {
-    if (
-      !!userGameRole &&
-      !!userGameRole.characters &&
-      userGameRole.characters.length > 0 &&
-      !!character?.playbook &&
-      character?.playbook !== playbookType
-    ) {
-      setShowSwitchWarning(playbookType);
-    } else {
-      handlePlaybookSelect(playbookType);
-    }
-  };
-
-  const handlePlaybookSelect = async (playbookType: PlaybookType) => {
-    if (!!userGameRole && !!game && !!character) {
-      if (!!character.mustChangePlaybook) {
-        try {
-          await changePlaybook({
-            variables: { gameRoleId: userGameRole.id, characterId: character.id, playbookType },
-            optimisticResponse: getChangePlaybookOR(character, playbookType),
-          });
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectStats}`);
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        try {
-          await setCharacterPlaybook({
-            variables: { gameRoleId: userGameRole.id, characterId: character.id, playbookType },
-          });
-          !character.hasCompletedCharacterCreation && logAmpEvent('choose playbook');
-          setShowSwitchWarning(undefined);
-          history.push(`/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`);
-          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    }
-  };
+  // ----------------------------- Effects ---------------------------------------- //
 
   useEffect(() => {
     if (!!playbooks) {
@@ -119,136 +76,70 @@ const CharacterPlaybookForm: FC = () => {
   // If the playbook has already been set, show that playbook to the User
   useEffect(() => {
     if (!!character && !!character.playbook && playbooks) {
-      const setPlaybook = playbooks.filter((pb) => pb.playbookType === character.playbook)[0];
-      setSelectedPlaybook(setPlaybook);
+      const setPlaybook = playbooks.filter(
+        (pb) => pb.playbookType === character.playbook
+      )[0];
+      setActiveTab(sortedPlaybooks.indexOf(setPlaybook));
     }
-  }, [character, playbooks]);
+  }, [character, playbooks, sortedPlaybooks]);
 
-  // -------------------------------------------------- Render component  ---------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <Box
       fill
+      data-testid="character-playbook-form"
+      pad="24px"
       align="center"
       justify="start"
       className={startFadeOut ? 'fadeOut' : ''}
       animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
     >
-      {!!showSwitchWarning && (
-        <WarningDialog
-          title="Switch playbook?"
-          buttonTitle="SWITCH"
-          text="Changing the playbook will reset the character."
-          handleClose={() => setShowSwitchWarning(undefined)}
-          handleConfirm={() => handlePlaybookSelect(showSwitchWarning)}
-        />
-      )}
-      {!!showResetWarning && (
-        <WarningDialog
-          title={`Reset ${decapitalize(showResetWarning)}?`}
-          buttonTitle="RESET"
-          text={`You'll remain as the ${decapitalize(showResetWarning)} but all other character info will be lost.`}
-          handleClose={() => setShowSwitchWarning(undefined)}
-          handleConfirm={() => handlePlaybookSelect(showResetWarning)}
-        />
-      )}
-      {!selectedPlaybook && showIntro && (
-        <Box width="85vw" align="center" style={{ maxWidth: '763px' }}>
-          <Box direction="row" fill="horizontal" justify="start" align="center">
-            <HeadingWS crustReady={crustReady} level={2}>
-              {CHOOSE_YOUR_PLAYBOOK_TEXT}
-            </HeadingWS>
-          </Box>
-          <ParagraphWS>{character?.mustChangePlaybook ? CHANGED_PLAYBOOK_INTRO_TEXT : NEW_PLAYER_INTRO_TEXT}</ParagraphWS>
+      <Box width="85vw" align="start" style={{ maxWidth: '763px' }}>
+        <Box direction="row" fill="horizontal" justify="start" align="center">
+          <HeadingWS
+            crustReady={crustReady}
+            level={2}
+            style={{ maxWidth: 'unset', height: '34px', lineHeight: '44px' }}
+          >
+            {CHOOSE_YOUR_PLAYBOOK_TEXT}
+          </HeadingWS>
         </Box>
-      )}
-      {!!selectedPlaybook && (
-        <Box direction="row" fill="horizontal" margin={{ bottom: '125px' }} justify="center" align="start">
-          <Box animation="fadeIn" justify="center">
-            <img
-              src={selectedPlaybook.playbookImageUrl}
-              alt={decapitalize(selectedPlaybook.playbookType)}
-              style={{ objectFit: 'contain', maxHeight: '45vh' }}
-            />
-          </Box>
-          <Box pad="12px" animation="fadeIn" justify="around" align="center">
-            <Box direction="row" fill="horizontal" justify="between" align="center" margin={{ bottom: '12px' }}>
-              <HeadingWS crustReady={crustReady} level={2} alignSelf="center" margin="0px">
-                {decapitalize(selectedPlaybook.playbookType)}
-              </HeadingWS>
-              {selectedPlaybook.playbookType !== character?.playbook ? (
-                <ButtonWS
-                  label={
-                    settingPlaybook || changingPlaybook ? (
-                      <Spinner fillColor="#FFF" width="230px" height="36px" />
-                    ) : (
-                      `SELECT ${decapitalize(selectedPlaybook.playbookType)}`
-                    )
-                  }
-                  primary
-                  size="large"
-                  onClick={() => {
-                    if (!settingPlaybook && !changingPlaybook) {
-                      setStartFadeOut(true);
-                      checkPlaybookReset(selectedPlaybook.playbookType);
-                    }
-                  }}
-                  style={{ width: '295px' }}
-                />
-              ) : (
-                <ButtonWS
-                  label={
-                    settingPlaybook || changingPlaybook ? <Spinner fillColor="#FFF" width="230px" height="36px" /> : 'RESET'
-                  }
-                  secondary
-                  size="large"
-                  onClick={() => {
-                    if (!settingPlaybook && !changingPlaybook) {
-                      setStartFadeOut(true);
-                      setShowResetWarning(selectedPlaybook.playbookType);
-                    }
-                  }}
-                  style={{ width: '295px' }}
-                />
-              )}
-            </Box>
-            <Box overflow="auto" style={{ maxWidth: '856px', maxHeight: '30vh' }}>
-              <StyledMarkdown>{selectedPlaybook.intro}</StyledMarkdown>
-              <em>
-                <StyledMarkdown>{selectedPlaybook.introComment}</StyledMarkdown>
-              </em>
-            </Box>
-          </Box>
-        </Box>
-      )}
-
-      <Box
-        direction="row"
-        gap="3px"
-        pad="3px"
-        align="end"
-        justify="around"
-        style={{ height: '125px', position: 'absolute', left: 0, bottom: 0, right: 0, top: 'unset' }}
-      >
-        {sortedPlaybooks.length > 0
-          ? sortedPlaybooks.map((playbook) => (
-              <Box
-                data-testid={`${playbook.playbookType.toLowerCase()}-button`}
-                key={playbook.playbookImageUrl}
-                onClick={() => handlePlaybookClick(playbook)}
-                hoverIndicator={{ color: 'brand', opacity: 0.4 }}
-                height="95%"
-                justify="center"
-                align="center"
-                flex="grow"
+        <Box direction="row" fill="horizontal" justify="between" align="center">
+          <StyledTabs
+            activeIndex={activeTab}
+            onActive={(tab) => {
+              setActiveTab(tab);
+            }}
+          >
+            {sortedPlaybooks.map((playbook) => (
+              <StyledTab
+                key={playbook.id}
+                title={decapitalize(playbook.playbookType)}
+                name={playbook.playbookType}
               >
-                <img
-                  src={playbook.playbookImageUrl}
-                  alt={decapitalize(playbook.playbookType)}
-                  style={{ objectFit: 'contain', maxHeight: '98%', maxWidth: '96%' }}
+                <PlaybookDisplay
+                  playbook={playbook}
+                  startFadeOut={() => setStartFadeOut(true)}
                 />
-              </Box>
-            ))
-          : null}
+              </StyledTab>
+            ))}
+          </StyledTabs>
+        </Box>
+        {activeTab === 12 && (
+          <Box
+            direction="row"
+            fill="horizontal"
+            justify="center"
+            align="center"
+            pad={{ vertical: '48px' }}
+          >
+            <ParagraphWS textAlign="center">
+              {character?.mustChangePlaybook
+                ? CHANGED_PLAYBOOK_INTRO_TEXT
+                : NEW_PLAYER_INTRO_TEXT}
+            </ParagraphWS>
+          </Box>
+        )}
       </Box>
     </Box>
   );

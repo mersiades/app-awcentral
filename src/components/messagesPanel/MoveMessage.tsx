@@ -19,12 +19,18 @@ export interface MoveMessageProps {
 
 // This components wraps around specific move message type components,
 // providing standardised layout, styling and functionality for all move message components
-const MoveMessage: FC<MoveMessageProps> = ({ children, message, messagesLength, index, ticker }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const MoveMessage: FC<MoveMessageProps> = ({
+  children,
+  message,
+  messagesLength,
+  index,
+  ticker,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [showDetails, setShowDetails] = useState(messagesLength - 1 === index);
   const [date, setDate] = useState(dayjs(message.sentOn).fromNow());
 
-  // ------------------------------------------------------- Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   // Updates the date displayed whenever the ticker ticks over (every minute)
   useEffect(() => {
     setDate(dayjs(message.sentOn).fromNow());
@@ -35,7 +41,7 @@ const MoveMessage: FC<MoveMessageProps> = ({ children, message, messagesLength, 
     setShowDetails(messagesLength - 1 === index);
   }, [messagesLength, index]);
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <div data-testid={`${message.title}-message`}>
       <Box direction="row" justify="between" align="center">
@@ -59,7 +65,18 @@ const MoveMessage: FC<MoveMessageProps> = ({ children, message, messagesLength, 
         </Box>
         <TextWS color="neutral-1">{date}</TextWS>
       </Box>
-      {showDetails && <Box animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>{children}</Box>}
+      {showDetails && (
+        <Box
+          animation={{
+            type: 'fadeIn',
+            delay: 0,
+            duration: 500,
+            size: 'xsmall',
+          }}
+        >
+          {children}
+        </Box>
+      )}
     </div>
   );
 };

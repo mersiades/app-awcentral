@@ -12,8 +12,16 @@ export interface SetWeaponsVars {
 }
 
 const SET_WEAPONS = gql`
-  mutation SetWeapons($gameRoleId: String!, $characterId: String!, $weapons: [String]!) {
-    setWeapons(gameRoleId: $gameRoleId, characterId: $characterId, weapons: $weapons) {
+  mutation SetWeapons(
+    $gameRoleId: String!
+    $characterId: String!
+    $weapons: [String]!
+  ) {
+    setWeapons(
+      gameRoleId: $gameRoleId
+      characterId: $characterId
+      weapons: $weapons
+    ) {
       id
       name
       playbook

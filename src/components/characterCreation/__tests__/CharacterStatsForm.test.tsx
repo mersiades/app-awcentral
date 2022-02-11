@@ -21,7 +21,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -58,16 +61,22 @@ describe('Rendering CharacterStatsForm', () => {
   });
 
   test('should render CharacterStatsForm in initial state', async () => {
-    renderWithRouter(<CharacterStatsForm />, `/character-creation/${mockGame5.id}?step=4`, {
-      isAuthenticated: true,
-      injectedGame: mockGame,
-      apolloMocks: [mockPlaybookCreator],
-      injectedUserId: mockKeycloakUserInfo1.sub,
-      cache,
-    });
+    renderWithRouter(
+      <CharacterStatsForm />,
+      `/character-creation/${mockGame5.id}?step=4`,
+      {
+        isAuthenticated: true,
+        injectedGame: mockGame,
+        apolloMocks: [mockPlaybookCreator],
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      }
+    );
 
     await screen.findByTestId('character-stats-form');
-    screen.getByRole('heading', { name: `WHAT ARE ${mockCharacter2.name?.toUpperCase()}'S STRENGTHS AND WEAKNESSES?` });
+    screen.getByRole('heading', {
+      name: `WHAT ARE ${mockCharacter2.name?.toUpperCase()}'S STRENGTHS AND WEAKNESSES?`,
+    });
     screen.getByRole('heading', { name: 'Choose a set:' });
     screen.getByRole('button', { name: 'SET' });
     await screen.findByTestId(`stats-option-box-0`);
@@ -76,15 +85,21 @@ describe('Rendering CharacterStatsForm', () => {
   });
 
   test('should select StatsOption and click SET button', async () => {
-    renderWithRouter(<CharacterStatsForm />, `/character-creation/${mockGame5.id}?step=4`, {
-      isAuthenticated: true,
-      injectedGame: mockGame,
-      apolloMocks: [mockPlaybookCreator],
-      injectedUserId: mockKeycloakUserInfo1.sub,
-      cache,
-    });
+    renderWithRouter(
+      <CharacterStatsForm />,
+      `/character-creation/${mockGame5.id}?step=4`,
+      {
+        isAuthenticated: true,
+        injectedGame: mockGame,
+        apolloMocks: [mockPlaybookCreator],
+        injectedUserId: mockKeycloakUserInfo1.sub,
+        cache,
+      }
+    );
 
-    const setButton = (await screen.findByRole('button', { name: 'SET' })) as HTMLButtonElement;
+    const setButton = (await screen.findByRole('button', {
+      name: 'SET',
+    })) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(true);
     const statsOption1 = screen.getByTestId(`stats-option-box-0`);
     userEvent.click(statsOption1);

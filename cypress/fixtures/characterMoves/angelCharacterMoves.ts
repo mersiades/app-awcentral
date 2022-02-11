@@ -1,12 +1,22 @@
-import { MoveActionType, RollType, StatType, MoveType, PlaybookType } from '../../../src/@types/enums';
-import { CharacterMove, MoveAction } from '../../../src/@types/staticDataInterfaces';
+import {
+  MoveActionType,
+  RollType,
+  StatType,
+  MoveType,
+  PlaybookType,
+} from '../../../src/@types/enums';
+import {
+  CharacterMove,
+  MoveAction,
+} from '../../../src/@types/staticDataInterfaces';
 
 export const mockSixthSense: CharacterMove = {
   id: '60a730246a012a4e90170fcd',
   isSelected: true,
   name: 'SIXTH SENSE',
   kind: 'CHARACTER' as MoveType,
-  description: '_**Sixth sense**_: when you open your brain to the world’s psychic maelstrom, roll+sharp instead of +weird.',
+  description:
+    '_**Sixth sense**_: when you open your brain to the world’s psychic maelstrom, roll+sharp instead of +weird.',
   playbook: 'ANGEL' as PlaybookType,
   stat: undefined,
   moveAction: undefined,

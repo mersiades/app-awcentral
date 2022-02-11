@@ -13,19 +13,22 @@ interface NameAndLooksBoxProps {
   navigateToCharacterCreation: (step: string) => void;
 }
 
-const NameAndLooksBox: FC<NameAndLooksBoxProps> = ({ description, navigateToCharacterCreation }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const NameAndLooksBox: FC<NameAndLooksBoxProps> = ({
+  description,
+  navigateToCharacterCreation,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [showDescription, setShowDescription] = useState(false);
   const [looksString, setLooksString] = useState('');
   const [name, setName] = useState('');
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { character } = useGame();
 
-  // ------------------------------------------------ Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
 
-  // ------------------------------------------------------ Effects -------------------------------------------------------- //
+  // ----------------------------- Effects ---------------------------------------- //
   useEffect(() => {
     if (!!character) {
       const looksLooks = character?.looks.map((look) => look.look) || [];
@@ -36,7 +39,7 @@ const NameAndLooksBox: FC<NameAndLooksBoxProps> = ({ description, navigateToChar
     }
   }, [character]);
 
-  // ------------------------------------------------------- Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   return (
     <Box
       data-testid="name-looks-box"
@@ -45,7 +48,13 @@ const NameAndLooksBox: FC<NameAndLooksBoxProps> = ({ description, navigateToChar
       justify="start"
       style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.25)' }}
     >
-      <Box fill="horizontal" direction="row" justify="between" align="center" pad={{ vertical: '12px' }}>
+      <Box
+        fill="horizontal"
+        direction="row"
+        justify="between"
+        align="center"
+        pad={{ vertical: '12px' }}
+      >
         <Box justify="center" pad={{ vertical: '12px' }}>
           <HeadingWS crustReady={crustReady} level="2" margin="0px">
             {name}
@@ -54,15 +63,34 @@ const NameAndLooksBox: FC<NameAndLooksBoxProps> = ({ description, navigateToChar
         </Box>
         <Box direction="row" align="center" gap="12px">
           {showDescription ? (
-            <FormUp data-testid="name-up-chevron" onClick={() => setShowDescription(false)} />
+            <FormUp
+              data-testid="name-up-chevron"
+              onClick={() => setShowDescription(false)}
+            />
           ) : (
-            <FormDown data-testid="name-down-chevron" onClick={() => setShowDescription(true)} />
+            <FormDown
+              data-testid="name-down-chevron"
+              onClick={() => setShowDescription(true)}
+            />
           )}
-          <Edit color="accent-1" onClick={() => navigateToCharacterCreation('1')} style={{ cursor: 'pointer' }} />
+          <Edit
+            color="accent-1"
+            onClick={() => navigateToCharacterCreation('1')}
+            style={{ cursor: 'pointer' }}
+          />
         </Box>
       </Box>
       {showDescription && !!description && (
-        <Box fill="horizontal" pad="12px" animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}>
+        <Box
+          fill="horizontal"
+          pad="12px"
+          animation={{
+            type: 'fadeIn',
+            delay: 0,
+            duration: 500,
+            size: 'xsmall',
+          }}
+        >
           <StyledMarkdown>{description}</StyledMarkdown>
         </Box>
       )}

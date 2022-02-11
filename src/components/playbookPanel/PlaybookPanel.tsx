@@ -31,12 +31,27 @@ interface PlaybookPanelProps {
   openDialog: (move: Move | CharacterMove) => void;
 }
 
-const PlaybookPanel: FC<PlaybookPanelProps> = ({ character, navigateToCharacterCreation, openDialog }) => {
-  const { data } = useQuery<PlaybookData, PlaybookVars>(PLAYBOOK, { variables: { playbookType: character.playbook } });
+const PlaybookPanel: FC<PlaybookPanelProps> = ({
+  character,
+  navigateToCharacterCreation,
+  openDialog,
+}) => {
+  const { data } = useQuery<PlaybookData, PlaybookVars>(PLAYBOOK, {
+    variables: { playbookType: character.playbook },
+  });
 
   return (
-    <Box data-testid="character-sheet" direction="row" wrap pad="12px" overflow="auto">
-      <NameAndLooksBox description={data?.playbook.intro} navigateToCharacterCreation={navigateToCharacterCreation} />
+    <Box
+      data-testid="character-sheet"
+      direction="row"
+      wrap
+      pad="12px"
+      overflow="auto"
+    >
+      <NameAndLooksBox
+        description={data?.playbook.intro}
+        navigateToCharacterCreation={navigateToCharacterCreation}
+      />
 
       <StatsBox navigateToCharacterCreation={navigateToCharacterCreation} />
 
@@ -54,7 +69,10 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({ character, navigateToCharacterC
 
       <HxBox navigateToCharacterCreation={navigateToCharacterCreation} />
 
-      <GearBox gear={character.gear} navigateToCharacterCreation={navigateToCharacterCreation} />
+      <GearBox
+        gear={character.gear}
+        navigateToCharacterCreation={navigateToCharacterCreation}
+      />
 
       {data?.playbook.barterInstructions && <BarterBox />}
       {!!character.playbookUniques?.angelKit && (
@@ -67,7 +85,9 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({ character, navigateToCharacterC
       {!!character.playbookUniques?.brainerGear && (
         <UniqueItemsBox
           title="Brainer gear"
-          items={character.playbookUniques.brainerGear.brainerGear.map((item) => item.substring(0, item.indexOf(')_') + 1))}
+          items={character.playbookUniques.brainerGear.brainerGear.map((item) =>
+            item.substring(0, item.indexOf(')_') + 1)
+          )}
           navigateToCharacterCreation={navigateToCharacterCreation}
         />
       )}
@@ -80,16 +100,29 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({ character, navigateToCharacterC
       )}
 
       {!!character.playbookUniques?.establishment && (
-        <EstablishmentBox navigateToCharacterCreation={navigateToCharacterCreation} />
+        <EstablishmentBox
+          navigateToCharacterCreation={navigateToCharacterCreation}
+        />
       )}
-      {!!character.playbookUniques?.followers && <FollowersBox navigateToCharacterCreation={navigateToCharacterCreation} />}
+      {!!character.playbookUniques?.followers && (
+        <FollowersBox
+          navigateToCharacterCreation={navigateToCharacterCreation}
+        />
+      )}
       {!!character.playbookUniques?.gang && (
-        <GangBox navigateToCharacterCreation={navigateToCharacterCreation} openDialog={openDialog} />
+        <GangBox
+          navigateToCharacterCreation={navigateToCharacterCreation}
+          openDialog={openDialog}
+        />
       )}
-      {!!character.playbookUniques?.holding && <HoldingBox navigateToCharacterCreation={navigateToCharacterCreation} />}
+      {!!character.playbookUniques?.holding && (
+        <HoldingBox navigateToCharacterCreation={navigateToCharacterCreation} />
+      )}
 
       {!!character.playbookUniques?.skinnerGear && (
-        <SkinnerGearBox navigateToCharacterCreation={navigateToCharacterCreation} />
+        <SkinnerGearBox
+          navigateToCharacterCreation={navigateToCharacterCreation}
+        />
       )}
       {!!character.playbookUniques?.weapons && (
         <UniqueItemsBox
@@ -98,10 +131,20 @@ const PlaybookPanel: FC<PlaybookPanelProps> = ({ character, navigateToCharacterC
           navigateToCharacterCreation={navigateToCharacterCreation}
         />
       )}
-      {!!character.playbookUniques?.workspace && <WorkshopBox navigateToCharacterCreation={navigateToCharacterCreation} />}
+      {!!character.playbookUniques?.workspace && (
+        <WorkshopBox
+          navigateToCharacterCreation={navigateToCharacterCreation}
+        />
+      )}
 
-      <VehiclesBox vehicles={character.vehicles} navigateToCharacterCreation={navigateToCharacterCreation} />
-      <BattleVehiclesBox vehicles={character.battleVehicles} navigateToCharacterCreation={navigateToCharacterCreation} />
+      <VehiclesBox
+        vehicles={character.vehicles}
+        navigateToCharacterCreation={navigateToCharacterCreation}
+      />
+      <BattleVehiclesBox
+        vehicles={character.battleVehicles}
+        navigateToCharacterCreation={navigateToCharacterCreation}
+      />
       <ImprovementBox />
     </Box>
   );

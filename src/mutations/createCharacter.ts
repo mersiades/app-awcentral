@@ -2,11 +2,11 @@ import { gql } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 
 export interface CreateCharacterData {
-  createCharacter: Character
+  createCharacter: Character;
 }
 
 export interface CreateCharacterVars {
-  gameRoleId: string
+  gameRoleId: string;
 }
 
 const CREATE_CHARACTER = gql`
@@ -15,6 +15,6 @@ const CREATE_CHARACTER = gql`
       id
     }
   }
-`
+`;
 
-export default CREATE_CHARACTER
+export default CREATE_CHARACTER;

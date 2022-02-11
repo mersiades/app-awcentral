@@ -10,7 +10,10 @@ jest.mock('@react-keycloak/web', () => {
   const originalModule = jest.requireActual('@react-keycloak/web');
   return {
     ...originalModule,
-    useKeycloak: () => ({ keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1), initialized: true }),
+    useKeycloak: () => ({
+      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
+      initialized: true,
+    }),
   };
 });
 
@@ -18,7 +21,7 @@ describe('Rendering App', () => {
   test('should render App and AppRouter without error', async () => {
     renderWithRouter(<App />, '/menu', { isAuthenticated: true });
 
-    const MenuPageBox = await screen.findByTestId('menu-page');
+    const MenuPageBox = await screen.findByTestId('landing-page-layout');
     expect(MenuPageBox).toBeInTheDocument();
   });
 });

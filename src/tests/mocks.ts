@@ -1,4 +1,11 @@
-import { HxInput, ItemCharacteristic, KeycloakUser, KeycloakUserInfo, TaggedItem, VehicleInput } from '../@types';
+import {
+  HxInput,
+  ItemCharacteristic,
+  KeycloakUser,
+  KeycloakUserInfo,
+  TaggedItem,
+  VehicleInput,
+} from '../@types';
 import {
   BattleVehicle,
   CharacterHarm,
@@ -160,12 +167,6 @@ export const mockKeycloakUser2: KeycloakUser = {
   email: 'mockUser2@email.com',
 };
 
-export const mockKeycloakUser3: KeycloakUser = {
-  id: 'mock-keycloak-id-3',
-  username: 'mock-user-3',
-  email: 'mockUser3@email.com',
-};
-
 export const mockCharacterHarm: CharacterHarm = {
   id: 'mock-character-harm-id-1',
   value: 0,
@@ -198,7 +199,11 @@ export const mockCharacter1: MockCharacter = {
   statsBlock: mockStatsBlock1,
   hxBlock: [],
   looks: [mockLookBattleBabe1, mockLookBattlebabe2],
-  characterMoves: [mockAngelSpecialCM, { ...mockSixthSenseCM, isSelected: true }, { ...mockInfirmaryCM, isSelected: true }], // TODO: change to battlebabe moves
+  characterMoves: [
+    mockAngelSpecialCM,
+    { ...mockSixthSenseCM, isSelected: true },
+    { ...mockInfirmaryCM, isSelected: true },
+  ], // TODO: change to battlebabe moves
   playbookUniques: mockPlaybookUniqueBattlebabe_withDummyUniques,
   vehicles: [],
   battleVehicles: [],
@@ -233,7 +238,13 @@ export const mockCharacter2: MockCharacter = {
     },
   ],
   harm: { ...mockCharacterHarm, id: 'mock-character-harm-id-2' },
-  looks: [mockLookAngel1, mockLookAngel3, mockLookAngel5, mockLookAngel7, mockLookAngel9],
+  looks: [
+    mockLookAngel1,
+    mockLookAngel3,
+    mockLookAngel5,
+    mockLookAngel7,
+    mockLookAngel9,
+  ],
   characterMoves: [
     { ...mockAngelSpecialCM, isSelected: true },
     { ...mockSixthSenseCM, isSelected: true },
@@ -257,7 +268,13 @@ export const mockGame1: Game = {
   hasFinishedPreGame: false,
   showFirstSession: false,
   mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1' },
-  players: [{ displayName: 'mock-user-2', id: 'mock-keycloak-id-2' }],
+  players: [
+    {
+      displayName: 'mock-user-2',
+      email: 'mockUser2@email.com',
+      id: 'mock-keycloak-id-2',
+    },
+  ],
   gameRoles: [
     {
       id: 'mock-gameRole-id-1',
@@ -292,7 +309,13 @@ export const mockGame2: Game = {
   hasFinishedPreGame: false,
   showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
-  players: [{ displayName: 'mock-user-1', id: 'mock-keycloak-id-1' }],
+  players: [
+    {
+      displayName: 'mock-user-1',
+      email: 'mockUser1@email.com',
+      id: 'mock-keycloak-id-1',
+    },
+  ],
   gameRoles: [
     {
       id: 'mock-gameRole-id-2',
@@ -326,7 +349,11 @@ export const mockGame3: Game = {
   commsUrl: '',
   hasFinishedPreGame: false,
   showFirstSession: false,
-  mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1', __typename: 'User' },
+  mc: {
+    displayName: 'mock-user-1',
+    id: 'mock-keycloak-id-1',
+    __typename: 'User',
+  },
   players: [],
   gameRoles: [
     {
@@ -355,7 +382,13 @@ export const mockGame4: Game = {
   hasFinishedPreGame: false,
   showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
-  players: [{ id: 'mock-keycloak-id-3', displayName: 'mock-user-3' }],
+  players: [
+    {
+      id: 'mock-keycloak-id-3',
+      email: 'mockUser3@email.com',
+      displayName: 'mock-user-3',
+    },
+  ],
   gameRoles: [
     {
       id: 'mock-gameRole-id-6',
@@ -394,8 +427,16 @@ export const mockGame5: Game = {
   gameMessages: [],
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
-    { id: 'mock-keycloak-id-3', displayName: 'mock-user-3' },
-    { id: 'mock-keycloak-id-1', displayName: 'mock-user-1' },
+    {
+      id: 'mock-keycloak-id-3',
+      email: 'mockUser3@email.com',
+      displayName: 'mock-user-3',
+    },
+    {
+      id: 'mock-keycloak-id-1',
+      email: 'mockUser1@email.com',
+      displayName: 'mock-user-1',
+    },
   ],
   gameRoles: [
     {
@@ -444,8 +485,16 @@ export const mockGame6: Game = {
   showFirstSession: false,
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
-    { id: 'mock-keycloak-id-3', displayName: 'mock-user-3' },
-    { id: 'mock-keycloak-id-1', displayName: 'mock-user-1' },
+    {
+      id: 'mock-keycloak-id-3',
+      email: 'mockUser3@email.com',
+      displayName: 'mock-user-3',
+    },
+    {
+      id: 'mock-keycloak-id-1',
+      email: 'mockUser1@email.com',
+      displayName: 'mock-user-1',
+    },
   ],
   gameRoles: [
     {
@@ -475,8 +524,16 @@ export const mockGame7: Game = {
   gameMessages: [],
   mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
   players: [
-    { id: 'mock-keycloak-id-3', displayName: 'mock-user-3' },
-    { id: 'mock-keycloak-id-1', displayName: 'mock-user-1' },
+    {
+      id: 'mock-keycloak-id-3',
+      email: 'mockUser3@email.com',
+      displayName: 'mock-user-3',
+    },
+    {
+      id: 'mock-keycloak-id-1',
+      email: 'mockUser1@email.com',
+      displayName: 'mock-user-1',
+    },
   ],
   gameRoles: [
     {
@@ -535,28 +592,6 @@ export const mockGameRole2: GameRole = {
   threats: [],
 };
 
-export const mockGameRole3: GameRole = {
-  id: 'mock-gameRole-id-3',
-  role: RoleType.player,
-  userId: 'mock-keycloak-id-2',
-  gameId: mockGame1.id,
-  gameName: mockGame1.name,
-  characters: [],
-  npcs: [],
-  threats: [],
-};
-
-export const mockGameRole4: GameRole = {
-  id: 'mock-gameRole-id-4',
-  role: RoleType.mc,
-  userId: 'mock-keycloak-id-2',
-  gameId: mockGame2.id,
-  gameName: mockGame2.name,
-  characters: [],
-  npcs: [],
-  threats: [],
-};
-
 export const mockHxInput: HxInput = {
   characterId: mockCharacter1.id,
   characterName: mockCharacter1.name as string,
@@ -568,7 +603,8 @@ export const mockHxInput: HxInput = {
 export const doSomethingUnderFire: Move = {
   id: 'mock-move-id-1',
   name: UNDER_FIRE_NAME,
-  description: 'When you _**do something under fire**_, or dig in to endure fire, roll+cool.',
+  description:
+    'When you _**do something under fire**_, or dig in to endure fire, roll+cool.',
   kind: MoveType.basic,
   playbook: PlaybookType.angel, // Apollo MockProvider won't allow undefined here
   stat: StatType.cool,
@@ -607,7 +643,8 @@ export const goAggro: Move = {
 export const sucker: Move = {
   id: 'mock-move-id-3',
   name: 'SUCKER SOMEONE',
-  description: 'When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss.',
+  description:
+    'When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss.',
   kind: MoveType.basic,
   stat: StatType.cool, // Apollo MockProvider won't allow undefined here
   playbook: PlaybookType.angel, // Apollo MockProvider won't allow undefined here
@@ -619,7 +656,8 @@ export const sucker: Move = {
 export const sufferHarm: Move = {
   id: 'mock-move-id-4',
   name: 'SUFFER HARM',
-  description: 'When you _**suffer harm**_, roll+harm suffered (after armor, if you’re wearing any).',
+  description:
+    'When you _**suffer harm**_, roll+harm suffered (after armor, if you’re wearing any).',
   kind: MoveType.peripheral,
   stat: StatType.cool, // Apollo MockProvider won't allow undefined here
   playbook: PlaybookType.angel, // Apollo MockProvider won't allow undefined here
@@ -644,7 +682,8 @@ export const goToMarket: Move = {
 export const augury: Move = {
   id: 'mock-move-id-6',
   name: 'AUGURY',
-  description: 'When you are able to use something for _**augury**_, roll+weird.',
+  description:
+    'When you are able to use something for _**augury**_, roll+weird.',
   kind: MoveType.peripheral,
   stat: StatType.weird,
   playbook: PlaybookType.angel, // Apollo MockProvider won't allow undefined here
@@ -656,7 +695,8 @@ export const augury: Move = {
 export const exchangeHarm: Move = {
   id: 'mock-move-id-7',
   name: 'EXCHANGE HARM',
-  description: 'When you _**exchange harm**_, both sides simultaneously inflict and suffer harm as established:',
+  description:
+    'When you _**exchange harm**_, both sides simultaneously inflict and suffer harm as established:',
   kind: MoveType.battle,
   stat: StatType.cool, // Apollo MockProvider won't allow undefined here
   playbook: PlaybookType.angel, // Apollo MockProvider won't allow undefined here
@@ -668,7 +708,8 @@ export const exchangeHarm: Move = {
 export const seizeByForce: Move = {
   id: 'mock-move-id-8',
   name: 'SEIZE BY FORCE',
-  description: 'To _**seize something by force**_, exchange harm, but first roll+hard.',
+  description:
+    'To _**seize something by force**_, exchange harm, but first roll+hard.',
   kind: MoveType.battle,
   stat: StatType.hard,
   playbook: PlaybookType.angel, // Apollo MockProvider won't allow undefined here
@@ -704,7 +745,8 @@ export const boardAMovingVehicle: Move = {
 export const dealWithBadTerrain: Move = {
   id: 'mock-move-id-11',
   name: 'DEAL WITH BAD TERRAIN',
-  description: 'When you have to _**deal with bad terrain**_, roll+cool, plus your vehicle’s handling.',
+  description:
+    'When you have to _**deal with bad terrain**_, roll+cool, plus your vehicle’s handling.',
   kind: MoveType.roadWar,
   stat: StatType.cool,
   playbook: PlaybookType.angel, // Apollo MockProvider won't allow undefined here
@@ -792,7 +834,9 @@ export const mockStatsOptionsAngel3: StatsOption = {
 export const mockgearInstructionsAngel: GearInstructions = {
   id: 'angel-gear-instructions-id',
   gearIntro: 'You get:',
-  youGetItems: ['fashion suitable to your look, including at your option a piece worth 1-armor (you detail)'],
+  youGetItems: [
+    'fashion suitable to your look, including at your option a piece worth 1-armor (you detail)',
+  ],
   introduceChoice: 'Small practical weapons',
   numberCanChoose: 1,
   chooseableGear: [
@@ -802,7 +846,8 @@ export const mockgearInstructionsAngel: GearInstructions = {
     'sawed-off (3-harm close reload messy)',
     'stun gun (s-harm hand reload)',
   ],
-  withMC: 'If you’d like to start play with a vehicle or a prosthetic, get with the MC.',
+  withMC:
+    'If you’d like to start play with a vehicle or a prosthetic, get with the MC.',
   startingBarter: 2,
   __typename: 'GearInstructions',
 };
@@ -836,7 +881,8 @@ export const mockPlaybookCreatorAngel: PlaybookCreator = {
   gearInstructions: mockgearInstructionsAngel,
   improvementInstructions: 'Whenever you roll a highlighted stat...',
   movesInstructions: 'You get all the basic moves. Choose 2 angel moves.',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  hxInstructions:
+    'Everyone introduces their characters by name, look and outlook...',
   improvementBlock: mockImprovementBlockAngel,
   names: [mockNameAngel1, mockNameAngel2],
   looks: [
@@ -851,9 +897,17 @@ export const mockPlaybookCreatorAngel: PlaybookCreator = {
     mockLookAngel9,
     mockLookAngel10,
   ],
-  statsOptions: [mockStatsOptionsAngel1, mockStatsOptionsAngel2, mockStatsOptionsAngel3],
+  statsOptions: [
+    mockStatsOptionsAngel1,
+    mockStatsOptionsAngel2,
+    mockStatsOptionsAngel3,
+  ],
   playbookUniqueCreator: mockUniqueCreatorAngel,
-  optionalMoves: [mockSixthSenseCM, mockInfirmaryCM, mockProfessionalCompassionCM],
+  optionalMoves: [
+    mockSixthSenseCM,
+    mockInfirmaryCM,
+    mockProfessionalCompassionCM,
+  ],
   defaultMoves: [mockAngelSpecialCM],
   defaultMoveCount: 1,
   moveChoiceCount: 2,
@@ -864,10 +918,12 @@ export const mockPlaybookCreatorAngel: PlaybookCreator = {
 export const mockPlaybookAngel: Playbook = {
   id: 'mock-playbook-angel-id',
   playbookType: PlaybookType.angel,
-  barterInstructions: 'At the beginning of the session, spend 1- or 2-barter for your lifestyle.',
+  barterInstructions:
+    'At the beginning of the session, spend 1- or 2-barter for your lifestyle.',
   intro: 'When you’re lying in the dust of Apocalypse World guts aspilled...',
   introComment: 'Angels are medics. If you want everybody to love you...',
-  playbookImageUrl: 'https://awc-images.s3-ap-southeast-2.amazonaws.com/angel-white-transparent.png',
+  playbookImageUrl:
+    'https://awc-images.s3-ap-southeast-2.amazonaws.com/angel-white-transparent.png',
 };
 
 // ------------------------------------------------------- Mock Battlebabe playbook --------------------------------------------------- //
@@ -952,7 +1008,8 @@ export const mockgearInstructionsBattlebabe: GearInstructions = {
   introduceChoice: '',
   numberCanChoose: 0,
   chooseableGear: [],
-  withMC: 'If you’d like to start play with a vehicle or a prosthetic, get with the MC.',
+  withMC:
+    'If you’d like to start play with a vehicle or a prosthetic, get with the MC.',
   startingBarter: 4,
   __typename: 'GearInstructions',
 };
@@ -972,7 +1029,8 @@ export const mockPlaybookCreatorBattlebabe: PlaybookCreator = {
   gearInstructions: mockgearInstructionsBattlebabe,
   improvementInstructions: 'Whenever you roll a highlighted stat...',
   movesInstructions: 'You get all the basic moves. Choose 2 battlebabe moves.',
-  hxInstructions: 'Everyone introduces their characters by name, look and outlook...',
+  hxInstructions:
+    'Everyone introduces their characters by name, look and outlook...',
   improvementBlock: mockImprovementBlockBattlebabe,
   names: [mockBattlebabeName],
   looks: [mockBattlebabeLook],
@@ -989,10 +1047,14 @@ export const mockPlaybookCreatorBattlebabe: PlaybookCreator = {
 export const mockPlaybookBattlbabe: Playbook = {
   id: 'mock-playbook-battlebabe-id',
   playbookType: PlaybookType.battlebabe,
-  barterInstructions: 'At the beginning of the session, spend 1- or 2-barter for your lifestyle.',
-  intro: 'Even in a place as dangerous as Apocalypse World, battlebabes are, well.',
-  introComment: 'Battlebabes are good in battle, of course, but they’re wicked social too.',
-  playbookImageUrl: 'https://awc-images.s3-ap-southeast-2.amazonaws.com/battlebabe-white-transparent.png',
+  barterInstructions:
+    'At the beginning of the session, spend 1- or 2-barter for your lifestyle.',
+  intro:
+    'Even in a place as dangerous as Apocalypse World, battlebabes are, well.',
+  introComment:
+    'Battlebabes are good in battle, of course, but they’re wicked social too.',
+  playbookImageUrl:
+    'https://awc-images.s3-ap-southeast-2.amazonaws.com/battlebabe-white-transparent.png',
 };
 
 // ------------------------------------------------------- Mock Driver playbook --------------------------------------------------- //
@@ -1069,11 +1131,21 @@ export const mockCarCreator: CarCreator = {
   id: 'car-creator-id',
   vehicleType: VehicleType.car,
   introInstructions: 'By default, your vehicle...',
-  frames: [mockVehicleFrame1, mockVehicleFrame2, mockVehicleFrame3, mockVehicleFrame4],
+  frames: [
+    mockVehicleFrame1,
+    mockVehicleFrame2,
+    mockVehicleFrame3,
+    mockVehicleFrame4,
+  ],
   strengths: ['fast', 'reliable'],
   looks: ['sleek', 'antique'],
   weaknesses: ['guzzler', 'unreliable'],
-  battleOptions: [mockBattleOption1, mockBattleOption2, mockBattleOption3, mockBattleOption4],
+  battleOptions: [
+    mockBattleOption1,
+    mockBattleOption2,
+    mockBattleOption3,
+    mockBattleOption4,
+  ],
 };
 
 export const mockBattleVehicleCreator: BattleVehicleCreator = {
@@ -1124,7 +1196,10 @@ export const mockContentItem4 = generateContentItem('4');
 const generateTickerList = (identifier: string): TickerList => ({
   id: `ticker-list-${identifier}-id`,
   title: `ticker-list-${identifier}-title`,
-  items: [`ticker-list-${identifier}-item-1`, `ticker-list-${identifier}-item-2`],
+  items: [
+    `ticker-list-${identifier}-item-1`,
+    `ticker-list-${identifier}-item-2`,
+  ],
   __typename: 'TickerList',
 });
 
@@ -1155,7 +1230,10 @@ export const mockMcContent: McContent = {
 
 // ------------------------------------------------------- Mock Playbooks --------------------------------------------------- //
 
-export const mockPlaybooks: Playbook[] = [mockPlaybookAngel, mockPlaybookBattlbabe];
+export const mockPlaybooks: Playbook[] = [
+  mockPlaybookAngel,
+  mockPlaybookBattlbabe,
+];
 
 // ---------------------------------------------- Mock user-generated data --------------------------------------------- //
 
@@ -1171,11 +1249,6 @@ export const mockVehicleInput: VehicleInput = {
   weaknesses: ['unreliable'],
   looks: ['sleek'],
   battleOptions: [mockBattleOption2, mockBattleOption4],
-};
-
-export const mockVehicle2: Vehicle = {
-  ...mockVehicleInput,
-  id: 'mock-vehicle-id-2',
 };
 
 export const blankCharacter: MockCharacter = {
@@ -1208,21 +1281,24 @@ export const blankCharacter: MockCharacter = {
 export const mockHold1: Hold = {
   id: 'mock-hold-id-1',
   moveName: 'READ A PERSON',
-  moveDescription: 'When you _**read a person**_ in a charged interaction, roll+sharp.',
+  moveDescription:
+    'When you _**read a person**_ in a charged interaction, roll+sharp.',
   rollResult: 10,
 };
 
 export const mockHold2: Hold = {
   id: 'mock-hold-id-2',
   moveName: 'READ A PERSON',
-  moveDescription: 'When you _**read a person**_ in a charged interaction, roll+sharp.',
+  moveDescription:
+    'When you _**read a person**_ in a charged interaction, roll+sharp.',
   rollResult: 11,
 };
 
 export const mockHold3: Hold = {
   id: 'mock-hold-id-3',
   moveName: 'BONEFEEL',
-  moveDescription: '_**Bonefeel**_: at the beginning of the session, roll+weird.',
+  moveDescription:
+    '_**Bonefeel**_: at the beginning of the session, roll+weird.',
   rollResult: 7,
 };
 

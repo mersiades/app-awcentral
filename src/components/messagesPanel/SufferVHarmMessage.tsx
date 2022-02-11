@@ -15,21 +15,41 @@ export interface SufferVHarmMessageProps {
   ticker: number;
 }
 
-const SufferVHarmMessage: FC<SufferVHarmMessageProps> = ({ message, messagesLength, index, ticker }) => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+const SufferVHarmMessage: FC<SufferVHarmMessageProps> = ({
+  message,
+  messagesLength,
+  index,
+  ticker,
+}) => {
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady, vtksReady } = useFonts();
 
   return (
-    <MoveMessage message={message} messagesLength={messagesLength} index={index} ticker={ticker}>
+    <MoveMessage
+      message={message}
+      messagesLength={messagesLength}
+      index={index}
+      ticker={ticker}
+    >
       <Box fill justify="center" align="center">
         <Box fill="horizontal" align="center" justify="center" pad="12px">
           <Box direction="row" align="center" justify="around" width="67%">
             {getDiceImage(message.roll1)}
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               +
             </HeadingWS>
             {getDiceImage(message.roll2)}
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               +
             </HeadingWS>
             <Box align="center" justify="between" pad="12px">
@@ -43,11 +63,26 @@ const SufferVHarmMessage: FC<SufferVHarmMessageProps> = ({ message, messagesLeng
               </HeadingWS>
               <TextWS>HARM</TextWS>
             </Box>
-            <HeadingWS crustReady={crustReady} level={2} color="brand" margin="3px">
+            <HeadingWS
+              crustReady={crustReady}
+              level={2}
+              color="brand"
+              margin="3px"
+            >
               =
             </HeadingWS>
-            <Box align="center" justify="between" pad={{ vertical: '12px', horizontal: '24px' }}>
-              <HeadingWS vtksReady={vtksReady} level={1} color="brand" margin="3px" style={{ fontSize: '80px' }}>
+            <Box
+              align="center"
+              justify="between"
+              pad={{ vertical: '12px', horizontal: '24px' }}
+            >
+              <HeadingWS
+                vtksReady={vtksReady}
+                level={1}
+                color="brand"
+                margin="3px"
+                style={{ fontSize: '80px' }}
+              >
                 {message.rollResult}
               </HeadingWS>
             </Box>

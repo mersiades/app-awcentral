@@ -6,7 +6,11 @@ import { IconProps, Next, Previous } from 'grommet-icons';
 
 import Spinner from '../Spinner';
 import { CustomUL } from '../../config/grommetConfig';
-import { CharacterCreationSteps, PlaybookType, UniqueTypes } from '../../@types/enums';
+import {
+  CharacterCreationSteps,
+  PlaybookType,
+  UniqueTypes,
+} from '../../@types/enums';
 import { useGame } from '../../contexts/gameContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import {
@@ -22,7 +26,9 @@ import {
   IMPROVE_DRIVER_FOR_WORKSPACE_TEXT,
 } from '../../config/constants';
 
-const NextWithHover = styled(Next as React.FC<IconProps & JSX.IntrinsicElements['svg']>)(() => {
+const NextWithHover = styled(
+  Next as React.FC<IconProps & JSX.IntrinsicElements['svg']>
+)(() => {
   return css`
     &:hover {
       stroke: #fff;
@@ -30,7 +36,9 @@ const NextWithHover = styled(Next as React.FC<IconProps & JSX.IntrinsicElements[
   `;
 });
 
-const PreviousWithHover = styled(Previous as React.FC<IconProps & JSX.IntrinsicElements['svg']>)(() => {
+const PreviousWithHover = styled(
+  Previous as React.FC<IconProps & JSX.IntrinsicElements['svg']>
+)(() => {
   return css`
     &:hover {
       stroke: #fff;
@@ -56,16 +64,16 @@ const UniqueBox: FC<UniqueBoxProps> = ({ uniqueType, testId, children }) => {
 };
 
 const CharacterCreationStepper: FC = () => {
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { character, game } = useGame();
 
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
   const query = new URLSearchParams(useLocation().search);
   const step = query.get('step');
   const currentStep = !!step ? parseInt(step) : undefined;
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   let reversedLooks: string[] = [];
   if (!!character && !!character.looks) {
     reversedLooks = character.looks.map((look) => look.look).reverse();
@@ -78,7 +86,10 @@ const CharacterCreationStepper: FC = () => {
   const handlePrevious = () => {
     if (!!character?.name && !!character.playbook && !!currentStep) {
       // Skip over playbookUniques page if null (usually for Driver)
-      if (currentStep === CharacterCreationSteps.selectMoves && !character.playbookUniques) {
+      if (
+        currentStep === CharacterCreationSteps.selectMoves &&
+        !character.playbookUniques
+      ) {
         changeStep(currentStep - 2);
       } else {
         changeStep(currentStep - 1);
@@ -89,7 +100,10 @@ const CharacterCreationStepper: FC = () => {
   const handleNext = () => {
     if (!!character?.name && !!character.playbook && !!currentStep) {
       // Skip over playbookUniques page if null (usually for Driver)
-      if (currentStep === CharacterCreationSteps.selectGear && !character.playbookUniques) {
+      if (
+        currentStep === CharacterCreationSteps.selectGear &&
+        !character.playbookUniques
+      ) {
         changeStep(currentStep + 2);
       } else {
         changeStep(currentStep + 1);
@@ -97,9 +111,15 @@ const CharacterCreationStepper: FC = () => {
     }
   };
 
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
   const box0Step1 = (
-    <Box margin={{ left: 'xsmall', right: 'xsmall' }} justify="between" width="11em" height="10rem" gap="small">
+    <Box
+      margin={{ left: 'xsmall', right: 'xsmall' }}
+      justify="between"
+      width="11em"
+      height="10rem"
+      gap="small"
+    >
       <Box
         data-testid="playbook-box"
         align="center"
@@ -107,7 +127,11 @@ const CharacterCreationStepper: FC = () => {
         pad="small"
         height="5rem"
         border
-        background={{ color: 'neutral-1', opacity: CharacterCreationSteps.selectPlaybook === currentStep ? 1 : 0.5 }}
+        background={{
+          color: 'neutral-1',
+          opacity:
+            CharacterCreationSteps.selectPlaybook === currentStep ? 1 : 0.5,
+        }}
         onClick={(e: any) => {
           e.currentTarget.blur();
           !!character && changeStep(CharacterCreationSteps.selectPlaybook);
@@ -117,7 +141,11 @@ const CharacterCreationStepper: FC = () => {
         <Text color="white" weight="bold">
           {PLAYBOOK_TITLE}
         </Text>
-        {!!character?.playbook ? <Text>{decapitalize(character?.playbook)}</Text> : <Text>...</Text>}
+        {!!character?.playbook ? (
+          <Text>{decapitalize(character?.playbook)}</Text>
+        ) : (
+          <Text>...</Text>
+        )}
       </Box>
       <Box
         data-testid="name-box"
@@ -126,12 +154,18 @@ const CharacterCreationStepper: FC = () => {
         pad="small"
         border
         height="5rem"
-        background={{ color: 'neutral-1', opacity: CharacterCreationSteps.selectName === currentStep ? 1 : 0.5 }}
+        background={{
+          color: 'neutral-1',
+          opacity: CharacterCreationSteps.selectName === currentStep ? 1 : 0.5,
+        }}
         onClick={(e: any) => {
           e.currentTarget.blur();
-          !!character?.playbook && changeStep(CharacterCreationSteps.selectName);
+          !!character?.playbook &&
+            changeStep(CharacterCreationSteps.selectName);
         }}
-        style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
+        style={{
+          cursor: !character || !character.playbook ? 'default' : 'pointer',
+        }}
       >
         <Text color="white" weight="bold">
           {NAME_TITLE}
@@ -152,12 +186,19 @@ const CharacterCreationStepper: FC = () => {
       align="center"
       pad="small"
       border
-      background={{ color: 'neutral-1', opacity: CharacterCreationSteps.selectLooks === currentStep ? 1 : 0.5 }}
+      background={{
+        color: 'neutral-1',
+        opacity: CharacterCreationSteps.selectLooks === currentStep ? 1 : 0.5,
+      }}
       onClick={(e: any) => {
         e.currentTarget.blur();
-        !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectLooks);
+        !!character?.name &&
+          !!character?.playbook &&
+          changeStep(CharacterCreationSteps.selectLooks);
       }}
-      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
+      style={{
+        cursor: !character || !character.playbook ? 'default' : 'pointer',
+      }}
     >
       <Text color="white" weight="bold">
         {LOOKS_TITLE}
@@ -165,7 +206,14 @@ const CharacterCreationStepper: FC = () => {
       {reversedLooks.length > 0 ? (
         <CustomUL>
           {reversedLooks.map((look) => (
-            <li key={look} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <li
+              key={look}
+              style={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {look}
             </li>
           ))}
@@ -187,20 +235,36 @@ const CharacterCreationStepper: FC = () => {
       align="center"
       pad="small"
       border
-      background={{ color: 'neutral-1', opacity: CharacterCreationSteps.selectStats === currentStep ? 1 : 0.5 }}
+      background={{
+        color: 'neutral-1',
+        opacity: CharacterCreationSteps.selectStats === currentStep ? 1 : 0.5,
+      }}
       onClick={(e: any) => {
         e.currentTarget.blur();
-        !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectStats);
+        !!character?.name &&
+          !!character?.playbook &&
+          changeStep(CharacterCreationSteps.selectStats);
       }}
-      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
+      style={{
+        cursor: !character || !character.playbook ? 'default' : 'pointer',
+      }}
     >
       <Text color="white" weight="bold">
         {STATS_TITLE}
       </Text>
-      {!!character && !!character.playbook && !!character.statsBlock && character.statsBlock.stats.length > 0 ? (
+      {!!character &&
+      !!character.playbook &&
+      !!character.statsBlock &&
+      character.statsBlock.stats.length > 0 ? (
         <>
           {character.statsBlock.stats.map((stat) => (
-            <Box key={stat.id} direction="row" fill="horizontal" justify="between" align="center">
+            <Box
+              key={stat.id}
+              direction="row"
+              fill="horizontal"
+              justify="between"
+              align="center"
+            >
               <Text>{stat.stat}</Text>
               <Text>{`${'--'.repeat(9 - stat.stat.length)}`}</Text>
               <Text>{stat.value}</Text>
@@ -224,12 +288,19 @@ const CharacterCreationStepper: FC = () => {
       align="center"
       pad="small"
       border
-      background={{ color: 'neutral-1', opacity: CharacterCreationSteps.selectGear === currentStep ? 1 : 0.5 }}
+      background={{
+        color: 'neutral-1',
+        opacity: CharacterCreationSteps.selectGear === currentStep ? 1 : 0.5,
+      }}
       onClick={(e: any) => {
         e.currentTarget.blur();
-        !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectGear);
+        !!character?.name &&
+          !!character?.playbook &&
+          changeStep(CharacterCreationSteps.selectGear);
       }}
-      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
+      style={{
+        cursor: !character || !character.playbook ? 'default' : 'pointer',
+      }}
     >
       <Text color="white" weight="bold">
         {GEAR_TITLE}
@@ -237,7 +308,14 @@ const CharacterCreationStepper: FC = () => {
       {!!character && character.gear?.length > 0 ? (
         <CustomUL>
           {character.gear.map((item, index) => (
-            <li key={index} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <li
+              key={index}
+              style={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {item}
             </li>
           ))}
@@ -256,7 +334,8 @@ const CharacterCreationStepper: FC = () => {
       const customWeapons = character.playbookUniques.customWeapons;
       const weaponsBB = customWeapons?.weapons || [];
       const brainerGear = character.playbookUniques.brainerGear;
-      const concatGear = brainerGear?.brainerGear.map((gear) => gear.split('(')) || [];
+      const concatGear =
+        brainerGear?.brainerGear.map((gear) => gear.split('(')) || [];
       const gang = character.playbookUniques.gang;
       const weapons = character.playbookUniques.weapons;
       const holding = character.playbookUniques.holding;
@@ -270,22 +349,44 @@ const CharacterCreationStepper: FC = () => {
           {!!angelKit && (
             <UniqueBox uniqueType={angelKit.uniqueType} testId="angel-kit-box">
               <li key={1}>{`Stock: ${angelKit.stock}`}</li>
-              <li key={2}>{angelKit.hasSupplier ? 'Has supplier' : 'No supplier yet'}</li>
+              <li key={2}>
+                {angelKit.hasSupplier ? 'Has supplier' : 'No supplier yet'}
+              </li>
             </UniqueBox>
           )}
           {!!brainerGear && (
-            <UniqueBox uniqueType={brainerGear.uniqueType} testId="brainer-gear-box">
+            <UniqueBox
+              uniqueType={brainerGear.uniqueType}
+              testId="brainer-gear-box"
+            >
               {concatGear.map((item, index) => (
-                <li key={index} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <li
+                  key={index}
+                  style={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {item[0]}
                 </li>
               ))}
             </UniqueBox>
           )}
           {!!customWeapons && (
-            <UniqueBox uniqueType={customWeapons.uniqueType} testId="custom-weapons-box">
+            <UniqueBox
+              uniqueType={customWeapons.uniqueType}
+              testId="custom-weapons-box"
+            >
               {weaponsBB.map((weapon, index) => (
-                <li key={index} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <li
+                  key={index}
+                  style={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {weapon}
                 </li>
               ))}
@@ -321,7 +422,10 @@ const CharacterCreationStepper: FC = () => {
             </UniqueBox>
           )}
           {!!establishment && (
-            <UniqueBox uniqueType={establishment.uniqueType} testId="establishment-box">
+            <UniqueBox
+              uniqueType={establishment.uniqueType}
+              testId="establishment-box"
+            >
               <li>Main: {establishment.mainAttraction}</li>
               <li>Sides: {establishment.sideAttractions.join(', ')}</li>
               <li>Atmosphere: {establishment.atmospheres.join(', ')}</li>
@@ -335,9 +439,15 @@ const CharacterCreationStepper: FC = () => {
             </UniqueBox>
           )}
           {!!skinnerGear && (
-            <UniqueBox uniqueType={skinnerGear.uniqueType} testId="skinner-gear-box">
+            <UniqueBox
+              uniqueType={skinnerGear.uniqueType}
+              testId="skinner-gear-box"
+            >
               <>
-                <li>{!!skinnerGear.graciousWeapon && splitItem(skinnerGear.graciousWeapon.item)}</li>
+                <li>
+                  {!!skinnerGear.graciousWeapon &&
+                    splitItem(skinnerGear.graciousWeapon.item)}
+                </li>
                 {skinnerGear.luxeGear.map((item) => (
                   <li key={item.id}>{splitItem(item.item)}</li>
                 ))}
@@ -367,7 +477,10 @@ const CharacterCreationStepper: FC = () => {
       align="center"
       pad="small"
       border
-      background={{ color: 'neutral-1', opacity: CharacterCreationSteps.setUnique === currentStep ? 1 : 0.5 }}
+      background={{
+        color: 'neutral-1',
+        opacity: CharacterCreationSteps.setUnique === currentStep ? 1 : 0.5,
+      }}
       onClick={(e: any) => {
         e.currentTarget.blur();
         if (!character?.playbookUniques) {
@@ -376,9 +489,13 @@ const CharacterCreationStepper: FC = () => {
           return;
         }
 
-        !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setUnique);
+        !!character?.name &&
+          !!character?.playbook &&
+          changeStep(CharacterCreationSteps.setUnique);
       }}
-      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
+      style={{
+        cursor: !character || !character.playbook ? 'default' : 'pointer',
+      }}
     >
       {!!character && renderUnique()}
     </Box>
@@ -395,21 +512,35 @@ const CharacterCreationStepper: FC = () => {
       align="center"
       pad="small"
       border
-      background={{ color: 'neutral-1', opacity: CharacterCreationSteps.selectMoves === currentStep ? 1 : 0.5 }}
+      background={{
+        color: 'neutral-1',
+        opacity: CharacterCreationSteps.selectMoves === currentStep ? 1 : 0.5,
+      }}
       onClick={(e: any) => {
         e.currentTarget.blur();
-        !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.selectMoves);
+        !!character?.name &&
+          !!character?.playbook &&
+          changeStep(CharacterCreationSteps.selectMoves);
       }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         {MOVES_TITLE}
       </Text>
-      {!!character && !!character.characterMoves && character.characterMoves.length > 0 ? (
+      {!!character &&
+      !!character.characterMoves &&
+      character.characterMoves.length > 0 ? (
         <CustomUL>
           {character.characterMoves.map((move) => {
             if (move.isSelected) {
               return (
-                <li key={move.id} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <li
+                  key={move.id}
+                  style={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {decapitalize(move.name)}
                 </li>
               );
@@ -434,12 +565,19 @@ const CharacterCreationStepper: FC = () => {
       align="center"
       pad="small"
       border
-      background={{ color: 'neutral-1', opacity: CharacterCreationSteps.setVehicle === currentStep ? 1 : 0.5 }}
+      background={{
+        color: 'neutral-1',
+        opacity: CharacterCreationSteps.setVehicle === currentStep ? 1 : 0.5,
+      }}
       onClick={(e: any) => {
         e.currentTarget.blur();
-        !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setVehicle);
+        !!character?.name &&
+          !!character?.playbook &&
+          changeStep(CharacterCreationSteps.setVehicle);
       }}
-      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
+      style={{
+        cursor: !character || !character.playbook ? 'default' : 'pointer',
+      }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         {VEHICLES_TITLE}
@@ -448,7 +586,14 @@ const CharacterCreationStepper: FC = () => {
         <CustomUL>
           {character.vehicles.map((vehicle) => {
             return (
-              <li key={vehicle.id} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <li
+                key={vehicle.id}
+                style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {vehicle.name}
               </li>
             );
@@ -471,21 +616,38 @@ const CharacterCreationStepper: FC = () => {
       align="center"
       pad="small"
       border
-      background={{ color: 'neutral-1', opacity: CharacterCreationSteps.setBattleVehicle === currentStep ? 1 : 0.5 }}
+      background={{
+        color: 'neutral-1',
+        opacity:
+          CharacterCreationSteps.setBattleVehicle === currentStep ? 1 : 0.5,
+      }}
       onClick={(e: any) => {
         e.currentTarget.blur();
-        !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setBattleVehicle);
+        !!character?.name &&
+          !!character?.playbook &&
+          changeStep(CharacterCreationSteps.setBattleVehicle);
       }}
-      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
+      style={{
+        cursor: !character || !character.playbook ? 'default' : 'pointer',
+      }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         {BATTLE_VEHICLES_TITLE}
       </Text>
-      {!!character && !!character.battleVehicles && character.battleVehicles.length > 0 ? (
+      {!!character &&
+      !!character.battleVehicles &&
+      character.battleVehicles.length > 0 ? (
         <CustomUL>
           {character.battleVehicles.map((vehicle) => {
             return (
-              <li key={vehicle.id} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <li
+                key={vehicle.id}
+                style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {vehicle.name}
               </li>
             );
@@ -508,12 +670,19 @@ const CharacterCreationStepper: FC = () => {
       align="center"
       pad="small"
       border
-      background={{ color: 'neutral-1', opacity: CharacterCreationSteps.setHx === currentStep ? 1 : 0.5 }}
+      background={{
+        color: 'neutral-1',
+        opacity: CharacterCreationSteps.setHx === currentStep ? 1 : 0.5,
+      }}
       onClick={(e: any) => {
         e.currentTarget.blur();
-        !!character?.name && !!character?.playbook && changeStep(CharacterCreationSteps.setHx);
+        !!character?.name &&
+          !!character?.playbook &&
+          changeStep(CharacterCreationSteps.setHx);
       }}
-      style={{ cursor: !character || !character.playbook ? 'default' : 'pointer' }}
+      style={{
+        cursor: !character || !character.playbook ? 'default' : 'pointer',
+      }}
     >
       <Text color="white" weight="bold" alignSelf="center">
         {HX_TITLE}
@@ -522,9 +691,19 @@ const CharacterCreationStepper: FC = () => {
         <CustomUL>
           {character.hxBlock.map((hxStat) => {
             return (
-              <Box key={hxStat.characterId} direction="row" fill="horizontal" justify="between" align="center">
+              <Box
+                key={hxStat.characterId}
+                direction="row"
+                fill="horizontal"
+                justify="between"
+                align="center"
+              >
                 <Text>{hxStat.characterName}</Text>
-                <Text>{`${'--'.repeat(hxStat.characterName.length > 9 ? 1 : 10 - hxStat.characterName.length)}`}</Text>
+                <Text>{`${'--'.repeat(
+                  hxStat.characterName.length > 9
+                    ? 1
+                    : 10 - hxStat.characterName.length
+                )}`}</Text>
                 <Text>{hxStat.hxValue}</Text>
               </Box>
             );
@@ -536,7 +715,17 @@ const CharacterCreationStepper: FC = () => {
     </Box>
   );
 
-  const boxesArray = [box0Step1, box1Step3, box2Step4, box3Step5, box4Step6, box5Step7, box6Step8, box7Step9, box8Step10];
+  const boxesArray = [
+    box0Step1,
+    box1Step3,
+    box2Step4,
+    box3Step5,
+    box4Step6,
+    box5Step7,
+    box6Step8,
+    box7Step9,
+    box8Step10,
+  ];
 
   const renderBoxesSmall = () => {
     if (currentStep !== undefined) {
@@ -656,13 +845,26 @@ const CharacterCreationStepper: FC = () => {
       style={{ maxHeight: '180px' }}
     >
       {!!currentStep && currentStep > 1 ? (
-        <PreviousWithHover cursor="pointer" onClick={() => handlePrevious()} size="large" color="accent-1" />
+        <PreviousWithHover
+          cursor="pointer"
+          onClick={() => handlePrevious()}
+          size="large"
+          color="accent-1"
+        />
       ) : (
         <div style={{ height: 48, width: 48, background: 'transparent' }} />
       )}
       {window.innerWidth < 800 ? renderBoxesSmall() : renderBoxes()}
-      {!!currentStep && currentStep < 9 && currentStep > 1 && !!character?.name ? (
-        <NextWithHover cursor="pointer" onClick={() => handleNext()} size="large" color="accent-1" />
+      {!!currentStep &&
+      currentStep < 9 &&
+      currentStep > 1 &&
+      !!character?.name ? (
+        <NextWithHover
+          cursor="pointer"
+          onClick={() => handleNext()}
+          size="large"
+          color="accent-1"
+        />
       ) : (
         <div style={{ height: 48, width: 48, background: 'transparent' }} />
       )}

@@ -6,7 +6,11 @@ import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { TextWS } from '../../config/grommetConfig';
 import { useGame } from '../../contexts/gameContext';
 import { useMutation } from '@apollo/client';
-import REMOVE_PLAYER, { getRemovePlayerOR, RemovePlayerData, RemovePlayerVars } from '../../mutations/removePlayer';
+import REMOVE_PLAYER, {
+  getRemovePlayerOR,
+  RemovePlayerData,
+  RemovePlayerVars,
+} from '../../mutations/removePlayer';
 import Spinner from '../Spinner';
 import WarningDialog from '../dialogs/WarningDialog';
 import {
@@ -18,14 +22,17 @@ import {
 } from '../../config/constants';
 
 const PlayersBox: FC = () => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+  // ----------------------------- Component state ------------------------------ //
   const [showRemovePlayerDialog, setShowRemovePlayerDialog] = useState('');
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { game, allPlayerGameRoles } = useGame();
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
-  const [removePlayer, { loading: removingPlayer }] = useMutation<RemovePlayerData, RemovePlayerVars>(REMOVE_PLAYER);
+  // ----------------------------- GraphQL -------------------------------------- //
+  const [removePlayer, { loading: removingPlayer }] = useMutation<
+    RemovePlayerData,
+    RemovePlayerVars
+  >(REMOVE_PLAYER);
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
 
   const handleRemovePlayer = async (playerId: string) => {
     if (!!game) {
@@ -45,7 +52,13 @@ const PlayersBox: FC = () => {
   const renderPlayers = () => {
     if (allPlayerGameRoles?.length === 0 || !allPlayerGameRoles) {
       return (
-        <Box direction="row" align="center" alignContent="end" fill margin={{ vertical: 'small' }}>
+        <Box
+          direction="row"
+          align="center"
+          alignContent="end"
+          fill
+          margin={{ vertical: 'small' }}
+        >
           <Box align="start" fill>
             <TextWS>{NO_PLAYER_TEXT}</TextWS>
           </Box>
@@ -100,7 +113,12 @@ const PlayersBox: FC = () => {
           justify="between"
           align="start"
           gap="12px"
-          animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
+          animation={{
+            type: 'fadeIn',
+            delay: 0,
+            duration: 500,
+            size: 'xsmall',
+          }}
         >
           {renderPlayers()}
         </Box>

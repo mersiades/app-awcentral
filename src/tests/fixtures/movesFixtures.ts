@@ -20,7 +20,11 @@ import {
   SHARP_2_MAX_NAME,
   WEIRD_2_MAX_NAME,
 } from '../../config/constants';
-import { dummyStatModifier, dummyRollModifier, dummyMoveAction } from './dummyData';
+import {
+  dummyStatModifier,
+  dummyRollModifier,
+  dummyMoveAction,
+} from './dummyData';
 import {
   mockCoolMax2Mod,
   mockHardMax2Mod,

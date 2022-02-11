@@ -4,7 +4,13 @@ import { useParams } from 'react-router-dom';
 import { Box, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
-import { HeadingWS, ParagraphWS, RedBox, ButtonWS, makeWantKnownBackground } from '../../config/grommetConfig';
+import {
+  HeadingWS,
+  ParagraphWS,
+  RedBox,
+  ButtonWS,
+  makeWantKnownBackground,
+} from '../../config/grommetConfig';
 import PERFORM_MAKE_WANT_KNOWN_MOVE, {
   PerformMakeWantKnownMoveData,
   PerformMakeWantKnownMoveVars,
@@ -19,29 +25,42 @@ interface MakeWantKnownDialogProps {
   handleClose: () => void;
 }
 
-const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({ move, handleClose }) => {
-  // -------------------------------------------------- Component state ---------------------------------------------------- //
+const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({
+  move,
+  handleClose,
+}) => {
+  // ----------------------------- Component state ------------------------------ //
   const [barter, setBarter] = useState(0);
-  // -------------------------------------------------- 3rd party hooks ---------------------------------------------------- //
+  // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ------------------------------------------------------- Hooks --------------------------------------------------------- //
+  // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
 
-  // ------------------------------------------------------ graphQL -------------------------------------------------------- //
+  // ----------------------------- GraphQL -------------------------------------- //
   const [performMakeWantKnownMove, { loading: performingMakeWantKnownMove }] =
-    useMutation<PerformMakeWantKnownMoveData, PerformMakeWantKnownMoveVars>(PERFORM_MAKE_WANT_KNOWN_MOVE);
+    useMutation<PerformMakeWantKnownMoveData, PerformMakeWantKnownMoveVars>(
+      PERFORM_MAKE_WANT_KNOWN_MOVE
+    );
 
-  // ------------------------------------------------- Component functions -------------------------------------------------- //
+  // ----------------------------- Component functions ------------------------- //
   const currentBarter = character?.barter || 0;
 
-  const handleMakeWantKnownMove = async (move: Move | CharacterMove, barter: number) => {
+  const handleMakeWantKnownMove = async (
+    move: Move | CharacterMove,
+    barter: number
+  ) => {
     if (currentBarter - barter < 0) {
       console.warn("You don't have enough barter");
       return;
     }
-    if (!!userGameRole && !!character && !character.isDead && !performingMakeWantKnownMove) {
+    if (
+      !!userGameRole &&
+      !!character &&
+      !character.isDead &&
+      !performingMakeWantKnownMove
+    ) {
       try {
         await performMakeWantKnownMove({
           variables: {
@@ -59,17 +78,28 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({ move, handleClose }
       }
     }
   };
-  // ------------------------------------------------------ Render -------------------------------------------------------- //
+  // ----------------------------- Render ---------------------------------------- //
 
   return (
-    <DialogWrapper background={makeWantKnownBackground} handleClose={handleClose}>
+    <DialogWrapper
+      background={makeWantKnownBackground}
+      handleClose={handleClose}
+    >
       <Box gap="24px">
         <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
           {move.name}
         </HeadingWS>
 
-        <ParagraphWS alignSelf="start">How much jingle will you drop?</ParagraphWS>
-        <RedBox alignSelf="center" width="150px" align="center" justify="between" pad="24px">
+        <ParagraphWS alignSelf="start">
+          How much jingle will you drop?
+        </ParagraphWS>
+        <RedBox
+          alignSelf="center"
+          width="150px"
+          align="center"
+          justify="between"
+          pad="24px"
+        >
           <FormField>
             <TextInput
               type="number"
@@ -87,14 +117,20 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({ move, handleClose }
             label="CANCEL"
             style={{
               background: 'transparent',
-              textShadow: '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+              textShadow:
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
             }}
             onClick={handleClose}
           />
           <ButtonWS
             label={'DROP'}
+            data-testid="drop-button"
             primary
-            onClick={() => !!barter && !performingMakeWantKnownMove && handleMakeWantKnownMove(move, barter)}
+            onClick={() =>
+              !!barter &&
+              !performingMakeWantKnownMove &&
+              handleMakeWantKnownMove(move, barter)
+            }
             disabled={!barter || performingMakeWantKnownMove || barter > 3}
           />
         </Box>
