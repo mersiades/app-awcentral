@@ -110,23 +110,33 @@ describe('Rendering PlayersBox', () => {
     });
 
     test('should open and close remove player dialog', () => {
+      jest.useFakeTimers();
       const removeButton = screen.getByTestId(
         `${mockGame7.players[0].displayName}-remove-button`
       );
       userEvent.click(removeButton);
-      screen.getByText(WARNING_DIALOG_TITLE);
+      screen.getByRole('heading', { name: WARNING_DIALOG_TITLE });
+      // screen.getByText(WARNING_DIALOG_TITLE);
 
       // Close with CANCEL button
       const cancelButton = screen.getByRole('button', { name: 'CANCEL' });
       userEvent.click(cancelButton);
-      expect(screen.queryByText(WARNING_DIALOG_TITLE)).not.toBeInTheDocument();
+      jest.runAllTimers(); // To allow Layer exit animation
+      expect(
+        screen.queryByRole('heading', { name: WARNING_DIALOG_TITLE })
+      ).not.toBeInTheDocument();
 
       userEvent.click(removeButton);
       screen.getByText(WARNING_DIALOG_TITLE);
 
       // Close by clicking outside of dialog
       userEvent.click(screen.container);
-      expect(screen.queryByText(WARNING_DIALOG_TITLE)).not.toBeInTheDocument();
+      jest.runAllTimers(); // To allow Layer exit animation
+      expect(
+        screen.queryByRole('heading', { name: WARNING_DIALOG_TITLE })
+      ).not.toBeInTheDocument();
+      jest.runOnlyPendingTimers();
+      jest.useRealTimers();
     });
 
     test('should remove player', async () => {
