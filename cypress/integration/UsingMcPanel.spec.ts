@@ -2,9 +2,9 @@ import game7 from '../fixtures/games/game7';
 
 describe('Using the MC panel on McPage', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('dave');
-    cy.visit(`/mc-game/${game7.id}`);
+    cy.login('dave@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
     cy.get('button[name="mc"]').click();
   });
 

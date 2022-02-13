@@ -1,25 +1,13 @@
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MockedResponse } from '@apollo/client/testing';
 
 import PlayerPage from '../PlayerPage';
 import { customRenderForComponent, waitOneTick } from '../../tests/test-utils';
-import { mockKeycloakStub } from '../../../__mocks__/@react-keycloak/web';
-import { mockGame7, mockKeycloakUserInfo1 } from '../../tests/mocks';
+import { mockGame7, mockAuth0UserInfo1 } from '../../tests/mocks';
 import { mockAllMoves, mockPlaybook } from '../../tests/mockQueries';
-import { MockedResponse } from '@apollo/client/testing';
 import GAME, { GameData } from '../../queries/game';
 import { CANCEL_TEXT, SCRIPT_CHANGE_TITLE } from '../../config/constants';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 const mockGameQuery: MockedResponse<GameData> = {
   request: {
@@ -53,7 +41,7 @@ describe('Rendering PlayerPage', () => {
         hasFinishedPreGame: true,
         showFirstSession: false,
       },
-      injectedUserId: mockKeycloakUserInfo1.sub,
+      injectedUserId: mockAuth0UserInfo1.sub,
     });
     await waitOneTick();
 

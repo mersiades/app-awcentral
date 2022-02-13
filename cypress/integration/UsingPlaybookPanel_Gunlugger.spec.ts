@@ -1,16 +1,17 @@
 import { StatType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import game1 from '../fixtures/games/game1';
 import {
   APPLY_TEXT,
   GUNLUGGER_SPECIAL_NAME,
   FUCK_THIS_SHIT_NAME,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import game1 from '../fixtures/games/game1';
+
 describe('Using the PlaybookPanel as a Gunlugger', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('marama');
-    cy.visit(`/player-game/${game1.id}`);
+    cy.login('marama@email.com');
+    cy.visit('/');
+    cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openPlaybookPanel();
   });

@@ -1,11 +1,10 @@
+import game4 from '../fixtures/games/game4';
+import game5 from '../fixtures/games/game5';
 import {
   ADD_TEXT,
   FINISH_TEXT,
   NO_MC_AS_PLAYER_TEXT,
 } from '../../src/config/constants';
-import game4 from '../fixtures/games/game4';
-import game5 from '../fixtures/games/game5';
-import dave from '../fixtures/users/dave';
 
 describe('Creating a Game as MC', () => {
   // Importing these objects are coming out as undefined for some reason,
@@ -15,8 +14,7 @@ describe('Creating a Game as MC', () => {
   const emailAhmad = 'ahmad@email.com';
 
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('dave');
+    cy.login('dave@email.com');
     cy.visit('/');
   });
 

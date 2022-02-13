@@ -1,21 +1,17 @@
 import { StatType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import game1 from '../fixtures/games/game1';
 import {
-  APPLY_TEXT,
-  FRENZY_NAME,
-  HOCUS_SPECIAL_NAME,
-  FORTUNES_NAME,
   MAESTROD_SPECIAL_NAME,
   JUST_GIVE_MOTIVE_NAME,
   ROLL_TEXT,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import game1 from '../fixtures/games/game1';
 
 describe('Using the PlaybookPanel as a Maestro D', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('ivette');
-    cy.visit(`/player-game/${game1.id}`);
+    cy.login('ivette@email.com');
+    cy.visit('/');
+    cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openPlaybookPanel();
   });

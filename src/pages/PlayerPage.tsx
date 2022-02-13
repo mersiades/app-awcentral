@@ -33,12 +33,12 @@ import {
   MainContainer,
   SidePanel,
 } from '../components/styledComponents';
+import { useUser } from '../contexts/userContext';
+import { useGame } from '../contexts/gameContext';
 import ALL_MOVES from '../queries/allMoves';
 import { MoveActionType, RollType } from '../@types/enums';
 import { CharacterMove, Move } from '../@types/staticDataInterfaces';
 import { Character } from '../@types/dataInterfaces';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
-import { useGame } from '../contexts/gameContext';
 import { customTabStyles } from '../config/grommetConfig';
 import HarmDialog from '../components/dialogs/HarmDialog';
 import InflictHarmDialog from '../components/dialogs/InflictHarmDialog';
@@ -101,7 +101,7 @@ const PlayerPage: FC = () => {
   const { gameId } = useParams<{ gameId: string }>();
 
   // ----------------------------- Hooks ---------------------------------------- //
-  const { id: userId } = useKeycloakUser();
+  const { userId } = useUser();
   const { game, fetchingGame, userGameRole, setGameContext } = useGame();
 
   // ----------------------------- GraphQL -------------------------------------- //

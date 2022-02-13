@@ -1,6 +1,6 @@
 import { FC } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Route, Redirect } from 'react-router-dom';
-import { useKeycloak } from '@react-keycloak/web';
 
 interface PrivateRootProps {
   component: any;
@@ -12,15 +12,16 @@ const PrivateRoute: FC<PrivateRootProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { keycloak } = useKeycloak();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   /**
-   * If an unauthorised user navigates directly to a private page, such as when joining a new game via a link given in invitation email,
-   * redirect them to the Keycloak login page. If they successfully login, Keycloak will redirect them to the private page
-   * they originally wanted to access
+   * If an unauthorised user navigates directly to a private page,
+   *  such as when joining a new game via a link given in invitation email,
+   * redirect them to the Auth0 Universal Login page. If they successfully login,
+   * Auth0 will redirect them to the private page they originally wanted to access
    */
-  if (!keycloak.authenticated) {
-    keycloak.login();
+  if (!isAuthenticated) {
+    loginWithRedirect();
   }
 
   /**
@@ -30,7 +31,7 @@ const PrivateRoute: FC<PrivateRootProps> = ({
     <Route
       {...rest}
       render={(props) =>
-        keycloak.authenticated ? <Component {...props} /> : <Redirect to="/" />
+        isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
       }
     />
   );

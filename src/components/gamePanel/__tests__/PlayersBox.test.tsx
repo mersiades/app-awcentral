@@ -60,11 +60,11 @@ describe('Rendering PlayersBox', () => {
     /*
      Suppressing this warning. It's only occuring in test env because the 'existing' players are actual objects, rather than __refs
      Test env:
-       existing: [{"id":"mock-keycloak-id-3","displayName":"mock-user-3"},{"id":"mock-keycloak-id-1","displayName":"mock-user-1"}]
-       incoming: [{"__ref":"User:mock-keycloak-id-1"}]
+       existing: [{"id":"mock-auth0-id-3","displayName":"mock-user-3"},{"id":"mock-auth0-id-1","displayName":"mock-user-1"}]
+       incoming: [{"__ref":"User:mock-auth0-id-1"}]
      Browser env:
-       existing: ["__ref":"User:mock-keycloak-id-3","__ref":"User:mock-keycloak-id-1"]
-       incoming: [{"__ref":"User:mock-keycloak-id-1"}]
+       existing: ["__ref":"User:mock-auth0-id-3","__ref":"User:mock-auth0-id-1"]
+       incoming: [{"__ref":"User:mock-auth0-id-1"}]
      */
     console.warn = (msg: { toString: () => string | string[] }) =>
       !msg

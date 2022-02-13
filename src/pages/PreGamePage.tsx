@@ -1,29 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
-
+import styled from 'styled-components';
 import { Box, Button } from 'grommet';
+import { Checkbox, Checkmark } from 'grommet-icons';
+
 import CloseButton from '../components/CloseButton';
+import ScrollableIndicator from '../components/ScrollableIndicator';
+import Spinner from '../components/Spinner';
+import ScriptChangeAttribution from '../components/ScriptChangeAttribution';
+import ScriptChange from '../components/ScriptChange';
+import { StyledMarkdown } from '../components/styledComponents';
 import {
   HeadingWS,
   ParagraphWS,
   RedBox,
   TextWS,
 } from '../config/grommetConfig';
+import { useGame } from '../contexts/gameContext';
+import { useUser } from '../contexts/userContext';
 import FINISH_PRE_GAME, {
   FinishPreGameData,
   FinishPreGameVars,
   getFinishPreGameOR,
 } from '../mutations/finishPreGame';
-import { useGame } from '../contexts/gameContext';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { Character } from '../@types/dataInterfaces';
 import { PlaybookType, RoleType } from '../@types/enums';
 import { decapitalize } from '../helpers/decapitalize';
-import { Checkbox, Checkmark } from 'grommet-icons';
-import ScrollableIndicator from '../components/ScrollableIndicator';
-import Spinner from '../components/Spinner';
-import styled from 'styled-components';
+
 import {
   CHARACTER_CREATION_TIP_1,
   CHARACTER_CREATION_TIP_2,
@@ -40,9 +44,7 @@ import {
   PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS,
   START_GAME_TEXT,
 } from '../config/constants';
-import ScriptChangeAttribution from '../components/ScriptChangeAttribution';
-import ScriptChange from '../components/ScriptChange';
-import { StyledMarkdown } from '../components/styledComponents';
+
 import { logAmpEvent } from '../config/amplitudeConfig';
 
 export const background = {
@@ -75,7 +77,7 @@ const PreGamePage = () => {
   >(FINISH_PRE_GAME);
 
   // ----------------------------- Hooks ---------------------------------------- //
-  const { id: userId } = useKeycloakUser();
+  const { userId } = useUser();
   const { game, userGameRole, allPlayerGameRoles, setGameContext } = useGame();
 
   // ----------------------------------------- Component functions and variables ------------------------------------------- //

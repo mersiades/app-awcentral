@@ -1,3 +1,6 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import { UniqueTypes } from '../../src/@types/enums';
 import {
   ATTRACTIONS_INSTRUCTIONS,
   CAST_CREW_INSTRUCTIONS,
@@ -6,15 +9,13 @@ import {
   SET_TEXT,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import { UniqueTypes } from '../../src/@types/enums';
 
 describe("Creating a new Maestro D' Character", () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('ivette');
-    cy.visit(`character-creation/${game6.id}?step=6`);
+    cy.login('ivette@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('establishment-edit-link');
   });
 
   it('should set an Establishment and stop at MovesForm', () => {

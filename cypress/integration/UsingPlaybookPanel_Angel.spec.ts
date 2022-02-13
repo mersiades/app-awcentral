@@ -1,3 +1,6 @@
+import { decapitalize } from '../../src/helpers/decapitalize';
+import angel_sara_1_complete from '../fixtures/characters/angel_sara_1_complete';
+import game7 from '../fixtures/games/game7';
 import {
   ADD_DIE_TEXT_1,
   ADD_DIE_TEXT_2,
@@ -27,9 +30,6 @@ import {
   SUPPLIER_TEXT,
   WEIRD_TEXT,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import angel_sara_1_complete from '../fixtures/characters/angel_sara_1_complete';
-import game7 from '../fixtures/games/game7';
 
 describe('Using the PlaybookPanel as an Angel', () => {
   const whiteBackground = 'background-color: rgb(255, 255, 255)';
@@ -37,9 +37,9 @@ describe('Using the PlaybookPanel as an Angel', () => {
   const greenBackground = 'background-color: rgb(105, 141, 112)';
 
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('sara');
-    cy.visit(`/player-game/${game7.id}`);
+    cy.login('sara@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
     cy.openPlaybookPanel();
   });
 
@@ -52,7 +52,6 @@ describe('Using the PlaybookPanel as an Angel', () => {
       cy.contains(angel_sara_1_complete.looks[2].look).should('exist');
       cy.contains(angel_sara_1_complete.looks[3].look).should('exist');
       cy.contains(angel_sara_1_complete.looks[4].look).should('exist');
-
       // Open and close the playbook description
       cy.get('svg[aria-label="FormDown"]').click();
       cy.contains(
@@ -62,7 +61,6 @@ describe('Using the PlaybookPanel as an Angel', () => {
       cy.contains(
         'When you’re lying in the dust of Apocalypse World guts aspilled'
       ).should('not.exist');
-
       // Check can navigate to edit page
       cy.get('svg[aria-label="Edit"]').click();
       cy.url().should('contain', `character-creation/${game7.id}?step=1`);

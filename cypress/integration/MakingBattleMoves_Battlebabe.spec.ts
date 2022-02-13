@@ -1,4 +1,6 @@
 import { StatType } from '../../src/@types/enums';
+import johnAsPlayer_1 from '../fixtures/gameRoles/johnAsPlayer_1';
+import game7 from '../fixtures/games/game7';
 import {
   EXCHANGE_HARM_NAME,
   SEIZE_BY_FORCE_NAME,
@@ -15,16 +17,14 @@ import {
   BE_THE_MOUSE_NAME,
   CAT_OR_MOUSE_NAME,
 } from '../../src/config/constants';
-import johnAsPlayer_1 from '../fixtures/gameRoles/johnAsPlayer_1';
-import game7 from '../fixtures/games/game7';
 
 describe('Making battle moves from the MovesPanel as Battlebabe', () => {
   const characterName = johnAsPlayer_1.characters[0].name as string;
 
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('john');
-    cy.visit(`/player-game/${game7.id}`);
+    cy.login('john@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
     cy.openMovesPanelBox('Battle moves');
   });
 

@@ -4,12 +4,11 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import BrainerGearForm from '../BrainerGearForm';
-import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { PlaybookType } from '../../../../@types/enums';
@@ -17,17 +16,6 @@ import { mockPlayBookCreatorQueryBrainer } from '../../../../tests/mockQueries';
 import { BrainerGear, Game } from '../../../../@types/dataInterfaces';
 import { mockPlaybookUniqueBrainer } from '../../../../tests/fixtures/playBookUniquesFixtures';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 describe('Rendering BrainerGearForm', () => {
   let cache = new InMemoryCache();
@@ -108,7 +96,7 @@ describe('Rendering BrainerGearForm', () => {
         isAuthenticated: true,
         apolloMocks: [mockPlayBookCreatorQueryBrainer],
         injectedGame: mockGame,
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );
@@ -133,7 +121,7 @@ describe('Rendering BrainerGearForm', () => {
         isAuthenticated: true,
         apolloMocks: [mockPlayBookCreatorQueryBrainer],
         injectedGame: mockGame,
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );
@@ -168,7 +156,7 @@ describe('Rendering BrainerGearForm', () => {
         isAuthenticated: true,
         apolloMocks: [mockPlayBookCreatorQueryBrainer],
         injectedGame: mockGame2,
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );

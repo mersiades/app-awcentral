@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import { Box } from 'grommet';
 
 import CharacterPlaybookForm from '../components/characterCreation/CharacterPlaybookForm';
@@ -15,14 +16,13 @@ import CharacterHxForm from '../components/characterCreation/CharacterHxForm';
 import ScrollableIndicator from '../components/ScrollableIndicator';
 import Spinner from '../components/Spinner';
 import CloseButton from '../components/CloseButton';
-import { CharacterCreationSteps } from '../@types/enums';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
-import { useGame } from '../contexts/gameContext';
 import VehiclesFormContainer from '../components/characterCreation/VehiclesFormContainer';
 import BattleVehiclesFormContainer from '../components/characterCreation/BattleVehiclesFormContainer';
-import { useQuery } from '@apollo/client';
-import PLAYBOOKS, { PlaybooksData } from '../queries/playbooks';
 import RipSign from '../components/RipSign';
+import { useGame } from '../contexts/gameContext';
+import { useUser } from '../contexts/userContext';
+import { CharacterCreationSteps } from '../@types/enums';
+import PLAYBOOKS, { PlaybooksData } from '../queries/playbooks';
 
 export const background = {
   color: 'black',
@@ -44,7 +44,7 @@ const CharacterCreationPage: FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // ----------------------------- Hooks ---------------------------------------- //
-  const { id: userId } = useKeycloakUser();
+  const { userId } = useUser();
   const { game, setGameContext, character } = useGame();
 
   // ----------------------------- 3rd party hooks ------------------------------- //

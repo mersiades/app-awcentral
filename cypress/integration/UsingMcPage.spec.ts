@@ -1,4 +1,8 @@
 import { MoveType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import daveAsMC_1 from '../fixtures/gameRoles/daveAsMC_1';
+import saraAsPlayer_1 from '../fixtures/gameRoles/saraAsPlayer_1';
+import game7 from '../fixtures/games/game7';
 import {
   ADD_TEXT,
   BARTER_TEXT,
@@ -14,16 +18,12 @@ import {
   SELECTED_MC_RULES_TEXT,
   THREATS_TEXT,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import daveAsMC_1 from '../fixtures/gameRoles/daveAsMC_1';
-import saraAsPlayer_1 from '../fixtures/gameRoles/saraAsPlayer_1';
-import game7 from '../fixtures/games/game7';
 
 describe('Using the MC Page', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('dave');
-    cy.visit(`/mc-game/${game7.id}`);
+    cy.login('dave@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
   });
 
   it('should show GamePanel initially', () => {

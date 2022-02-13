@@ -1,10 +1,10 @@
+import game7 from '../fixtures/games/game7';
 import {
   ADD_NPC_TEXT,
   ADD_TEXT,
   EDIT_TEXT,
   SET_TEXT,
 } from '../../src/config/constants';
-import game7 from '../fixtures/games/game7';
 
 interface CheckAddingNpcOptions {
   name: string;
@@ -12,9 +12,9 @@ interface CheckAddingNpcOptions {
 }
 describe('Using the NPCs panel', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('dave');
-    cy.visit(`/mc-game/${game7.id}`);
+    cy.login('dave@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
     cy.get('button[name="npcs"]').click();
   });
 

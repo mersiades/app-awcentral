@@ -19,6 +19,7 @@ import ADD_INVITEE, {
 } from '../mutations/addInvitee';
 import { useGame } from '../contexts/gameContext';
 import { useFonts } from '../contexts/fontContext';
+import { useUser } from '../contexts/userContext';
 import { copyToClipboard } from '../helpers/copyToClipboard';
 import { validateEmail } from '../helpers/validateEmail';
 import {
@@ -31,7 +32,6 @@ import {
   PLAYER_ALREADY_JOINED_GAME_TEXT,
   TELL_HOW_JOIN_GAME_TEXT,
 } from '../config/constants';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
 
 interface InvitationFormProps {
   handleClose: () => void;
@@ -58,7 +58,8 @@ const InvitationForm: FC<InvitationFormProps> = ({
   // ----------------------------- Hooks ---------------------------------------- //
   const { game } = useGame();
   const { crustReady } = useFonts();
-  const { email: mcEmail } = useKeycloakUser();
+  const { email: mcEmail } = useUser();
+
   // ----------------------------- GraphQL -------------------------------------- //
   const [addInvitee] = useMutation<AddInviteeData, AddInviteeVars>(ADD_INVITEE);
   // ----------------------------- Component functions ------------------------- //

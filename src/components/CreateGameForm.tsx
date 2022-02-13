@@ -5,7 +5,7 @@ import { FormField, TextInput, Box, Form } from 'grommet';
 
 import Spinner from './Spinner';
 import { ButtonWS, TextWS } from '../config/grommetConfig';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
+import { useUser } from '../contexts/userContext';
 import CREATE_GAME, {
   CreateGameData,
   CreateGameVars,
@@ -17,7 +17,7 @@ import { CREATE_GAME_INSTRUCTIONS, SUBMIT_TEXT } from '../config/constants';
 
 const CreateGameForm: FC = () => {
   const [gameName, setGameName] = useState({ name: '' });
-  const { id: userId, username: displayName, email } = useKeycloakUser();
+  const { userId, displayName, email } = useUser();
   const [createGame, { loading: loadingCreateGame }] = useMutation<
     CreateGameData,
     CreateGameVars

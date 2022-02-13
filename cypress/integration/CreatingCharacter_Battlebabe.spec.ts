@@ -1,17 +1,9 @@
 import {
   ADD_TEXT,
   BATTLEBABE_SPECIAL_NAME,
-  BATTLE_VEHICLES_TITLE,
   DANGEROUS_AND_SEXY_NAME,
   GEAR_TITLE,
-  HX_TITLE,
   ICE_COLD_NAME,
-  LOOKS_TITLE,
-  MOVES_TITLE,
-  NAME_TITLE,
-  NEW_GAME_TEXT,
-  NEXT_TEXT,
-  PASS_TEXT,
   PLAYBOOK_TITLE,
   REMOVE_TEXT,
   RESET_TEXT,
@@ -25,9 +17,9 @@ import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Battlebabe Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('john');
-    cy.visit(`character-creation/${game6.id}?step=0`);
+    cy.login('john@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
   });
 
   it('should create a Battlebabe and stop at CharacterHxPage', () => {

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import MCPage from '../MCPage';
 import { customRenderForComponent } from '../../tests/test-utils';
-import { mockGame7, mockKeycloakUserInfo1 } from '../../tests/mocks';
+import { mockGame7, mockAuth0UserInfo1 } from '../../tests/mocks';
 import { mockAllMoves } from '../../tests/mockQueries';
 import { RoleType } from '../../@types/enums';
 
@@ -20,7 +20,7 @@ describe('Rendering MCPage', () => {
         hasFinishedPreGame: true,
         showFirstSession: false,
       },
-      injectedUserId: mockKeycloakUserInfo1.sub,
+      injectedUserId: mockAuth0UserInfo1.sub,
     });
   });
 
@@ -104,7 +104,7 @@ describe('Rendering MCPage', () => {
         showFirstSession: false,
         invitees: ['john@email.com'],
       },
-      injectedUserId: mockKeycloakUserInfo1.sub,
+      injectedUserId: mockAuth0UserInfo1.sub,
     });
     await screen.findByRole('tab', { name: 'Moves' });
     userEvent.click(screen.getByTestId(`john@email.com-list-item`));

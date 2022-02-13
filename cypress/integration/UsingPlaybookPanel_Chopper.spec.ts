@@ -1,4 +1,6 @@
 import { StatType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import game1 from '../fixtures/games/game1';
 import {
   SIZE_TEXT,
   HARM_TEXT,
@@ -14,13 +16,12 @@ import {
   FUCKING_THIEVES_NAME,
   APPLY_TEXT,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import game1 from '../fixtures/games/game1';
+
 describe('Using the PlaybookPanel as a Chopper', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('takeshi');
-    cy.visit(`/player-game/${game1.id}`);
+    cy.login('takeshi@email.com');
+    cy.visit('/');
+    cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openPlaybookPanel();
   });

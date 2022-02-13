@@ -1,4 +1,7 @@
 import { StatType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import johnAsPlayer_1 from '../fixtures/gameRoles/johnAsPlayer_1';
+import game7 from '../fixtures/games/game7';
 import {
   SUFFER_HARM_NAME,
   SUFFER_V_HARM,
@@ -11,17 +14,14 @@ import {
   AUGURY_NAME,
   CHANGE_HIGHLIGHTED_STAT_NAME,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import johnAsPlayer_1 from '../fixtures/gameRoles/johnAsPlayer_1';
-import game7 from '../fixtures/games/game7';
 
 describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
   const characterName = johnAsPlayer_1.characters[0].name as string;
 
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('john');
-    cy.visit(`/player-game/${game7.id}`);
+    cy.login('john@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
     cy.openMovesPanelBox('Peripheral moves');
   });
 
@@ -66,10 +66,10 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
   it(`should show a ${HEAL_HARM_NAME} move message`, () => {
     const harmInflicted = '2';
     const messageTitle = `${characterName?.toUpperCase()}: ${HEAL_HARM_NAME}`;
-    const targetName = 'Smith';
+    const targetName = 'Dog';
     const moveDescSnippet = 'When you heal another player’s character’s harm';
     const hxChangeDesc1 = `${characterName} healed ${targetName} of ${harmInflicted}-harm`;
-    const hxChangeDesc2 = `${characterName}'s Hx has been reset to 1 and their experience has been marked, and ${targetName}'s harm has been decreased by ${harmInflicted}`;
+    const hxChangeDesc2 = `${characterName}'s Hx with ${targetName} has been increased by ${harmInflicted}, and ${targetName}'s harm has been decreased by ${harmInflicted}.`;
     cy.contains(decapitalize(HEAL_HARM_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
     cy.get('input[aria-label="target-character-input"]').click();
@@ -82,12 +82,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     cy.contains(hxChangeDesc2).should('be.visible');
     cy.openPlaybookPanel();
     cy.get('div[data-testid="Hx-box"]').within(() =>
-      cy.get('div[aria-label="Smith-hx"]').should('contain.text', '1')
-    );
-    cy.get('div[data-testid="Improvement-box"]').within(() =>
-      cy
-        .get('div[data-testid="filled-circle"]')
-        .then((elems) => expect(elems).to.have.length(1))
+      cy.get('div[aria-label="Dog-hx"]').should('contain.text', '2')
     );
   });
 

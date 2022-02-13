@@ -18,13 +18,17 @@ import {
   SecurityOption,
 } from './staticDataInterfaces';
 
-export interface KeycloakUser {
+export interface Action<T> {
+  type: T;
+}
+
+export interface Auth0User {
   id?: string;
   username?: string;
   email?: string;
 }
 
-export interface KeycloakUserInfo {
+export interface Auth0UserInfo {
   email: string;
   email_verified: boolean;
   family_name: string;

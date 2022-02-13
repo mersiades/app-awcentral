@@ -1,41 +1,23 @@
 import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { InMemoryCache } from '@apollo/client';
+import userEvent from '@testing-library/user-event';
 
-import BattleVehicleForm from '../BattleVehicleForm';
-import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
+import BattleVehiclesFormContainer from '../BattleVehiclesFormContainer';
 import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
-import { PlaybookType } from '../../../@types/enums';
 import {
   mockSetBattleVehicleCount,
-  mockSetVehicleCount,
   mockVehicleCreatorQuery,
 } from '../../../tests/mockQueries';
-import { InMemoryCache } from '@apollo/client';
 import { Game } from '../../../@types/dataInterfaces';
-import BattleVehiclesFormContainer from '../BattleVehiclesFormContainer';
-import userEvent from '@testing-library/user-event';
-import wait from 'waait';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 describe('Rendering BattleVehicleFormContainer', () => {
-  const mockNavigationOnSet = jest.fn();
-
   let cache = new InMemoryCache();
 
   const mockGame: Game = {
@@ -81,7 +63,7 @@ describe('Rendering BattleVehicleFormContainer', () => {
       {
         isAuthenticated: true,
         injectedGame: mockGame,
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );
@@ -99,7 +81,7 @@ describe('Rendering BattleVehicleFormContainer', () => {
         isAuthenticated: true,
         injectedGame: mockGame,
         apolloMocks: [mockSetBattleVehicleCount, mockVehicleCreatorQuery],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );

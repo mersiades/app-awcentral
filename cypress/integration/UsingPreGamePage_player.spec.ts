@@ -1,3 +1,4 @@
+import { MOCK_GAME_1_NAME } from '../fixtures/games/game1';
 import {
   CANCEL_TEXT,
   NO_TEXT,
@@ -5,14 +6,12 @@ import {
   PRE_GAME_INCOMPLETE_TITLE,
   RETURN_TO_GAME_TEXT,
   SCRIPT_CHANGE_FRAME_TITLE,
-  START_GAME_TEXT,
   YES_TEXT,
 } from '../../src/config/constants';
-import { MOCK_GAME_1_NAME } from '../fixtures/games/game1';
+
 describe('Using the PreGamePage as a player', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('sara');
+    cy.login('sara@email.com');
     cy.visit('/');
   });
 

@@ -1,3 +1,6 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import { UniqueTypes } from '../../src/@types/enums';
 import {
   BATTLE_OPTIONS_TEXT,
   BATTLE_VEHICLES_TITLE,
@@ -14,15 +17,13 @@ import {
   VEHICLES_TITLE,
   WEAKNESSES_TEXT,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Chopper Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('takeshi');
-    cy.visit(`character-creation/${game6.id}?step=6`);
+    cy.login('takeshi@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('gang-edit-link');
   });
 
   it('should create a Gang and Bike and stop at BattleVehicleForm', () => {

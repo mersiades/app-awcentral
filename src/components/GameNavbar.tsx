@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useKeycloak } from '@react-keycloak/web';
 import { Menu, Tip, Button, Header } from 'grommet';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import CharacterPreview from './CharacterPreview';
 import UnderConstructionDialog from '../components/dialogs/UnderConstructionDialog';
@@ -23,7 +23,7 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
   const [showConstructionDialog, setShowConstructionDialog] = useState(false);
   // ----------------------------- 3rd party hooks ------------------------------- //
   const history = useHistory();
-  const { keycloak } = useKeycloak();
+  const { logout } = useAuth0();
 
   // ----------------------------- Hooks ---------------------------------------- //
   const { game, otherPlayerGameRoles, allPlayerGameRoles } = useGame();
@@ -74,7 +74,7 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
             { label: 'Main menu', onClick: () => history.push('/menu') },
             {
               label: 'Log out',
-              onClick: () => keycloak.logout(),
+              onClick: () => logout(),
             },
           ]}
         />

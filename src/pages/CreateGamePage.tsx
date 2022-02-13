@@ -6,8 +6,8 @@ import CommsForm from '../components/CommsForm';
 import GameCreationStepper from '../components/GameCreationStepper';
 import InviteesForm from '../components/InviteesForm';
 import CloseButton from '../components/CloseButton';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { useGame } from '../contexts/gameContext';
+import { useUser } from '../contexts/userContext';
 
 export const background = {
   color: 'black',
@@ -27,7 +27,7 @@ const CreateGamePage = () => {
   const { gameId } = useParams<{ gameId: string }>();
 
   // ----------------------------- Hooks ---------------------------------------- //
-  const { id: userId } = useKeycloakUser();
+  const { userId } = useUser();
   const { game, fetchingGame, setGameContext } = useGame();
 
   // ---------------------------------------------------- UseEffects  ------------------------------------------------------ //

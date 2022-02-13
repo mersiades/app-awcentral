@@ -49,9 +49,9 @@ import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
  */
 describe('Creating a new Angel Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('cristi');
-    cy.visit(`character-creation/${game6.id}?step=0`);
+    cy.login('cristi@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
   });
 
   it('should create an Angel and stop at CharacterHxPage', () => {
