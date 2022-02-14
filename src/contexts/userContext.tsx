@@ -65,12 +65,15 @@ export const UserProvider: FC<PropsWithChildren<UserProviderProps>> = ({
 
   useEffect(() => {
     if (user) {
+      const displayName =
+        user['https://app.aw-central.com/username'] || user.nickname || '';
+
       dispatch({
         type: 'SET_USER',
         payload: {
           email: user.email,
           userId: user.sub,
-          displayName: user.preferred_username || user.name || user.given_name,
+          displayName,
         },
       });
     }
