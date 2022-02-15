@@ -1,15 +1,12 @@
-import wait from 'waait';
-import userEvent from '@testing-library/user-event';
 import { InMemoryCache } from '@apollo/client';
-import { act, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 import CharacterHxForm from '../CharacterHxForm';
-import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
 import {
   mockCharacter1,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import {
@@ -18,17 +15,6 @@ import {
   mockToggleStatHighlight,
 } from '../../../tests/mockQueries';
 import { Game } from '../../../@types/dataInterfaces';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 describe('Rendering CharacterHxForm', () => {
   let cache = new InMemoryCache();
@@ -67,7 +53,7 @@ describe('Rendering CharacterHxForm', () => {
         isAuthenticated: true,
         injectedGame: mockGame,
         apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );
@@ -122,7 +108,7 @@ describe('Rendering CharacterHxForm', () => {
           mockAdjustCharacterHx,
           mockToggleStatHighlight,
         ],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );

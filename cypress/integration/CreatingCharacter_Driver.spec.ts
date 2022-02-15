@@ -1,3 +1,5 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
 import {
   BATTLE_OPTIONS_TEXT,
   BATTLE_VEHICLES_TITLE,
@@ -12,14 +14,13 @@ import {
   VEHICLES_TITLE,
   WEAKNESSES_TEXT,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
 
 describe('Creating a new Driver Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('ahmad');
-    cy.visit(`character-creation/${game6.id}?step=8`);
+    cy.login('ahmad@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('vehicles-edit-link');
   });
 
   it('should create 3 Vehicles and stop at BattleVehicleForm', () => {

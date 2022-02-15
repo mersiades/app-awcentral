@@ -1,3 +1,6 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import { UniqueTypes } from '../../src/@types/enums';
 import {
   BACKUP_WEAPONS_TEXT,
   BIG_GUNS_TEXT,
@@ -6,15 +9,13 @@ import {
   SET_TEXT,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Gunlugger Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('marama');
-    cy.visit(`character-creation/${game6.id}?step=6`);
+    cy.login('marama@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('weapons-edit-link');
   });
 
   it('should set Gunlugger Weapons and stop at MovesForm', () => {

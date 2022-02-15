@@ -4,12 +4,11 @@ import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
 import WorkspaceForm from '../WorkspaceForm';
-import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQuerySavvyhead } from '../../../../tests/mockQueries';
@@ -25,17 +24,6 @@ import {
   INCREASED_BY_IMPROVEMENT_TEXT,
   INCREASED_BY_IMPROVEMENT_WITH_LIFE_SUPPORT_TEXT,
 } from '../../../../config/constants';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 const generateGame = (playbookUniques: PlaybookUniques) => ({
   ...mockGame5,
@@ -82,7 +70,7 @@ describe('Rendering WorkspaceForm', () => {
           isAuthenticated: true,
           apolloMocks: [mockPlayBookCreatorQuerySavvyhead],
           injectedGame: generateGame(mockPlaybookUniqueSavvyhead),
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -144,7 +132,7 @@ describe('Rendering WorkspaceForm', () => {
           injectedGame: generateGame(
             mockPlaybookUniqueSavvyhead_withImprovement
           ),
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -170,7 +158,7 @@ describe('Rendering WorkspaceForm', () => {
           injectedGame: generateGame(
             mockPlaybookUniqueSavvyhead_withBothImprovements
           ),
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );

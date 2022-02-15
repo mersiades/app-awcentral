@@ -4,12 +4,11 @@ import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
 import CharacterLooksForm from '../CharacterLooksForm';
-import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../tests/test-utils';
 import {
@@ -21,7 +20,6 @@ import {
   mockSetCharacterLook5,
   mockSetCharacterLook6,
 } from '../../../tests/mockQueries';
-import { Game } from '../../../@types/dataInterfaces';
 import {
   mockLookAngel1,
   mockLookAngel3,
@@ -30,17 +28,6 @@ import {
   mockLookAngel9,
 } from '../../../tests/fixtures/lookFixtures';
 import { Look } from '../../../@types/staticDataInterfaces';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 const generateGame = (looks: Look[]) => ({
   ...mockGame5,
@@ -92,7 +79,7 @@ describe('Rendering CharacterLooksForm', () => {
             mockSetCharacterLook5,
             mockSetCharacterLook6,
           ],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -153,7 +140,7 @@ describe('Rendering CharacterLooksForm', () => {
           isAuthenticated: true,
           injectedGame: generateGame([mockLookAngel1, mockLookAngel3]),
           apolloMocks: [mockPlaybookCreator],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );

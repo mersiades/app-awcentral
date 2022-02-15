@@ -1,4 +1,7 @@
 import { StatType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import angel_sara_1_complete from '../fixtures/characters/angel_sara_1_complete';
+import game1 from '../fixtures/games/game1';
 import {
   ANGEL_SPECIAL_NAME,
   APPLY_TEXT,
@@ -8,7 +11,6 @@ import {
   HOW_MUCH_STOCK_TEXT,
   REVIVE_SOMEONE_NAME,
   REVIVE_TEXT,
-  SIXTH_SENSE_NAME,
   SPEED_RECOVERY_NAME,
   SPEED_RECOVERY_TEXT,
   STABILIZE_AND_HEAL_NAME,
@@ -17,15 +19,12 @@ import {
   TREAT_TEXT,
   USE_STOCK_TEXT,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import angel_sara_1_complete from '../fixtures/characters/angel_sara_1_complete';
-import game1 from '../fixtures/games/game1';
 
 describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('sara');
-    cy.visit(`/player-game/${game1.id}`);
+    cy.login('sara@email.com');
+    cy.visit('/');
+    cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openPlaybookPanel();
   });

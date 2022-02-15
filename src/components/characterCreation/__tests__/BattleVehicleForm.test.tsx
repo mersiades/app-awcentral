@@ -1,35 +1,22 @@
 import React from 'react';
-// import wait from 'waait';
 import userEvent from '@testing-library/user-event';
 import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
 import BattleVehicleForm from '../BattleVehicleForm';
-import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
   mockBattleVehicleCreator,
   mockCarCreator,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
   mockVehicleCreator,
 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import { mockVehicleCreatorQuery } from '../../../tests/mockQueries';
 import { VehicleFrameType } from '../../../@types/enums';
 import { DEFAULT_VEHICLE_NAME } from '../../../config/constants';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 describe('Rendering BattleVehicleForm', () => {
   let cache = new InMemoryCache();
@@ -77,7 +64,7 @@ describe('Rendering BattleVehicleForm', () => {
         isAuthenticated: true,
         injectedGame: mockGame,
         apolloMocks: [mockVehicleCreatorQuery],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );
@@ -128,7 +115,7 @@ describe('Rendering BattleVehicleForm', () => {
         isAuthenticated: true,
         injectedGame: mockGame,
         apolloMocks: [mockVehicleCreatorQuery],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );

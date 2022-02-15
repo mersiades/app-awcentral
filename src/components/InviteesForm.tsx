@@ -17,6 +17,7 @@ import ADD_INVITEE, {
 } from '../mutations/addInvitee';
 import { useFonts } from '../contexts/fontContext';
 import { useGame } from '../contexts/gameContext';
+import { useUser } from '../contexts/userContext';
 import { copyToClipboard } from '../helpers/copyToClipboard';
 import { validateEmail } from '../helpers/validateEmail';
 import { logAmpEvent } from '../config/amplitudeConfig';
@@ -28,7 +29,6 @@ import {
   PLAYER_ALREADY_INVITED_TEXT,
   PLAYER_ALREADY_JOINED_GAME_TEXT,
 } from '../config/constants';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
 
 const baseUrl = process.env.REACT_APP_ROOT_URL;
 
@@ -47,7 +47,7 @@ const InviteesForm: FC = () => {
   // ----------------------------- Hooks ---------------------------------------- //
   const { game } = useGame();
   const { vtksReady } = useFonts();
-  const { email: mcEmail } = useKeycloakUser();
+  const { email: mcEmail } = useUser();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const [addInvitee, { loading: loadingAddInvitee }] = useMutation<

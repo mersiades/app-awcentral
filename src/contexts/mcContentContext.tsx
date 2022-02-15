@@ -1,5 +1,7 @@
 import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
+import { useAuth0 } from '@auth0/auth0-react';
+
 import {
   ContentItem,
   FirstSessionContent,
@@ -7,7 +9,6 @@ import {
   TickerList,
 } from '../@types/staticDataInterfaces';
 import MC_CONTENT, { McContentData } from '../queries/mcContent';
-import { useKeycloak } from '@react-keycloak/web';
 
 interface TickerItem {
   category: string;
@@ -42,11 +43,11 @@ export const McContentProvider: FC<McContentProviderProps> = ({
     useState<IMcContentContext>(injectedMcContent);
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const { keycloak } = useKeycloak();
+  const { isAuthenticated } = useAuth0();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const { data: mcContentData } = useQuery<McContentData>(MC_CONTENT, {
-    skip: !keycloak.authenticated,
+    skip: !isAuthenticated,
   });
 
   useEffect(() => {

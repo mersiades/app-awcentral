@@ -12,6 +12,10 @@ const SkinnerGearBox: FC<SkinnerGearBoxProps> = ({
   navigateToCharacterCreation,
 }) => {
   const { character } = useGame();
+
+  const graciousWeapon =
+    character?.playbookUniques?.skinnerGear?.graciousWeapon;
+
   return (
     <CollapsiblePanelBox
       open
@@ -26,12 +30,14 @@ const SkinnerGearBox: FC<SkinnerGearBoxProps> = ({
       >
         <ul style={{ margin: 0, paddingInlineStart: '28px' }}>
           {!!character?.playbookUniques?.skinnerGear && (
-            <li>{character.playbookUniques.skinnerGear.graciousWeapon.item}</li>
+            <li>
+              {graciousWeapon ? graciousWeapon.item : 'No gracious weapon set'}
+            </li>
           )}
           {!!character?.playbookUniques?.skinnerGear &&
             character.playbookUniques.skinnerGear.luxeGear.map((item) => (
-              <li key={item.id}>
-                {item.item}
+              <li key={item?.id}>
+                {item?.item}
                 {!!item.note && (
                   <>
                     <br />

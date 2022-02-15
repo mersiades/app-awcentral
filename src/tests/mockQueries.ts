@@ -1,39 +1,22 @@
 import { MockedResponse } from '@apollo/client/testing';
-import { GameRole } from '../@types/dataInterfaces';
-import { PlaybookType, RoleType, StatType } from '../@types/enums';
-import ADD_COMMS_APP, { AddCommsAppData } from '../mutations/addCommsApp';
-import ADD_COMMS_URL, { AddCommsUrlData } from '../mutations/addCommsUrl';
-import ADD_INVITEE, { AddInviteeData } from '../mutations/addInvitee';
-import ADD_USER_TO_GAME from '../mutations/addUserToGame';
+import { PlaybookType, StatType } from '../@types/enums';
 import ADJUST_CHARACTER_HX, {
   getAdjustCharacterHxOR,
 } from '../mutations/adjustCharacterHx';
 import CREATE_CHARACTER from '../mutations/createCharacter';
 import CREATE_GAME, { CreateGameData } from '../mutations/createGame';
-import DELETE_GAME from '../mutations/deleteGame';
-import FINISH_CHARACTER_CREATION from '../mutations/finishCharacterCreation';
 import FINISH_PRE_GAME from '../mutations/finishPreGame';
-import REMOVE_INVITEE from '../mutations/removeInvitee';
 import SET_ANGEL_KIT from '../mutations/setAngelKit';
 import SET_BATTLE_VEHICLE_COUNT from '../mutations/setBattleVehicleCount';
-import SET_CHARACTER_BARTER from '../mutations/setCharacterBarter';
-import SET_CHARACTER_GEAR from '../mutations/setCharacterGear';
-import SET_CHARACTER_HX from '../mutations/setCharacterHx';
 import SET_CHARACTER_LOOK from '../mutations/setCharacterLook';
-import SET_CHARACTER_MOVES from '../mutations/setCharacterMoves';
-import SET_CHARACTER_NAME from '../mutations/setCharacterName';
-import SET_CHARACTER_PLAYBOOK from '../mutations/setCharacterPlaybook';
-import SET_CHARACTER_STATS from '../mutations/setCharacterStats';
-import SET_GAME_NAME from '../mutations/setGameName';
 import SET_VEHICLE from '../mutations/setVehicle';
 import SET_VEHICLE_COUNT from '../mutations/setVehicleCount';
 import TOGGLE_STAT_HIGHLIGHT from '../mutations/toggleStatHighlight';
 import ALL_MOVES from '../queries/allMoves';
-import GAME, { GameData } from '../queries/game';
+import GAME from '../queries/game';
 import GAMEROLES_BY_USER_ID, {
   GameRolesByUserIdData,
 } from '../queries/gameRolesByUserId';
-import GAMES_FOR_INVITEE from '../queries/gamesForInvitee';
 import MC_CONTENT from '../queries/mcContent';
 import PLAYBOOK from '../queries/playbook';
 import PLAYBOOK_CREATOR, {
@@ -41,7 +24,6 @@ import PLAYBOOK_CREATOR, {
 } from '../queries/playbookCreator';
 import PLAYBOOKS from '../queries/playbooks';
 import VEHICLE_CREATOR from '../queries/vehicleCreator';
-import { dummyAngelKitMove } from './fixtures/dummyData';
 import {
   mockPlaybookCreatorBrainer,
   mockPlaybookCreatorMaestroD,
@@ -66,8 +48,8 @@ import {
   mockGameRole1,
   mockGameRole2,
   mockHxInput,
-  mockKeycloakUser1,
-  mockKeycloakUser2,
+  mockAuth0User1,
+  mockAuth0User2,
   mockNewGameName,
   mockVehicleInput,
   mockPlaybookAngel,
@@ -80,7 +62,7 @@ import {
 export const mockGameRolesByUserId: MockedResponse<GameRolesByUserIdData> = {
   request: {
     query: GAMEROLES_BY_USER_ID,
-    variables: { id: mockKeycloakUser1.id },
+    variables: { id: mockAuth0User1.id },
   },
   result: {
     data: {
@@ -110,10 +92,10 @@ export const mockCreateGame: MockedResponse<CreateGameData> = {
   request: {
     query: CREATE_GAME,
     variables: {
-      userId: mockKeycloakUser1.id,
+      userId: mockAuth0User1.id,
       name: mockNewGameName,
-      displayName: mockKeycloakUser1.username,
-      email: mockKeycloakUser1.email,
+      displayName: mockAuth0User1.username,
+      email: mockAuth0User1.email,
     },
   },
   result: {

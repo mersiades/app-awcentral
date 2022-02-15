@@ -11,8 +11,10 @@ declare namespace Cypress {
      * @example cy.dataCy('greeting')
      */
     // dataCy(value: string): Chainable<Element>
-    kcFakeLogin(user: string, redirectUrl?: string): any;
-    getToken(): Promise<any>; // Actually a response from Keycloak
+    returnToGame(gameName: string): void;
+    navToCharacterCreationViaPlaybookPanel(editButtonId: string): void;
+    login(username: string): Cypress.Chainable<Cypress.Response<any>>;
+    getToken(): Promise<any>; // Actually a response from Auth0
     resetDb(): Promise<any>; // Actually a graphql response
     moveThroughNewGameIntro(): void;
     selectPlaybook(playbookType: PlaybookType): void;
@@ -34,7 +36,6 @@ declare namespace Cypress {
       option3: string,
       targetBox: string
     );
-    deleteKeycloakUser(email: string): void;
     openPlaybookPanel(): void;
     openMovesPanelBox(boxTitle: string): void;
     checkMoveMessage(

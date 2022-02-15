@@ -101,28 +101,78 @@ const CharacterHxForm: FC = () => {
       }
     }
   };
+  const setUntouchedCharactersToZero = async (
+    character: Character
+  ): Promise<boolean> => {
+    const touchedCharacterIds = character.hxBlock.map(
+      (hxStat) => hxStat.characterId
+    );
+    const untouchedCharacters = characters.filter(
+      (c) => !touchedCharacterIds.includes(c.id)
+    );
+
+    await Promise.all(
+      untouchedCharacters.map(async (char) => {
+        const hxInput: HxInput = {
+          id: undefined,
+          characterId: char.id,
+          characterName: char.name as string,
+          hxValue: 0,
+        };
+
+        await handleAdjustHx(hxInput);
+      })
+    );
+    return true;
+  };
 
   const handleFinishCreation = async () => {
     if (!!userGameRole && !!character && !!game) {
-      try {
-        if (!character.hasCompletedCharacterCreation) {
-          await finishCharacterCreation({
-            variables: {
-              gameRoleId: userGameRole.id,
-              characterId: character.id,
-            },
-            optimisticResponse: getFinishCharacterCreationOR(
-              character
-            ) as FinishCharacterCreationData,
-          });
-          logAmpEvent('complete character creation');
+      const hasHandledUntouchedCharacters = await setUntouchedCharactersToZero(
+        character
+      );
+      if (hasHandledUntouchedCharacters) {
+        try {
+          if (!character.hasCompletedCharacterCreation) {
+            await finishCharacterCreation({
+              variables: {
+                gameRoleId: userGameRole.id,
+                characterId: character.id,
+              },
+              optimisticResponse: getFinishCharacterCreationOR(
+                character
+              ) as FinishCharacterCreationData,
+            });
+            logAmpEvent('complete character creation');
+          }
+          history.push(`/pre-game/${game.id}`);
+        } catch (error) {
+          console.error(error);
         }
-        history.push(`/pre-game/${game.id}`);
-      } catch (error) {
-        console.error(error);
       }
     }
   };
+
+  const disableGoToGame = (): boolean => {
+    if (character) {
+      if (character.hxBlock) {
+        return character.hxBlock.length === 0;
+      } else {
+      }
+
+      if (character.statsBlock) {
+        return (
+          character.statsBlock.stats.filter(
+            (stat) => stat.isHighlighted === true
+          ).length !== 2
+        );
+      }
+    }
+
+    return true;
+  };
+
+  const disabled = disableGoToGame();
 
   return (
     <Box
@@ -162,12 +212,7 @@ const CharacterHxForm: FC = () => {
               )
             }
             style={{ minHeight: '52px' }}
-            disabled={
-              character?.hxBlock.length !== otherPlayerGameRoles?.length ||
-              character?.statsBlock?.stats.filter(
-                (stat) => stat.isHighlighted === true
-              ).length !== 2
-            }
+            disabled={disabled}
             onClick={() => !finishingCreation && handleFinishCreation()}
           />
         </Box>
@@ -221,7 +266,7 @@ const CharacterHxForm: FC = () => {
                         maxLength={2}
                         defaultValue={existingHxStat?.hxValue.toString() || '0'}
                         onChange={(e) => {
-                          const match = e.target.value.match(/^-?[1-3]$/gm);
+                          const match = e.target.value.match(/^-?[0-3]$/gm);
                           if (!!match) {
                             setErrorIds(
                               errorIds.filter((id) => id !== char.id)

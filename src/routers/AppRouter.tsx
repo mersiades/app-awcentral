@@ -12,11 +12,13 @@ import MCPage from '../pages/MCPage';
 import CreateGamePage from '../pages/CreateGamePage';
 import PreGamePage from '../pages/PreGamePage';
 import ThreatMapPage from '../pages/ThreatMapPage';
+import LoginPage from '../pages/LoginPage';
 
 const AppRouter = () => {
   return (
     <Switch>
       <PublicRoute exact path="/" component={LandingPage} />
+      <PublicRoute exact path="/login" component={LoginPage} />
       <PrivateRoute path="/menu" component={MenuPage} />
       <PrivateRoute path="/join-game" component={JoinGamePage} />
       <PrivateRoute path="/create-game/:gameId" component={CreateGamePage} />

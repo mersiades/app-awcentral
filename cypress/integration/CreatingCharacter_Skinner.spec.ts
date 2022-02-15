@@ -1,3 +1,6 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import { UniqueTypes } from '../../src/@types/enums';
 import {
   GRACIOUS_WEAPONS,
   LUXE_GEAR,
@@ -5,15 +8,13 @@ import {
   SKINNER_SPECIAL_NAME,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Skinner Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('caesar');
-    cy.visit(`character-creation/${game6.id}?step=6`);
+    cy.login('caesar@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('skinner gear-edit-link');
   });
 
   it('should set SkinnerGear and stop at MovesForm', () => {

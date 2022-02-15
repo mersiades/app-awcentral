@@ -6,7 +6,6 @@
 
 To run this app locally, for development purposes, you'll need to take the following steps:
 
-- Launch a Keycloak authorisation server locally
 - Launch an instance of the graphql.aw-central.com server locally
 - Run `yarn start:dev` from the command line.
 

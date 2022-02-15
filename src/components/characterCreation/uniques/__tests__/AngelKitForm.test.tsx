@@ -1,31 +1,18 @@
 import React from 'react';
-// import wait from 'waait';
 import { screen } from '@testing-library/react';
+import { InMemoryCache } from '@apollo/client';
 
 import AngelKitForm from '../AngelKitForm';
-import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
   mockAngelKitCreator,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../../tests/mocks';
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryAngel } from '../../../../tests/mockQueries';
-import { InMemoryCache } from '@apollo/client';
 import { Game } from '../../../../@types/dataInterfaces';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 describe('Rendering AngelKitForm', () => {
   test('should load AngelKitForm in initial state', async () => {
@@ -62,7 +49,7 @@ describe('Rendering AngelKitForm', () => {
       isAuthenticated: true,
       apolloMocks: [mockPlayBookCreatorQueryAngel],
       injectedGame: mockGame,
-      injectedUserId: mockKeycloakUserInfo1.sub,
+      injectedUserId: mockAuth0UserInfo1.sub,
       cache,
     });
 

@@ -1,3 +1,6 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import { UniqueTypes } from '../../src/@types/enums';
 import {
   CHARACTERIZE_THEM_TEXT,
   FORTUNES_NAME,
@@ -6,15 +9,13 @@ import {
   SET_TEXT,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Hocus Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('wilmer');
-    cy.visit(`character-creation/${game6.id}?step=6`);
+    cy.login('wilmer@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('followers-edit-link');
   });
 
   it('should set Followers and stop at MovesForm', () => {

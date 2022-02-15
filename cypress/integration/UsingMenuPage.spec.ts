@@ -10,8 +10,7 @@ import {
 
 describe('Using menu on MenuPage', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('dave');
+    cy.login('dave@email.com');
     cy.visit('/');
   });
 

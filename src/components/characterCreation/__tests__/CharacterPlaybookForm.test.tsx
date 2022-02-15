@@ -6,7 +6,7 @@ import {
   mockCharacter2,
   mockGame1,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../tests/test-utils';
 import { mockPlaybooksQuery } from '../../../tests/mockQueries';
@@ -27,7 +27,7 @@ describe('Rendering CharacterPlaybookForm', () => {
         isAuthenticated: true,
         injectedGame: mockGame1,
         apolloMocks: [mockPlaybooksQuery],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
       }
     );
 
@@ -54,7 +54,7 @@ describe('Rendering CharacterPlaybookForm', () => {
         injectedGame: mockGame5,
         injectedCharacter: mockCharacter2,
         apolloMocks: [mockPlaybooksQuery],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
       }
     );
 
@@ -90,7 +90,7 @@ describe('Rendering CharacterPlaybookForm', () => {
         },
         injectedCharacter: mockCharacter2,
         apolloMocks: [mockPlaybooksQuery],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
       }
     );
 

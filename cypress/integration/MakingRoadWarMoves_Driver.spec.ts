@@ -1,4 +1,6 @@
 import { StatType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import game1 from '../fixtures/games/game1';
 import {
   BOARD_VEHICLE_NAME,
   BOARD_TEXT,
@@ -10,8 +12,6 @@ import {
   DRIVE_TEXT,
   SHOULDER_ANOTHER_VEHICLE_NAME,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import game1 from '../fixtures/games/game1';
 
 describe('Making road war moves from the MovesPanel as Driver', () => {
   const characterName = 'Phoenix';
@@ -19,9 +19,9 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
   const vehicle2 = 'Ducati Monster';
 
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('ahmad');
-    cy.visit(`/player-game/${game1.id}`);
+    cy.login('ahmad@email.com');
+    cy.visit('/');
+    cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openMovesPanelBox('Road war moves');
   });

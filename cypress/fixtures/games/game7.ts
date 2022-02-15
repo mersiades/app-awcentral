@@ -19,11 +19,31 @@ const game7: Game = {
   showFirstSession: false,
   mc: { displayName: dave.username as string, id: dave.id as string },
   players: [
-    { id: sara.id as string, displayName: sara.username as string },
-    { id: john.id as string, displayName: john.username as string },
-    { id: maya.id as string, displayName: maya.username as string },
-    { id: ahmad.id as string, displayName: ahmad.username as string },
-    { id: takeshi.id as string, displayName: takeshi.username as string },
+    {
+      id: sara.id as string,
+      displayName: sara.username as string,
+      email: sara.email as string,
+    },
+    {
+      id: john.id as string,
+      displayName: john.username as string,
+      email: john.email as string,
+    },
+    {
+      id: maya.id as string,
+      displayName: maya.username as string,
+      email: maya.email as string,
+    },
+    {
+      id: ahmad.id as string,
+      displayName: ahmad.username as string,
+      email: ahmad.email as string,
+    },
+    {
+      id: takeshi.id as string,
+      displayName: takeshi.username as string,
+      email: takeshi.email as string,
+    },
   ],
   gameRoles: [],
   invitees: [],
