@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import Spinner from '../components/Spinner';
 import LandingPageLayout from '../components/LandingPageLayout';
 
 const LoginPage = () => {
@@ -12,9 +11,10 @@ const LoginPage = () => {
   if (!isLoading && !isAuthenticated) {
     loginWithRedirect();
   }
+
   return (
-    <LandingPageLayout>
-      <>{isLoading && <Spinner />}</>
+    <LandingPageLayout isLoading={isLoading}>
+      <div />
     </LandingPageLayout>
   );
 };

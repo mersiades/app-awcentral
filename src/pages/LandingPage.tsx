@@ -3,7 +3,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useHistory } from 'react-router-dom';
 import { Box } from 'grommet';
 
-import Spinner from '../components/Spinner';
 import LandingPageLayout from '../components/LandingPageLayout';
 import { ButtonWS } from '../config/grommetConfig';
 
@@ -14,9 +13,9 @@ const LandingPage = () => {
 
   // ----------------------------- Render ---------------------------------------- //
   return (
-    <LandingPageLayout>
+    <LandingPageLayout isLoading={isLoading}>
       {isLoading ? (
-        <Spinner />
+        <div />
       ) : (
         <Box animation={{ type: 'slideUp', size: 'large', duration: 750 }}>
           <ButtonWS
