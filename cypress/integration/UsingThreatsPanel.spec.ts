@@ -1,6 +1,6 @@
-import { ADD_TEXT, SET_TEXT } from '../../src/config/constants';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import game7 from '../fixtures/games/game7';
+import { ADD_TEXT, SET_TEXT } from '../../src/config/constants';
 
 interface checkAddingThreatOptions {
   type: string;
@@ -9,11 +9,12 @@ interface checkAddingThreatOptions {
   description?: string;
   stakes?: string;
 }
+
 describe('Using the ThreatsPanel', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('dave');
-    cy.visit(`/mc-game/${game7.id}`);
+    cy.login('dave@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
     cy.get('button[name="threats"]').click();
   });
 

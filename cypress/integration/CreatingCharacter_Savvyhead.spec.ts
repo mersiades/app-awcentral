@@ -1,3 +1,6 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import { UniqueTypes } from '../../src/@types/enums';
 import {
   BONEFEEL_NAME,
   ITEMS_INSTRUCTIONS,
@@ -7,15 +10,13 @@ import {
   THINGS_SPEAK_NAME,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Savvyhead Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('sergio');
-    cy.visit(`character-creation/${game6.id}?step=6`);
+    cy.login('sergio@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('workspace-edit-link');
   });
 
   it('should set a Workspace and stop at MovesForm', () => {
@@ -82,20 +83,20 @@ describe('Creating a new Savvyhead Character', () => {
       .should('contain', VEHICLES_TITLE)
       .should('contain', '...');
 
-    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).check({
-      force: true,
-    });
-    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).should(
-      'be.checked'
+    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).within(() =>
+      cy.get('input').check({ force: true })
     );
-    cy.get(`input[aria-label="${thingsSpeakMoveName}-checkbox"]`).check({
-      force: true,
-    });
-    cy.get(`input[aria-label="${bonefeelMoveName}-checkbox"]`).should(
-      'be.checked'
+    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).within(() =>
+      cy.get('input').should('be.checked')
     );
-    cy.get(`input[aria-label="${thingsSpeakMoveName}-checkbox"]`).should(
-      'be.checked'
+    cy.get(`[aria-label="${thingsSpeakMoveName}-checkbox"]`).within(() =>
+      cy.get('input').check({ force: true })
+    );
+    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).within(() =>
+      cy.get('input').should('be.checked')
+    );
+    cy.get(`[aria-label="${thingsSpeakMoveName}-checkbox"]`).within(() =>
+      cy.get('input').should('be.checked')
     );
   });
 });

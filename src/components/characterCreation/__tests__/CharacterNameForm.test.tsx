@@ -2,12 +2,11 @@ import wait from 'waait';
 import { act, screen } from '@testing-library/react';
 
 import CharacterNameForm from '../CharacterNameForm';
-import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import { mockPlaybookCreator } from '../../../tests/mockQueries';
@@ -15,17 +14,6 @@ import { UniqueTypes } from '../../../@types/enums';
 import { Game } from '../../../@types/dataInterfaces';
 import { dummyAngelKitMove } from '../../../tests/fixtures/dummyData';
 import { mockNameAngel1 } from '../../../tests/fixtures/nameFixtures';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 describe('Rendering CharacterNameForm', () => {
   test('should render CharacterNameForm in initial state', async () => {
@@ -60,7 +48,7 @@ describe('Rendering CharacterNameForm', () => {
         isAuthenticated: true,
         injectedGame: mockGame,
         apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
       }
     );
 
@@ -158,7 +146,7 @@ describe('Rendering CharacterNameForm', () => {
         isAuthenticated: true,
         injectedGame: mockGame,
         apolloMocks: [mockPlaybookCreator],
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
       }
     );
 

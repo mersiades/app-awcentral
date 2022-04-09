@@ -8,29 +8,17 @@ import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../../tests/mocks';
-import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryHocus } from '../../../../tests/mockQueries';
-import { Game, PlaybookUniques } from '../../../../@types/dataInterfaces';
+import { PlaybookUniques } from '../../../../@types/dataInterfaces';
 import { mockFollowersCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 import {
   mockPlaybookUniqueHocus,
   mockPlaybookUniqueHocus_with1Improvement,
 } from '../../../../tests/fixtures/playBookUniquesFixtures';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../../config/constants';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 const generateGame = (playbookUniques: PlaybookUniques) => ({
   ...mockGame5,
@@ -77,7 +65,7 @@ describe('Rendering FollowersForm', () => {
           isAuthenticated: true,
           apolloMocks: [mockPlayBookCreatorQueryHocus],
           injectedGame: generateGame(mockPlaybookUniqueHocus),
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -179,7 +167,7 @@ describe('Rendering FollowersForm', () => {
           isAuthenticated: true,
           apolloMocks: [mockPlayBookCreatorQueryHocus],
           injectedGame: generateGame(mockPlaybookUniqueHocus_with1Improvement),
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );

@@ -1,3 +1,6 @@
+import { decapitalize } from '../../src/helpers/decapitalize';
+import angel_sara_1_complete from '../fixtures/characters/angel_sara_1_complete';
+import game7 from '../fixtures/games/game7';
 import {
   ADD_DIE_TEXT_1,
   ADD_DIE_TEXT_2,
@@ -27,9 +30,6 @@ import {
   SUPPLIER_TEXT,
   WEIRD_TEXT,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import angel_sara_1_complete from '../fixtures/characters/angel_sara_1_complete';
-import game7 from '../fixtures/games/game7';
 
 describe('Using the PlaybookPanel as an Angel', () => {
   const whiteBackground = 'background-color: rgb(255, 255, 255)';
@@ -37,9 +37,9 @@ describe('Using the PlaybookPanel as an Angel', () => {
   const greenBackground = 'background-color: rgb(105, 141, 112)';
 
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('sara');
-    cy.visit(`/player-game/${game7.id}`);
+    cy.login('sara@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
     cy.openPlaybookPanel();
   });
 
@@ -52,7 +52,6 @@ describe('Using the PlaybookPanel as an Angel', () => {
       cy.contains(angel_sara_1_complete.looks[2].look).should('exist');
       cy.contains(angel_sara_1_complete.looks[3].look).should('exist');
       cy.contains(angel_sara_1_complete.looks[4].look).should('exist');
-
       // Open and close the playbook description
       cy.get('svg[aria-label="FormDown"]').click();
       cy.contains(
@@ -62,7 +61,6 @@ describe('Using the PlaybookPanel as an Angel', () => {
       cy.contains(
         'When you’re lying in the dust of Apocalypse World guts aspilled'
       ).should('not.exist');
-
       // Check can navigate to edit page
       cy.get('svg[aria-label="Edit"]').click();
       cy.url().should('contain', `character-creation/${game7.id}?step=1`);
@@ -239,8 +237,8 @@ describe('Using the PlaybookPanel as an Angel', () => {
 
     // Check HARD decreased
     cy.get('h2[aria-label="hard-value"]').should('include.text', '-1');
-    cy.get('input[aria-label="come back with -1hard checkbox"]').should(
-      'be.checked'
+    cy.get('[aria-label="come back with -1hard checkbox"]').within(() =>
+      cy.get('input').should('be.checked')
     );
 
     // Uncheck -1hard option and check
@@ -252,8 +250,8 @@ describe('Using the PlaybookPanel as an Angel', () => {
       'include.text',
       '0'
     );
-    cy.get('input[aria-label="come back with -1hard checkbox"]').should(
-      'not.be.checked'
+    cy.get('[aria-label="come back with -1hard checkbox"]').within(() =>
+      cy.get('input').should('not.be.checked')
     );
   });
 
@@ -269,9 +267,9 @@ describe('Using the PlaybookPanel as an Angel', () => {
     cy.contains(DO_IT_TEXT).click();
     cy.contains(ADD_WEIRD_1_TEXT).should('not.exist');
     cy.get('h2[aria-label="weird-value"]').should('include.text', '0');
-    cy.get(
-      'input[aria-label="come back with +1weird (max+3) checkbox"]'
-    ).should('be.checked');
+    cy.get('[aria-label="come back with +1weird (max+3) checkbox"]').within(
+      () => cy.get('input').should('be.checked')
+    );
 
     // Uncheck +1weird option and check
     cy.contains('come back with +1weird').should('be.visible');
@@ -280,9 +278,9 @@ describe('Using the PlaybookPanel as an Angel', () => {
     cy.contains(DO_IT_TEXT).click();
     cy.contains(REMOVE_WEIRD_1_TEXT).should('not.exist');
     cy.get('h2[aria-label="weird-value"]').should('include.text', '-1');
-    cy.get(
-      'input[aria-label="come back with +1weird (max+3) checkbox"]'
-    ).should('not.be.checked');
+    cy.get('[aria-label="come back with +1weird (max+3) checkbox"]').within(
+      () => cy.get('input').should('not.be.checked')
+    );
   });
 
   it('should mark character as dead when life untenable, then unmark', () => {

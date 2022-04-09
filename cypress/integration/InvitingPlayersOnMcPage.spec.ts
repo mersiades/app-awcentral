@@ -1,3 +1,4 @@
+import game7 from '../fixtures/games/game7';
 import {
   ADD_ANOTHER_TEXT,
   ADD_EMAIL_ADDRESS_TEXT,
@@ -8,14 +9,12 @@ import {
   PLAYER_ALREADY_JOINED_GAME_TEXT,
   TELL_HOW_JOIN_GAME_TEXT,
 } from '../../src/config/constants';
-import game7 from '../fixtures/games/game7';
-import dave from '../fixtures/users/dave';
 
 describe('Inviting players to a game from the McPage', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('dave');
-    cy.visit(`/mc-game/${game7.id}`);
+    cy.login('dave@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
   });
 
   it('should add two invitees, then delete them', () => {

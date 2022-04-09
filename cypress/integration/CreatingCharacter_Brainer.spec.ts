@@ -1,17 +1,18 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import { UniqueTypes } from '../../src/@types/enums';
 import {
   BRAINER_SPECIAL_NAME,
   SET_TEXT,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Brainer Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('maya');
-    cy.visit(`character-creation/${game6.id}?step=6`);
+    cy.login('maya@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('brainer gear-edit-link');
   });
 
   it('should set BrainerGear and stop at MovesForm', () => {
@@ -31,9 +32,10 @@ describe('Creating a new Brainer Character', () => {
     cy.contains(SET_TEXT).as('setButton');
     cy.contains('Select 2').should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 6);
-    cy.get(`input[aria-label="option-${option1Text}"]`).as('option1');
-    cy.get(`input[aria-label="option-${option2Text}"]`).as('option2');
-    cy.get(`input[aria-label="option-${option3Text}"]`).as('option3');
+    // cy.get('[aria-label="option-implant syringe (tag hi-tech)"]');
+    cy.get(`[aria-label="option-${option1Text}"]`).as('option1');
+    cy.get(`[aria-label="option-${option2Text}"]`).as('option2');
+    cy.get(`[aria-label="option-${option3Text}"]`).as('option3');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]').should('contain', brainerWeapon);
@@ -48,19 +50,29 @@ describe('Creating a new Brainer Character', () => {
 
     // Check form functionality
     cy.contains(option1Text).click();
-    cy.get('@option1').should('be.checked');
+    cy.get('@option1').within(() => {
+      cy.get('input').should('be.checked');
+    });
 
     cy.contains(option2Text).click();
-    cy.get('@option2').should('be.checked');
+    cy.get('@option2').within(() => {
+      cy.get('input').should('be.checked');
+    });
 
     cy.contains(option3Text).click();
-    cy.get('@option3').should('not.be.checked');
+    cy.get('@option3').within(() => {
+      cy.get('input').should('not.be.checked');
+    });
 
     cy.contains(option2Text).click();
-    cy.get('@option2').should('not.be.checked');
+    cy.get('@option2').within(() => {
+      cy.get('input').should('not.be.checked');
+    });
 
     cy.contains(option3Text).click();
-    cy.get('@option3').should('be.checked');
+    cy.get('@option3').within(() => {
+      cy.get('input').should('be.checked');
+    });
 
     // Submit form
     cy.contains(SET_TEXT).click();

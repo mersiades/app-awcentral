@@ -5,15 +5,15 @@ import { Box } from 'grommet';
 
 import Spinner from './Spinner';
 import { brandColor, ButtonWS, TextWS } from '../config/grommetConfig';
+import { useUser } from '../contexts/userContext';
 import { GameForInviteeGame } from '../queries/gamesForInvitee';
 import ADD_USER_TO_GAME, {
   AddUserToGameData,
   AddUserToGameVars,
 } from '../mutations/addUserToGame';
 import { RoleType } from '../@types/enums';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
-import { JOIN_TEXT, NO_INVITATIONS_TEXT } from '../config/constants';
 import { logAmpEvent } from '../config/amplitudeConfig';
+import { JOIN_TEXT, NO_INVITATIONS_TEXT } from '../config/constants';
 
 interface InvitationsListProps {
   games: GameForInviteeGame[];
@@ -21,7 +21,7 @@ interface InvitationsListProps {
 
 const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
   const history = useHistory();
-  const { id: userId, username: displayName, email } = useKeycloakUser();
+  const { userId, displayName, email } = useUser();
   const [addUserToGame, { loading }] = useMutation<
     AddUserToGameData,
     AddUserToGameVars

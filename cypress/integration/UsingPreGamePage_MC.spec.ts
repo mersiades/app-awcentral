@@ -1,3 +1,4 @@
+import { MOCK_GAME_1_NAME } from '../fixtures/games/game1';
 import {
   CANCEL_TEXT,
   NO_TEXT,
@@ -8,11 +9,10 @@ import {
   START_GAME_TEXT,
   YES_TEXT,
 } from '../../src/config/constants';
-import { MOCK_GAME_1_NAME } from '../fixtures/games/game1';
+
 describe('Using the PreGamePage as an MC', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('dave');
+    cy.login('dave@email.com');
     cy.visit('/');
   });
 

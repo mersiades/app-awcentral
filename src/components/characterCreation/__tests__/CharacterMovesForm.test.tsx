@@ -4,12 +4,11 @@ import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
 import CharacterMovesForm from '../CharacterMovesForm';
-import { mockKeycloakStub } from '../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
   mockPlaybookCreatorAngel,
 } from '../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../tests/test-utils';
@@ -32,9 +31,7 @@ import {
   mockWealth,
 } from '../../../tests/fixtures/characterMovesFixtures';
 import { MockedResponse } from '@apollo/client/testing';
-import OTHER_PLAYBOOK_MOVES, {
-  OtherPlaybookMovesData,
-} from '../../../queries/otherPlaybookMoves';
+import OTHER_PLAYBOOK_MOVES from '../../../queries/otherPlaybookMoves';
 import {
   mockBonefeel,
   mockEverybodyEats,
@@ -50,17 +47,6 @@ import {
   mockPlaybookCreatorChopper,
   mockPlaybookCreatorGunlugger,
 } from '../../../tests/fixtures/playbookCreatorFixtures';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 const mockPlaybookCreator_Chopper: MockedResponse<PlaybookCreatorData> = {
   request: {
@@ -170,7 +156,7 @@ describe('Rendering CharacterMovesForm', () => {
             []
           ),
           apolloMocks: [mockPlaybookCreator],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -253,7 +239,7 @@ describe('Rendering CharacterMovesForm', () => {
             []
           ),
           apolloMocks: [mockPlaybookCreator],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -313,7 +299,7 @@ describe('Rendering CharacterMovesForm', () => {
             []
           ),
           apolloMocks: [mockPlaybookCreator],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -373,7 +359,7 @@ describe('Rendering CharacterMovesForm', () => {
             mockPlaybookCreator,
             generateOtherPlaybooksMoveQuery(mockCharacter2.playbook),
           ],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -443,7 +429,7 @@ describe('Rendering CharacterMovesForm', () => {
             mockPlaybookCreator,
             generateOtherPlaybooksMoveQuery(mockCharacter2.playbook),
           ],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -485,7 +471,7 @@ describe('Rendering CharacterMovesForm', () => {
             mockPlaybookCreator_Chopper,
             generateOtherPlaybooksMoveQuery(PlaybookType.chopper),
           ],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -528,7 +514,7 @@ describe('Rendering CharacterMovesForm', () => {
             mockPlaybookCreator_Gunlugger,
             generateOtherPlaybooksMoveQuery(PlaybookType.gunlugger),
           ],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );

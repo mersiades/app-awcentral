@@ -7,7 +7,7 @@ import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../../tests/mocks';
 import { renderWithRouter } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQuerySkinner } from '../../../../tests/mockQueries';
@@ -55,7 +55,7 @@ describe('Rendering SkinnerGearForm', () => {
         isAuthenticated: true,
         apolloMocks: [mockPlayBookCreatorQuerySkinner],
         injectedGame: mockGame,
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );
@@ -77,7 +77,7 @@ describe('Rendering SkinnerGearForm', () => {
         isAuthenticated: true,
         apolloMocks: [mockPlayBookCreatorQuerySkinner],
         injectedGame: mockGame,
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
     );

@@ -8,7 +8,7 @@ import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../tests/test-utils';
 import PlaybookUniqueRouter from '../PlaybookUniqueRouter';
@@ -69,7 +69,7 @@ describe('Rendering PlaybookUniqueRouter', () => {
           isAuthenticated: true,
           injectedGame: generateGame(mockPlaybookUniqueAngel),
           apolloMocks: [mockPlaybookCreator],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -93,7 +93,7 @@ describe('Rendering PlaybookUniqueRouter', () => {
           isAuthenticated: true,
           injectedGame: generateGame(mockPlaybookUniqueBattlebabe),
           apolloMocks: [mockPlaybookCreator],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -123,7 +123,7 @@ describe('Rendering PlaybookUniqueRouter', () => {
           isAuthenticated: true,
           injectedGame: generateGame(mockPlaybookUniqueGunlugger),
           apolloMocks: [mockPlaybookCreator],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -147,7 +147,7 @@ describe('Rendering PlaybookUniqueRouter', () => {
           isAuthenticated: true,
           injectedGame: generateGame(mockPlaybookUniqueGunlugger_withAngelKit),
           apolloMocks: [mockPlaybookCreator],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );

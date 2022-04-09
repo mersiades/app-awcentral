@@ -1,17 +1,18 @@
 import { StatType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import game1 from '../fixtures/games/game1';
 import {
   APPLY_TEXT,
   FRENZY_NAME,
   HOCUS_SPECIAL_NAME,
   FORTUNES_NAME,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import game1 from '../fixtures/games/game1';
+
 describe('Using the PlaybookPanel as a Hocus', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('wilmer');
-    cy.visit(`/player-game/${game1.id}`);
+    cy.login('wilmer@email.com');
+    cy.visit('/');
+    cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openPlaybookPanel();
   });

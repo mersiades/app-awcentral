@@ -5,6 +5,7 @@ import {
   MOCK_GAMEROLE_2_ID,
   MOCK_GAME_2_ID,
   MOCK_GAME_2_NAME,
+  MOCK_USER_1_EMAIL,
   MOCK_USER_1_ID,
   MOCK_USER_1_NAME,
 } from '../../constants';
@@ -23,7 +24,12 @@ const game_withMC_1Player: Game = {
     __typename: 'User',
   },
   players: [
-    { id: MOCK_USER_1_ID, displayName: MOCK_USER_1_NAME, __typename: 'User' },
+    {
+      id: MOCK_USER_1_ID,
+      displayName: MOCK_USER_1_NAME,
+      email: MOCK_USER_1_EMAIL,
+      __typename: 'User',
+    },
   ],
   gameMessages: [],
   gameRoles: [

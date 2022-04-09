@@ -23,6 +23,7 @@ import WarningDialog from '../components/dialogs/WarningDialog';
 import FirstSessionDialog from '../components/dialogs/FirstSessionDialog';
 import GoToPreGameDialog from '../components/dialogs/GoToPreGameDialog';
 import ScriptChange from '../components/ScriptChange';
+import GameNavbar from '../components/GameNavbar';
 import {
   Footer,
   LeftMainContainer,
@@ -31,6 +32,9 @@ import {
   SidePanel,
   StyledMarkdown,
 } from '../components/styledComponents';
+import { useGame } from '../contexts/gameContext';
+import { useMcContent } from '../contexts/mcContentContext';
+import { useUser } from '../contexts/userContext';
 import ALL_MOVES, { AllMovesData } from '../queries/allMoves';
 import GAMEROLES_BY_USER_ID from '../queries/gameRolesByUserId';
 import DELETE_GAME, {
@@ -41,12 +45,9 @@ import REMOVE_INVITEE, {
   RemoveInviteeData,
   RemoveInviteeVars,
 } from '../mutations/removeInvitee';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
-import { useGame } from '../contexts/gameContext';
 import { customTabStyles } from '../config/grommetConfig';
-import GameNavbar from '../components/GameNavbar';
-import { useMcContent } from '../contexts/mcContentContext';
 import { GAME_PAGE_BOTTOM_NAVBAR_HEIGHT } from '../config/constants';
+
 import '../assets/styles/transitions.css';
 
 export const background = {
@@ -104,7 +105,7 @@ const MCPage: FC = () => {
 
   // ----------------------------- Hooks ---------------------------------------- //
   const { game, setGameContext } = useGame();
-  const { id: userId } = useKeycloakUser();
+  const { userId } = useUser();
   const { tickerData } = useMcContent();
 
   // ----------------------------- GraphQL -------------------------------------- //

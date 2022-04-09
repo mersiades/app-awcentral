@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useKeycloak } from '@react-keycloak/web';
 import { useQuery } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { Box } from 'grommet';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import LandingPageLayout from '../components/LandingPageLayout';
 import CreateGameForm from '../components/CreateGameForm';
@@ -12,9 +12,9 @@ import GAMEROLES_BY_USER_ID, {
   GameRolesByUserIdData,
   GameRolesByUserIdVars,
 } from '../queries/gameRolesByUserId';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
 import { useFonts } from '../contexts/fontContext';
 import { useGame } from '../contexts/gameContext';
+import { useUser } from '../contexts/userContext';
 import { logAmpEvent } from '../config/amplitudeConfig';
 import {
   RETURN_TO_GAME_TEXT,
@@ -22,6 +22,7 @@ import {
   CREATE_GAME_TEXT,
   YOUR_GAMES_TITLE,
 } from '../config/constants';
+
 import '../assets/styles/transitions.css';
 
 const MenuPage: FC = () => {
@@ -29,11 +30,11 @@ const MenuPage: FC = () => {
   const [buttonsContainer, setButtonsContainer] = useState(0);
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const { keycloak } = useKeycloak();
   const history = useHistory();
+  const { logout } = useAuth0();
 
   // ----------------------------- Hooks ---------------------------------------- //
-  const { username, id: keycloakId } = useKeycloakUser();
+  const { userId, displayName } = useUser();
   const { clearGameContext } = useGame();
   const { vtksReady } = useFonts();
 
@@ -42,8 +43,8 @@ const MenuPage: FC = () => {
     GAMEROLES_BY_USER_ID,
     {
       // @ts-ignore
-      variables: { id: keycloakId },
-      skip: !keycloakId,
+      variables: { id: userId },
+      skip: !userId,
       fetchPolicy: 'cache-and-network',
       pollInterval: 1000 * 60 * 60, // Once an hour
     }
@@ -102,7 +103,7 @@ const MenuPage: FC = () => {
               size="large"
               alignSelf="center"
               fill
-              onClick={() => keycloak.logout()}
+              onClick={() => logout()}
             />
           </Box>
         </Box>
@@ -113,7 +114,7 @@ const MenuPage: FC = () => {
   return (
     <LandingPageLayout
       isLoading={!gameRoles}
-      welcomeMessage={!!username ? `Welcome, ${username}` : 'Welcome'}
+      welcomeMessage={!!displayName ? `Welcome, ${displayName}` : 'Welcome'}
     >
       <>
         {buttonsContainer === 0 && renderMenuButtons()}

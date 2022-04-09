@@ -1,3 +1,6 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import { UniqueTypes } from '../../src/@types/enums';
 import {
   HARDHOLDER_SPECIAL_NAME,
   LEADERSHIP_NAME,
@@ -5,15 +8,13 @@ import {
   VEHICLES_TITLE,
   WEALTH_NAME,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Hardholder Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('olayinka');
-    cy.visit(`character-creation/${game6.id}?step=6`);
+    cy.login('olayinka@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('holding & gang-edit-link');
   });
 
   it('should set a Holding and stop at MovesForm', () => {

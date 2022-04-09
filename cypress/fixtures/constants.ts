@@ -1,6 +1,7 @@
 // From logging in as 'Dave'
 export const MOCK_USER_1_ID = '652d9d38-a08c-4275-847c-7a20f679d9ee';
 export const MOCK_USER_1_NAME = 'dave';
+export const MOCK_USER_1_EMAIL = 'dave@email';
 
 export const MOCK_GAME_1_ID = 'mock-game-1-id';
 export const MOCK_GAME_2_ID = 'mock-game-2-id';

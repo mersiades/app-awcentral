@@ -1,4 +1,7 @@
 import { StatType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import johnAsPlayer_1 from '../fixtures/gameRoles/johnAsPlayer_1';
+import game7 from '../fixtures/games/game7';
 import {
   DO_BATTLE_NAME,
   GO_AGGRO_NAME,
@@ -12,17 +15,14 @@ import {
   SUCKER_SOMEONE_NAME,
   UNDER_FIRE_NAME,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import johnAsPlayer_1 from '../fixtures/gameRoles/johnAsPlayer_1';
-import game7 from '../fixtures/games/game7';
 
 describe('Making basic moves from the MovesPanel as Battlebabe', () => {
   const characterName = johnAsPlayer_1.characters[0].name as string;
 
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('john');
-    cy.visit(`/player-game/${game7.id}`);
+    cy.login('john@email.com');
+    cy.visit('/');
+    cy.returnToGame(game7.name);
     cy.openMovesPanelBox('Basic moves');
   });
 
@@ -65,7 +65,7 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
   });
 
   it(`should show a ${HELP_OR_INTERFERE_NAME} move message`, () => {
-    const targetName = 'Smith';
+    const targetName = 'Dog';
     const moveDescSnippet = 'When you help or interfere with someone';
     const messageTitle = `${characterName?.toUpperCase()}: ${HELP_OR_INTERFERE_NAME}`;
     cy.contains(decapitalize(HELP_OR_INTERFERE_NAME)).click();

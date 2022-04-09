@@ -1,29 +1,24 @@
 import React from 'react';
 import { act, render, RenderOptions } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Grommet } from 'grommet';
+import wait from 'waait';
 
-import { KeycloakUser } from '../@types';
-import { mockKeycloakStub } from '../../__mocks__/@react-keycloak/web';
+import { Auth0User } from '../@types';
 import { FontsProvider } from '../contexts/fontContext';
-import { KeycloakUserProvider } from '../contexts/keycloakUserContext';
 import { theme } from '../config/grommetConfig';
-import { mockKeycloakUser1 } from './mocks';
 import { GameProvider } from '../contexts/gameContext';
 import { Character, Game } from '../@types/dataInterfaces';
 import { InMemoryCache } from '@apollo/client';
 import { McContent } from '../@types/staticDataInterfaces';
 import { McContentProvider } from '../contexts/mcContentContext';
-import wait from 'waait';
 
 interface CustomRenderOptions {
   isAuthenticated?: boolean;
   vtksReady?: boolean;
   crustReady?: boolean;
   apolloMocks?: MockedResponse[];
-  keycloakUser?: KeycloakUser;
   injectedGame?: Game;
   injectedGameId?: string;
   injectedUserId?: string;
@@ -35,11 +30,9 @@ interface CustomRenderOptions {
 // All the providers for unit tests
 const ComponentProviders = ({
   children,
-  isAuthenticated = true,
   vtksReady = true,
   crustReady = true,
   apolloMocks = [],
-  keycloakUser = mockKeycloakUser1,
   injectedGame,
   injectedGameId,
   injectedUserId,
@@ -52,25 +45,16 @@ const ComponentProviders = ({
       <MockedProvider mocks={apolloMocks} addTypename={false} cache={cache}>
         <FontsProvider isVtksReady={vtksReady} isCrustReady={crustReady}>
           <Grommet theme={theme(vtksReady)} full>
-            <ReactKeycloakProvider
-              authClient={mockKeycloakStub(isAuthenticated)}
-              initOptions={{
-                onLoad: 'login-required',
-              }}
+            <GameProvider
+              injectedGame={injectedGame}
+              injectedGameId={injectedGameId}
+              injectedUserId={injectedUserId}
+              injectedCharacter={injectedCharacter}
             >
-              <GameProvider
-                injectedGame={injectedGame}
-                injectedGameId={injectedGameId}
-                injectedUserId={injectedUserId}
-                injectedCharacter={injectedCharacter}
-              >
-                <McContentProvider injectedMcContent={injectedMcContent}>
-                  <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>
-                    {children}
-                  </KeycloakUserProvider>
-                </McContentProvider>
-              </GameProvider>
-            </ReactKeycloakProvider>
+              <McContentProvider injectedMcContent={injectedMcContent}>
+                {children}
+              </McContentProvider>
+            </GameProvider>
           </Grommet>
         </FontsProvider>
       </MockedProvider>
@@ -81,11 +65,9 @@ const ComponentProviders = ({
 // All the providers for App, for integration tests
 const AppProviders = ({
   children,
-  isAuthenticated = true,
   vtksReady = true,
   crustReady = true,
   apolloMocks = [],
-  keycloakUser = mockKeycloakUser1,
   injectedGame,
   injectedUserId,
   injectedCharacter,
@@ -96,24 +78,15 @@ const AppProviders = ({
       <MockedProvider mocks={apolloMocks}>
         <FontsProvider isVtksReady={vtksReady} isCrustReady={crustReady}>
           <Grommet theme={theme(vtksReady)} full>
-            <ReactKeycloakProvider
-              authClient={mockKeycloakStub(isAuthenticated)}
-              initOptions={{
-                onLoad: 'login-required',
-              }}
+            <GameProvider
+              injectedGame={injectedGame}
+              injectedUserId={injectedUserId}
+              injectedCharacter={injectedCharacter}
             >
-              <GameProvider
-                injectedGame={injectedGame}
-                injectedUserId={injectedUserId}
-                injectedCharacter={injectedCharacter}
-              >
-                <McContentProvider injectedMcContent={injectedMcContent}>
-                  <KeycloakUserProvider keycloakUser={{ ...keycloakUser }}>
-                    {children}
-                  </KeycloakUserProvider>
-                </McContentProvider>
-              </GameProvider>
-            </ReactKeycloakProvider>
+              <McContentProvider injectedMcContent={injectedMcContent}>
+                {children}
+              </McContentProvider>
+            </GameProvider>
           </Grommet>
         </FontsProvider>
       </MockedProvider>
@@ -122,7 +95,7 @@ const AppProviders = ({
 };
 
 /**
- * Wraps all the providers around the test render method, except for KeycloakUserContext.Provider
+ * Wraps all the providers around the test render method, except for Auth0Provider
  * To be used for integration tests, where <App/> is the ui param
  * @param ui
  * @param options

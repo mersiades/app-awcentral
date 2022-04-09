@@ -1,3 +1,6 @@
+import game6 from '../fixtures/games/game6';
+import { decapitalize } from '../../src/helpers/decapitalize';
+import { UniqueTypes } from '../../src/@types/enums';
 import {
   BATTLE_OPTIONS_TEXT,
   BATTLE_VEHICLES_TITLE,
@@ -14,15 +17,13 @@ import {
   VEHICLES_TITLE,
   WEAKNESSES_TEXT,
 } from '../../src/config/constants';
-import game6 from '../fixtures/games/game6';
-import { decapitalize } from '../../src/helpers/decapitalize';
-import { UniqueTypes } from '../../src/@types/enums';
 
 describe('Creating a new Chopper Character', () => {
   beforeEach(() => {
-    cy.kcLogout();
-    cy.kcLogin('takeshi');
-    cy.visit(`character-creation/${game6.id}?step=6`);
+    cy.login('takeshi@email.com');
+    cy.visit('/');
+    cy.returnToGame(game6.name);
+    cy.navToCharacterCreationViaPlaybookPanel('gang-edit-link');
   });
 
   it('should create a Gang and Bike and stop at BattleVehicleForm', () => {
@@ -58,17 +59,17 @@ describe('Creating a new Chopper Character', () => {
     cy.contains('Then, choose 2:').should('exist');
     cy.contains('And choose 1:').should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 11);
-    cy.get(`input[aria-label="option-${strength1Text}"]`).as('strength1');
-    cy.get(`input[aria-label="option-${strength2Text}"]`).as('strength2');
-    cy.get(`input[aria-label="option-${strength3Text}"]`).as('strength3');
-    cy.get(`input[aria-label="option-${strength4Text}"]`).as('strength4');
-    cy.get(`input[aria-label="option-${strength5Text}"]`).as('strength5');
-    cy.get(`input[aria-label="option-${strength6Text}"]`).as('strength6');
-    cy.get(`input[aria-label="option-${weakness1Text}"]`).as('weakness1');
-    cy.get(`input[aria-label="option-${weakness2Text}"]`).as('weakness2');
-    cy.get(`input[aria-label="option-${weakness3Text}"]`).as('weakness3');
-    cy.get(`input[aria-label="option-${weakness4Text}"]`).as('weakness4');
-    cy.get(`input[aria-label="option-${weakness5Text}"]`).as('weakness5');
+    cy.get(`[aria-label="option-${strength1Text}"]`).as('strength1');
+    cy.get(`[aria-label="option-${strength2Text}"]`).as('strength2');
+    cy.get(`[aria-label="option-${strength3Text}"]`).as('strength3');
+    cy.get(`[aria-label="option-${strength4Text}"]`).as('strength4');
+    cy.get(`[aria-label="option-${strength5Text}"]`).as('strength5');
+    cy.get(`[aria-label="option-${strength6Text}"]`).as('strength6');
+    cy.get(`[aria-label="option-${weakness1Text}"]`).as('weakness1');
+    cy.get(`[aria-label="option-${weakness2Text}"]`).as('weakness2');
+    cy.get(`[aria-label="option-${weakness3Text}"]`).as('weakness3');
+    cy.get(`[aria-label="option-${weakness4Text}"]`).as('weakness4');
+    cy.get(`[aria-label="option-${weakness5Text}"]`).as('weakness5');
 
     // Check CharacterCreationStepper
     cy.get('div[data-testid="gear-box"]')
@@ -87,51 +88,51 @@ describe('Creating a new Chopper Character', () => {
 
     // Check form functionality
     cy.contains(strength1Text).click();
-    cy.get('@strength1').should('be.checked');
+    cy.get('@strength1').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'MEDIUM');
 
     cy.contains(strength2Text).click();
-    cy.get('@strength2').should('be.checked');
+    cy.get('@strength2').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'MEDIUM');
     cy.get(`h2[aria-label="harm-value"]`).should('include.text', '3');
 
     cy.contains(strength3Text).click();
-    cy.get('@strength3').should('not.be.checked');
+    cy.get('@strength3').within(() => cy.get('input').should('not.be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'MEDIUM');
     cy.get(`h2[aria-label="harm-value"]`).should('include.text', '3');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '1');
 
     cy.contains(strength2Text).click();
-    cy.get('@strength2').should('not.be.checked');
+    cy.get('@strength2').within(() => cy.get('input').should('not.be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'MEDIUM');
     cy.get(`h2[aria-label="harm-value"]`).should('include.text', '2');
 
     cy.contains(strength3Text).click();
-    cy.get('@strength3').should('be.checked');
+    cy.get('@strength3').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'MEDIUM');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '2');
     cy.get(`div[data-testid="tags-tags-box"]`).should('contain', 'savage');
 
     cy.contains(strength1Text).click();
-    cy.get('@strength1').should('not.be.checked');
+    cy.get('@strength1').within(() => cy.get('input').should('not.be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'SMALL');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '2');
     cy.get(`div[data-testid="tags-tags-box"]`).should('contain', 'savage');
 
     cy.contains(strength4Text).click();
-    cy.get('@strength4').should('be.checked');
+    cy.get('@strength4').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'SMALL');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '2');
     cy.get(`div[data-testid="tags-tags-box"]`).should('not.contain', 'savage');
 
     cy.contains(strength3Text).click();
-    cy.get('@strength3').should('not.be.checked');
+    cy.get('@strength3').within(() => cy.get('input').should('not.be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'SMALL');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '1');
     cy.get(`div[data-testid="tags-tags-box"]`).should('not.contain', 'savage');
 
     cy.contains(strength5Text).click();
-    cy.get('@strength5').should('be.checked');
+    cy.get('@strength5').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'SMALL');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '1');
     cy.get(`div[data-testid="tags-tags-box"]`)
@@ -139,7 +140,7 @@ describe('Creating a new Chopper Character', () => {
       .should('contain', 'mobile');
 
     cy.contains(strength4Text).click();
-    cy.get('@strength4').should('not.be.checked');
+    cy.get('@strength4').within(() => cy.get('input').should('not.be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'SMALL');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '1');
     cy.get(`div[data-testid="tags-tags-box"]`)
@@ -147,7 +148,7 @@ describe('Creating a new Chopper Character', () => {
       .should('contain', 'mobile');
 
     cy.contains(strength6Text).click();
-    cy.get('@strength6').should('be.checked');
+    cy.get('@strength6').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'SMALL');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '1');
     cy.get(`div[data-testid="tags-tags-box"]`)
@@ -158,7 +159,7 @@ describe('Creating a new Chopper Character', () => {
     cy.get('@setButton').should('be.disabled');
 
     cy.contains(weakness1Text).click();
-    cy.get('@weakness1').should('be.checked');
+    cy.get('@weakness1').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="size-box"]`).should('contain', 'SMALL');
     cy.get(`h2[aria-label="armor-value"]`).should('include.text', '1');
     cy.get(`div[data-testid="tags-tags-box"]`)
@@ -169,7 +170,7 @@ describe('Creating a new Chopper Character', () => {
     cy.get('@setButton').should('not.be.disabled');
 
     cy.contains(weakness1Text).click();
-    cy.get('@weakness1').should('not.be.checked');
+    cy.get('@weakness1').within(() => cy.get('input').should('not.be.checked'));
     cy.get(`div[data-testid="tags-tags-box"]`)
       .should('contain', 'savage')
       .should('contain', 'mobile')
@@ -178,7 +179,7 @@ describe('Creating a new Chopper Character', () => {
     cy.get('@setButton').should('be.disabled');
 
     cy.contains(weakness2Text).click();
-    cy.get('@weakness2').should('be.checked');
+    cy.get('@weakness2').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="tags-tags-box"]`)
       .should('contain', 'savage')
       .should('contain', 'mobile')
@@ -186,7 +187,7 @@ describe('Creating a new Chopper Character', () => {
       .should('contain', 'vulnerable: grounded');
 
     cy.contains(weakness2Text).click();
-    cy.get('@weakness2').should('not.be.checked');
+    cy.get('@weakness2').within(() => cy.get('input').should('not.be.checked'));
     cy.get(`div[data-testid="tags-tags-box"]`)
       .should('contain', 'savage')
       .should('contain', 'mobile')
@@ -194,7 +195,7 @@ describe('Creating a new Chopper Character', () => {
       .should('not.contain', 'vulnerable: grounded');
 
     cy.contains(weakness3Text).click();
-    cy.get('@weakness3').should('be.checked');
+    cy.get('@weakness3').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="tags-tags-box"]`)
       .should('contain', 'savage')
       .should('contain', 'mobile')
@@ -202,7 +203,7 @@ describe('Creating a new Chopper Character', () => {
       .should('contain', 'vulnerable: desertion');
 
     cy.contains(weakness3Text).click();
-    cy.get('@weakness3').should('not.be.checked');
+    cy.get('@weakness3').within(() => cy.get('input').should('not.be.checked'));
     cy.get(`div[data-testid="tags-tags-box"]`)
       .should('contain', 'savage')
       .should('contain', 'mobile')
@@ -210,7 +211,7 @@ describe('Creating a new Chopper Character', () => {
       .should('not.contain', 'vulnerable: desertion');
 
     cy.contains(weakness4Text).click();
-    cy.get('@weakness4').should('be.checked');
+    cy.get('@weakness4').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="tags-tags-box"]`)
       .should('contain', 'savage')
       .should('contain', 'mobile')
@@ -218,7 +219,7 @@ describe('Creating a new Chopper Character', () => {
       .should('contain', 'vulnerable: obligation');
 
     cy.contains(weakness4Text).click();
-    cy.get('@weakness4').should('not.be.checked');
+    cy.get('@weakness4').within(() => cy.get('input').should('not.be.checked'));
     cy.get(`div[data-testid="tags-tags-box"]`)
       .should('contain', 'savage')
       .should('contain', 'mobile')
@@ -226,7 +227,7 @@ describe('Creating a new Chopper Character', () => {
       .should('not.contain', 'vulnerable: obligation');
 
     cy.contains(weakness5Text).click();
-    cy.get('@weakness5').should('be.checked');
+    cy.get('@weakness5').within(() => cy.get('input').should('be.checked'));
     cy.get(`div[data-testid="tags-tags-box"]`)
       .should('contain', 'savage')
       .should('contain', 'mobile')

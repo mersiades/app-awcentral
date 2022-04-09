@@ -4,16 +4,17 @@ import { useHistory } from 'react-router-dom';
 import { Box, Image, Heading, Grid } from 'grommet';
 
 import InvitationsList from '../components/InvitationsList';
+import Spinner from '../components/Spinner';
+import { HeadingWS, StyledClose } from '../config/grommetConfig';
+import { useFonts } from '../contexts/fontContext';
+import { useUser } from '../contexts/userContext';
 import GAMES_FOR_INVITEE, {
   GamesForInviteeData,
   GamesForInviteeVars,
 } from '../queries/gamesForInvitee';
-import { useKeycloakUser } from '../contexts/keycloakUserContext';
-import { HeadingWS, StyledClose } from '../config/grommetConfig';
-import '../assets/styles/transitions.css';
-import Spinner from '../components/Spinner';
-import { useFonts } from '../contexts/fontContext';
 import { YOUR_INVITATIONS_TITLE } from '../config/constants';
+
+import '../assets/styles/transitions.css';
 
 const background = {
   color: 'black',
@@ -24,7 +25,7 @@ const background = {
 
 const MenuPage: FC = () => {
   // ---------------------------------- Accessing React context -------------------------------------------- //
-  const { username, email } = useKeycloakUser();
+  const { displayName, email } = useUser();
   const { vtksReady } = useFonts();
 
   // -------------------------------- Hooking in to Apollo graphql ----------------------------------------- //
@@ -72,7 +73,9 @@ const MenuPage: FC = () => {
       >
         <Box gridArea="leftMargin" />
         <Box gridArea="centerTop">
-          <Heading level="4">{username && `Welcome, ${username}`}</Heading>
+          <Heading level="4">
+            {displayName && `Welcome, ${displayName}`}
+          </Heading>
         </Box>
         <Box gridArea="centerBottom">
           <Grid

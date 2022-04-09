@@ -8,7 +8,7 @@ import {
   mockAngel_fresh,
   mockAngel_readyToAddMoves,
 } from '../../../tests/fixtures/characterFixtures';
-import { mockGame5, mockKeycloakUserInfo1 } from '../../../tests/mocks';
+import { mockGame5, mockAuth0UserInfo1 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import CharacterCreationStepper from '../CharacterCreationStepper';
 import {
@@ -50,7 +50,7 @@ describe('Rendering CharacterCreationStepper', () => {
           isAuthenticated: true,
           injectedGame: generateGame(mockAngel_fresh),
           apolloMocks: [],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -86,7 +86,7 @@ describe('Rendering CharacterCreationStepper', () => {
           isAuthenticated: true,
           injectedGame: generateGame(mockAngel_readyToAddMoves),
           apolloMocks: [],
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );

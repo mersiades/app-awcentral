@@ -1,13 +1,14 @@
-import 'cypress-keycloak-commands';
+import cypress from 'cypress';
 import { PlaybookType, StatType } from '../../src/@types/enums';
+import { decapitalize } from '../../src/helpers/decapitalize';
 import {
   ADD_TEXT,
   LOOKS_TITLE,
   NAME_TITLE,
   NEW_GAME_TEXT,
   PLAYBOOK_TITLE,
+  RETURN_TO_GAME_TEXT,
 } from '../../src/config/constants';
-import { decapitalize } from '../../src/helpers/decapitalize';
 
 const query = `
 mutation ResetDb {
@@ -22,20 +23,74 @@ mutation ResetDb {
 Cypress.Commands.add('getToken', () => {
   cy.request({
     method: 'POST',
-    url: `${Cypress.env('KEYCLOAK_HOST')}/auth/realms/${Cypress.env(
-      'KEYCLOAK_REALM'
-    )}/protocol/openid-connect/token`,
+    url: Cypress.env('AUTH0_TOKEN_ENDPOINT'),
     form: true,
     body: {
-      client_id: 'cypress-awcentral',
       grant_type: 'password',
-      client_secret: Cypress.env('KEYCLOAK_CLIENT_SECRET'),
-      scope: 'openid',
+      client_id: Cypress.env('AUTH0_CLIENT_ID'),
+      client_secret: Cypress.env('AUTH0_CLIENT_SECRET'),
       username: 'cypress-test',
-      password: Cypress.env('KEYCLOAK_USER_PW'),
+      password: Cypress.env('AUTH0_E2E_USER_PW'),
+      audience: Cypress.env('AUTH0_AUDIENCE'),
+      scope: 'openid profile email',
     },
   }).then((response) => {
     Cypress.env('access_token', response?.body.access_token);
+  });
+});
+
+Cypress.Commands.add('login', (username: string) => {
+  const client_id = Cypress.env('AUTH0_CLIENT_ID');
+  const audience = Cypress.env('AUTH0_AUDIENCE');
+  cy.request({
+    method: 'POST',
+    url: Cypress.env('AUTH0_TOKEN_ENDPOINT'),
+    form: true,
+    body: {
+      grant_type: 'password',
+      client_id,
+      client_secret: Cypress.env('AUTH0_CLIENT_SECRET'),
+      username,
+      password: Cypress.env('AUTH0_MOCK_USER_PW'),
+      audience,
+      scope: 'openid profile email',
+    },
+  }).then(({ body }) => {
+    const { access_token, expires_in, id_token, scope, token_type } = body;
+
+    const [header, payload, signature] = id_token.split('.');
+
+    const tokenData = JSON.parse(
+      Buffer.from(id_token.split('.')[1], 'base64').toString('ascii')
+    );
+
+    window.localStorage.setItem(
+      `@@auth0spajs@@::${client_id}::${audience}::${scope}`,
+      JSON.stringify({
+        body: {
+          access_token,
+          id_token,
+          scope,
+          expires_in,
+          token_type,
+          decodedToken: {
+            encoded: { header, payload, signature },
+            header: {
+              alg: 'RS256',
+              typ: 'JWT',
+            },
+            claims: {
+              __raw: id_token,
+              ...tokenData,
+            },
+            user: tokenData,
+          },
+          audience,
+          client_id,
+        },
+        expiresAt: Math.floor(Date.now() / 1000) + expires_in,
+      })
+    );
   });
 });
 
@@ -58,6 +113,23 @@ Cypress.Commands.add('resetDb', () => {
     // cy.wait(1000);
   });
 });
+
+Cypress.Commands.add('returnToGame', (gameName: string) => {
+  cy.contains(RETURN_TO_GAME_TEXT).click();
+  cy.contains(gameName).click();
+});
+
+Cypress.Commands.add(
+  'navToCharacterCreationViaPlaybookPanel',
+  (editButtonId: string) => {
+    // Close go-to-pregame dialog
+    cy.contains('NO').click();
+
+    // Open PlaybookPanel
+    cy.contains('Playbook').click();
+    cy.get(`[data-testid="${editButtonId}"]`).scrollIntoView().click();
+  }
+);
 
 Cypress.Commands.add('moveThroughNewGameIntro', () => {
   // Check form content
@@ -211,29 +283,6 @@ Cypress.Commands.add(
     cy.get(`@${targetBox}Box`).should('contain', option3);
   }
 );
-
-Cypress.Commands.add('deleteKeycloakUser', (email: string) => {
-  cy.request({
-    method: 'GET',
-    url: `${Cypress.env('KEYCLOAK_HOST')}/auth/admin/realms/${Cypress.env(
-      'KEYCLOAK_REALM'
-    )}/users?email=${email}`,
-    headers: {
-      Authorization: `Bearer ${Cypress.env('access_token')}`,
-    },
-  }).then(({ body }) => {
-    const userId = body[0].id;
-    cy.request({
-      method: 'DELETE',
-      url: `${Cypress.env('KEYCLOAK_HOST')}/auth/admin/realms/${Cypress.env(
-        'KEYCLOAK_REALM'
-      )}/users/${userId}`,
-      headers: {
-        Authorization: `Bearer ${Cypress.env('access_token')}`,
-      },
-    });
-  });
-});
 
 Cypress.Commands.add('openMovesPanelBox', (boxTitle: string) => {
   cy.get('div[role="tablist"]').within(() => {

@@ -1,21 +1,20 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
+import { InMemoryCache } from '@apollo/client';
+import userEvent from '@testing-library/user-event';
+
+import EstablishmentForm from '../EstablishmentForm';
 import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../../tests/mocks';
-import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
-import { InMemoryCache } from '@apollo/client';
-import userEvent from '@testing-library/user-event';
-import EstablishmentForm from '../EstablishmentForm';
 import { mockPlayBookCreatorQueryMaestroD } from '../../../../tests/mockQueries';
-import { Game, PlaybookUniques } from '../../../../@types/dataInterfaces';
+import { PlaybookUniques } from '../../../../@types/dataInterfaces';
 import { mockEstablishmentCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 import {
-  mockEstablishment_completeWithBothImprovements,
   mockEstablishment_needingInterestResolution,
   mockPlaybookUniqueMaestroD,
   mockPlaybookUniqueMaestroD_completeWithBothImprovements,
@@ -23,27 +22,16 @@ import {
   mockPlaybookUniqueMaestroD_withOneImprovement,
 } from '../../../../tests/fixtures/playBookUniquesFixtures';
 import {
-  ADJUST_MAESTROD_UNIQUE_2_NAME,
-  INCREASED_BY_IMPROVEMENT_TEXT,
-  RESOLVED_INTEREST_TEXT,
-} from '../../../../config/constants';
-import {
   RESOLVE_INTEREST_DIALOG_TITLE,
   RESOLVE_INTEREST_SELECT_LABEL,
 } from '../../../dialogs/EstablishmentInterestResolutionDialog';
 import { CharacterMove } from '../../../../@types/staticDataInterfaces';
 import { MoveType } from '../../../../@types/enums';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
+import {
+  ADJUST_MAESTROD_UNIQUE_2_NAME,
+  INCREASED_BY_IMPROVEMENT_TEXT,
+  RESOLVED_INTEREST_TEXT,
+} from '../../../../config/constants';
 
 const generateGame = (
   playbookUniques: PlaybookUniques,
@@ -103,7 +91,7 @@ describe('Rendering EstablishmentForm', () => {
           isAuthenticated: true,
           apolloMocks: [mockPlayBookCreatorQueryMaestroD],
           injectedGame: generateGame(mockPlaybookUniqueMaestroD, []),
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -117,7 +105,7 @@ describe('Rendering EstablishmentForm', () => {
       });
       screen.getByRole('button', { name: 'SET' });
       screen.getAllByRole('button', { name: 'ADD' });
-      screen.getAllByRole('button', { name: 'Open Drop' });
+      // screen.getAllByRole('button', { name: 'select-interest-input' });
       screen.getByRole('textbox', { name: 'main-attraction-input' });
       screen.getByRole('textbox', { name: 'additional-regular-input' });
       screen.getByRole('textbox', { name: 'best-regular-input' });
@@ -271,7 +259,7 @@ describe('Rendering EstablishmentForm', () => {
             mockPlaybookUniqueMaestroD_withOneImprovement,
             []
           ),
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -299,7 +287,7 @@ describe('Rendering EstablishmentForm', () => {
             mockPlaybookUniqueMaestroD_needingInterestResolution,
             [mockImprovementMove]
           ),
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );
@@ -312,9 +300,11 @@ describe('Rendering EstablishmentForm', () => {
         screen.getByRole('heading', { name: RESOLVE_INTEREST_DIALOG_TITLE })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole('button', { name: 'Open Drop' })
+        screen.getByRole('button', { name: 'select-interest-input' })
       ).toBeInTheDocument();
-      userEvent.click(screen.getByRole('button', { name: 'Open Drop' }));
+      userEvent.click(
+        screen.getByRole('button', { name: 'select-interest-input' })
+      );
       expect(screen.getAllByRole('menuitem')).toHaveLength(3);
       userEvent.click(screen.getAllByRole('menuitem')[0]);
       const input = screen.getByRole('textbox', {
@@ -342,7 +332,7 @@ describe('Rendering EstablishmentForm', () => {
             mockPlaybookUniqueMaestroD_completeWithBothImprovements,
             [mockImprovementMove]
           ),
-          injectedUserId: mockKeycloakUserInfo1.sub,
+          injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
       );

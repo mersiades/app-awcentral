@@ -1,8 +1,8 @@
 import {
   HxInput,
   ItemCharacteristic,
-  KeycloakUser,
-  KeycloakUserInfo,
+  Auth0User,
+  Auth0UserInfo,
   TaggedItem,
   VehicleInput,
 } from '../@types';
@@ -137,34 +137,34 @@ export const mockNewGameName = 'My new mock game';
 
 // ---------------------------------------------------- Mock Users ---------------------------------------------------- //
 
-export const mockKeycloakUserInfo1: KeycloakUserInfo = {
+export const mockAuth0UserInfo1: Auth0UserInfo = {
   email: 'mockUser1@email.com',
   email_verified: true,
   family_name: 'mock-family-name-1',
   given_name: 'mock-given-name-1',
   name: 'mock-name-1',
   preferred_username: 'mock-user-1',
-  sub: 'mock-keycloak-id-1',
+  sub: 'mock-auth0-id-1',
 };
 
-export const mockKeycloakUser1: KeycloakUser = {
-  id: 'mock-keycloak-id-1',
+export const mockAuth0User1: Auth0User = {
+  id: 'mock-auth0-id-1',
   username: 'mock-user-1',
   email: 'mockUser1@email.com',
 };
 
-export const mockKeycloakUserInfo2: KeycloakUserInfo = {
+export const mockAuth0UserInfo2: Auth0UserInfo = {
   email: 'mockUser2@email.com',
   email_verified: true,
   family_name: 'mock-family-name-2',
   given_name: 'mock-given-name-2',
   name: 'mock-name-2',
   preferred_username: 'mock-user-2',
-  sub: 'mock-keycloak-id-2',
+  sub: 'mock-auth0-id-2',
 };
 
-export const mockKeycloakUser2: KeycloakUser = {
-  id: 'mock-keycloak-id-2',
+export const mockAuth0User2: Auth0User = {
+  id: 'mock-auth0-id-2',
   username: 'mock-user-2',
   email: 'mockUser2@email.com',
 };
@@ -271,12 +271,12 @@ export const mockGame1: Game = {
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
   showFirstSession: false,
-  mc: { displayName: 'mock-user-1', id: 'mock-keycloak-id-1' },
+  mc: { displayName: 'mock-user-1', id: 'mock-auth0-id-1' },
   players: [
     {
       displayName: 'mock-user-2',
       email: 'mockUser2@email.com',
-      id: 'mock-keycloak-id-2',
+      id: 'mock-auth0-id-2',
     },
   ],
   gameRoles: [
@@ -285,7 +285,7 @@ export const mockGame1: Game = {
       role: RoleType.mc,
       gameId: 'mock-game-id-1',
       gameName: 'Mock Game 1',
-      userId: 'mock-keycloak-id-1',
+      userId: 'mock-auth0-id-1',
       characters: [],
       npcs: [],
       threats: [],
@@ -295,7 +295,7 @@ export const mockGame1: Game = {
       role: RoleType.player,
       gameId: 'mock-game-id-1',
       gameName: 'Mock Game 1',
-      userId: 'mock-keycloak-id-2',
+      userId: 'mock-auth0-id-2',
       characters: [],
       npcs: [],
       threats: [],
@@ -312,12 +312,12 @@ export const mockGame2: Game = {
   commsUrl: 'https://zoom.com/urltozoomchannel',
   hasFinishedPreGame: false,
   showFirstSession: false,
-  mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
+  mc: { displayName: 'mock-user-2', id: 'mock-auth0-id-2' },
   players: [
     {
       displayName: 'mock-user-1',
       email: 'mockUser1@email.com',
-      id: 'mock-keycloak-id-1',
+      id: 'mock-auth0-id-1',
     },
   ],
   gameRoles: [
@@ -326,7 +326,7 @@ export const mockGame2: Game = {
       role: RoleType.player,
       gameId: 'mock-game-id-2',
       gameName: 'Mock Game 2',
-      userId: 'mock-keycloak-id-1',
+      userId: 'mock-auth0-id-1',
       characters: [],
       npcs: [],
       threats: [],
@@ -336,7 +336,7 @@ export const mockGame2: Game = {
       role: RoleType.mc,
       gameId: 'mock-game-id-2',
       gameName: 'Mock Game 2',
-      userId: 'mock-keycloak-id-2',
+      userId: 'mock-auth0-id-2',
       characters: [],
       npcs: [],
       threats: [],
@@ -355,7 +355,7 @@ export const mockGame3: Game = {
   showFirstSession: false,
   mc: {
     displayName: 'mock-user-1',
-    id: 'mock-keycloak-id-1',
+    id: 'mock-auth0-id-1',
     __typename: 'User',
   },
   players: [],
@@ -365,7 +365,7 @@ export const mockGame3: Game = {
       role: RoleType.mc,
       gameId: 'mock-game-id-3',
       gameName: 'Mock Game 3',
-      userId: 'mock-keycloak-id-1',
+      userId: 'mock-auth0-id-1',
       characters: [],
       npcs: [],
       threats: [],
@@ -385,10 +385,10 @@ export const mockGame4: Game = {
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
   showFirstSession: false,
-  mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
+  mc: { displayName: 'mock-user-2', id: 'mock-auth0-id-2' },
   players: [
     {
-      id: 'mock-keycloak-id-3',
+      id: 'mock-auth0-id-3',
       email: 'mockUser3@email.com',
       displayName: 'mock-user-3',
     },
@@ -399,7 +399,7 @@ export const mockGame4: Game = {
       role: RoleType.mc,
       gameId: 'mock-game-id-4',
       gameName: 'Mock Game 4 - Join Me',
-      userId: 'mock-keycloak-id-2',
+      userId: 'mock-auth0-id-2',
       characters: [],
       npcs: [],
       threats: [],
@@ -409,7 +409,7 @@ export const mockGame4: Game = {
       gameId: 'mock-game-id-4',
       gameName: 'Mock Game 4 - Join Me',
       role: RoleType.player,
-      userId: 'mock-keycloak-id-3',
+      userId: 'mock-auth0-id-3',
       characters: [],
       npcs: [],
       threats: [],
@@ -429,15 +429,15 @@ export const mockGame5: Game = {
   hasFinishedPreGame: false,
   showFirstSession: false,
   gameMessages: [],
-  mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
+  mc: { displayName: 'mock-user-2', id: 'mock-auth0-id-2' },
   players: [
     {
-      id: 'mock-keycloak-id-3',
+      id: 'mock-auth0-id-3',
       email: 'mockUser3@email.com',
       displayName: 'mock-user-3',
     },
     {
-      id: 'mock-keycloak-id-1',
+      id: 'mock-auth0-id-1',
       email: 'mockUser1@email.com',
       displayName: 'mock-user-1',
     },
@@ -449,7 +449,7 @@ export const mockGame5: Game = {
       role: RoleType.mc,
       gameId: 'mock-game-id-5',
       gameName: 'Mock Game 5',
-      userId: 'mock-keycloak-id-2',
+      userId: 'mock-auth0-id-2',
       npcs: [],
       threats: [],
       characters: [],
@@ -460,7 +460,7 @@ export const mockGame5: Game = {
       gameId: 'mock-game-id-5',
       gameName: 'Mock Game 5',
       role: RoleType.player,
-      userId: 'mock-keycloak-id-3',
+      userId: 'mock-auth0-id-3',
       npcs: [],
       threats: [],
       characters: [mockCharacter1],
@@ -471,7 +471,7 @@ export const mockGame5: Game = {
       gameId: 'mock-game-id-5',
       gameName: 'Mock Game 5',
       role: RoleType.player,
-      userId: 'mock-keycloak-id-1',
+      userId: 'mock-auth0-id-1',
       npcs: [],
       threats: [],
       characters: [],
@@ -487,15 +487,15 @@ export const mockGame6: Game = {
   commsUrl: 'https://discord.com/urltodiscordchannel',
   hasFinishedPreGame: false,
   showFirstSession: false,
-  mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
+  mc: { displayName: 'mock-user-2', id: 'mock-auth0-id-2' },
   players: [
     {
-      id: 'mock-keycloak-id-3',
+      id: 'mock-auth0-id-3',
       email: 'mockUser3@email.com',
       displayName: 'mock-user-3',
     },
     {
-      id: 'mock-keycloak-id-1',
+      id: 'mock-auth0-id-1',
       email: 'mockUser1@email.com',
       displayName: 'mock-user-1',
     },
@@ -506,7 +506,7 @@ export const mockGame6: Game = {
       role: RoleType.mc,
       gameId: 'mock-game-id-6',
       gameName: 'Mock Game 6',
-      userId: 'mock-keycloak-id-2',
+      userId: 'mock-auth0-id-2',
       npcs: [],
       threats: [],
       characters: [],
@@ -526,15 +526,15 @@ export const mockGame7: Game = {
   hasFinishedPreGame: false,
   showFirstSession: false,
   gameMessages: [],
-  mc: { displayName: 'mock-user-2', id: 'mock-keycloak-id-2' },
+  mc: { displayName: 'mock-user-2', id: 'mock-auth0-id-2' },
   players: [
     {
-      id: 'mock-keycloak-id-3',
+      id: 'mock-auth0-id-3',
       email: 'mockUser3@email.com',
       displayName: 'mock-user-3',
     },
     {
-      id: 'mock-keycloak-id-1',
+      id: 'mock-auth0-id-1',
       email: 'mockUser1@email.com',
       displayName: 'mock-user-1',
     },
@@ -543,7 +543,7 @@ export const mockGame7: Game = {
     {
       id: 'mock-gameRole-id-6',
       role: RoleType.mc,
-      userId: 'mock-keycloak-id-2',
+      userId: 'mock-auth0-id-2',
       gameId: 'mock-game-id-7',
       gameName: 'Mock Game 7',
       npcs: [],
@@ -553,7 +553,7 @@ export const mockGame7: Game = {
     {
       id: 'mock-gameRole-id-7',
       role: RoleType.player,
-      userId: 'mock-keycloak-id-3',
+      userId: 'mock-auth0-id-3',
       gameId: 'mock-game-id-7',
       gameName: 'Mock Game 7',
       npcs: [],
@@ -563,7 +563,7 @@ export const mockGame7: Game = {
     {
       id: 'mock-gameRole-id-8',
       role: RoleType.player,
-      userId: 'mock-keycloak-id-1',
+      userId: 'mock-auth0-id-1',
       gameId: 'mock-game-id-7',
       gameName: 'Mock Game 7',
       npcs: [],
@@ -577,7 +577,7 @@ export const mockGame7: Game = {
 export const mockGameRole1: GameRole = {
   id: 'mock-gameRole-id-1',
   role: RoleType.mc,
-  userId: 'mock-keycloak-id-1',
+  userId: 'mock-auth0-id-1',
   gameId: mockGame1.id,
   gameName: mockGame1.name,
   characters: [],
@@ -588,7 +588,7 @@ export const mockGameRole1: GameRole = {
 export const mockGameRole2: GameRole = {
   id: 'mock-gameRole-id-2',
   role: RoleType.player,
-  userId: 'mock-keycloak-id-1',
+  userId: 'mock-auth0-id-1',
   gameId: mockGame2.id,
   gameName: mockGame2.name,
   characters: [],

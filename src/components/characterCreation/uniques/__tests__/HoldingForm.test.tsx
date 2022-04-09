@@ -4,16 +4,15 @@ import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
 import HoldingForm from '../HoldingForm';
-import { mockKeycloakStub } from '../../../../../__mocks__/@react-keycloak/web';
 import {
   blankCharacter,
   mockCharacter2,
   mockGame5,
-  mockKeycloakUserInfo1,
+  mockAuth0UserInfo1,
 } from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
 import { mockPlayBookCreatorQueryHardHolder } from '../../../../tests/mockQueries';
-import { Game, PlaybookUniques } from '../../../../@types/dataInterfaces';
+import { PlaybookUniques } from '../../../../@types/dataInterfaces';
 import {
   mockHoldingCreator,
   holdingOption1,
@@ -28,17 +27,6 @@ import {
   DECREASED_BY_IMPROVEMENT_TEXT,
   INCREASED_BY_IMPROVEMENT_TEXT,
 } from '../../../../config/constants';
-
-jest.mock('@react-keycloak/web', () => {
-  const originalModule = jest.requireActual('@react-keycloak/web');
-  return {
-    ...originalModule,
-    useKeycloak: () => ({
-      keycloak: mockKeycloakStub(true, mockKeycloakUserInfo1),
-      initialized: true,
-    }),
-  };
-});
 
 const generateGame = (playbookUniques: PlaybookUniques) => ({
   ...mockGame5,
@@ -82,7 +70,7 @@ describe('Rendering HoldingForm', () => {
         isAuthenticated: true,
         apolloMocks: [mockPlayBookCreatorQueryHardHolder],
         injectedGame: generateGame(mockPlaybookUniqueHardHolder),
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       });
 
@@ -210,7 +198,7 @@ describe('Rendering HoldingForm', () => {
         injectedGame: generateGame(
           mockPlaybookUniqueHardHolder_with3Improvements
         ),
-        injectedUserId: mockKeycloakUserInfo1.sub,
+        injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       });
 

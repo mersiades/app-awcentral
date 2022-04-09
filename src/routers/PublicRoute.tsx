@@ -1,6 +1,6 @@
 import { FC } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Route, Redirect } from 'react-router-dom';
-import { useKeycloak } from '@react-keycloak/web';
 
 interface PublicRootProps {
   component: any;
@@ -12,17 +12,13 @@ const PublicRoute: FC<PublicRootProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { keycloak } = useKeycloak();
+  const { isAuthenticated } = useAuth0();
 
   return (
     <Route
       {...rest}
       render={(props) =>
-        keycloak.authenticated ? (
-          <Redirect to="/menu" />
-        ) : (
-          <Component {...props} />
-        )
+        isAuthenticated ? <Redirect to="/menu" /> : <Component {...props} />
       }
     />
   );
