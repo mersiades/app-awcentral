@@ -36,6 +36,9 @@ const Root: FC<RootProps> = ({ children }) => {
           <FontsProvider>
             <FontsConsumer>
               {(context) => {
+                console.log('auth0Options', auth0Options);
+                console.log('window.location.origin', window.location.origin);
+                console.log('window.location.origin', window.location.pathname);
                 // The Grommet theme needs the font values,
                 // so using the Consumer here immediately.
                 return (
