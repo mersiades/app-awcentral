@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useHistory } from 'react-router-dom';
 import { Box } from 'grommet';
 
 import LandingPageLayout from '../components/LandingPageLayout';
@@ -8,8 +7,7 @@ import { ButtonWS } from '../config/grommetConfig';
 
 const LandingPage = () => {
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const { isLoading } = useAuth0();
-  const history = useHistory();
+  const { isAuthenticated, isLoading, loginWithRedirect  } = useAuth0();
 
   // ----------------------------- Render ---------------------------------------- //
   return (
@@ -23,7 +21,7 @@ const LandingPage = () => {
             size="large"
             alignSelf="center"
             fill
-            onClick={() => history.push('/login')}
+            onClick={() => !isAuthenticated && loginWithRedirect()}
           />
         </Box>
       )}
