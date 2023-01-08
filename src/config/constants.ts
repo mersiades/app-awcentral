@@ -1,11 +1,8 @@
-export const EMAIL_REGEX = new RegExp(
-  /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-);
-
 // Form validation
 export const NO_MC_AS_PLAYER_TEXT = 'MC cannot also be player';
 export const PLAYER_ALREADY_INVITED_TEXT = 'Player already invited';
 export const PLAYER_ALREADY_JOINED_GAME_TEXT = 'Player already joined game';
+export const INVALID_EMAIL_ADDRESS = 'Invalid email address'
 
 // The names of specific moves
 // Basic moves

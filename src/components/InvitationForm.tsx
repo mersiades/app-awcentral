@@ -25,12 +25,12 @@ import { validateEmail } from '../helpers/validateEmail';
 import {
   ADD_ANOTHER_TEXT,
   ADD_EMAIL_ADDRESS_TEXT,
-  ADD_TEXT,
+  ADD_TEXT, INVALID_EMAIL_ADDRESS,
   INVITE_A_PLAYER_TO_TEXT,
   NO_MC_AS_PLAYER_TEXT,
   PLAYER_ALREADY_INVITED_TEXT,
   PLAYER_ALREADY_JOINED_GAME_TEXT,
-  TELL_HOW_JOIN_GAME_TEXT,
+  TELL_HOW_JOIN_GAME_TEXT
 } from '../config/constants';
 
 interface InvitationFormProps {
@@ -46,23 +46,24 @@ const InvitationForm: FC<InvitationFormProps> = ({
   existingEmail = '',
   showMessageOnly,
 }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [formValues, setFormValues] = useState<{ email: string }>({
     email: existingEmail,
   });
   const [message, setMessage] = useState(existingEmail);
   const [hasSubmitted, setHasSubmitted] = useState(showMessageOnly);
   const [errorMessage, setErrorMessage] = useState('');
-  // ----------------------------- 3rd party hooks ------------------------------- //
+
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game } = useGame();
   const { crustReady } = useFonts();
   const { email: mcEmail } = useUser();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const [addInvitee] = useMutation<AddInviteeData, AddInviteeVars>(ADD_INVITEE);
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const handleAddInvitee = async (email: string) => {
     const lowercaseEmail = email.toLowerCase();
     if (game?.invitees.includes(lowercaseEmail)) {
@@ -79,7 +80,13 @@ const InvitationForm: FC<InvitationFormProps> = ({
       setErrorMessage(NO_MC_AS_PLAYER_TEXT);
       return;
     }
-    if (validateEmail(lowercaseEmail) && !!game) {
+
+    if (!validateEmail(lowercaseEmail)) {
+      setErrorMessage(INVALID_EMAIL_ADDRESS);
+      return;
+    }
+
+    if (!!game) {
       await addInvitee({
         variables: { gameId, email: lowercaseEmail },
         optimisticResponse: getAddInviteeOR(game, lowercaseEmail),
@@ -88,13 +95,13 @@ const InvitationForm: FC<InvitationFormProps> = ({
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
   useEffect(() => {
     const defaultMessage = `Hi. Please join our Apocalypse World game on AW Central.\n\n- Go to ${baseUrl}/join-game\n- Log in (or register) with ${formValues.email}\n- Join the game called ${game?.name}`;
     hasSubmitted && setMessage(defaultMessage);
   }, [hasSubmitted, game, gameId, formValues, setMessage]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   const renderMessage = () => {
     return (
