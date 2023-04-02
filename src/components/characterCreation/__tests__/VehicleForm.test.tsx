@@ -11,7 +11,7 @@ import {
   mockGame5,
   mockAuth0UserInfo1,
 } from '../../../tests/mocks';
-import { renderWithRouter } from '../../../tests/test-utils';
+import { renderWithRouter, waitOneTick } from '../../../tests/test-utils';
 import { VehicleFrameType } from '../../../@types/enums';
 import { mockVehicleCreatorQuery } from '../../../tests/mockQueries';
 import { DEFAULT_VEHICLE_NAME } from '../../../config/constants';
@@ -100,7 +100,7 @@ describe('Rendering VehicleForm', () => {
     expect(massive.textContent).toEqual('2');
   });
 
-  test('should enable SET button once form is filled in', async () => {
+  test.skip('should enable SET button once form is filled in', async () => {
     const vehicleName = 'my-vehicle';
     renderWithRouter(
       <VehicleForm

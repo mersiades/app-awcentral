@@ -1,6 +1,7 @@
 import { decapitalize } from '../../src/helpers/decapitalize';
 import game7 from '../fixtures/games/game7';
 import { ADD_TEXT, SET_TEXT } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 interface checkAddingThreatOptions {
   type: string;
@@ -13,6 +14,9 @@ interface checkAddingThreatOptions {
 describe('Using the ThreatsPanel', () => {
   beforeEach(() => {
     cy.login('dave@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game7.name);
     cy.get('button[name="threats"]').click();

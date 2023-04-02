@@ -6,10 +6,14 @@ import {
   GUNLUGGER_SPECIAL_NAME,
   FUCK_THIS_SHIT_NAME,
 } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Using the PlaybookPanel as a Gunlugger', () => {
   beforeEach(() => {
     cy.login('marama@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();

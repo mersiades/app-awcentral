@@ -10,10 +10,14 @@ import {
   THINGS_SPEAK_NAME,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Creating a new Savvyhead Character', () => {
   beforeEach(() => {
     cy.login('sergio@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game6.name);
     cy.navToCharacterCreationViaPlaybookPanel('workspace-edit-link');

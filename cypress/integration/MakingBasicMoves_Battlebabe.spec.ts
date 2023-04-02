@@ -15,12 +15,16 @@ import {
   SUCKER_SOMEONE_NAME,
   UNDER_FIRE_NAME,
 } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Making basic moves from the MovesPanel as Battlebabe', () => {
   const characterName = johnAsPlayer_1.characters[0].name as string;
 
   beforeEach(() => {
     cy.login('john@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game7.name);
     cy.openMovesPanelBox('Basic moves');

@@ -9,10 +9,14 @@ import {
   SET_TEXT,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe("Creating a new Maestro D' Character", () => {
   beforeEach(() => {
     cy.login('ivette@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game6.name);
     cy.navToCharacterCreationViaPlaybookPanel('establishment-edit-link');

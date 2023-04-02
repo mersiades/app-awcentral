@@ -91,6 +91,7 @@ interface VehicleFormState {
   looks: string[];
   weaknesses: string[];
   battleOptions: VehicleBattleOption[];
+  frameForTab: number
 }
 
 interface Action {
@@ -136,23 +137,7 @@ const VehicleForm: FC<VehicleFormProps> = ({
   existingVehicle,
   activeTab,
 }) => {
-  // const initialState: VehicleFormState = {
-  //   vehicleType: !!existingVehicle ? existingVehicle.vehicleType : VehicleType.car,
-  //   name: !!existingVehicle ? existingVehicle.name : 'Unnamed vehicle',
-  //   frame: !!existingVehicle ? omit(existingVehicle.vehicleFrame, ['__typename']) : undefined,
-  //   speed: !!existingVehicle ? existingVehicle.speed : 0,
-  //   handling: !!existingVehicle ? existingVehicle.handling : 0,
-  //   massive: !!existingVehicle ? existingVehicle.massive : 0,
-  //   armor: !!existingVehicle ? existingVehicle.armor : 0,
-  //   strengths: !!existingVehicle ? existingVehicle.strengths : [],
-  //   weaknesses: !!existingVehicle ? existingVehicle.weaknesses : [],
-  //   looks: !!existingVehicle ? existingVehicle.looks : [],
-  //   battleOptions: !!existingVehicle
-  //     ? (existingVehicle.battleOptions.map((bo) => omit(bo, ['__typename'])) as VehicleBattleOption[])
-  //     : [],
-  // };
-
-  // ----------------------------- Component state ------------------------------ //
+  // --------------------------- Component state ---------------------------- //
   const [
     {
       frame,
@@ -165,13 +150,14 @@ const VehicleForm: FC<VehicleFormProps> = ({
       massive,
       armor,
       battleOptions,
+      frameForTab,
     },
     dispatch,
   ] = useReducer(vehicleFormReducer, {});
-  // ----------------------------- Hooks ---------------------------------------- //
+  // --------------------------- Hooks -------------------------------------- //
   const { character, userGameRole } = useGame();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // --------------------------- GraphQL ------------------------------------ //
   const { data: vehicleCreatorData, loading } = useQuery<
     VehicleCreatorData,
     VehicleCreatorVars
@@ -182,7 +168,7 @@ const VehicleForm: FC<VehicleFormProps> = ({
     SetVehicleData,
     SetVehicleVars
   >(SET_VEHICLE);
-  // ----------------------------- Component functions ------------------------- //
+  // --------------------------- Component functions ------------------------ //
 
   const introText =
     frame?.frameType === VehicleFrameType.bike
@@ -354,7 +340,7 @@ const VehicleForm: FC<VehicleFormProps> = ({
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // -------------------------- Effects ------------------------------------- //
 
   // Set initial frame if none set already
   useEffect(() => {
@@ -381,10 +367,8 @@ const VehicleForm: FC<VehicleFormProps> = ({
     }
   }, [character, bikeCreator, carCreator]);
 
-  // Change component state if vehicle changes (ie, when user click on a tab for another vehicle)
-  useEffect(() => {
+  const setFrame = useCallback(() => {
     const defaultFrame = getDefaultFrame();
-
     if (!existingVehicle && !!defaultFrame) {
       const defaultVehicle: VehicleFormState = {
         name: 'Unnamed vehicle',
@@ -398,6 +382,7 @@ const VehicleForm: FC<VehicleFormProps> = ({
         massive: defaultFrame.massive as number,
         armor: 0,
         battleOptions: [],
+        frameForTab: activeTab
       };
       dispatch({ type: 'REPLACE_VEHICLE', payload: defaultVehicle });
     } else if (!!existingVehicle) {
@@ -407,12 +392,19 @@ const VehicleForm: FC<VehicleFormProps> = ({
         battleOptions: existingVehicle.battleOptions.map((bo) =>
           omit(bo, ['__typename'])
         ) as VehicleBattleOption[],
+        frameForTab: activeTab
       };
       dispatch({ type: 'REPLACE_VEHICLE', payload: vehicle });
     }
-  }, [activeTab, existingVehicle, bikeCreator, carCreator, getDefaultFrame]);
+  }, [activeTab, existingVehicle, getDefaultFrame])
 
-  // ----------------------------- Render ---------------------------------------- //
+  // Change component state if vehicle changes (ie, when user click on a tab for another vehicle)
+  useEffect(() => {
+    if (frameForTab !== activeTab)
+    setFrame();
+  }, [frameForTab, activeTab, setFrame]);
+
+  // --------------------------- Render ------------------------------------- //
 
   const renderPill = (
     item: string,

@@ -18,10 +18,14 @@ import {
   SELECTED_MC_RULES_TEXT,
   THREATS_TEXT,
 } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Using the MC Page', () => {
   beforeEach(() => {
     cy.login('dave@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game7.name);
   });

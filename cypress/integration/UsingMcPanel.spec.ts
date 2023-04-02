@@ -1,8 +1,12 @@
 import game7 from '../fixtures/games/game7';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Using the MC panel on McPage', () => {
   beforeEach(() => {
     cy.login('dave@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game7.name);
     cy.get('button[name="mc"]').click();

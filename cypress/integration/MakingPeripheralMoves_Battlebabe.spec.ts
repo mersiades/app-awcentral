@@ -14,14 +14,26 @@ import {
   AUGURY_NAME,
   CHANGE_HIGHLIGHTED_STAT_NAME,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias,
+  ONQ_ALL_MOVES,
+  ONM_PERFORM_HEAL_HARM,
+  setupQueryAliases, visitHomePage
+} from '../utils/graphql-test-utils';
 
 describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
   const characterName = johnAsPlayer_1.characters[0].name as string;
 
   beforeEach(() => {
     cy.login('john@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_PERFORM_HEAL_HARM)
+    })
+    visitHomePage()
     cy.returnToGame(game7.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.openMovesPanelBox('Peripheral moves');
   });
 
@@ -78,6 +90,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
       .type('{selectall}{backspace}')
       .type(harmInflicted);
     cy.contains('APPLY').click();
+    cy.wait(generateWaitAlias(ONM_PERFORM_HEAL_HARM))
     cy.checkMoveMessage(messageTitle, hxChangeDesc1);
     cy.contains(hxChangeDesc2).should('be.visible');
     cy.openPlaybookPanel();

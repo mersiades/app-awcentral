@@ -9,15 +9,28 @@ import {
   PLAYER_ALREADY_JOINED_GAME_TEXT,
   TELL_HOW_JOIN_GAME_TEXT,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_ADD_INVITEE, ONM_REMOVE_INVITEE,
+  ONQ_ALL_MOVES,
+  setupQueryAliases,
+  visitHomePage, waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Inviting players to a game from the McPage', () => {
   beforeEach(() => {
     cy.login('dave@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_ADD_INVITEE)
+      aliasMutation(req, ONM_REMOVE_INVITEE)
+    })
+    visitHomePage();
     cy.returnToGame(game7.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
   });
 
-  it('should add two invitees, then delete them', () => {
+  it.only('should add two invitees, then delete them', () => {
     const mockInvitee1Email = 'invitee1@email.com';
     const mockInvitee2Email = 'invitee2@email.com';
     cy.contains(INVITE_PLAYER_TEXT).scrollIntoView().click();
@@ -25,6 +38,7 @@ describe('Inviting players to a game from the McPage', () => {
     cy.contains(ADD_EMAIL_ADDRESS_TEXT).should('exist');
     cy.get('input[aria-label="Email input"]').type(mockInvitee1Email);
     cy.contains(ADD_TEXT).click();
+    waitMutationWithGame(ONM_ADD_INVITEE)
     cy.get('div[data-testid="invitations-box"]').within(() => {
       cy.contains(mockInvitee1Email).should('exist');
     });
@@ -33,11 +47,14 @@ describe('Inviting players to a game from the McPage', () => {
     cy.contains(ADD_EMAIL_ADDRESS_TEXT).should('exist');
     cy.get('input[aria-label="Email input"]').type(mockInvitee2Email);
     cy.contains(ADD_TEXT).click();
+    waitMutationWithGame(ONM_ADD_INVITEE)
     cy.get('div[data-testid="invitations-box"]').within(() => {
       cy.contains(mockInvitee2Email).should('exist');
       cy.get(`svg[data-testid="${mockInvitee1Email}-trash-icon"]`).click();
+      waitMutationWithGame(ONM_REMOVE_INVITEE)
       cy.contains(mockInvitee1Email).should('not.exist');
       cy.get(`svg[data-testid="${mockInvitee2Email}-trash-icon"]`).click();
+      waitMutationWithGame(ONM_REMOVE_INVITEE)
       cy.contains(mockInvitee2Email).should('not.exist');
     });
     cy.get('div[data-testid="close-icon-button"]').click();

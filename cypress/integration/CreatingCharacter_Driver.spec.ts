@@ -14,17 +14,32 @@ import {
   VEHICLES_TITLE,
   WEAKNESSES_TEXT,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias,
+  ONM_SET_CHARACTER_VEHICLE,
+  ONQ_ALL_MOVES,
+  ONQ_VEHICLE_CREATOR,
+  setupQueryAliases,
+  visitHomePage, waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Creating a new Driver Character', () => {
   beforeEach(() => {
     cy.login('ahmad@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_SET_CHARACTER_VEHICLE)
+    })
+    visitHomePage();
     cy.returnToGame(game6.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.navToCharacterCreationViaPlaybookPanel('vehicles-edit-link');
+    cy.wait(generateWaitAlias(ONQ_VEHICLE_CREATOR))
   });
 
   it('should create 3 Vehicles and stop at BattleVehicleForm', () => {
-    // ------------------------------------------ VehiclesForm ------------------------------------------ //
+    // --------------------------- VehiclesForm ----------------------------- //
     const vehicleName1 = "Phoenix's Jeep";
     const vehicleName2 = 'V2';
     const vehicleName3 = 'V3';
@@ -115,11 +130,12 @@ describe('Creating a new Driver Character', () => {
     // Submit form
     cy.contains(SET_TEXT).should('not.be.disabled');
     cy.contains(SET_TEXT).click();
+    waitMutationWithGame(ONM_SET_CHARACTER_VEHICLE)
 
     makeQuickVehicle(vehicleName2);
     makeQuickVehicle(vehicleName3);
 
-    // ------------------------------------------ BattleVehiclesForm ------------------------------------------ //
+    // ------------------------- BattleVehiclesForm ------------------------- //
 
     // Check form content
     cy.contains('BATTLE VEHICLES').should('exist');
@@ -157,10 +173,9 @@ const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
     'have.value',
     'Unnamed vehicle'
   );
-  cy.get('input[aria-label="name-input"]').type('{selectall}');
-  cy.get('input[aria-label="name-input"]').type('{backspace}');
-  cy.get('input[aria-label="name-input"]').type(name);
-  cy.get('input[aria-label="name-input"]').should('have.value', name);
+
+  cy.get('@nameInput').type('{selectall}{backspace}').type(name);
+  cy.get('@nameInput').should('have.value', name);
   cy.contains('uncomplaining').click();
   cy.get('div[data-testid="Strengths-tags-box"]').should(
     'contain.text',
@@ -183,4 +198,5 @@ const makeQuickVehicle = (name: string, isBattle: boolean = false) => {
   }
   cy.contains(SET_TEXT).should('not.be.disabled');
   cy.contains(SET_TEXT).click();
+  waitMutationWithGame(ONM_SET_CHARACTER_VEHICLE)
 };

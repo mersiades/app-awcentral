@@ -7,12 +7,30 @@ import {
   HOCUS_SPECIAL_NAME,
   FORTUNES_NAME,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias,
+  ONM_UPDATE_FOLLOWERS,
+  ONQ_PLAYBOOKS,
+  ONQ_PLAYBOOK_CREATOR,
+  waitMutationWithGame,
+  ONM_PERFORM_STAT_ROLL,
+  setupQueryAliases,
+  visitHomePage,
+  ONQ_ALL_MOVES
+} from '../utils/graphql-test-utils';
 
 describe('Using the PlaybookPanel as a Hocus', () => {
   beforeEach(() => {
     cy.login('wilmer@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_UPDATE_FOLLOWERS)
+      aliasMutation(req, ONM_PERFORM_STAT_ROLL)
+    })
+    visitHomePage()
     cy.returnToGame(game1.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openPlaybookPanel();
   });
@@ -43,20 +61,26 @@ describe('Using the PlaybookPanel as a Hocus', () => {
       cy.get('div[data-testid="barter-box"]').within(() => {
         cy.get('h2[aria-label="barter-value"]').should('contain', '2');
         cy.get('div[data-testid="increase-caret"]').click();
+        waitMutationWithGame(ONM_UPDATE_FOLLOWERS)
         cy.get('h2[aria-label="barter-value"]').should('contain', '3');
         cy.get('div[data-testid="decrease-caret"]').click();
+        waitMutationWithGame(ONM_UPDATE_FOLLOWERS)
         cy.get('h2[aria-label="barter-value"]').should('contain', '2');
       });
 
       cy.get('div[data-testid="followers-box"]').within(() => {
         cy.get('h2[aria-label="followers-value"]').should('contain', '10');
         cy.get('div[data-testid="increase-caret"]').click();
+        waitMutationWithGame(ONM_UPDATE_FOLLOWERS)
         cy.get('h2[aria-label="followers-value"]').should('contain', '11');
         cy.get('div[data-testid="decrease-caret"]').click();
+        waitMutationWithGame(ONM_UPDATE_FOLLOWERS)
         cy.get('h2[aria-label="followers-value"]').should('contain', '10');
       });
 
       cy.get('svg[aria-label="Edit"]').click();
+      cy.wait(generateWaitAlias(ONQ_PLAYBOOKS))
+      cy.wait(generateWaitAlias(ONQ_PLAYBOOK_CREATOR))
     });
     cy.url().should('contain', `/character-creation/${game1.id}?step=6`);
     cy.contains("VISION'S FOLLOWERS").should('be.visible');
@@ -70,7 +94,8 @@ describe('Using the PlaybookPanel as a Hocus', () => {
       'Vision',
       FRENZY_NAME,
       'When you speak the truth to a mob, roll+weird.',
-      StatType.weird
+      StatType.weird,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 

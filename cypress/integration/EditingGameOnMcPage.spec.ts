@@ -1,10 +1,14 @@
 import game7 from '../fixtures/games/game7';
 import { ALSO_PLAY_ON_TEXT } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Editing game details from the MC Page', () => {
   const mockGameName = 'A different game name';
   beforeEach(() => {
     cy.login('dave@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game7.name);
     cy.get('div[data-testid="Mock Game 7-box"]').within(() => {

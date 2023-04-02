@@ -12,6 +12,7 @@ import {
   DRIVE_TEXT,
   SHOULDER_ANOTHER_VEHICLE_NAME,
 } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Making road war moves from the MovesPanel as Driver', () => {
   const characterName = 'Phoenix';
@@ -20,6 +21,9 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
 
   beforeEach(() => {
     cy.login('ahmad@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();

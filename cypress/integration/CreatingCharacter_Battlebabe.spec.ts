@@ -14,27 +14,37 @@ import {
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
+import {
+  aliasMutation,
+  ONM_SET_PLAYBOOK,
+  setupQueryAliases,
+  visitHomePage
+} from '../utils/graphql-test-utils';
 
 describe('Creating a new Battlebabe Character', () => {
   beforeEach(() => {
     cy.login('john@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_SET_PLAYBOOK)
+    })
+    visitHomePage();
     cy.returnToGame(game6.name);
   });
 
   it('should create a Battlebabe and stop at CharacterHxPage', () => {
-    // ------------------------------------------ NewGameIntro ------------------------------------------ //
+    // --------------------------- NewGameIntro ----------------------------- //
     // Check can't navigate with CharacterCreationStepper
     cy.get('div[data-testid="name-box"]').click();
     cy.url().should('contain', 'step=0');
 
     cy.moveThroughNewGameIntro();
 
-    // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
+    // --------------------------- CharacterPlaybookForm -------------------- //
 
     cy.selectPlaybook(PlaybookType.battlebabe);
 
-    // ------------------------------------------ CharacterNameForm ------------------------------------------ //
+    // --------------------------- CharacterNameForm ------------------------ //
     const battlebabeName = 'Snow';
     const battlebabeNameUC = battlebabeName.toUpperCase();
     // Check form content
@@ -47,7 +57,7 @@ describe('Creating a new Battlebabe Character', () => {
 
     cy.setCharacterName(battlebabeName);
 
-    // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
+    // --------------------------- CharacterLooksForm ----------------------- //
     const gender = 'woman';
     const clothes = 'display wear';
     const face = 'smooth face';
@@ -62,10 +72,10 @@ describe('Creating a new Battlebabe Character', () => {
       eyes,
       body
     );
-    // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
+    // --------------------------- CharacterStatsForm ----------------------- //
     cy.setCharacterStat(battlebabeNameUC);
 
-    // ------------------------------------------ CharacterGearForm ------------------------------------------ //
+    // --------------------------- CharacterGearForm ------------------------ //
     const battlebabeClothes = 'grubby tracksuit';
 
     // Check CharacterCreationStepper
@@ -80,7 +90,7 @@ describe('Creating a new Battlebabe Character', () => {
 
     cy.completeGearForm(battlebabeNameUC, battlebabeClothes, []);
 
-    // ------------------------------------------ CustomWeaponsForm ------------------------------------------ //
+    // --------------------------- CustomWeaponsForm ------------------------ //
     const handgun1 = 'handgun (2-harm, close, reload, loud)';
     const handgun2 = 'hi-powered handgun (2-harm, close, reload, loud, far)';
     const handgun3 =
@@ -90,7 +100,6 @@ describe('Creating a new Battlebabe Character', () => {
     const shotgun2 = 'hi-powered shotgun (3-harm, close, reload, messy, far)';
     const shotgun3 =
       'hi-powered, scoped shotgun (close, reload, messy, far, 4-harm)';
-    const shotgun4 = 'scoped shotgun (3-harm, close, reload, messy, far)';
 
     const rifle1 = 'rifle (2-harm, far, reload, loud)';
     const rifle2 = 'semiautomatic rifle (2-harm, far, loud)';
@@ -234,7 +243,7 @@ describe('Creating a new Battlebabe Character', () => {
     // cy.get('div[data-testid="spinner"]').should('exist');
     // cy.get('div[data-testid="spinner"]').should('not.exist');
 
-    // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
+    // --------------------------- CharacterMovesForm ----------------------- //
     const dangerousAndSexyMoveName = decapitalize(DANGEROUS_AND_SEXY_NAME);
     const iceColdMoveName = decapitalize(ICE_COLD_NAME);
     // Check form content

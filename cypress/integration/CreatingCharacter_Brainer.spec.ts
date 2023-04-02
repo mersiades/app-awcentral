@@ -6,10 +6,14 @@ import {
   SET_TEXT,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
+import { aliasMutation, ONM_SET_CHARACTER_MOVES, ONM_SET_GANG, setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Creating a new Brainer Character', () => {
   beforeEach(() => {
     cy.login('maya@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game6.name);
     cy.navToCharacterCreationViaPlaybookPanel('brainer gear-edit-link');

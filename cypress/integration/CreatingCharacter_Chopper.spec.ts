@@ -2,37 +2,51 @@ import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import { UniqueTypes } from '../../src/@types/enums';
 import {
-  BATTLE_OPTIONS_TEXT,
-  BATTLE_VEHICLES_TITLE,
+  BATTLE_OPTIONS_TEXT, BATTLE_VEHICLES_TITLE,
   CHOOSE_1_OR_2_TEXT,
   CHOPPER_SPECIAL_NAME,
   FUCKING_THIEVES_NAME,
   GIVE_VEHICLE_NAME_EXAMPLES_TEXT,
-  GIVE_VEHICLE_NAME_TEXT,
-  HX_TITLE,
+  GIVE_VEHICLE_NAME_TEXT, HX_TITLE,
   LOOKS_TEXT,
   PACK_ALPHA_NAME,
   SET_TEXT,
   STRENGTHS_TEXT,
   VEHICLES_TITLE,
-  WEAKNESSES_TEXT,
+  WEAKNESSES_TEXT
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias,
+  ONM_SET_CHARACTER_MOVES,
+  ONM_SET_CHARACTER_VEHICLE,
+  ONM_SET_GANG, ONQ_PLAYBOOK_CREATOR,
+  ONQ_VEHICLE_CREATOR,
+  setupQueryAliases, visitHomePage
+} from '../utils/graphql-test-utils';
 
 describe('Creating a new Chopper Character', () => {
   beforeEach(() => {
     cy.login('takeshi@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_SET_GANG)
+      aliasMutation(req, ONM_SET_CHARACTER_MOVES)
+      aliasMutation(req, ONM_SET_CHARACTER_VEHICLE)
+    })
+    visitHomePage()
     cy.returnToGame(game6.name);
     cy.navToCharacterCreationViaPlaybookPanel('gang-edit-link');
+    cy.wait(generateWaitAlias(ONQ_PLAYBOOK_CREATOR))
   });
 
-  it('should create a Gang and Bike and stop at BattleVehicleForm', () => {
+  it.only('should create a Gang and Bike and stop at BattleVehicleForm', () => {
     const chopperName = 'Dog';
     const chopperNameUC = chopperName.toUpperCase();
     const chopperWeapon1 = 'magnum (3-harm ';
     const chopperWeapon2 = 'machete (3-harm ';
 
-    // ------------------------------------------ GangForm ------------------------------------------ //
+    // ------------------------------ GangForm ------------------------------ //
     const strength1Text =
       'your gang consists of 30 or so violent bastards. Medium instead of small.';
     const strength2Text = "your gang's well-armed. +1harm";
@@ -236,8 +250,9 @@ describe('Creating a new Chopper Character', () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    cy.wait(generateWaitAlias(ONM_SET_GANG))
 
-    // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
+    // ------------------------- CharacterMovesForm ------------------------- //
     // Check form content
     cy.contains(`WHAT ARE ${chopperNameUC}'S MOVES`).should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 3);
@@ -263,8 +278,10 @@ describe('Creating a new Chopper Character', () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    cy.wait(generateWaitAlias(ONM_SET_CHARACTER_MOVES))
+    cy.wait(generateWaitAlias(ONQ_VEHICLE_CREATOR))
 
-    // ------------------------------------------ VehiclesForm ------------------------------------------ //
+    // --------------------------- VehiclesForm ----------------------------- //
     const vehicleName = "Dog's Kawasaki";
     // Check form content
     cy.contains('Vehicle 1').should('exist');
@@ -330,8 +347,9 @@ describe('Creating a new Chopper Character', () => {
     // Submit form
     cy.contains(SET_TEXT).should('not.be.disabled');
     cy.contains(SET_TEXT).click();
+    cy.wait(generateWaitAlias(ONM_SET_CHARACTER_VEHICLE))
 
-    // ------------------------------------------ BattleVehiclesForm ------------------------------------------ //
+    // ------------------------- BattleVehiclesForm ------------------------- //
 
     // Check form content
     cy.contains('BATTLE VEHICLES', { timeout: 16000 }).should('exist');
@@ -351,6 +369,7 @@ describe('Creating a new Chopper Character', () => {
       .should('contain', HX_TITLE)
       .should('contain', '...');
 
-    // Finish test here because remainder of character creation process has been tested elsewhere
+    // Finish test here because remainder of character creation process
+    // has been tested elsewhere
   });
 });

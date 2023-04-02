@@ -19,10 +19,14 @@ import {
   TREAT_TEXT,
   USE_STOCK_TEXT,
 } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
   beforeEach(() => {
     cy.login('sara@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();
