@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { Box } from 'grommet';
 import { FormDown, FormUp } from 'grommet-icons';
@@ -12,14 +12,6 @@ import {
   TextWS,
 } from '../../config/grommetConfig';
 import ALL_MOVES, { AllMovesData } from '../../queries/allMoves';
-import PERFORM_STAT_ROLL_MOVE, {
-  PerformStatRollMoveData,
-  PerformStatRollMoveVars,
-} from '../../mutations/performStatRollMove';
-import PERFORM_PRINT_MOVE, {
-  PerformPrintMoveData,
-  PerformPrintMoveVars,
-} from '../../mutations/performPrintMove';
 import { MoveActionType, MoveType, RollType } from '../../@types/enums';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
@@ -34,6 +26,7 @@ import {
   SUCKER_SOMEONE_NAME,
   TAGS_TEXT,
 } from '../../config/constants';
+import { useMoves } from '../../contexts/movesContext';
 
 interface GangBoxProps {
   navigateToCharacterCreation: (step: string) => void;
@@ -48,6 +41,11 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
   // ----------------------------- Hooks ---------------------------------------- //
   const { crustReady } = useFonts();
   const { character, userGameRole } = useGame();
+  const {
+    makePrintMove,
+    makeStatsRollMove,
+    rollingMove
+  } = useMoves();
 
   // ----------------------------- 3rd party hooks ------------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
@@ -55,14 +53,6 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
   // ----------------------------- GraphQL -------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
 
-  const [performPrintMove, { loading: performingPrintMove }] = useMutation<
-    PerformPrintMoveData,
-    PerformPrintMoveVars
-  >(PERFORM_PRINT_MOVE);
-  const [performStatRollMove, { loading: performingStatRollMove }] =
-    useMutation<PerformStatRollMoveData, PerformStatRollMoveVars>(
-      PERFORM_STAT_ROLL_MOVE
-    );
   // ----------------------------- Component functions ------------------------- //
   const moveStyle = {
     cursor: 'pointer',
@@ -77,10 +67,10 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
       !!character &&
       !character.isDead &&
       userGameRole.characters.length === 1 &&
-      !performingStatRollMove
+      !rollingMove
     ) {
       try {
-        performStatRollMove({
+        makeStatsRollMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -109,10 +99,10 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingPrintMove
+      !rollingMove
     ) {
       try {
-        performPrintMove({
+        makePrintMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,

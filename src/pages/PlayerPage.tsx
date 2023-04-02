@@ -66,6 +66,7 @@ import {
   SUFFER_V_HARM,
   TREAT_NPC_NAME,
 } from '../config/constants';
+import { MovesProvider } from '../contexts/movesContext';
 
 interface AllMovesData {
   allMoves: Move[];
@@ -161,6 +162,7 @@ const PlayerPage: FC = () => {
   // ----------------------------- Render ---------------------------------------- //
 
   return (
+    <MovesProvider>
     <Box fill background={background}>
       <GameNavbar isMc={false} />
       {character?.isDead && <RipSign />}
@@ -348,6 +350,7 @@ const PlayerPage: FC = () => {
         </Box>
       </Footer>
     </Box>
+    </MovesProvider>
   );
 };
 

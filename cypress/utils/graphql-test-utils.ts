@@ -34,6 +34,7 @@ export const ONM_TOGGLE_STAT_HIGHLIGHT = 'ToggleStatHighlight'
 export const ONM_ADD_INVITEE = 'AddInvitee'
 export const ONM_REMOVE_INVITEE = 'RemoveInvitee'
 export const ONM_SET_HARM = 'SetCharacterHarm'
+export const ONM_PERFORM_SPEED_ROLL = 'PerformSpeedRollMove'
 
 export const generateAlias = (operationName: string): string =>  `gql${operationName}Query`;
 export const generateWaitAlias = (operationName: string) => `@${generateAlias(operationName)}`

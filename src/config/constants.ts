@@ -1,3 +1,5 @@
+export const GAME_POLL_DURATION = 1250;
+
 // Form validation
 export const NO_MC_AS_PLAYER_TEXT = 'MC cannot also be player';
 export const PLAYER_ALREADY_INVITED_TEXT = 'Player already invited';

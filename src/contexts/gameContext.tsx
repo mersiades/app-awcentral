@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { Character, Game, GameRole } from '../@types/dataInterfaces';
 import { RoleType } from '../@types/enums';
 import GAME, { GameData, GameVars } from '../queries/game';
+import { GAME_POLL_DURATION } from '../config/constants';
 
 /**
  * This context keeps track of the current Game. In particular,
@@ -84,7 +85,7 @@ export const GameProvider: FC<GameProviderProps> = ({
   } = useQuery<GameData, GameVars>(GAME, {
     // @ts-ignore
     variables: { gameId },
-    pollInterval: 2500,
+    pollInterval: GAME_POLL_DURATION,
     skip: !gameId,
   });
   // ----------------------------- Component functions ------------------------- //

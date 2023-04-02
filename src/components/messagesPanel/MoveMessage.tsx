@@ -6,6 +6,7 @@ import { FormUp, FormDown } from 'grommet-icons';
 
 import { HeadingWS, TextWS } from '../../config/grommetConfig';
 import { GameMessage } from '../../@types/dataInterfaces';
+import { useMoves } from '../../contexts/movesContext';
 
 dayjs.extend(relativeTime);
 
@@ -17,7 +18,7 @@ export interface MoveMessageProps {
   ticker: number;
 }
 
-// This components wraps around specific move message type components,
+// This component wraps around specific move message type components,
 // providing standardised layout, styling and functionality for all move message components
 const MoveMessage: FC<MoveMessageProps> = ({
   children,
@@ -30,6 +31,9 @@ const MoveMessage: FC<MoveMessageProps> = ({
   const [showDetails, setShowDetails] = useState(messagesLength - 1 === index);
   const [date, setDate] = useState(dayjs(message.sentOn).fromNow());
 
+  // -------------------------- Hooks --------------------------------------- //
+  const { rollingMove } = useMoves();
+
   // ----------------------------- Effects ---------------------------------------- //
   // Updates the date displayed whenever the ticker ticks over (every minute)
   useEffect(() => {
@@ -38,8 +42,12 @@ const MoveMessage: FC<MoveMessageProps> = ({
 
   // Opens/closes the message details whenever a new message comes in
   useEffect(() => {
-    setShowDetails(messagesLength - 1 === index);
-  }, [messagesLength, index]);
+    if (rollingMove) {
+      setShowDetails(false)
+    } else {
+      setShowDetails(messagesLength - 1 === index);
+    }
+  }, [messagesLength, index, rollingMove]);
 
   // ----------------------------- Render ---------------------------------------- //
   return (

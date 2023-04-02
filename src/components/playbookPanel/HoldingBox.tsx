@@ -10,14 +10,6 @@ import RedTagsBox from '../RedTagsBox';
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { HeadingWS, brandColor } from '../../config/grommetConfig';
 import ALL_MOVES, { AllMovesData } from '../../queries/allMoves';
-import PERFORM_PRINT_MOVE, {
-  PerformPrintMoveData,
-  PerformPrintMoveVars,
-} from '../../mutations/performPrintMove';
-import PERFORM_STAT_ROLL_MOVE, {
-  PerformStatRollMoveData,
-  PerformStatRollMoveVars,
-} from '../../mutations/performStatRollMove';
 import { MoveActionType, MoveType, RollType } from '../../@types/enums';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
@@ -29,24 +21,30 @@ import SET_HOLDING_BARTER, {
   SetHoldingBarterData,
   SetHoldingBarterVars,
 } from '../../mutations/setHoldingBarter';
+import { useMoves } from '../../contexts/movesContext';
 
 interface HoldingBoxProps {
   navigateToCharacterCreation: (step: string) => void;
 }
 
 const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // -------------------------- Component state ----------------------------- //
   const [showMoves, setShowMoves] = useState(false);
   const [gangMoves, setGangMoves] = useState<Move[]>([]);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // -------------------------- Hooks --------------------------------------- //
   const { crustReady } = useFonts();
   const { character, userGameRole } = useGame();
+  const {
+    makePrintMove,
+    makeStatsRollMove,
+    rollingMove
+  } = useMoves();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // -------------------------- 3rd party hooks ----------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // -------------------------- GraphQL ------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
 
   const [setHoldingBarter, { loading: settingHoldingBarter }] = useMutation<
@@ -54,15 +52,7 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
     SetHoldingBarterVars
   >(SET_HOLDING_BARTER);
 
-  const [performPrintMove, { loading: performingPrintMove }] = useMutation<
-    PerformPrintMoveData,
-    PerformPrintMoveVars
-  >(PERFORM_PRINT_MOVE);
-  const [performStatRollMove, { loading: performingStatRollMove }] =
-    useMutation<PerformStatRollMoveData, PerformStatRollMoveVars>(
-      PERFORM_STAT_ROLL_MOVE
-    );
-  // ----------------------------- Component functions ------------------------- //
+  // -------------------------- Component functions ------------------------- //
   const moveStyle = {
     cursor: 'pointer',
     '&:hover': {
@@ -114,10 +104,10 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingStatRollMove
+      !rollingMove
     ) {
       try {
-        performStatRollMove({
+        makeStatsRollMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -146,10 +136,10 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingPrintMove
+      !rollingMove
     ) {
       try {
-        performPrintMove({
+        makePrintMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -195,7 +185,7 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
     }
   }, [allMovesData]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // -------------------------- Render -------------------------------------- //
 
   return (
     <CollapsiblePanelBox

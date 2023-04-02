@@ -32,7 +32,7 @@ import {
 } from '../../src/config/constants';
 import {
   aliasMutation,
-  generateWaitAlias, ONM_ADJUST_HX, ONM_SET_HARM, ONM_TOGGLE_STAT_HIGHLIGHT,
+  generateWaitAlias, ONM_ADJUST_HX, ONM_SET_CHARACTER_BARTER, ONM_SET_HARM, ONM_TOGGLE_STAT_HIGHLIGHT,
   ONQ_ALL_MOVES,
   setupQueryAliases,
   visitHomePage,
@@ -51,6 +51,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
       aliasMutation(req, ONM_TOGGLE_STAT_HIGHLIGHT)
       aliasMutation(req, ONM_ADJUST_HX)
       aliasMutation(req, ONM_SET_HARM)
+      aliasMutation(req, ONM_SET_CHARACTER_BARTER)
     })
     visitHomePage();
     cy.returnToGame(game7.name);
@@ -192,7 +193,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
     });
   });
 
-  it.only("should increase harm value to 9 o'clock", () => {
+  it("should increase harm value to 9 o'clock", () => {
     cy.get('div[data-testid="Harm-box"]').within(() => {
       // Check initial harm box content
       cy.contains(HARM_TITLE).scrollIntoView().should('exist');
@@ -206,7 +207,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
   });
 
   // This test relies on the previous test being complete
-  it.only('should reduce harm to zero', () => {
+  it('should reduce harm to zero', () => {
     cy.get('div[data-testid="Harm-box"]').within(() => {
       // Check initial harm box content
       cy.contains(HARM_TITLE).scrollIntoView().should('exist');
@@ -439,10 +440,12 @@ describe('Using the PlaybookPanel as an Angel', () => {
 
       // Increase barter
       cy.get('div[data-testid="increase-caret"]').click();
+      waitMutationWithGame(ONM_SET_CHARACTER_BARTER)
       cy.get('@barterValue').should('include.text', '3');
 
       // Decrease barter
       cy.get('div[data-testid="decrease-caret"]').click();
+      waitMutationWithGame(ONM_SET_CHARACTER_BARTER)
       cy.get('@barterValue').should('include.text', '2');
     });
   });

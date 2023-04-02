@@ -12,20 +12,24 @@ import StabilizeMessage from './StabilizeMessage';
 import StockMessage from './StockMessage';
 import SufferVHarmMessage from './SufferVHarmMessage';
 import ScriptChangeMessage from './ScriptChangeMessage';
-import { accentColors } from '../../config/grommetConfig';
+import { accentColors, HeadingWS, TextWS } from '../../config/grommetConfig';
 import { MessageType } from '../../@types/enums';
 import { GameMessage } from '../../@types/dataInterfaces';
 import { useGame } from '../../contexts/gameContext';
+import { useMoves } from '../../contexts/movesContext';
 
 const MessagesPanel: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // -------------------------- Component state ----------------------------- //
   const [ticker, setTicker] = useState(0);
   const { game, userGameRole } = useGame();
 
-  // -------------------------------------------------- Component refs ---------------------------------------------------- //
+  // -------------------------- Component refs ------------------------------ //
   const messageEndRef = useRef<HTMLDivElement>(null);
 
-  // ----------------------------- Component functions ------------------------- //
+  // -------------------------- Hooks --------------------------------------- //
+  const { rollingMove } = useMoves();
+
+  // -------------------------- Component functions ------------------------- //
   const scrollToBottom = () => {
     !!messageEndRef.current &&
       messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -43,7 +47,7 @@ const MessagesPanel: FC = () => {
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // -------------------------- Effects ------------------------------------- //
   // Adds a ticker so that "sentOn" will update every minute
   useEffect(() => {
     const interval = window.setInterval(() => setTicker(ticker + 1), 60000);
@@ -55,8 +59,11 @@ const MessagesPanel: FC = () => {
     scrollToBottom();
   }, [game?.gameMessages]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  useEffect(() => {
+    rollingMove && scrollToBottom();
+  }, [rollingMove]);
 
+  // -------------------------- Render -------------------------------------- //
   // Renders message based on messageType
   const renderMoveMessage = (
     message: GameMessage,
@@ -167,6 +174,19 @@ const MessagesPanel: FC = () => {
     }
   };
 
+  const renderRollingMessage = () => {
+    return <div data-testid={`rolling-message`}>
+      <Box direction="row" justify="between" align="center">
+        <Box direction="row" align="center" justify="between">
+          <HeadingWS level={4} margin={{ vertical: '6px' }}>
+            ROLLING...
+          </HeadingWS>
+        </Box>
+        <TextWS color="neutral-1">Now</TextWS>
+      </Box>
+    </div>
+  }
+
   return (
     <Box
       data-testid="messages-panel"
@@ -186,9 +206,19 @@ const MessagesPanel: FC = () => {
             style={{ minHeight: 'min-content' }}
           >
             {renderMoveMessage(message, index, ticker)}
+
           </Box>
         );
       })}
+      {rollingMove && <Box
+        key={'rolling'}
+        pad="12px"
+        border={{ color: '#FFF' }}
+        style={{ minHeight: 'min-content' }}
+      >
+        {renderRollingMessage()}
+
+      </Box>}
       <div ref={messageEndRef} />
     </Box>
   );
