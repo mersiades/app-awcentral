@@ -18,9 +18,18 @@ import { GameMessage } from '../../@types/dataInterfaces';
 import { useGame } from '../../contexts/gameContext';
 import { useMoves } from '../../contexts/movesContext';
 
+export interface MessageProps {
+  message: GameMessage;
+  messagesLength: number;
+  index: number;
+  ticker: number;
+  closeForRoll: boolean;
+}
+
 const MessagesPanel: FC = () => {
   // -------------------------- Component state ----------------------------- //
   const [ticker, setTicker] = useState(0);
+  const [showRolling, setShowRolling] = useState(false);
   const { game, userGameRole } = useGame();
 
   // -------------------------- Component refs ------------------------------ //
@@ -63,6 +72,14 @@ const MessagesPanel: FC = () => {
     rollingMove && scrollToBottom();
   }, [rollingMove]);
 
+  useEffect(() => {
+    rollingMove && setShowRolling(true)
+  }, [rollingMove]);
+
+  useEffect(() => {
+    setShowRolling(false)
+  }, [game?.gameMessages?.length]);
+
   // -------------------------- Render -------------------------------------- //
   // Renders message based on messageType
   const renderMoveMessage = (
@@ -78,6 +95,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.rollHxMove:
@@ -87,6 +105,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.printMove:
@@ -96,6 +115,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.barterMove:
@@ -105,6 +125,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.rollBarterMove:
@@ -114,6 +135,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.sufferHarmMove:
@@ -123,6 +145,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.sufferVHarmMove:
@@ -132,6 +155,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.adjustHxMove:
@@ -141,6 +165,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.rollStockMove:
@@ -150,6 +175,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.stockMove:
@@ -159,6 +185,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.sciptChange:
@@ -167,6 +194,7 @@ const MessagesPanel: FC = () => {
             messagesLength={limitMessages().length}
             index={index}
             message={message}
+            closeForRoll={showRolling}
           />
         );
       default:
@@ -179,7 +207,7 @@ const MessagesPanel: FC = () => {
       <Box direction="row" justify="between" align="center">
         <Box direction="row" align="center" justify="between">
           <HeadingWS level={4} margin={{ vertical: '6px' }}>
-            ROLLING...
+            MAKING MOVE...
           </HeadingWS>
         </Box>
         <TextWS color="neutral-1">Now</TextWS>
@@ -210,7 +238,7 @@ const MessagesPanel: FC = () => {
           </Box>
         );
       })}
-      {rollingMove && <Box
+      {showRolling && <Box
         key={'rolling'}
         pad="12px"
         border={{ color: '#FFF' }}

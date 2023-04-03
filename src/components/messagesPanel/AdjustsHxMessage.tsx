@@ -2,27 +2,25 @@ import React, { FC } from 'react';
 
 import MoveMessage from './MoveMessage';
 import { StyledMarkdown } from '../styledComponents';
-import { GameMessage } from '../../@types/dataInterfaces';
+import { MessageProps } from './MessagesPanel';
 
-export interface AdjustHxMessageProps {
-  message: GameMessage;
-  messagesLength: number;
-  index: number;
-  ticker: number;
+export interface AdjustHxMessageProps extends MessageProps {
 }
 
 const AdjustHxMessage: FC<AdjustHxMessageProps> = ({
-  message,
-  messagesLength,
-  index,
-  ticker,
-}) => {
+                                                     message,
+                                                     messagesLength,
+                                                     index,
+                                                     ticker,
+                                                     closeForRoll
+                                                   }) => {
   return (
     <MoveMessage
       message={message}
       messagesLength={messagesLength}
       index={index}
       ticker={ticker}
+      closeForRoll={closeForRoll}
     >
       <StyledMarkdown>{message.content}</StyledMarkdown>
     </MoveMessage>

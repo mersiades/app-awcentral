@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, RadioButtonGroup, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -9,15 +8,12 @@ import {
   HeadingWS,
   ParagraphWS,
   ButtonWS,
-  chopperSpecialBackground,
+  chopperSpecialBackground
 } from '../../config/grommetConfig';
-import PERFORM_CHOPPER_SPECIAL_MOVE, {
-  PerformChopperSpecialMoveData,
-  PerformChopperSpecialMoveVars,
-} from '../../mutations/performChopperSpecialMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { useMoves } from '../../contexts/movesContext';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 import { APPLY_TEXT, CANCEL_TEXT } from '../../config/constants';
 
@@ -27,26 +23,21 @@ interface ChopperSpecialDialogProps {
 }
 
 const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({
-  move,
-  handleClose,
-}) => {
-  // ----------------------------- Component state ------------------------------ //
-  const [otherCharacterId, setotherCharacterId] = useState('');
+                                                               move,
+                                                               handleClose
+                                                             }) => {
+  // ----------------------------- Component state -------------------------- //
+  const [otherCharacterId, setOtherCharacterId] = useState('');
   const [hxChange, setHxChange] = useState<string | undefined>();
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
+  const { makeChopperSpecialMove, rollingMove } = useMoves();
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performChopperSpecialMove, { loading: performingChopperSpecialMove }] =
-    useMutation<PerformChopperSpecialMoveData, PerformChopperSpecialMoveVars>(
-      PERFORM_CHOPPER_SPECIAL_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const characters =
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleChopperSpecialMove = async () => {
@@ -54,7 +45,7 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingChopperSpecialMove &&
+      !rollingMove &&
       !!otherCharacterId &&
       !!hxChange
     ) {
@@ -69,15 +60,15 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({
       if (!otherGameroleId) return;
 
       try {
-        await performChopperSpecialMove({
+        makeChopperSpecialMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
             characterId: character.id,
             otherCharacterId,
-            hxChange: parseInt(hxChange),
-          },
+            hxChange: parseInt(hxChange)
+          }
         });
         logAmpEvent('make move', { move: move.name });
         handleClose();
@@ -87,55 +78,55 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({
     }
   };
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <DialogWrapper
       background={chopperSpecialBackground}
       handleClose={handleClose}
     >
-      <Box gap="12px">
-        <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
+      <Box gap='12px'>
+        <HeadingWS crustReady={crustReady} level={4} alignSelf='start'>
           {move.name}
         </HeadingWS>
         <StyledMarkdown>{move.description}</StyledMarkdown>
-        <Box direction="row" gap="24px">
-          <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">
+        <Box direction='row' gap='24px'>
+          <Box fill align='start' justify='start'>
+            <ParagraphWS alignSelf='start'>
               Who did you have sex with?
             </ParagraphWS>
             <Select
-              id="target-character-input"
-              aria-label="target-character-input"
-              name="target-character"
-              placeholder="Who?"
+              id='target-character-input'
+              aria-label='target-character-input'
+              name='target-character'
+              placeholder='Who?'
               options={characters}
               labelKey={'name'}
               valueKey={'id'}
-              onChange={(e) => setotherCharacterId(e.value.id)}
+              onChange={(e) => setOtherCharacterId(e.value.id)}
             />
           </Box>
-          <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">
+          <Box fill align='start' justify='start'>
+            <ParagraphWS alignSelf='start'>
               How do they want your Hx to change?
             </ParagraphWS>
             <RadioButtonGroup
-              direction="row"
-              justify="around"
-              alignSelf="center"
-              name="hxChange"
+              direction='row'
+              justify='around'
+              alignSelf='center'
+              name='hxChange'
               value={hxChange}
               options={['+1', '-1']}
               onChange={(e: any) => setHxChange(e.target.value)}
             />
           </Box>
         </Box>
-        <Box fill="horizontal" direction="row" justify="end" gap="small">
+        <Box fill='horizontal' direction='row' justify='end' gap='small'>
           <ButtonWS
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow:
-                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000'
             }}
             onClick={handleClose}
           />
@@ -143,12 +134,12 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({
             label={APPLY_TEXT}
             primary
             onClick={() =>
-              !performingChopperSpecialMove &&
+              !rollingMove &&
               !!otherCharacterId &&
               handleChopperSpecialMove()
             }
             disabled={
-              performingChopperSpecialMove || !otherCharacterId || !hxChange
+              rollingMove || !otherCharacterId || !hxChange
             }
           />
         </Box>

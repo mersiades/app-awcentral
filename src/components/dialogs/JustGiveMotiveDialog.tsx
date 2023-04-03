@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, RadioButtonGroup, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -11,13 +10,10 @@ import {
   ButtonWS,
   justGiveMotiveDialogBackground,
 } from '../../config/grommetConfig';
-import PERFORM_JUST_GIVE_MOTIVATION_MOVE, {
-  PerformJustGiveMotivationMoveData,
-  PerformJustGiveMotivationMoveVars,
-} from '../../mutations/performJustGiveMotivationMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { useMoves } from '../../contexts/movesContext';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 import { CANCEL_TEXT, ROLL_TEXT } from '../../config/constants';
 
@@ -30,27 +26,19 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({
   move,
   handleClose,
 }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [targetId, setTargetId] = useState<string | undefined>();
   const [target, setTarget] = useState<'PC' | 'NPC'>('NPC');
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
+  const {makeJustGiveMotivationMove , rollingMove} = useMoves()
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [
-    performJustGiveMotivationMove,
-    { loading: performingJustGiveMotivationMove },
-  ] = useMutation<
-    PerformJustGiveMotivationMoveData,
-    PerformJustGiveMotivationMoveVars
-  >(PERFORM_JUST_GIVE_MOTIVATION_MOVE);
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const characters =
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
 
@@ -59,10 +47,10 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingJustGiveMotivationMove
+      !rollingMove
     ) {
       try {
-        await performJustGiveMotivationMove({
+        makeJustGiveMotivationMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -78,7 +66,7 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({
     }
   };
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <DialogWrapper
       background={justGiveMotiveDialogBackground}
@@ -137,13 +125,8 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({
           <ButtonWS
             label={ROLL_TEXT}
             primary
-            onClick={() =>
-              !performingJustGiveMotivationMove &&
-              handleJustGiveMotivationMove()
-            }
-            disabled={
-              performingJustGiveMotivationMove || (target === 'PC' && !targetId)
-            }
+            onClick={() => !rollingMove && handleJustGiveMotivationMove()}
+            disabled={rollingMove || (target === 'PC' && !targetId)}
           />
         </Box>
       </Box>

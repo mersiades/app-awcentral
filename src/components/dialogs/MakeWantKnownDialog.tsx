@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { Box, FormField, TextInput } from 'grommet';
 
@@ -11,13 +10,10 @@ import {
   ButtonWS,
   makeWantKnownBackground,
 } from '../../config/grommetConfig';
-import PERFORM_MAKE_WANT_KNOWN_MOVE, {
-  PerformMakeWantKnownMoveData,
-  PerformMakeWantKnownMoveVars,
-} from '../../mutations/performMakeWantKnownMove';
 import { Move, CharacterMove } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { useMoves } from '../../contexts/movesContext';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface MakeWantKnownDialogProps {
@@ -29,22 +25,17 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({
   move,
   handleClose,
 }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [barter, setBarter] = useState(0);
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
+  const { makeWantKnownMove, rollingMove} = useMoves()
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performMakeWantKnownMove, { loading: performingMakeWantKnownMove }] =
-    useMutation<PerformMakeWantKnownMoveData, PerformMakeWantKnownMoveVars>(
-      PERFORM_MAKE_WANT_KNOWN_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const currentBarter = character?.barter || 0;
 
   const handleMakeWantKnownMove = async (
@@ -59,10 +50,10 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingMakeWantKnownMove
+      !rollingMove
     ) {
       try {
-        await performMakeWantKnownMove({
+        makeWantKnownMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -128,10 +119,10 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({
             primary
             onClick={() =>
               !!barter &&
-              !performingMakeWantKnownMove &&
+              !rollingMove &&
               handleMakeWantKnownMove(move, barter)
             }
-            disabled={!barter || performingMakeWantKnownMove || barter > 3}
+            disabled={!barter || rollingMove || barter > 3}
           />
         </Box>
       </Box>

@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -11,14 +10,11 @@ import {
   barterBackground,
   RedBox,
 } from '../../config/grommetConfig';
-import PERFORM_BARTER_MOVE, {
-  PerformBarterMoveData,
-  PerformBarterMoveVars,
-} from '../../mutations/performBarterMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { useMoves } from '../../contexts/movesContext';
 
 interface BarterDialogProps {
   move: Move | CharacterMove;
@@ -26,24 +22,19 @@ interface BarterDialogProps {
 }
 
 const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [barter, setBarter] = useState(
     move.name === 'LIFESTYLE AND GIGS' ? 0 : 1
   );
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
+  const { makeBarterMove, rollingMove} = useMoves()
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performBarterMove, { loading: performingBarterMove }] = useMutation<
-    PerformBarterMoveData,
-    PerformBarterMoveVars
-  >(PERFORM_BARTER_MOVE);
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const currentBarter = character?.barter || 0;
 
   const handleBarterMove = async (
@@ -58,10 +49,10 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingBarterMove
+      !rollingMove
     ) {
       try {
-        await performBarterMove({
+        makeBarterMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -140,12 +131,12 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
             primary
             onClick={() =>
               !!barter &&
-              !performingBarterMove &&
+              !rollingMove &&
               handleBarterMove(move, barter)
             }
             disabled={
               !barter ||
-              performingBarterMove ||
+              rollingMove ||
               (!!character?.barter && barter > character.barter)
             }
           />

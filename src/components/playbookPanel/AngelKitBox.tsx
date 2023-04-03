@@ -6,8 +6,8 @@ import { FormDown, FormUp } from 'grommet-icons';
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { HeadingWS, brandColor } from '../../config/grommetConfig';
 import SET_ANGEL_KIT, {
-  SetAngelKitData,
-  SetAngelKitVars,
+  SetAngelKitData, setAngelKitOR,
+  SetAngelKitVars
 } from '../../mutations/setAngelKit';
 import { RoleType } from '../../@types/enums';
 import { AngelKit } from '../../@types/dataInterfaces';
@@ -77,6 +77,7 @@ const AngelKitBox: FC<AngelKitBoxProps> = ({
             stock,
             hasSupplier,
           },
+          optimisticResponse: setAngelKitOR(character, stock)
         });
       } catch (error) {
         console.error(error);

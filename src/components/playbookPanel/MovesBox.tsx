@@ -145,7 +145,6 @@ const MovesBox: FC<MovesBoxProps> = ({
   };
 
   const handleRollClick = (move: Move | CharacterMove) => {
-    console.log('move.moveAction?.rollType 2', move.moveAction?.rollType);
     switch (move.moveAction?.rollType) {
       case RollType.fortune:
         handleFortuneRollMove();
@@ -173,7 +172,6 @@ const MovesBox: FC<MovesBoxProps> = ({
   };
 
   const handleMoveClick = (move: Move | CharacterMove) => {
-    console.log('move.moveAction?.rollType 1', move.moveAction?.rollType);
     switch (move.moveAction?.actionType) {
       case MoveActionType.roll:
         handleRollClick(move);

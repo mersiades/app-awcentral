@@ -7,52 +7,52 @@ import { GameMessage } from '../../@types/dataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { HeadingWS, TextWS } from '../../config/grommetConfig';
 import { getDiceImage } from '../../helpers/getDiceImage';
+import { MessageProps } from './MessagesPanel';
 
-export interface StatRollMessageProps {
-  message: GameMessage;
-  messagesLength: number;
-  index: number;
-  ticker: number;
+export interface StatRollMessageProps extends MessageProps {
 }
 
 const StatRollMessage: FC<StatRollMessageProps> = ({
-  message,
-  messagesLength,
-  index,
-  ticker,
-}) => {
-  // ----------------------------- Hooks ---------------------------------------- //
+                                                     message,
+                                                     messagesLength,
+                                                     index,
+                                                     ticker,
+                                                     closeForRoll
+                                                   }) => {
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady, vtksReady } = useFonts();
 
+  // ----------------------------- Render ----------------------------------- //
   return (
     <MoveMessage
       message={message}
       messagesLength={messagesLength}
       index={index}
       ticker={ticker}
+      closeForRoll={closeForRoll}
     >
       <Box fill>
         <Box
-          fill="horizontal"
-          direction="row"
-          align="center"
-          justify="center"
-          pad="12px"
+          fill='horizontal'
+          direction='row'
+          align='center'
+          justify='center'
+          pad='12px'
         >
           <Box
-            direction="row"
-            align="center"
-            justify="center"
-            width="90%"
+            direction='row'
+            align='center'
+            justify='center'
+            width='90%'
             wrap
-            gap="3px"
+            gap='3px'
           >
             {getDiceImage(message.roll1)}
             <HeadingWS
               crustReady={crustReady}
               level={2}
-              color="brand"
-              margin="3px"
+              color='brand'
+              margin='3px'
             >
               +
             </HeadingWS>
@@ -62,16 +62,16 @@ const StatRollMessage: FC<StatRollMessageProps> = ({
                 <HeadingWS
                   crustReady={crustReady}
                   level={2}
-                  color="brand"
-                  margin="3px"
+                  color='brand'
+                  margin='3px'
                 >
                   +
                 </HeadingWS>
-                <Box align="center" justify="between" pad="12px">
+                <Box align='center' justify='between' pad='12px'>
                   <HeadingWS
                     crustReady={crustReady}
                     level={2}
-                    color="brand"
+                    color='brand'
                     margin={{ top: '32px', bottom: '3px', horizontal: '3px' }}
                   >
                     {message.rollModifier}
@@ -85,16 +85,16 @@ const StatRollMessage: FC<StatRollMessageProps> = ({
                 <HeadingWS
                   crustReady={crustReady}
                   level={2}
-                  color="brand"
-                  margin="3px"
+                  color='brand'
+                  margin='3px'
                 >
                   +
                 </HeadingWS>
-                <Box align="center" justify="between" pad="12px">
+                <Box align='center' justify='between' pad='12px'>
                   <HeadingWS
                     crustReady={crustReady}
                     level={2}
-                    color="brand"
+                    color='brand'
                     margin={{ top: '32px', bottom: '3px', horizontal: '3px' }}
                   >
                     {message.additionalModifierValue}
@@ -108,16 +108,16 @@ const StatRollMessage: FC<StatRollMessageProps> = ({
                 <HeadingWS
                   crustReady={crustReady}
                   level={2}
-                  color="brand"
-                  margin="3px"
+                  color='brand'
+                  margin='3px'
                 >
                   +
                 </HeadingWS>
-                <Box align="center" justify="between" pad="12px">
+                <Box align='center' justify='between' pad='12px'>
                   <HeadingWS
                     crustReady={crustReady}
                     level={2}
-                    color="brand"
+                    color='brand'
                     margin={{ top: '32px', bottom: '3px', horizontal: '3px' }}
                   >
                     1
@@ -129,22 +129,22 @@ const StatRollMessage: FC<StatRollMessageProps> = ({
             <HeadingWS
               crustReady={crustReady}
               level={2}
-              color="brand"
-              margin="3px"
+              color='brand'
+              margin='3px'
             >
               =
             </HeadingWS>
             <Box
-              align="center"
-              justify="between"
+              align='center'
+              justify='between'
               pad={{ vertical: '12px', horizontal: '24px' }}
             >
               <HeadingWS
-                aria-label="final-roll-result"
+                aria-label='final-roll-result'
                 vtksReady={vtksReady}
                 level={1}
-                color="brand"
-                margin="3px"
+                color='brand'
+                margin='3px'
                 style={{ fontSize: '80px' }}
               >
                 {message.rollResult}
