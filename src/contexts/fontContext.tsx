@@ -4,6 +4,7 @@ import FontFaceObserver from 'fontfaceobserver';
 export interface IFontContext {
   vtksReady: boolean;
   crustReady: boolean;
+  chaparralReady: boolean
 }
 
 interface FontsProviderProps {
@@ -14,6 +15,7 @@ interface FontsProviderProps {
 
   // Dependency injection for testing
   isCrustReady?: boolean;
+  isChaparralReady?: boolean
 }
 
 /**
@@ -25,6 +27,7 @@ interface FontsProviderProps {
 const FontsContext = createContext<IFontContext>({
   vtksReady: false,
   crustReady: false,
+  chaparralReady: false
 });
 
 export const useFonts = () => useContext(FontsContext);
@@ -35,12 +38,15 @@ export const FontsProvider: FC<FontsProviderProps> = ({
   children,
   isVtksReady = false,
   isCrustReady = false,
+  isChaparralReady = false
 }) => {
   const [vtksReady, setVtksReady] = useState(isVtksReady);
   const [crustReady, setCrustReady] = useState(isCrustReady);
+  const [chaparralReady, setChaparralReady] = useState(isChaparralReady);
 
   const vtksFont = new FontFaceObserver('Vtks good luck for you');
   const crustFont = new FontFaceObserver('crust_clean');
+  const chaparralFont = new FontFaceObserver('chaparral pro');
 
   // Sets a longer timeout for running tests
   const timeout = 60000;
@@ -54,8 +60,13 @@ export const FontsProvider: FC<FontsProviderProps> = ({
     () => setCrustReady(true),
     () => console.warn('crust failed to load')
   );
+
+  chaparralFont.load(null, timeout).then(
+    () => setChaparralReady(true),
+    () => console.warn('crust failed to load')
+  );
   return (
-    <FontsContext.Provider value={{ vtksReady, crustReady }}>
+    <FontsContext.Provider value={{ vtksReady, crustReady, chaparralReady }}>
       {children}
     </FontsContext.Provider>
   );
