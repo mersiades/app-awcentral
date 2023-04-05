@@ -155,18 +155,17 @@ const CharacterHxForm: FC = () => {
 
   const disableGoToGame = (): boolean => {
     if (character) {
-      if (character.hxBlock) {
-        return character.hxBlock.length === 0;
-      } else {
+      if (!character.hxBlock) {
+        return true
       }
 
-      if (character.statsBlock) {
-        return (
-          character.statsBlock.stats.filter(
-            (stat) => stat.isHighlighted === true
-          ).length !== 2
-        );
+      if (!character.statsBlock) {
+        return true
       }
+
+      return character.hxBlock.length === 0 || character.statsBlock.stats.filter(
+        (stat) => stat.isHighlighted === true
+      ).length !== 2
     }
 
     return true;
