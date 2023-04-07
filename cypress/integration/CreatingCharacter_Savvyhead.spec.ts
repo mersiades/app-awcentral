@@ -10,17 +10,27 @@ import {
   THINGS_SPEAK_NAME,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
-import { setupQueryAliases } from '../utils/graphql-test-utils';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_SET_WORKSPACE,
+  ONQ_ALL_MOVES,
+  ONQ_PLAYBOOK_CREATOR,
+  setupQueryAliases,
+  visitHomePage, waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Creating a new Savvyhead Character', () => {
   beforeEach(() => {
     cy.login('sergio@email.com');
     cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
       setupQueryAliases(req)
+      aliasMutation(req, ONM_SET_WORKSPACE)
     })
-    cy.visit('/');
+    visitHomePage()
     cy.returnToGame(game6.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.navToCharacterCreationViaPlaybookPanel('workspace-edit-link');
+    cy.wait(generateWaitAlias(ONQ_PLAYBOOK_CREATOR))
   });
 
   it('should set a Workspace and stop at MovesForm', () => {
@@ -28,7 +38,7 @@ describe('Creating a new Savvyhead Character', () => {
     const savvyheadNameUC = savvyheadName.toUpperCase();
     const savvyheadGearItem = 'homemade crossbow';
 
-    // ------------------------------------------ WorkspaceForm ------------------------------------------ //
+    // -------------------- WorkspaceForm ----------------------------------- //
     const option1 = 'a garage';
     const option2 = 'a darkroom';
     const option3 = 'a controlled growing environment';
@@ -61,8 +71,9 @@ describe('Creating a new Savvyhead Character', () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    waitMutationWithGame(ONM_SET_WORKSPACE)
 
-    // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
+    // -------------------- CharacterMovesForm ------------------------------ //
 
     const bonefeelMoveName = decapitalize(BONEFEEL_NAME);
     const thingsSpeakMoveName = decapitalize(THINGS_SPEAK_NAME);
@@ -87,20 +98,10 @@ describe('Creating a new Savvyhead Character', () => {
       .should('contain', VEHICLES_TITLE)
       .should('contain', '...');
 
-    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).within(() =>
-      cy.get('input').check({ force: true })
-    );
-    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).within(() =>
-      cy.get('input').should('be.checked')
-    );
-    cy.get(`[aria-label="${thingsSpeakMoveName}-checkbox"]`).within(() =>
-      cy.get('input').check({ force: true })
-    );
-    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).within(() =>
-      cy.get('input').should('be.checked')
-    );
-    cy.get(`[aria-label="${thingsSpeakMoveName}-checkbox"]`).within(() =>
-      cy.get('input').should('be.checked')
-    );
+    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).check({ force: true})
+    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).should('be.checked')
+    cy.get(`[aria-label="${thingsSpeakMoveName}-checkbox"]`).check({ force: true})
+    cy.get(`[aria-label="${bonefeelMoveName}-checkbox"]`).should('be.checked')
+    cy.get(`[aria-label="${thingsSpeakMoveName}-checkbox"]`).should('be.checked')
   });
 });

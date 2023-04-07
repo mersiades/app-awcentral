@@ -17,6 +17,7 @@ import {
 } from '../../config/constants';
 
 import '../../assets/styles/transitions.css';
+import Spinner from '../Spinner';
 
 const StyledTab = styled(Tab as FC<TabExtendedProps>)(
   () => css`
@@ -42,21 +43,21 @@ const StyledTabs = styled(Tabs as FC<TabsExtendedProps>)(
 );
 
 const CharacterPlaybookForm: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [startFadeOut, setStartFadeOut] = useState(false);
   const [sortedPlaybooks, setSortedPlaybooks] = useState<Playbook[]>([]);
 
   const [activeTab, setActiveTab] = useState(12);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { character } = useGame();
   const { crustReady } = useFonts();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: playbooksData } = useQuery<PlaybooksData>(PLAYBOOKS);
   const playbooks = playbooksData?.playbooks;
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
 
   useEffect(() => {
     if (!!playbooks) {
@@ -83,7 +84,11 @@ const CharacterPlaybookForm: FC = () => {
     }
   }, [character, playbooks, sortedPlaybooks]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
+  if (!playbooksData || sortedPlaybooks.length < 1) {
+    return <Spinner/>;
+  }
+
   return (
     <Box
       fill
@@ -111,6 +116,7 @@ const CharacterPlaybookForm: FC = () => {
               setActiveTab(tab);
             }}
           >
+
             {sortedPlaybooks.map((playbook) => (
               <StyledTab
                 key={playbook.id}

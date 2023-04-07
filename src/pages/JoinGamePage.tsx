@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Image, Heading, Grid } from 'grommet';
 
 import InvitationsList from '../components/InvitationsList';
@@ -24,11 +24,11 @@ const background = {
 };
 
 const MenuPage: FC = () => {
-  // ---------------------------------- Accessing React context -------------------------------------------- //
+  // ----------------------- Accessing React context ------------------------ //
   const { displayName, email } = useUser();
   const { vtksReady } = useFonts();
 
-  // -------------------------------- Hooking in to Apollo graphql ----------------------------------------- //
+  // ----------------------- Hooking in to Apollo graphql ------------------- //
   const { data } = useQuery<GamesForInviteeData, GamesForInviteeVars>(
     GAMES_FOR_INVITEE,
     {
@@ -40,10 +40,10 @@ const MenuPage: FC = () => {
 
   const games = data?.gamesForInvitee;
 
-  // -------------------------------- Hooking in to react-router ----------------------------------------- //
-  const history = useHistory();
+  // ------------------------ Hooking in to react-router -------------------- //
+  const navigate = useNavigate();
 
-  // ------------------------------------- Render component ---------------------------------------------- //
+  // ------------------------ Render component ------------------------------ //
   return (
     <Box data-testid="join-game-page" fill background={background}>
       {!games && (
@@ -108,7 +108,7 @@ const MenuPage: FC = () => {
                     <Box align="start" alignContent="center">
                       <StyledClose
                         color="accent-1"
-                        onClick={() => history.push('/')}
+                        onClick={() => navigate('/')}
                         cursor="pointer"
                       />
                     </Box>

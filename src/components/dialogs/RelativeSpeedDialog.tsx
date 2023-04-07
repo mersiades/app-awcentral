@@ -64,6 +64,7 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({
 
   const handleSpeedRollMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

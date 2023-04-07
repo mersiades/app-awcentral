@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { PlaybookCreator } from '../@types/staticDataInterfaces';
 import { PlaybookType } from '../@types/enums';
 
@@ -828,6 +828,6 @@ const PLAYBOOK_CREATOR = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PlaybookCreatorData, PlaybookCreatorVars>;
 
 export default PLAYBOOK_CREATOR;

@@ -46,6 +46,7 @@ const HelpOrInterfereDialog: FC<HelpOrInterfereDialogProps> = ({
     targetId: string
   ) => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

@@ -39,6 +39,7 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleHealHarmMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

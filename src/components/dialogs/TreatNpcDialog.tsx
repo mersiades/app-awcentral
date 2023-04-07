@@ -41,6 +41,7 @@ const TreatNpcDialog: FC<TreatNpcDialogProps> = ({ move, handleClose }) => {
       return;
     }
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

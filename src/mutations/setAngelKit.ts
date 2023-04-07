@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character, PlaybookUniques } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
@@ -97,6 +97,6 @@ const SET_ANGEL_KIT = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetAngelKitData, SetAngelKitVars>;
 
 export default SET_ANGEL_KIT;

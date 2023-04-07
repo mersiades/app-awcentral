@@ -260,7 +260,7 @@ describe('Rendering ImprovementBox', () => {
       const improveButton = screen.getByRole('button', {
         name: 'IMPROVE',
       }) as HTMLButtonElement;
-      userEvent.click(improveButton);
+      await userEvent.click(improveButton);
       await waitOneTick(); // wait for spendExperience mutation
       // Check button still enabled because there is now an unspent improvement point
       expect(improveButton.disabled).toBeFalsy();

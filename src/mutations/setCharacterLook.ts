@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { LookInput } from '../@types';
 import { Character } from '../@types/dataInterfaces';
 import { LookType, PlaybookType } from '../@types/enums';
@@ -82,6 +82,6 @@ const SET_CHARACTER_LOOK = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetCharacterLookData, SetCharacterLookVars>;
 
 export default SET_CHARACTER_LOOK;

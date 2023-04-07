@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Text } from 'grommet';
 import { IconProps, Next, Previous } from 'grommet-icons';
 
@@ -68,7 +68,7 @@ const CharacterCreationStepper: FC = () => {
   const { character, game } = useGame();
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
   const query = new URLSearchParams(useLocation().search);
   const step = query.get('step');
   const currentStep = !!step ? parseInt(step) : undefined;
@@ -80,7 +80,7 @@ const CharacterCreationStepper: FC = () => {
   }
 
   const changeStep = (nextStep: number) => {
-    !!game && history.push(`/character-creation/${game.id}?step=${nextStep}`);
+    !!game && navigate(`/character-creation/${game.id}?step=${nextStep}`);
   };
 
   const handlePrevious = () => {

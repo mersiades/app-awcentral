@@ -1,17 +1,11 @@
 import { FC } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 interface PrivateRootProps {
-  component: any;
-  path: string;
-  exact?: boolean;
 }
 
-const PrivateRoute: FC<PrivateRootProps> = ({
-  component: Component,
-  ...rest
-}) => {
+const PrivateRoute: FC<PrivateRootProps> = () => {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   /**
@@ -27,14 +21,7 @@ const PrivateRoute: FC<PrivateRootProps> = ({
   /**
    * As a fallback option, redirect unauthorised users to LandingPage
    */
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
-      }
-    />
-  );
+  return isAuthenticated ? <Outlet /> : <Navigate to='/' />;
 };
 
 export default PrivateRoute;

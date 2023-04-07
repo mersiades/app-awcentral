@@ -55,12 +55,12 @@ describe('Rendering PlayerPage', () => {
     const movesTab = screen.getByRole('tab', { name: 'Moves' });
 
     // Check that PlaybookPanel opens
-    userEvent.click(playbookTab);
+    await userEvent.click(playbookTab);
     screen.getByTestId('character-sheet');
     screen.getByRole('tabpanel', { name: 'Playbook Tab Contents' });
 
     // Check that MovesPanel opens
-    userEvent.click(movesTab);
+    await userEvent.click(movesTab);
     screen.getByTestId('moves-panel');
     screen.getByRole('tabpanel', { name: 'Moves Tab Contents' });
   });
@@ -76,12 +76,12 @@ describe('Rendering PlayerPage', () => {
     const scriptChangeIcon = screen.getByRole('img', {
       name: 'script-change-button',
     });
-    userEvent.click(scriptChangeIcon);
+    await userEvent.click(scriptChangeIcon);
     expect(
       screen.getByRole('heading', { name: SCRIPT_CHANGE_TITLE })
     ).toBeInTheDocument();
 
-    userEvent.click(screen.getByRole('button', { name: CANCEL_TEXT }));
+    await userEvent.click(screen.getByRole('button', { name: CANCEL_TEXT }));
     // jest.runAllTimers(); // To allow Layer exit animation
     // expect(
     //   screen.queryByRole('heading', { name: SCRIPT_CHANGE_TITLE })

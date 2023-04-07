@@ -45,6 +45,7 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleAngelSpecialMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

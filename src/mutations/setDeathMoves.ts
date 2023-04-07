@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character, CharacterStat, StatsBlock } from '../@types/dataInterfaces';
 import { MoveType, PlaybookType, StatType } from '../@types/enums';
 import {
@@ -174,6 +174,6 @@ const SET_DEATH_MOVES = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetDeathMovesData, SetDeathMovesVars>;
 
 export default SET_DEATH_MOVES;

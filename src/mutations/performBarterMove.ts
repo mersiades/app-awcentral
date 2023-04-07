@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformBarterMoveData {
@@ -47,6 +47,6 @@ const PERFORM_BARTER_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformBarterMoveData, PerformBarterMoveVars>;
 
 export default PERFORM_BARTER_MOVE;

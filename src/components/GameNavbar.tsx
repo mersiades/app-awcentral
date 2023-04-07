@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Menu, Tip, Button, Header } from 'grommet';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -22,7 +22,7 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
   // ----------------------------- Component state ------------------------------ //
   const [showConstructionDialog, setShowConstructionDialog] = useState(false);
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
   const { logout } = useAuth0();
 
   // ----------------------------- Hooks ---------------------------------------- //
@@ -67,11 +67,13 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
         // @ts-ignore */}
       <ThemeContext.Extend value={customDefaultButtonStyles}>
         <Menu
+          plain
           style={{ backgroundColor: 'transparent' }}
           dropBackground={{ color: 'rgba(76, 104, 76, 0.5)' }}
+          dropAlign={ { top: 'bottom',}}
           label="AW Central"
           items={[
-            { label: 'Main menu', onClick: () => history.push('/menu') },
+            { label: 'Main menu', onClick: () => navigate('/menu') },
             {
               label: 'Log out',
               onClick: () => logout(),
@@ -96,7 +98,7 @@ const GameNavbar: FC<GameNavbarProps> = ({ isMc }) => {
         {!!game && !game?.hasFinishedPreGame && (
           <Button
             label="Pre-game"
-            onClick={() => history.push(`/pre-game/${game.id}`)}
+            onClick={() => navigate(`/pre-game/${game.id}`)}
             style={{
               backgroundColor: 'transparent',
               height: '4vh',

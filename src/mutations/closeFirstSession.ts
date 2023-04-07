@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface CloseFirstSessionData {
@@ -29,6 +29,6 @@ const CLOSE_FIRST_SESSION = gql`
       showFirstSession
     }
   }
-`;
+` as TypedDocumentNode<CloseFirstSessionData, CloseFirstSessionVars>;
 
 export default CLOSE_FIRST_SESSION;

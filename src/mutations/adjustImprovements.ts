@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 import { PlaybookType } from '../@types/enums';
 
@@ -95,6 +95,6 @@ const ADJUST_IMPROVEMENTS = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<AdjustImprovementsData, AdjustImprovementsVars>;
 
 export default ADJUST_IMPROVEMENTS;

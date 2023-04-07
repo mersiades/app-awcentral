@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { ProjectInput } from '../@types';
 import { Character } from '../@types/dataInterfaces';
 
@@ -41,6 +41,6 @@ const ADD_PROJECT = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<AddProjectData, AddProjectVars>;
 
 export default ADD_PROJECT;

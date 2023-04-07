@@ -49,6 +49,7 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
       return;
     }
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

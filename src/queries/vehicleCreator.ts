@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { VehicleCreator } from '../@types/staticDataInterfaces';
 
 export interface VehicleCreatorData {
@@ -62,6 +62,6 @@ const VEHICLE_CREATOR = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<VehicleCreatorData, VehicleCreatorVars>;
 
 export default VEHICLE_CREATOR;

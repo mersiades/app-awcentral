@@ -44,6 +44,7 @@ const JustGiveMotiveDialog: FC<JustGiveMotiveDialogProps> = ({
 
   const handleJustGiveMotivationMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

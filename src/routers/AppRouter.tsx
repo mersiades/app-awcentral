@@ -1,5 +1,5 @@
 // import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -15,20 +15,36 @@ import ThreatMapPage from '../pages/ThreatMapPage';
 
 const AppRouter = () => {
   return (
-    <Switch>
-      <PublicRoute exact path="/" component={LandingPage} />
-      <PrivateRoute path="/menu" component={MenuPage} />
-      <PrivateRoute path="/join-game" component={JoinGamePage} />
-      <PrivateRoute path="/create-game/:gameId" component={CreateGamePage} />
-      <PrivateRoute path="/pre-game/:gameId" component={PreGamePage} />
-      <PrivateRoute path="/player-game/:gameId" component={PlayerPage} />
-      <PrivateRoute path="/mc-game/:gameId" component={MCPage} />
-      <PrivateRoute path="/threat-map/:gameId" component={ThreatMapPage} />
-      <PrivateRoute
-        path="/character-creation/:gameId"
-        component={CharacterCreationPage}
-      />
-    </Switch>
+    <Routes>
+      <Route path="/" element={<PublicRoute/>}>
+        <Route path="/" element={<LandingPage/>}/>
+      </Route>
+      <Route path="/" element={<PrivateRoute/>}>
+        <Route path="/menu" element={<MenuPage/>} />
+        <Route path="/join-game" element={<JoinGamePage/>} />
+        <Route path="/create-game/:gameId" element={<CreateGamePage/>} />
+        <Route path="/pre-game/:gameId" element={<PreGamePage/>} />
+        <Route path="/player-game/:gameId" element={<PlayerPage/>} />
+        <Route path="/mc-game/:gameId" element={<MCPage/>} />
+        <Route path="/threat-map/:gameId" element={<ThreatMapPage/>} />
+        <Route
+          path="/character-creation/:gameId"
+          element={<CharacterCreationPage/>}
+        />
+      </Route>
+      {/*<PublicRoute exact path="/" component={LandingPage} />*/}
+      {/*<PrivateRoute path="/menu" component={MenuPage} />*/}
+      {/*<PrivateRoute path="/join-game" component={JoinGamePage} />*/}
+      {/*<PrivateRoute path="/create-game/:gameId" component={CreateGamePage} />*/}
+      {/*<PrivateRoute path="/pre-game/:gameId" component={PreGamePage} />*/}
+      {/*<PrivateRoute path="/player-game/:gameId" component={PlayerPage} />*/}
+      {/*<PrivateRoute path="/mc-game/:gameId" component={MCPage} />*/}
+      {/*<PrivateRoute path="/threat-map/:gameId" component={ThreatMapPage} />*/}
+      {/*<PrivateRoute*/}
+      {/*  path="/character-creation/:gameId"*/}
+      {/*  component={CharacterCreationPage}*/}
+      {/*/>*/}
+    </Routes>
   );
 };
 

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { FollowersInput } from '../@types';
 import {
   Character,
@@ -113,6 +113,6 @@ const SET_FOLLOWERS = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetFollowersData, SetFollowersVars>;
 
 export default SET_FOLLOWERS;

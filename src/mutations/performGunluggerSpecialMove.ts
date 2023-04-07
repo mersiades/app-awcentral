@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformGunluggerSpecialMoveData {
@@ -43,6 +43,6 @@ const PERFORM_GUNLUGGER_SPECIAL_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformGunluggerSpecialMoveData, PerformGunluggerSpecialMoveVars>;
 
 export default PERFORM_GUNLUGGER_SPECIAL_MOVE;

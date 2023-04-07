@@ -210,10 +210,10 @@ describe('Rendering CharacterMovesForm', () => {
         )}-checkbox`,
       }) as HTMLInputElement;
 
-      userEvent.click(checkbox1);
+      await userEvent.click(checkbox1);
       expect(checkbox1.checked).toBeTruthy();
 
-      userEvent.click(checkbox2);
+      await userEvent.click(checkbox2);
       expect(checkbox2.checked).toBeTruthy();
 
       expect(setButton.disabled).toBeFalsy();
@@ -256,7 +256,7 @@ describe('Rendering CharacterMovesForm', () => {
       expect(checkboxes.filter((cb) => cb.checked)).toHaveLength(3);
     });
 
-    test('should deselect a move and select a different one', () => {
+    test('should deselect a move and select a different one', async () => {
       const setButton = screen.getByRole('button', {
         name: 'SET',
       }) as HTMLButtonElement;
@@ -265,15 +265,15 @@ describe('Rendering CharacterMovesForm', () => {
       const uncheckedCheckboxes = checkboxes.filter((cb) => !cb.checked);
 
       // Check that user can't unselect DEFAULT_CHARACTER moves
-      userEvent.click(checkedCheckboxes[0]);
+      await userEvent.click(checkedCheckboxes[0]);
       expect(checkedCheckboxes[0].checked).toBeTruthy();
 
       // Uncheck an optional move
-      userEvent.click(checkedCheckboxes[1]);
+      await userEvent.click(checkedCheckboxes[1]);
       expect(checkedCheckboxes[1].checked).toBeFalsy();
 
       // Select a different optional move
-      userEvent.click(uncheckedCheckboxes[0]);
+      await userEvent.click(uncheckedCheckboxes[0]);
       expect(uncheckedCheckboxes[0].checked).toBeTruthy();
 
       expect(setButton.disabled).toBeFalsy();
@@ -316,7 +316,7 @@ describe('Rendering CharacterMovesForm', () => {
       expect(checkboxes.filter((cb) => cb.checked)).toHaveLength(3);
     });
 
-    test('should select and add 4th CharacterMove', () => {
+    test('should select and add 4th CharacterMove', async () => {
       const setButton = screen.getByRole('button', {
         name: 'SET',
       }) as HTMLButtonElement;
@@ -327,7 +327,7 @@ describe('Rendering CharacterMovesForm', () => {
         )}-checkbox`,
       }) as HTMLInputElement;
 
-      userEvent.click(checkbox3);
+      await userEvent.click(checkbox3);
       expect(checkbox3.checked).toBeTruthy();
 
       expect(setButton.disabled).toBeFalsy();
@@ -384,11 +384,11 @@ describe('Rendering CharacterMovesForm', () => {
       ).toBeInTheDocument();
     });
 
-    test('should change tab and select move from other playbook', () => {
+    test('should change tab and select move from other playbook', async () => {
       const setButton = screen.getByRole('button', {
         name: 'SET',
       }) as HTMLButtonElement;
-      userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
+      await userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
 
       expect(
         screen.getByRole('tabpanel', { name: 'Other moves Tab Contents' })
@@ -397,7 +397,7 @@ describe('Rendering CharacterMovesForm', () => {
       expect(checkboxes).toHaveLength(4); // 1 default move + 3 moves from other playbooks
 
       // Select move from other playbook
-      userEvent.click(checkboxes[1]);
+      await userEvent.click(checkboxes[1]);
       expect(checkboxes[1].checked).toBeTruthy();
 
       // Check SET button enables
@@ -437,7 +437,7 @@ describe('Rendering CharacterMovesForm', () => {
       await waitOneTick(); // wait for game query & otherPlaybookMoves query
     });
 
-    test('should should render CharacterMovesForm with correct initial state', () => {
+    test('should should render CharacterMovesForm with correct initial state', async () => {
       expect(screen.getByText('Select 3')).toBeInTheDocument();
       expect(
         screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)
@@ -453,7 +453,7 @@ describe('Rendering CharacterMovesForm', () => {
         screen.getByRole('tab', { name: 'Other moves' })
       ).toBeInTheDocument();
 
-      userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
+      await userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
       checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
       expect(checkboxes.filter((cb) => cb.checked)).toHaveLength(2); // 1 selected default move + 1 selected other playbook move
     });
@@ -522,8 +522,8 @@ describe('Rendering CharacterMovesForm', () => {
       await waitOneTick(); // wait for game query & otherPlaybookMoves query
     });
 
-    test('should render correct instructions on other moves tab', () => {
-      userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
+    test('should render correct instructions on other moves tab', async () => {
+      await userEvent.click(screen.getByRole('tab', { name: 'Other moves' }));
       expect(screen.getByText('Select 0')).toBeInTheDocument();
       expect(
         screen.getByText('(Already includes Wealth and Pack alpha)')

@@ -243,12 +243,12 @@ describe.skip('Rendering CharacterImprovementDialog', () => {
       const firstMoveCheckbox = screen.getAllByRole(
         'checkbox'
       )[0] as HTMLInputElement;
-      userEvent.click(firstMoveCheckbox);
+      await userEvent.click(firstMoveCheckbox);
       expect(firstMoveCheckbox.checked).toBeTruthy();
       expect(setButton.disabled).toBeFalsy();
 
       // Check can de-select item
-      userEvent.click(firstMoveCheckbox);
+      await userEvent.click(firstMoveCheckbox);
       expect(firstMoveCheckbox.checked).toBeFalsy();
       expect(setButton.disabled).toBeTruthy();
 
@@ -256,12 +256,12 @@ describe.skip('Rendering CharacterImprovementDialog', () => {
       const secondMoveCheckbox = screen.getByRole('checkbox', {
         name: mockCoolMax2.description,
       }) as HTMLInputElement;
-      userEvent.click(secondMoveCheckbox);
+      await userEvent.click(secondMoveCheckbox);
       expect(secondMoveCheckbox.checked).toBeTruthy();
       expect(setButton.disabled).toBeFalsy();
 
       // Click SET button
-      userEvent.click(setButton);
+      await userEvent.click(setButton);
       await waitOneTick(); // wait for adjustImprovements mutation
 
       // Check have navigated away

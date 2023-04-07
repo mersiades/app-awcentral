@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 
 export interface GameForInviteeGame {
   id: string;
@@ -29,6 +29,6 @@ const GAMES_FOR_INVITEE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<GamesForInviteeData, GamesForInviteeVars>;
 
 export default GAMES_FOR_INVITEE;

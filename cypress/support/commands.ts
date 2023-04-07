@@ -10,7 +10,7 @@ import {
   RETURN_TO_GAME_TEXT,
 } from '../../src/config/constants';
 import {
-  generateWaitAlias,
+  generateWaitAlias, ONM_PERFORM_PRINT,
   ONM_SET_PLAYBOOK,
   ONQ_DEATH_MOVES,
   ONQ_GAME,
@@ -333,6 +333,7 @@ Cypress.Commands.add(
   (characterName: string, moveName: string, moveSnippet: string) => {
     const messageTitle = `${characterName?.toUpperCase()}: ${moveName}`;
     cy.contains(decapitalize(moveName)).click();
+    waitMutationWithGame(ONM_PERFORM_PRINT)
     cy.checkMoveMessage(messageTitle, moveSnippet);
   }
 );

@@ -35,6 +35,7 @@ const VHarmDialog: FC<VHarmDialogProps> = ({ move, handleClose }) => {
   // ----------------------------- Component functions ---------------------- //
   const handleSufferVHarmMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

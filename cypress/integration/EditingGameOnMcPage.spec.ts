@@ -1,6 +1,12 @@
 import game7 from '../fixtures/games/game7';
 import { ALSO_PLAY_ON_TEXT } from '../../src/config/constants';
-import { setupQueryAliases } from '../utils/graphql-test-utils';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_SET_GAME_NAME,
+  ONQ_ALL_MOVES,
+  setupQueryAliases,
+  visitHomePage
+} from '../utils/graphql-test-utils';
 
 describe('Editing game details from the MC Page', () => {
   const mockGameName = 'A different game name';
@@ -8,9 +14,11 @@ describe('Editing game details from the MC Page', () => {
     cy.login('dave@email.com');
     cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
       setupQueryAliases(req)
+      aliasMutation(req, ONM_SET_GAME_NAME)
     })
-    cy.visit('/');
+    visitHomePage()
     cy.returnToGame(game7.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.get('div[data-testid="Mock Game 7-box"]').within(() => {
       cy.get('svg[aria-label="Edit"]').click();
     });
@@ -22,6 +30,7 @@ describe('Editing game details from the MC Page', () => {
       .type(mockGameName);
 
     cy.get('button[name="set-name-button"]').click();
+    cy.wait(generateWaitAlias(ONM_SET_GAME_NAME))
 
     cy.get('div[data-testid="Mock Game 7-box"]').within(() => {
       cy.contains(mockGameName).should('exist');
@@ -33,12 +42,13 @@ describe('Editing game details from the MC Page', () => {
       .type('{selectall}{backspace}')
       .type(game7.name);
     cy.get('button[name="set-name-button"]').click();
+    cy.wait(generateWaitAlias(ONM_SET_GAME_NAME))
   });
 
   it('should set a new game comms app', () => {
     const mockApp = 'Discord';
 
-    cy.get('[aria-label="app-input"]').click();
+    cy.get('[aria-label="app-input, Zoom"]').click();
     cy.contains(mockApp).click();
     cy.get('button[name="set-app-button"]').click();
     cy.get('div[data-testid="Mock Game 7-box"]').within(() => {

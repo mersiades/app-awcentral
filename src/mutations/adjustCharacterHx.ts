@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { HxInput } from '../@types';
 import { Character, HxStat } from '../@types/dataInterfaces';
 
@@ -65,6 +65,6 @@ const ADJUST_CHARACTER_HX = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<AdjustCharacterHxData, AdjustCharacterHxVars>;
 
 export default ADJUST_CHARACTER_HX;

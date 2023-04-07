@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { RoleType } from '../@types/enums';
 
 export interface GameRolesByUserIdGameRoles {
@@ -33,6 +33,6 @@ const GAMEROLES_BY_USER_ID = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<GameRolesByUserIdData, GameRolesByUserIdVars>;
 
 export default GAMEROLES_BY_USER_ID;

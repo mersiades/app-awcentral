@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 
 export interface SetCharacterStatsData {
@@ -37,6 +37,6 @@ const SET_CHARACTER_STATS = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetCharacterStatsData, SetCharacterStatsVars>;
 
 export default SET_CHARACTER_STATS;

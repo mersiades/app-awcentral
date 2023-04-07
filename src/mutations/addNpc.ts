@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { NpcInput } from '../@types';
 import { GameRole, Npc } from '../@types/dataInterfaces';
 
@@ -61,6 +61,6 @@ const ADD_NPC = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<AddNpcData, AddNpcVars>;
 
 export default ADD_NPC;

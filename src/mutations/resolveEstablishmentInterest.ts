@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
 
@@ -87,6 +87,6 @@ const RESOLVE_ESTABLISHMENT_INTEREST = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<ResolveEstablishmentInterestData, ResolveEstablishmentInterestVars>;
 
 export default RESOLVE_ESTABLISHMENT_INTEREST;

@@ -71,6 +71,7 @@ const MovesBox: FC<MovesBoxProps> = ({
 
   const handlePrintMove = async (move: Move | CharacterMove) => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
@@ -94,7 +95,7 @@ const MovesBox: FC<MovesBoxProps> = ({
   };
 
   const handleStatRollMove = async (move: Move | CharacterMove) => {
-    if (!!userGameRole && !!character && !character.isDead && !rollingMove) {
+    if (gameId && !!userGameRole && !!character && !character.isDead && !rollingMove) {
       const commonVariables = {
         gameId,
         gameRoleId: userGameRole.id,
@@ -128,7 +129,7 @@ const MovesBox: FC<MovesBoxProps> = ({
   };
 
   const handleFortuneRollMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead && !rollingMove) {
+    if (gameId && !!userGameRole && !!character && !character.isDead && !rollingMove) {
       try {
         makeFortunesMove!({
           variables: {

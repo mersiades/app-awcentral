@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { HoldInput } from '../@types';
 import { Game } from '../@types/dataInterfaces';
 import { characterFragments } from '../queries/game';
@@ -49,6 +49,6 @@ const SPEND_HOLD = gql`
     }
   }
   ${characterFragments.holds}
-`;
+` as TypedDocumentNode<SpendHoldData, SpendHoldVars>;
 
 export default SPEND_HOLD;

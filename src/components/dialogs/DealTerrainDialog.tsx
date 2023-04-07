@@ -58,6 +58,7 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({
 
   const handleSpeedRollMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

@@ -83,7 +83,7 @@ describe('Rendering WeaponsForm', () => {
     });
 
     await screen.findByTestId('weapons-form');
-    screen.getByRole('heading', {
+    await screen.findByRole('heading', {
       name: `${mockCharacter2.name?.toUpperCase()}'S WEAPONS`,
     });
     const bigGun = screen.getByTestId(
@@ -100,23 +100,23 @@ describe('Rendering WeaponsForm', () => {
     );
 
     // Select big gun
-    userEvent.click(bigGun);
+    await userEvent.click(bigGun);
 
     // Select first serious gun
-    userEvent.click(seriousGun1);
+    await userEvent.click(seriousGun1);
 
     // Select second serious gun
-    userEvent.click(seriousGun2);
+    await userEvent.click(seriousGun2);
 
     // Select backup weapon
-    userEvent.click(backupWeapon);
+    await userEvent.click(backupWeapon);
     let setButton = screen.getByRole('button', {
       name: 'SET',
     }) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(false);
 
     // De-select backup weapon
-    userEvent.click(backupWeapon);
+    await userEvent.click(backupWeapon);
     setButton = screen.getByRole('button', {
       name: 'SET',
     }) as HTMLButtonElement;

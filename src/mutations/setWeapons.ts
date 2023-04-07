@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 
 export interface SetWeaponsData {
@@ -36,6 +36,6 @@ const SET_WEAPONS = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetWeaponsData, SetWeaponsVars>;
 
 export default SET_WEAPONS;

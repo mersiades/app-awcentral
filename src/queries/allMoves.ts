@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Move } from '../@types/staticDataInterfaces';
 
 export interface AllMovesData {
@@ -34,6 +34,6 @@ const ALL_MOVES = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<AllMovesData>;
 
 export default ALL_MOVES;

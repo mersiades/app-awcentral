@@ -50,6 +50,7 @@ const SpeedRecoveryDialog: FC<SpeedRecoveryDialogProps> = ({
       return;
     }
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

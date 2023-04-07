@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { EstablishmentInput } from '../@types';
 import {
   Character,
@@ -92,6 +92,6 @@ const SET_ESTABLISHMENT = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetEstablishmentData, SetEstablishmentVars>;
 
 export default SET_ESTABLISHMENT;

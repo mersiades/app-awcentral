@@ -17,7 +17,7 @@ import {
   ONM_PERFORM_STAT_ROLL,
   setupQueryAliases,
   visitHomePage,
-  ONQ_ALL_MOVES
+  ONQ_ALL_MOVES, ONM_PERFORM_HOCUS_SPECIAL
 } from '../utils/graphql-test-utils';
 
 describe('Using the PlaybookPanel as a Hocus', () => {
@@ -27,6 +27,7 @@ describe('Using the PlaybookPanel as a Hocus', () => {
       setupQueryAliases(req)
       aliasMutation(req, ONM_UPDATE_FOLLOWERS)
       aliasMutation(req, ONM_PERFORM_STAT_ROLL)
+      aliasMutation(req, ONM_PERFORM_HOCUS_SPECIAL)
     })
     visitHomePage()
     cy.returnToGame(game1.name);
@@ -107,7 +108,7 @@ describe('Using the PlaybookPanel as a Hocus', () => {
     cy.contains(moveDescSnippet).should('be.visible');
     cy.get('input[aria-label="target-character-input"]').click();
     cy.contains('button', APPLY_TEXT).should('be.disabled');
-    cy.get('div[role="menubar"]').within(() => {
+    cy.get('div[role="listbox"]').within(() => {
       cy.contains('button', 'Doc').should('be.visible');
       cy.contains('button', 'Scarlet').should('be.visible');
       cy.contains('button', 'Smith').should('be.visible');
@@ -116,6 +117,7 @@ describe('Using the PlaybookPanel as a Hocus', () => {
     });
     cy.contains('button', APPLY_TEXT).should('not.be.disabled');
     cy.contains('button', APPLY_TEXT).click();
+    waitMutationWithGame(ONM_PERFORM_HOCUS_SPECIAL)
     cy.contains('button', APPLY_TEXT).should('not.exist');
     const messageTitle = `VISION: ${HOCUS_SPECIAL_NAME}`;
     cy.checkMoveMessage(

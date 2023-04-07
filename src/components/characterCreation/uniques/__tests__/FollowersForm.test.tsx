@@ -96,7 +96,7 @@ describe('Rendering FollowersForm', () => {
       screen.getByRole('button', { name: 'SET' });
     });
 
-    test('should enable SET button after completing the form', () => {
+    test('should enable SET button after completing the form', async () => {
       let setButton = screen.getByRole('button', {
         name: 'SET',
       }) as HTMLButtonElement;
@@ -106,7 +106,7 @@ describe('Rendering FollowersForm', () => {
       const characterization = screen.getByTestId(
         `${mockFollowersCreator.characterizationOptions[0]}-pill`
       );
-      userEvent.click(characterization);
+      await userEvent.click(characterization);
       const descriptionBox = screen.getByTestId('description-tags-box');
       expect(descriptionBox.textContent?.toLowerCase()).toContain(
         mockFollowersCreator.characterizationOptions[0]
@@ -116,7 +116,7 @@ describe('Rendering FollowersForm', () => {
       const travelOption = screen.getByRole('checkbox', {
         name: mockFollowersCreator.travelOptions[0],
       });
-      userEvent.click(travelOption);
+      await userEvent.click(travelOption);
       expect(descriptionBox.textContent?.toLowerCase()).toContain(
         mockFollowersCreator.travelOptions[0]
       );
@@ -132,10 +132,10 @@ describe('Rendering FollowersForm', () => {
       const wantBox = screen.getByTestId('want-tags-box');
       expect(wantBox.textContent).toContain('Want');
       expect(surplusBox.textContent).toContain('Surplus');
-      userEvent.click(strength1);
+      await userEvent.click(strength1);
       expect(surplusBox.textContent).toContain('2');
       expect(wantBox.textContent).toContain('hungry');
-      userEvent.click(strength2);
+      await userEvent.click(strength2);
       expect(surplusBox.textContent).toContain('insight');
 
       // Select two weaknesses
@@ -145,9 +145,9 @@ describe('Rendering FollowersForm', () => {
       const weakness2 = screen.getByRole('checkbox', {
         name: mockFollowersCreator.weaknessOptions[1].description,
       });
-      userEvent.click(weakness1);
+      await userEvent.click(weakness1);
       expect(surplusBox.textContent).toContain('violence');
-      userEvent.click(weakness2);
+      await userEvent.click(weakness2);
       expect(surplusBox.textContent).toContain('1');
 
       // Check SET button is enabled

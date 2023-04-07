@@ -47,6 +47,7 @@ const SkinnerSpecialDialog: FC<SkinnerSpecialDialogProps> = ({
   ];
   const handleSkinnerSpecialMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

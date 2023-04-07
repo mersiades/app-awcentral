@@ -42,6 +42,7 @@ const ChopperSpecialDialog: FC<ChopperSpecialDialogProps> = ({
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleChopperSpecialMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

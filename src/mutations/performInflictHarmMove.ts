@@ -1,6 +1,5 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
-
 export interface PerformInflictHarmMoveData {
   performInflictHarmMove: Game;
 }
@@ -43,6 +42,6 @@ const PERFORM_INFLICT_HARM_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformInflictHarmMoveData, PerformInflictHarmMoveData>;
 
 export default PERFORM_INFLICT_HARM_MOVE;

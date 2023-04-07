@@ -42,6 +42,7 @@ const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleGunluggerSpecialMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

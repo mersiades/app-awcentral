@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useMutation } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box } from 'grommet';
 
 import Spinner from './Spinner';
@@ -20,7 +20,7 @@ interface InvitationsListProps {
 }
 
 const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { userId, displayName, email } = useUser();
   const [addUserToGame, { loading }] = useMutation<
     AddUserToGameData,
@@ -34,7 +34,7 @@ const InvitationsList: FC<InvitationsListProps> = ({ games }) => {
       skip: !userId,
     });
     logAmpEvent('join game');
-    history.push(`/character-creation/${gameId}`, { role: RoleType.player });
+    navigate(`/character-creation/${gameId}`, { state: { role: RoleType.player } });
   };
 
   const getPlayersString = (game: GameForInviteeGame) => {

@@ -3,7 +3,6 @@ import { Box } from 'grommet';
 
 import MoveMessage from './MoveMessage';
 import { StyledMarkdown } from '../styledComponents';
-import { GameMessage } from '../../@types/dataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { HeadingWS, TextWS } from '../../config/grommetConfig';
 import { getDiceImage } from '../../helpers/getDiceImage';

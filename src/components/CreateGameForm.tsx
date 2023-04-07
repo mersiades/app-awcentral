@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FormField, TextInput, Box, Form } from 'grommet';
 
 import Spinner from './Spinner';
@@ -22,7 +22,7 @@ const CreateGameForm: FC = () => {
     CreateGameData,
     CreateGameVars
   >(CREATE_GAME);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const sendNewGameRequest = async (userId: string, name: string) => {
     if (!!userId && !!displayName) {
@@ -41,7 +41,7 @@ const CreateGameForm: FC = () => {
       const gameId = newGame?.createGame.id;
 
       if (!!gameId) {
-        history.push(`/create-game/${gameId}`);
+        navigate(`/create-game/${gameId}`);
       }
     }
   };

@@ -47,6 +47,7 @@ const MakeWantKnownDialog: FC<MakeWantKnownDialogProps> = ({
       return;
     }
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

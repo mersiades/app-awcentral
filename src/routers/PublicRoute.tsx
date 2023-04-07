@@ -1,27 +1,15 @@
 import { FC } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 interface PublicRootProps {
-  component: any;
-  path: string;
-  exact?: boolean;
 }
 
-const PublicRoute: FC<PublicRootProps> = ({
-  component: Component,
-  ...rest
-}) => {
+const PublicRoute: FC<PublicRootProps> = () => {
   const { isAuthenticated } = useAuth0();
 
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAuthenticated ? <Redirect to="/menu" /> : <Component {...props} />
-      }
-    />
-  );
+  return isAuthenticated ? <Navigate to="/menu" /> : <Outlet/>
+
 };
 
 export default PublicRoute;

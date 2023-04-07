@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformFortunesMoveData {
@@ -41,6 +41,6 @@ const PERFORM_FORTUNES_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformFortunesMoveData, PerformFortunesMoveVars>;
 
 export default PERFORM_FORTUNES_MOVE;

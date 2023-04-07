@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, TextArea } from 'grommet';
 
 import Spinner from '../Spinner';
@@ -57,11 +57,11 @@ const CharacterGearForm: FC = () => {
   const [showScrollDown, setShowScrollDown] = useState(false);
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const instructionsBoxRef = useRef<HTMLDivElement>(null);
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: pbCreatorData } = useQuery<
     PlaybookCreatorData,
     PlaybookCreatorVars
@@ -82,7 +82,7 @@ const CharacterGearForm: FC = () => {
     SetCharacterBarterVars
   >(SET_CHARACTER_BARTER);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
 
   const handleScroll = (e: any) => {
     if (!e.currentTarget) {
@@ -141,7 +141,7 @@ const CharacterGearForm: FC = () => {
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set gear');
-          history.push(`/character-creation/${game.id}?step=${nextStep}`);
+          navigate(`/character-creation/${game.id}?step=${nextStep}`);
         }
 
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -151,7 +151,7 @@ const CharacterGearForm: FC = () => {
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
 
   useEffect(() => {
     if (instructionsBoxRef.current) {
@@ -168,7 +168,7 @@ const CharacterGearForm: FC = () => {
     return () => {};
   }, [instructionsBoxRef, pbCreator]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   const renderGearIntro = () => {
     if (!!pbCreator?.gearInstructions.gearIntro) {
@@ -241,7 +241,7 @@ const CharacterGearForm: FC = () => {
     }
   };
 
-  // Don't include this becaue it's confusing for the User
+  // Don't include this because it's confusing for the User
   // const renderWithMC = () => {
   //   if (!!pbCreator?.gearInstructions.withMC) {
   //     return <ParagraphWS>{pbCreator.gearInstructions.withMC}</ParagraphWS>;

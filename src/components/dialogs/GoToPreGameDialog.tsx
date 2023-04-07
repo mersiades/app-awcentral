@@ -15,7 +15,7 @@ import {
   PRE_GAME_INCOMPLETE_TITLE,
   YES_TEXT,
 } from '../../config/constants';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../contexts/gameContext';
 
 interface GoToPreGameDialogProps {
@@ -25,14 +25,14 @@ interface GoToPreGameDialogProps {
 const GoToPreGameDialog: FC<GoToPreGameDialogProps> = ({ handleClose }) => {
   // ----------------------------- 3rd party hooks ------------------------------- //
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- Hooks ---------------------------------------- //
   const { game } = useGame();
   const { crustReady } = useFonts();
 
   const handleConfirm = () => {
-    !!game && history.push(`/pre-game/${game.id}`);
+    !!game && navigate(`/pre-game/${game.id}`);
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, CheckBox } from 'grommet';
 
 import Spinner from '../Spinner';
@@ -82,7 +82,7 @@ interface CharacterImprovementDialogProps {
 const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({
   handleClose,
 }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [selectedImprovements, setSelectedImprovements] = useState<
     { id: string; name: string }[]
   >([]);
@@ -93,14 +93,14 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({
 
   let hasInitialised = useRef(false);
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: pbCreatorData } = useQuery<
     PlaybookCreatorData,
     PlaybookCreatorVars
@@ -116,7 +116,7 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({
     AdjustImprovementsVars
   >(ADJUST_IMPROVEMENTS);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const handleSelectImprovement = (move: Move) => {
     if (selectedImprovements.some((item) => item.name === move.name)) {
       setSelectedImprovements(
@@ -165,7 +165,7 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({
           optimisticResponse: adjustImprovementsOR(character),
         });
         if (!!to) {
-          history.push(to);
+          navigate(to);
         } else {
           handleClose();
         }
@@ -175,7 +175,7 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
   // load in existing improvement moves, but prevent duplicates
   useEffect(() => {
     if (!!character && !hasInitialised.current) {
@@ -199,7 +199,7 @@ const CharacterImprovementDialog: FC<CharacterImprovementDialogProps> = ({
     return null;
   }
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <DialogWrapper
       background={improvementDialogBackground}

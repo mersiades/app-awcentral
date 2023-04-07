@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import {
   Character,
   CustomWeapons,
@@ -87,6 +87,6 @@ const SET_CUSTOM_WEAPONS = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetCustomWeaponsData, SetCustomWeaponsVars>;
 
 export default SET_CUSTOM_WEAPONS;

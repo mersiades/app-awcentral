@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { omit } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
 import { Box, FormField, TextInput } from 'grommet';
@@ -46,16 +46,16 @@ const StyledMarkdown = styled(ReactMarkdown)`
 `;
 
 const CharacterHxForm: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [errorIds, setErrorIds] = useState<string[]>([]);
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game, character, userGameRole, otherPlayerGameRoles } = useGame();
   const { crustReady } = useFonts();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: pbCreatorData } = useQuery<
     PlaybookCreatorData,
     PlaybookCreatorVars
@@ -74,7 +74,7 @@ const CharacterHxForm: FC = () => {
     FinishCharacterCreationVars
   >(FINISH_CHARACTER_CREATION);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   let characters: Character[] = [];
   otherPlayerGameRoles?.forEach((gameRole) => {
     if (!!gameRole.characters && gameRole.characters.length === 1) {
@@ -145,7 +145,7 @@ const CharacterHxForm: FC = () => {
             });
             logAmpEvent('complete character creation');
           }
-          history.push(`/pre-game/${game.id}`);
+          navigate(`/pre-game/${game.id}`);
         } catch (error) {
           console.error(error);
         }

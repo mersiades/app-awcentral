@@ -42,6 +42,7 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
       return;
     }
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

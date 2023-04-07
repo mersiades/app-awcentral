@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface AddUserToGameData {
@@ -39,6 +39,6 @@ const ADD_USER_TO_GAME = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<AddUserToGameData, AddUserToGameVars>;
 
 export default ADD_USER_TO_GAME;

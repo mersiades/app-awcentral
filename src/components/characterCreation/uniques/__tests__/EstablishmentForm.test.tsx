@@ -152,8 +152,8 @@ describe('Rendering EstablishmentForm', () => {
       });
       const attractionsBox = screen.getByTestId('attractions-box');
       expect(attractionsBox.textContent).toEqual('Attractions');
-      userEvent.click(sideAttraction1);
-      userEvent.click(sideAttraction2);
+      await userEvent.click(sideAttraction1);
+      await userEvent.click(sideAttraction2);
       expect(attractionsBox.textContent).toContain(
         mockEstablishmentCreator.attractions[1]
       );
@@ -169,8 +169,8 @@ describe('Rendering EstablishmentForm', () => {
         `${mockEstablishmentCreator.atmospheres[1]}-pill`
       );
       const atmosphereBox = screen.getByTestId('atmosphere-box');
-      userEvent.click(atmosphere1);
-      userEvent.click(atmosphere2);
+      await userEvent.click(atmosphere1);
+      await userEvent.click(atmosphere2);
       expect(atmosphereBox.textContent).toContain(
         mockEstablishmentCreator.atmospheres[0]
       );
@@ -186,8 +186,8 @@ describe('Rendering EstablishmentForm', () => {
         (btn) => btn.id === 'add-additional-regular-button'
       ) as HTMLButtonElement;
       const regularsBox = screen.getByTestId('regulars-box');
-      userEvent.type(additionalRegularInput, ADDITIONAL_REGULAR_NAME);
-      userEvent.click(addRegularButton);
+      await userEvent.type(additionalRegularInput, ADDITIONAL_REGULAR_NAME);
+      await userEvent.click(addRegularButton);
       expect(regularsBox.textContent).toContain(ADDITIONAL_REGULAR_NAME);
 
       // Select best and worst regular
@@ -201,8 +201,8 @@ describe('Rendering EstablishmentForm', () => {
         (btn) => btn.id === 'add-additional-interest-npc-button'
       ) as HTMLButtonElement;
       const npcsBox = screen.getByTestId('interested npcs-box');
-      userEvent.type(additionalNpcInput, ADDITIONAL_NPC_NAME);
-      userEvent.click(addNpcButton);
+      await userEvent.type(additionalNpcInput, ADDITIONAL_NPC_NAME);
+      await userEvent.click(addNpcButton);
       expect(npcsBox.textContent).toContain(ADDITIONAL_NPC_NAME);
 
       // Assign interested NPCs
@@ -216,8 +216,8 @@ describe('Rendering EstablishmentForm', () => {
         name: mockEstablishmentCreator.securityOptions[1].description,
       });
       const securityBox = screen.getByTestId('security-box');
-      userEvent.click(securityOption1);
-      userEvent.click(securityOption2);
+      await userEvent.click(securityOption1);
+      await userEvent.click(securityOption2);
       expect(securityBox.textContent).toContain(
         mockEstablishmentCreator.securityOptions[0].description
       );
@@ -236,9 +236,9 @@ describe('Rendering EstablishmentForm', () => {
         (btn) => btn.id === 'add-crew-member-button'
       ) as HTMLButtonElement;
       const crewBox = screen.getByTestId('cast & crew-box');
-      userEvent.type(crewNameInput, CREW_NAME);
-      userEvent.type(crewDescriptionInput, CREW_DESCRIPTION);
-      userEvent.click(addCrewButton);
+      await userEvent.type(crewNameInput, CREW_NAME);
+      await userEvent.type(crewDescriptionInput, CREW_DESCRIPTION);
+      await userEvent.click(addCrewButton);
       expect(crewBox.textContent).toContain(CREW_NAME);
 
       // Check SET button is enabled
@@ -295,18 +295,18 @@ describe('Rendering EstablishmentForm', () => {
       await waitOneTick();
     });
 
-    test('should render functional EstablishInterestResolutionDialog', () => {
+    test('should render functional EstablishInterestResolutionDialog', async () => {
       expect(
         screen.getByRole('heading', { name: RESOLVE_INTEREST_DIALOG_TITLE })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole('button', { name: 'select-interest-input' })
+        screen.getByRole('button', { name: RESOLVE_INTEREST_SELECT_LABEL })
       ).toBeInTheDocument();
-      userEvent.click(
-        screen.getByRole('button', { name: 'select-interest-input' })
+      await userEvent.click(
+        screen.getByRole('button', { name: RESOLVE_INTEREST_SELECT_LABEL })
       );
-      expect(screen.getAllByRole('menuitem')).toHaveLength(3);
-      userEvent.click(screen.getAllByRole('menuitem')[0]);
+      expect(screen.getAllByRole('option')).toHaveLength(3);
+      await userEvent.click(screen.getAllByRole('option')[0]);
       const input = screen.getByRole('textbox', {
         name: RESOLVE_INTEREST_SELECT_LABEL,
       }) as HTMLInputElement;

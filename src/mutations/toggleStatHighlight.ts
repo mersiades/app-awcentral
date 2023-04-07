@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character, CharacterStat, StatsBlock } from '../@types/dataInterfaces';
 import { StatType } from '../@types/enums';
 
@@ -101,6 +101,6 @@ const TOGGLE_STAT_HIGHLIGHT = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<ToggleStatHighlightData, ToggleStatHighlightVars>;
 
 export default TOGGLE_STAT_HIGHLIGHT;

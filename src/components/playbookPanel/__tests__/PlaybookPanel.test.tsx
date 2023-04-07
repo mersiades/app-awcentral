@@ -3,7 +3,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { customRenderForComponent } from '../../../tests/test-utils';
+import { customRenderForComponent, waitOneTick } from '../../../tests/test-utils';
 import { mockCharacter2 } from '../../../tests/mocks';
 import { mockPlaybook } from '../../../tests/mockQueries';
 import { decapitalize } from '../../../helpers/decapitalize';
@@ -41,10 +41,10 @@ describe('Rendering PlaybookPanel', () => {
 
   //   // Check that playbook description can be opened and closed
   //   const downChevron = screen.getByTestId('name-down-chevron');
-  //   userEvent.click(downChevron);
+  //   await userEvent.click(downChevron);
   //   expect(box.textContent).toContain(mockPlaybookAngel.intro);
   //   const upChevron = screen.getByTestId('name-up-chevron');
-  //   userEvent.click(upChevron);
+  //   await userEvent.click(upChevron);
   //   expect(box.textContent).not.toContain(mockPlaybookAngel.intro);
   // });
 
@@ -75,13 +75,13 @@ describe('Rendering PlaybookPanel', () => {
 
   //   // Check can increase barter
   //   const increaseCaret = screen.getByTestId('increase-barter-caret');
-  //   userEvent.click(increaseCaret);
+  //   await userEvent.click(increaseCaret);
   //   expect(mockHandleSetBarter).toHaveBeenCalledWith(mockCharacter2.barter + 1);
   //   mockHandleSetBarter.mockClear();
 
   //   // Check can decrease barter
   //   const decreaseCaret = screen.getByTestId('decrease-barter-caret');
-  //   userEvent.click(decreaseCaret);
+  //   await userEvent.click(decreaseCaret);
   //   expect(mockHandleSetBarter).toHaveBeenCalledWith(mockCharacter2.barter - 1);
   // });
 
@@ -119,34 +119,34 @@ describe('Rendering PlaybookPanel', () => {
 
   //   // Check can add 1 harm
   //   const sector0 = screen.getByTestId('harm-sector-0');
-  //   userEvent.click(sector0);
+  //   await userEvent.click(sector0);
   //   expect(mockHandleSetHarm).toHaveBeenCalledWith({ ...harm, value: 1 });
   //   mockHandleSetHarm.mockClear();
 
   //   // Check can set stabilised
-  //   userEvent.click(screen.getByRole('checkbox', { name: 'Stabilized' }));
+  //   await userEvent.click(screen.getByRole('checkbox', { name: 'Stabilized' }));
   //   expect(mockHandleSetHarm).toHaveBeenCalledWith({ ...harm, isStabilized: true });
   //   mockHandleSetHarm.mockClear();
 
   //   // Check can set the four untenable life options
-  //   userEvent.click(screen.getByRole('checkbox', { name: 'Come back with -1hard' }));
+  //   await userEvent.click(screen.getByRole('checkbox', { name: 'Come back with -1hard' }));
   //   expect(mockHandleSetHarm).toHaveBeenCalledWith({ ...harm, hasComeBackHard: true });
   //   mockHandleSetHarm.mockClear();
-  //   userEvent.click(screen.getByRole('checkbox', { name: 'Come back with +1weird (max+3)' }));
+  //   await userEvent.click(screen.getByRole('checkbox', { name: 'Come back with +1weird (max+3)' }));
   //   expect(mockHandleSetHarm).toHaveBeenCalledWith({ ...harm, hasComeBackWeird: true });
   //   mockHandleSetHarm.mockClear();
-  //   userEvent.click(screen.getByRole('checkbox', { name: 'Change to a new playbook' }));
+  //   await userEvent.click(screen.getByRole('checkbox', { name: 'Change to a new playbook' }));
   //   expect(mockHandleSetHarm).toHaveBeenCalledWith({ ...harm, hasChangedPlaybook: true });
   //   mockHandleSetHarm.mockClear();
-  //   userEvent.click(screen.getByRole('checkbox', { name: 'Die' }));
+  //   await userEvent.click(screen.getByRole('checkbox', { name: 'Die' }));
   //   expect(mockHandleSetHarm).toHaveBeenCalledWith({ ...harm, hasDied: true });
   //   mockHandleSetHarm.mockClear();
 
   //   // Check can collapse and open HarmBox using Harm title
   //   screen.getByTestId('harm-up-chevron');
-  //   userEvent.click(screen.getByRole('heading', { name: /Harm/ }));
+  //   await userEvent.click(screen.getByRole('heading', { name: /Harm/ }));
   //   screen.getByTestId('harm-down-chevron');
-  //   userEvent.click(screen.getByRole('heading', { name: /Harm/ }));
+  //   await userEvent.click(screen.getByRole('heading', { name: /Harm/ }));
   //   screen.getByTestId('harm-up-chevron');
   // });
 
@@ -177,7 +177,7 @@ describe('Rendering PlaybookPanel', () => {
   //   expect(screen.getByTestId('hx-box').textContent).toContain(mockCharacter2.hxBlock[0].hxValue);
 
   //   // Check can increase Hx
-  //   userEvent.click(screen.getByTestId('increase-hx-caret'));
+  //   await userEvent.click(screen.getByTestId('increase-hx-caret'));
   //   expect(mockHandleAdjustHx).toHaveBeenCalledWith(
   //     mockCharacter2.hxBlock[0].characterId,
   //     mockCharacter2.hxBlock[0].hxValue + 1
@@ -185,7 +185,7 @@ describe('Rendering PlaybookPanel', () => {
   //   mockHandleAdjustHx.mockClear();
 
   //   // Check can decrease Hx
-  //   userEvent.click(screen.getByTestId('decrease-hx-caret'));
+  //   await userEvent.click(screen.getByTestId('decrease-hx-caret'));
   //   expect(mockHandleAdjustHx).toHaveBeenCalledWith(
   //     mockCharacter2.hxBlock[0].characterId,
   //     mockCharacter2.hxBlock[0].hxValue - 1
@@ -203,8 +203,10 @@ describe('Rendering PlaybookPanel', () => {
       {
         isAuthenticated: true,
         apolloMocks: [mockPlaybook],
+        injectedCharacter: mockCharacter2
       }
     );
+    await waitOneTick();
 
     // Check MovesBox has rendered initially
     await screen.findByRole('heading', {
@@ -221,7 +223,7 @@ describe('Rendering PlaybookPanel', () => {
     );
 
     // Check can collapse moves list
-    userEvent.click(screen.getByTestId('hide-moves-icon'));
+    await userEvent.click(screen.getByTestId('hide-moves-icon'));
     expect(screen.getByTestId('moves-box').textContent).not.toContain(
       decapitalize(mockCharacter2.characterMoves[0].name)
     );
@@ -233,7 +235,7 @@ describe('Rendering PlaybookPanel', () => {
     );
 
     // Check can re-open moves list
-    userEvent.click(screen.getByTestId('show-moves-icon'));
+    await userEvent.click(screen.getByTestId('show-moves-icon'));
     expect(screen.getByTestId('moves-box').textContent).toContain(
       decapitalize(mockCharacter2.characterMoves[0].name)
     );
@@ -245,13 +247,13 @@ describe('Rendering PlaybookPanel', () => {
     );
 
     // Check can show move details
-    userEvent.click(screen.getAllByTestId('show-move-details-icon')[0]);
+    await userEvent.click(screen.getAllByTestId('show-move-details-icon')[0]);
     expect(screen.getByTestId('moves-box').textContent).toContain(
       mockCharacter2.characterMoves[0].description
     );
 
     // Check can close move details
-    userEvent.click(screen.getAllByTestId('hide-move-details-icon')[0]);
+    await userEvent.click(screen.getAllByTestId('hide-move-details-icon')[0]);
     expect(screen.getByTestId('moves-box').textContent).not.toContain(
       mockCharacter2.characterMoves[0].description
     );

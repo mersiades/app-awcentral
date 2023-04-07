@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformHocusSpecialMoveData {
@@ -40,6 +40,6 @@ const PERFORM_HOCUS_SPECIAL_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformHocusSpecialMoveData, PerformHocusSpecialMoveVars>;
 
 export default PERFORM_HOCUS_SPECIAL_MOVE;

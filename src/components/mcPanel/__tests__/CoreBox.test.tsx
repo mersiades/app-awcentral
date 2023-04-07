@@ -24,7 +24,7 @@ describe('Rendering CoreBox', () => {
     const openButton = await screen.findByTestId(
       `${boxTitle.toLowerCase()}-down-chevron`
     );
-    userEvent.click(openButton);
+    await userEvent.click(openButton);
     screen.getByRole('heading', { name: mockMcContent.core[0].title });
     screen.getByRole('heading', { name: mockMcContent.core[1].title });
     screen.getByRole('heading', { name: mockMcContent.core[2].title });

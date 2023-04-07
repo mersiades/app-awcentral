@@ -33,24 +33,24 @@ interface Interests {
 
 const EstablishmentInterestResolutionDialog: FC<EstablishmentInterestResolutionDialogProps> =
   ({ wantsInOnIt, oweForIt, wantsItGone }) => {
-    // ----------------------------- Component state ------------------------------ //
+    // ----------------------------- Component state ------------------------ //
     const [interests, setInterests] = useState<Interests>({
       wantsInOnIt,
       oweForIt,
       wantsItGone,
     });
 
-    // ----------------------------- Hooks ---------------------------------------- //
+    // ----------------------------- Hooks ---------------------------------- //
     const { crustReady } = useFonts();
     const { userGameRole, character } = useGame();
 
-    // ----------------------------- GraphQL -------------------------------------- //
+    // ----------------------------- GraphQL -------------------------------- //
     const [resolveInterest, { loading: resolvingInterest }] = useMutation<
       ResolveEstablishmentInterestData,
       ResolveEstablishmentInterestVars
     >(RESOLVE_ESTABLISHMENT_INTEREST);
 
-    // ----------------------------- Component functions ------------------------- //
+    // ----------------------------- Component functions -------------------- //
     const options: { label: string; value: string }[] = [
       { label: `${wantsInOnIt} wants in on it`, value: wantsInOnIt },
       { label: `You owe ${oweForIt} for it`, value: oweForIt },
@@ -106,8 +106,7 @@ const EstablishmentInterestResolutionDialog: FC<EstablishmentInterestResolutionD
       }
     };
 
-    // ----------------------------- Render ---------------------------------------- //
-
+    // ----------------------------- Render --------------------------------- //
     return (
       <DialogWrapper background={npcDialogBackground} handleClose={() => {}}>
         <Box gap="12px">

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { HoldInput } from '../@types';
 import { Game } from '../@types/dataInterfaces';
 import { characterFragments } from '../queries/game';
@@ -29,6 +29,6 @@ const REMOVE_HOLD = gql`
     }
   }
   ${characterFragments.holds}
-`;
+` as TypedDocumentNode<RemoveHoldData, RemoveHoldVars>;
 
 export default REMOVE_HOLD;

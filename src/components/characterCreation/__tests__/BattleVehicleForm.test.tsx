@@ -126,15 +126,17 @@ describe('Rendering BattleVehicleForm', () => {
     const nameInput = screen.getByRole('textbox', {
       name: 'name-input',
     }) as HTMLInputElement;
-    nameInput.setSelectionRange(0, DEFAULT_VEHICLE_NAME.length);
-    userEvent.type(nameInput, vehicleName);
+
+    await userEvent.clear(nameInput)
+    expect(nameInput.value).toEqual("");
+    await userEvent.type(nameInput, vehicleName);
     expect(nameInput.value).toEqual(vehicleName);
 
     // Choose vehicle frame
     const largeFramePill = screen.getByTestId(
       `${VehicleFrameType.large.toLowerCase()}-bo-pill`
     );
-    userEvent.click(largeFramePill);
+    await userEvent.click(largeFramePill);
     const frame = screen.getByRole('heading', {
       name: 'frame-value',
     }) as HTMLHeadingElement;
@@ -144,25 +146,25 @@ describe('Rendering BattleVehicleForm', () => {
     const strengthPill = screen.getByTestId(
       `${mockCarCreator.strengths[0]}-option-pill`
     );
-    userEvent.click(strengthPill);
+    await userEvent.click(strengthPill);
 
     // Select a weakness
     const weaknessPill = screen.getByTestId(
       `${mockCarCreator.weaknesses[0]}-option-pill`
     );
-    userEvent.click(weaknessPill);
+    await userEvent.click(weaknessPill);
 
     // Select a look
     const lookPill = screen.getByTestId(
       `${mockCarCreator.looks[0]}-option-pill`
     );
-    userEvent.click(lookPill);
+    await userEvent.click(lookPill);
 
     // Select two battle options
     const speedOption = screen.getByTestId(
       `${mockCarCreator.battleOptions[0].name}-pill`
     );
-    userEvent.click(speedOption);
+    await userEvent.click(speedOption);
     const speed = screen.getByRole('heading', {
       name: 'speed-value',
     }) as HTMLHeadingElement;
@@ -170,7 +172,7 @@ describe('Rendering BattleVehicleForm', () => {
     const armorOption = screen.getByTestId(
       `${mockCarCreator.battleOptions[3].name}-pill`
     );
-    userEvent.click(armorOption);
+    await userEvent.click(armorOption);
     const armor = screen.getByRole('heading', {
       name: 'armor-value',
     }) as HTMLHeadingElement;
@@ -180,7 +182,7 @@ describe('Rendering BattleVehicleForm', () => {
     const handlingOption = screen.getByRole('checkbox', {
       name: mockBattleVehicleCreator.battleVehicleOptions[1].name,
     });
-    userEvent.click(handlingOption);
+    await userEvent.click(handlingOption);
     const handling = screen.getByRole('heading', {
       name: 'handling-value',
     }) as HTMLHeadingElement;
@@ -188,7 +190,7 @@ describe('Rendering BattleVehicleForm', () => {
     const machineGunsOption = screen.getByRole('checkbox', {
       name: mockBattleVehicleCreator.battleVehicleOptions[4].name,
     });
-    userEvent.click(machineGunsOption);
+    await userEvent.click(machineGunsOption);
 
     // Check SET enabled
     const setButton = screen.getByRole('button', {

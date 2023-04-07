@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Move } from '../@types/staticDataInterfaces';
 
 export interface DeathMovesData {
@@ -15,6 +15,6 @@ const DEATH_MOVES = gql`
       kind
     }
   }
-`;
+` as TypedDocumentNode<DeathMovesData>;
 
 export default DEATH_MOVES;

@@ -117,7 +117,7 @@ describe('Rendering HoldingForm', () => {
       screen.getByRole('button', { name: 'SET' });
     });
 
-    test('should enable SET button when form is complete', () => {
+    test('should enable SET button when form is complete', async () => {
       let setButton = screen.getByRole('button', {
         name: 'SET',
       }) as HTMLButtonElement;
@@ -141,7 +141,7 @@ describe('Rendering HoldingForm', () => {
       });
 
       // Select first strength
-      userEvent.click(strength1);
+      await userEvent.click(strength1);
       const holdingSizeBox = screen.getByRole('heading', {
         name: 'holding size-value',
       });
@@ -150,7 +150,7 @@ describe('Rendering HoldingForm', () => {
       expect(wantsBox.textContent).toContain('disease');
 
       // Select second strength
-      userEvent.click(strength2);
+      await userEvent.click(strength2);
       const surplusValue = screen.getByRole('heading', {
         name: 'surplus-value',
       });
@@ -160,12 +160,12 @@ describe('Rendering HoldingForm', () => {
       expect(gigsBox.textContent).toContain('market commons');
 
       // Select third strength
-      userEvent.click(strength3);
+      await userEvent.click(strength3);
       const tagsBox = screen.getByTestId('tags-tags-box');
       expect(tagsBox.textContent).toEqual('Tags');
 
       // Select fourth strength
-      userEvent.click(strength4);
+      await userEvent.click(strength4);
       const harmValue = screen.getByRole('heading', { name: 'harm-value' });
       expect(harmValue.textContent).toEqual('3');
       setButton = screen.getByRole('button', {
@@ -174,12 +174,12 @@ describe('Rendering HoldingForm', () => {
       expect(setButton.disabled).toEqual(true);
 
       // Select first weakness
-      userEvent.click(weakness1);
+      await userEvent.click(weakness1);
       expect(surplusValue.textContent).toContain('2');
       expect(wantsBox.textContent).toContain('savagery');
 
       // Select second weakness
-      userEvent.click(weakness2);
+      await userEvent.click(weakness2);
       // No screen updates to check for with weakness2 (it updates vehicle counts)
 
       // Check SET button is enabled

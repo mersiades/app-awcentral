@@ -132,7 +132,7 @@ describe('Rendering VehicleForm', () => {
     const largeFramePill = screen.getByTestId(
       `${VehicleFrameType.large.toLowerCase()}-bo-pill`
     );
-    userEvent.click(largeFramePill);
+    await userEvent.click(largeFramePill);
     const frame = screen.getByRole('heading', {
       name: 'frame-value',
     }) as HTMLHeadingElement;
@@ -142,25 +142,25 @@ describe('Rendering VehicleForm', () => {
     const strengthPill = screen.getByTestId(
       `${mockCarCreator.strengths[0]}-option-pill`
     );
-    userEvent.click(strengthPill);
+    await userEvent.click(strengthPill);
 
     // Select a weakness
     const weaknessPill = screen.getByTestId(
       `${mockCarCreator.weaknesses[0]}-option-pill`
     );
-    userEvent.click(weaknessPill);
+    await userEvent.click(weaknessPill);
 
     // Select a look
     const lookPill = screen.getByTestId(
       `${mockCarCreator.looks[0]}-option-pill`
     );
-    userEvent.click(lookPill);
+    await userEvent.click(lookPill);
 
     // Select two battle options
     const speedOption = screen.getByTestId(
       `${mockCarCreator.battleOptions[0].name}-pill`
     );
-    userEvent.click(speedOption);
+    await userEvent.click(speedOption);
     const speed = screen.getByRole('heading', {
       name: 'speed-value',
     }) as HTMLHeadingElement;
@@ -168,7 +168,7 @@ describe('Rendering VehicleForm', () => {
     const armorOption = screen.getByTestId(
       `${mockCarCreator.battleOptions[3].name}-pill`
     );
-    userEvent.click(armorOption);
+    await userEvent.click(armorOption);
     const armor = screen.getByRole('heading', {
       name: 'armor-value',
     }) as HTMLHeadingElement;

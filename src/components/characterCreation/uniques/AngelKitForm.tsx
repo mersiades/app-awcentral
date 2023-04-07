@@ -15,7 +15,7 @@ import PLAYBOOK_CREATOR, {
 } from '../../../queries/playbookCreator';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
 
@@ -27,7 +27,7 @@ const AngelKitForm: FC = () => {
   const { crustReady } = useFonts();
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const { data: pbCreatorData } = useQuery<
@@ -60,7 +60,7 @@ const AngelKitForm: FC = () => {
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
           );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

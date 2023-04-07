@@ -74,6 +74,7 @@ const BoardVehicleDialog: FC<BoardVehicleDialogProps> = ({
 
   const handleSpeedRollMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

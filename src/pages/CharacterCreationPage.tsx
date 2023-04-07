@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Box } from 'grommet';
 
@@ -29,7 +29,7 @@ export const background = {
   dark: true,
   size: 'contain',
   image: 'url(/images/character-creation-background-image.jpg)',
-  position: 'top center',
+  position: 'top center'
 };
 
 const CharacterCreationPage: FC = () => {
@@ -37,25 +37,25 @@ const CharacterCreationPage: FC = () => {
   const step = query.get('step');
   const creationStep = !!step ? parseInt(step) : undefined;
 
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [showScrollable, setShowScrollable] = useState(false);
 
-  // ------------------------------------------------------- Refs -------------------------------------------------------- //
+  // ----------------------------- Refs ------------------------------------- //
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { userId } = useUser();
   const { game, setGameContext, character } = useGame();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   // Fetch playbooks now, to speed things up later
   useQuery<PlaybooksData>(PLAYBOOKS);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const handleScroll = (e: any) => {
     if (!e.currentTarget) {
       return;
@@ -76,31 +76,31 @@ const CharacterCreationPage: FC = () => {
     }
   };
 
-  // --------------------------------------------------- Effects ----------------------------------------------------- //
+  // ------------------------------- Effects -------------------------------- //
   // Navigate to correct character creation step
   useEffect(() => {
     if (!step) {
       if (!!character) {
-        history.push(`/character-creation/${gameId}?step=${1}`);
+        navigate(`/character-creation/${gameId}?step=${1}`);
       } else {
-        history.push(`/character-creation/${gameId}?step=${0}`);
+        navigate(`/character-creation/${gameId}?step=${0}`);
       }
     }
 
     if (step === '0' && !!character) {
-      history.push(`/character-creation/${gameId}?step=${1}`);
+      navigate(`/character-creation/${gameId}?step=${1}`);
     }
-  }, [step, character, gameId, history]);
+  }, [step, character, gameId, navigate]);
 
   // Navigate user to menu page if they are not a member of the game
   useEffect(() => {
     if (!!game && !!userId) {
       const memberIds = game?.players.map((player) => player.id);
       if (!memberIds.includes(userId)) {
-        history.push('/menu');
+        navigate('/menu');
       }
     }
-  }, [game, userId, history]);
+  }, [game, userId, navigate]);
 
   // Set a scroll event listener for ScrollableIndicator
   useLayoutEffect(() => {
@@ -130,16 +130,16 @@ const CharacterCreationPage: FC = () => {
 
   if (creationStep === undefined) {
     return (
-      <Box fill background={background} align="center" justify="center">
+      <Box fill background={background} align='center' justify='center'>
         <Spinner />
       </Box>
     );
   }
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <Box
-      data-testid="character-creation-page"
+      data-testid='character-creation-page'
       ref={containerRef}
       fill
       background={background}
@@ -151,7 +151,7 @@ const CharacterCreationPage: FC = () => {
           style={{
             position: 'absolute',
             top: 'calc(50vh - 12px)',
-            left: 'calc(50vw - 12px)',
+            left: 'calc(50vw - 12px)'
           }}
         >
           <Spinner />
@@ -161,15 +161,15 @@ const CharacterCreationPage: FC = () => {
       <CloseButton
         handleClose={() => {
           if (!!character?.playbook) {
-            !!game && history.push(`/player-game/${game.id}`);
+            !!game && navigate(`/player-game/${game.id}`);
           } else {
-            history.push('/menu');
+            navigate('/menu');
           }
         }}
       />
 
       <CharacterCreationStepper />
-      <Box flex="grow">
+      <Box flex='grow'>
         {creationStep === CharacterCreationSteps.intro &&
           !!game &&
           !character && <NewGameIntro />}

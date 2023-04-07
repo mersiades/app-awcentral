@@ -49,49 +49,49 @@ describe('Rendering MCPage', () => {
   test('should open each tab', async () => {
     screen.getByRole('tabpanel', { name: 'Game Tab Contents' });
     const movesTab = await screen.findByRole('tab', { name: 'Moves' });
-    userEvent.click(movesTab);
+    await userEvent.click(movesTab);
     screen.getByRole('tabpanel', { name: 'Moves Tab Contents' });
 
-    userEvent.click(screen.getByRole('tab', { name: 'MC' }));
+    await userEvent.click(screen.getByRole('tab', { name: 'MC' }));
     screen.getByRole('tabpanel', { name: 'MC Tab Contents' });
 
-    userEvent.click(screen.getByRole('tab', { name: 'Threats' }));
+    await userEvent.click(screen.getByRole('tab', { name: 'Threats' }));
     screen.getByRole('tabpanel', { name: 'MC Tab Contents' });
     screen.getByRole('tabpanel', { name: 'Threats Tab Contents' });
 
-    userEvent.click(screen.getByRole('tab', { name: 'NPCs' }));
+    await userEvent.click(screen.getByRole('tab', { name: 'NPCs' }));
     screen.getByRole('tabpanel', { name: 'MC Tab Contents' });
     screen.getByRole('tabpanel', { name: 'NPCs Tab Contents' });
   });
 
   test('should open delete-game dialog', async () => {
     await screen.findByRole('tab', { name: 'Moves' });
-    userEvent.click(
+    await userEvent.click(
       screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`)
     );
-    userEvent.click(screen.getByRole('button', { name: /DELETE GAME/ }));
+    await userEvent.click(screen.getByRole('button', { name: /DELETE GAME/ }));
     screen.getByTestId('delete game?-warning-dialog');
   });
 
   test('should open and close GameForm', async () => {
     await screen.findByRole('tab', { name: 'Moves' });
-    userEvent.click(
+    await userEvent.click(
       screen.getByTestId(`${mockGame7.name.toLowerCase()}-edit-link`)
     );
     screen.getByTestId('game-form');
-    userEvent.click(screen.getByTestId('close-icon-button'));
+    await userEvent.click(screen.getByTestId('close-icon-button'));
   });
 
   test('should open and close InvitationForm using INVITE PLAYER button', async () => {
     await screen.findByRole('tab', { name: 'Moves' });
-    userEvent.click(screen.getByRole('button', { name: /INVITE PLAYER/ }));
+    await userEvent.click(screen.getByRole('button', { name: /INVITE PLAYER/ }));
     screen.getByTestId('invitation-form');
 
     // Check InvitationForm is open to the email input part
     const input = screen.getByRole('textbox');
     expect(input.getAttribute('type')).toEqual('email');
 
-    userEvent.click(screen.getByTestId('close-icon-button'));
+    await userEvent.click(screen.getByTestId('close-icon-button'));
   });
 
   test('should open and close InvitationForm by clicking on player name', async () => {
@@ -107,12 +107,12 @@ describe('Rendering MCPage', () => {
       injectedUserId: mockAuth0UserInfo1.sub,
     });
     await screen.findByRole('tab', { name: 'Moves' });
-    userEvent.click(screen.getByTestId(`john@email.com-list-item`));
+    await userEvent.click(screen.getByTestId(`john@email.com-list-item`));
     screen.getByTestId('invitation-form');
 
     // Check InvitationForm is open to the email input part
     screen.getByRole('button', { name: /COPY TO CLIPBOARD/ });
 
-    userEvent.click(screen.getByTestId('close-icon-button'));
+    await userEvent.click(screen.getByTestId('close-icon-button'));
   });
 });

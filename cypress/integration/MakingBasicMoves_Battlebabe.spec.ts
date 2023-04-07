@@ -15,7 +15,13 @@ import {
   SUCKER_SOMEONE_NAME,
   UNDER_FIRE_NAME,
 } from '../../src/config/constants';
-import { setupQueryAliases } from '../utils/graphql-test-utils';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_PERFORM_BARTER, ONM_PERFORM_HELP,
+  ONM_PERFORM_PRINT, ONM_PERFORM_STAT_ROLL, ONQ_ALL_MOVES,
+  setupQueryAliases,
+  visitHomePage, waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Making basic moves from the MovesPanel as Battlebabe', () => {
   const characterName = johnAsPlayer_1.characters[0].name as string;
@@ -24,17 +30,24 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
     cy.login('john@email.com');
     cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
       setupQueryAliases(req)
+      aliasMutation(req, ONM_PERFORM_PRINT)
+      aliasMutation(req, ONM_PERFORM_STAT_ROLL)
+      aliasMutation(req, ONM_PERFORM_HELP)
+      aliasMutation(req, ONM_PERFORM_BARTER)
     })
-    cy.visit('/');
+    visitHomePage()
     cy.returnToGame(game7.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.openMovesPanelBox('Basic moves');
   });
 
   it(`should show a ${UNDER_FIRE_NAME} move message`, () => {
-    cy.checkPrintMove(
+    cy.checkRollMove(
       characterName,
       UNDER_FIRE_NAME,
-      'When you do something under fire'
+      'When you do something under fire',
+      StatType.cool,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -43,7 +56,8 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
       characterName,
       GO_AGGRO_NAME,
       'When you go aggro on someone',
-      StatType.hard
+      StatType.hard,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -64,7 +78,8 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
       characterName,
       SEDUCE_OR_MANIP_NAME,
       'When you try to seduce, manipulate, bluff, fast-talk, or lie to someone',
-      StatType.hot
+      StatType.hot,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -74,8 +89,9 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
     const messageTitle = `${characterName?.toUpperCase()}: ${HELP_OR_INTERFERE_NAME}`;
     cy.contains(decapitalize(HELP_OR_INTERFERE_NAME)).click();
     cy.get('input[aria-label="target-character-input"]').click();
-    cy.get('div[role="menubar"]').within(() => cy.contains(targetName).click());
+    cy.get('div[role="listbox"]').within(() => cy.contains(targetName).click());
     cy.contains('ROLL').click();
+    waitMutationWithGame(ONM_PERFORM_HELP)
     cy.checkMoveMessage(messageTitle, moveDescSnippet, StatType.hx);
   });
 
@@ -84,7 +100,8 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
       characterName,
       READ_A_SITCH_NAME,
       'When you read a charged situation',
-      StatType.sharp
+      StatType.sharp,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -93,7 +110,8 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
       characterName,
       READ_PERSON_NAME,
       'When you read a person',
-      StatType.sharp
+      StatType.sharp,
+      ONM_PERFORM_STAT_ROLL
     );
     // Flakey: not worth the effort
     // cy.get(`div[data-testid="${characterName?.toUpperCase()}: ${READ_PERSON_NAME}-message"]`).within(() => {
@@ -115,7 +133,8 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
       characterName,
       OPEN_BRAIN_NAME,
       'When you open your brain to the world’s psychic maelstrom',
-      StatType.weird
+      StatType.weird,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -128,6 +147,7 @@ describe('Making basic moves from the MovesPanel as Battlebabe', () => {
     cy.contains('SPEND').should('be.disabled');
     cy.get('input[type="number"]').type('{selectall}').type('2');
     cy.contains('SPEND').should('not.be.disabled').click();
+    waitMutationWithGame(ONM_PERFORM_BARTER)
 
     cy.checkMoveMessage(messageTitle, moveDescSnippet);
     cy.contains('Barter spent: 2').should('be.visible');

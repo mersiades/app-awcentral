@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { HoldingInput } from '../@types';
 import { Character, Holding, PlaybookUniques } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
@@ -144,6 +144,6 @@ const SET_HOLDING = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetHoldingData, SetHoldingVars>;
 
 export default SET_HOLDING;

@@ -40,6 +40,7 @@ const HocusSpecialDialog: FC<HocusSpecialDialogProps> = ({
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleHocusSpecialMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

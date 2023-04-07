@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { VehicleInput } from '../@types';
 import { Character } from '../@types/dataInterfaces';
 
@@ -51,6 +51,6 @@ const SET_VEHICLE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetVehicleData, SetVehicleVars>;
 
 export default SET_VEHICLE;

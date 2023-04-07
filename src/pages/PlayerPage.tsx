@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Collapsible, Tab, Tabs, ThemeContext } from 'grommet';
 
 import MovesPanel from '../components/MovesPanel';
@@ -98,7 +98,7 @@ const PlayerPage: FC = () => {
   let hasShownGotToPreGameDialog = useRef(false);
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
   const { gameId } = useParams<{ gameId: string }>();
 
   // ----------------------------- Hooks ---------------------------------------- //
@@ -112,9 +112,9 @@ const PlayerPage: FC = () => {
   // ----------------------------- Component functions ------------------------- //
   const navigateToCharacterCreation = useCallback(
     (step: string) => {
-      history.push(`/character-creation/${gameId}?step=${step}`);
+      navigate(`/character-creation/${gameId}?step=${step}`);
     },
-    [history, gameId]
+    [navigate, gameId]
   );
 
   // ----------------------------- Effects ---------------------------------------- //
@@ -125,11 +125,11 @@ const PlayerPage: FC = () => {
       if (!!game && !!userId) {
         const memberIds = game?.players.map((player) => player.id);
         if (!memberIds.includes(userId)) {
-          history.push('/menu');
+          navigate('/menu');
         }
       }
     }
-  }, [fetchingGame, game, userId, history]);
+  }, [fetchingGame, game, userId, navigate]);
 
   // Sets the GameContext
   useEffect(() => {

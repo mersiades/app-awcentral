@@ -155,7 +155,7 @@ describe('Rendering PlaybookUniqueRouter', () => {
       await waitOneTick();
     });
 
-    test('should render tabs for WeaponsForm and AngelKit', () => {
+    test('should render tabs for WeaponsForm and AngelKit', async () => {
       expect(screen.getByTestId(WEAPONS_FORM_TEST_ID)).toBeInTheDocument();
       expect(
         screen.getByRole('tab', { name: decapitalize(UniqueTypes.weapons) })
@@ -169,7 +169,7 @@ describe('Rendering PlaybookUniqueRouter', () => {
         })
       ).toBeInTheDocument();
 
-      userEvent.click(
+      await userEvent.click(
         screen.getByRole('tab', { name: decapitalize(UniqueTypes.angelKit) })
       );
       expect(

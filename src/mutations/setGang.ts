@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { GangInput } from '../@types';
 import { Character, Gang, PlaybookUniques } from '../@types/dataInterfaces';
 import { UniqueTypes } from '../@types/enums';
@@ -118,6 +118,6 @@ const SET_GANG = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetGangData, SetGangVars>;
 
 export default SET_GANG;

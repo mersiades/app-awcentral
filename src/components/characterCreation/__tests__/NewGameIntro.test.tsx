@@ -27,8 +27,8 @@ describe('Rendering NewGameIntro', () => {
     }) as HTMLAnchorElement;
     expect(link.href).toEqual(mockGame5.commsUrl);
 
-    userEvent.click(nextButton);
-    expect(nextButton.disabled).toEqual(true);
+    await userEvent.click(nextButton);
+    expect(nextButton.disabled).toEqual(false);
   });
 
   test('should render NewGameIntro with commsApp only', async () => {

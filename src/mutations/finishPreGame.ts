@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface FinishPreGameData {
@@ -31,6 +31,6 @@ const FINISH_PRE_GAME = gql`
       showFirstSession
     }
   }
-`;
+` as TypedDocumentNode<FinishPreGameData, FinishPreGameVars>;
 
 export default FINISH_PRE_GAME;

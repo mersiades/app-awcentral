@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformHelpOrInterfereMoveData {
@@ -45,6 +45,6 @@ const PERFORM_HELP_OR_INTERFERE_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformHelpOrInterfereMoveData, PerformHelpOrInterfereMoveVars>;
 
 export default PERFORM_HELP_OR_INTERFERE_MOVE;

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box } from 'grommet';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -26,19 +26,19 @@ import {
 import '../assets/styles/transitions.css';
 
 const MenuPage: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [buttonsContainer, setButtonsContainer] = useState(0);
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
   const { logout } = useAuth0();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { userId, displayName } = useUser();
   const { clearGameContext } = useGame();
   const { vtksReady } = useFonts();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data } = useQuery<GameRolesByUserIdData, GameRolesByUserIdVars>(
     GAMEROLES_BY_USER_ID,
     {
@@ -51,13 +51,13 @@ const MenuPage: FC = () => {
   );
   const gameRoles = data?.gameRolesByUserId;
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
 
   useEffect(() => {
     !!clearGameContext && clearGameContext();
   }, [clearGameContext]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   const renderMenuButtons = () => {
     if (!gameRoles) {
@@ -84,7 +84,7 @@ const MenuPage: FC = () => {
               fill
               onClick={() => {
                 logAmpEvent('click join game');
-                history.push('/join-game');
+                navigate('/join-game');
               }}
             />
             <ButtonWS

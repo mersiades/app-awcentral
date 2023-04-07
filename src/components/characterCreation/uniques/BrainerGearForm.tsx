@@ -21,7 +21,7 @@ import SET_BRAINER_GEAR, {
   setBrainerGearOR,
   SetBrainerGearVars,
 } from '../../../mutations/setBrainerGear';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CharacterCreationSteps, PlaybookType } from '../../../@types/enums';
 import { INCREASED_BY_IMPROVEMENT_TEXT } from '../../../config/constants';
 import { logAmpEvent } from '../../../config/amplitudeConfig';
@@ -40,7 +40,7 @@ const BrainerGearForm: FC = () => {
   );
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const { data: pbCreatorData } = useQuery<
@@ -80,7 +80,7 @@ const BrainerGearForm: FC = () => {
           optimisticResponse: setBrainerGearOR(character, brainerGear),
         });
         !character.hasCompletedCharacterCreation && logAmpEvent('set unique');
-        history.push(
+        navigate(
           `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
         );
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

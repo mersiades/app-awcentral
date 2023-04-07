@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Form, Box, FormField, TextInput, TextArea } from 'grommet';
 
 import Spinner from './Spinner';
@@ -33,7 +33,7 @@ import {
 const baseUrl = process.env.REACT_APP_ROOT_URL;
 
 const InviteesForm: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [formValues, setFormValues] = useState<{ email: string }>({
     email: '',
   });
@@ -41,21 +41,21 @@ const InviteesForm: FC = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game } = useGame();
   const { vtksReady } = useFonts();
   const { email: mcEmail } = useUser();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const [addInvitee, { loading: loadingAddInvitee }] = useMutation<
     AddInviteeData,
     AddInviteeVars
   >(ADD_INVITEE);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
 
   const renderMessage = () => {
     return (
@@ -230,7 +230,7 @@ const InviteesForm: FC = () => {
               type="submit"
               value={validateEmail(formValues.email)}
               label={game.invitees.length === 0 ? LATER_TEXT : FINISH_TEXT}
-              onClick={() => history.push(`/mc-game/${game.id}`)}
+              onClick={() => navigate(`/mc-game/${game.id}`)}
             />
           )}
         </Box>

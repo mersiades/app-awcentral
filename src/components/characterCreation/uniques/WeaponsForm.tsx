@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { Box, Tip, Text } from 'grommet';
 
@@ -32,18 +32,18 @@ import { logAmpEvent } from '../../../config/amplitudeConfig';
 export const WEAPONS_FORM_TEST_ID = 'weapons-form';
 
 const WeaponsForm: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [fobGun, setFobGun] = useState('');
   const [seriousWeapons, setSeriousWeapons] = useState<string[]>([]);
   const [backupWeapon, setBackupWeapon] = useState('');
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: pbCreatorData } = useQuery<
     PlaybookCreatorData,
     PlaybookCreatorVars
@@ -65,7 +65,7 @@ const WeaponsForm: FC = () => {
     SetWeaponsVars
   >(SET_WEAPONS);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const handleSubmitWeapons = async () => {
     if (!!userGameRole && !!character && !!game) {
       try {
@@ -79,7 +79,7 @@ const WeaponsForm: FC = () => {
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
           );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -90,7 +90,7 @@ const WeaponsForm: FC = () => {
     }
   };
 
-  const handleSeriouseWeaponSelect = (weapon: string, isSelected: boolean) => {
+  const handleSeriousWeaponSelect = (weapon: string, isSelected: boolean) => {
     if (isSelected) {
       setSeriousWeapons(seriousWeapons.filter((sw) => sw !== weapon));
     } else {
@@ -184,7 +184,7 @@ const WeaponsForm: FC = () => {
           pad={{ top: '3px', bottom: '1px', horizontal: '12px' }}
           margin={{ vertical: '3px', horizontal: '3px' }}
           justify="center"
-          onClick={() => handleSeriouseWeaponSelect(weapon, isSelected)}
+          onClick={() => handleSeriousWeaponSelect(weapon, isSelected)}
           hoverIndicator={{ color: '#698D70', dark: true }}
           style={{ cursor: 'pointer' }}
         >

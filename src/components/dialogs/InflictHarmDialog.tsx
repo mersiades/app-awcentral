@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, FormField, Select, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -15,10 +14,6 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StyledMarkdown } from '../styledComponents';
-import PERFORM_INFLICT_HARM_MOVE, {
-  PerformInflictHarmMoveData,
-  PerformInflictHarmMoveVars,
-} from '../../mutations/performInflictHarmMove';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 import { useMoves } from '../../contexts/movesContext';
 
@@ -47,6 +42,7 @@ const InflictHarmDialog: FC<InflictHarmDialogProps> = ({
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleInflictHarmMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

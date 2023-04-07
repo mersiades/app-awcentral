@@ -84,10 +84,9 @@ describe('Rendering WorkspaceForm', () => {
         name: `${mockCharacter2.name?.toUpperCase()}'S WORKSPACE`,
       });
       screen.getByRole('heading', { name: 'Projects' });
-      screen.getByRole;
     });
 
-    test('should enable SET button when form is completed', () => {
+    test('should enable SET button when form is completed', async () => {
       screen.getByTestId('workspace-form');
       let setButton = screen.getByRole('button', {
         name: 'SET',
@@ -103,17 +102,17 @@ describe('Rendering WorkspaceForm', () => {
       );
 
       // Select first workspace item
-      userEvent.click(item1);
+      await userEvent.click(item1);
 
       // Select second workspace item
-      userEvent.click(item2);
+      await userEvent.click(item2);
       setButton = screen.getByRole('button', {
         name: 'SET',
       }) as HTMLButtonElement;
       expect(setButton.disabled).toEqual(true);
 
       // Select second workspace item
-      userEvent.click(item3);
+      await userEvent.click(item3);
       setButton = screen.getByRole('button', {
         name: 'SET',
       }) as HTMLButtonElement;

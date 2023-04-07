@@ -46,6 +46,7 @@ const BarterDialog: FC<BarterDialogProps> = ({ move, handleClose }) => {
       return;
     }
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

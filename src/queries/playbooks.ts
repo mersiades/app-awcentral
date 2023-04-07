@@ -1,5 +1,6 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Playbook } from '../@types/staticDataInterfaces';
+import { PlaybookVars } from './playbook';
 
 export interface PlaybooksData {
   playbooks: Playbook[];
@@ -16,6 +17,6 @@ const PLAYBOOKS = gql`
       playbookImageUrl
     }
   }
-`;
+` as TypedDocumentNode<PlaybooksData, PlaybookVars>;
 
 export default PLAYBOOKS;

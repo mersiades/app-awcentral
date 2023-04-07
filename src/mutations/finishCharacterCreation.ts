@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 
 export interface FinishCharacterCreationData {
@@ -35,6 +35,6 @@ const FINISH_CHARACTER_CREATION = gql`
       hasCompletedCharacterCreation
     }
   }
-`;
+` as TypedDocumentNode<FinishCharacterCreationData, FinishCharacterCreationVars>;
 
 export default FINISH_CHARACTER_CREATION;

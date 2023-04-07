@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface DeleteGameData {
@@ -15,6 +15,6 @@ const DELETE_GAME = gql`
       id
     }
   }
-`;
+` as TypedDocumentNode<DeleteGameData, DeleteGameVars>;
 
 export default DELETE_GAME;

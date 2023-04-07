@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { SkinnerGearInput } from '../@types';
 import {
   Character,
@@ -92,6 +92,6 @@ const SET_SKINNER_GEAR = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetSkinnerGearData, SetSkinnerGearVars>;
 
 export default SET_SKINNER_GEAR;

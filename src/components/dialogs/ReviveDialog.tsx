@@ -41,6 +41,7 @@ const ReviveDialog: FC<ReviveDialogProps> = ({ move, handleClose }) => {
       return;
     }
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&

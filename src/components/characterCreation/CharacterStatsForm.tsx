@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box } from 'grommet';
 
 import Spinner from '../Spinner';
@@ -41,7 +41,7 @@ const CharacterStatsForm: FC = () => {
   >();
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const { data: pbCreatorData } = useQuery<
@@ -123,7 +123,7 @@ const CharacterStatsForm: FC = () => {
           },
         });
         !character.hasCompletedCharacterCreation && logAmpEvent('set stats');
-        history.push(
+        navigate(
           `/character-creation/${game.id}?step=${CharacterCreationSteps.selectGear}`
         );
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
