@@ -11,11 +11,11 @@ const PrivateRoute: FC<PrivateRootProps> = () => {
   /**
    * If an unauthorised user navigates directly to a private page,
    *  such as when joining a new game via a link given in invitation email,
-   * redirect them to the Auth0 Universal Login page. If they successfully login,
+   * redirect them to the Auth0 Universal Login page. If they successfully log in,
    * Auth0 will redirect them to the private page they originally wanted to access
    */
   if (!isAuthenticated) {
-    loginWithRedirect();
+    void loginWithRedirect();
   }
 
   /**

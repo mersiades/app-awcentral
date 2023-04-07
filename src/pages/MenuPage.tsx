@@ -21,6 +21,7 @@ import {
   JOIN_GAME_TEXT,
   CREATE_GAME_TEXT,
   YOUR_GAMES_TITLE,
+  LS_PATHNAME
 } from '../config/constants';
 
 import '../assets/styles/transitions.css';
@@ -56,6 +57,16 @@ const MenuPage: FC = () => {
   useEffect(() => {
     !!clearGameContext && clearGameContext();
   }, [clearGameContext]);
+
+  useEffect(() => {
+    const url = localStorage.getItem(LS_PATHNAME)
+    console.log('url', url);
+    if (url && url !== '/') {
+      localStorage.removeItem(LS_PATHNAME)
+      navigate(url)
+    }
+
+  }, [navigate]);
 
   // ----------------------------- Render ----------------------------------- //
 

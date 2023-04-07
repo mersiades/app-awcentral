@@ -1,4 +1,5 @@
 export const GAME_POLL_DURATION = 1250;
+export const LS_PATHNAME = 'pathname'
 
 // Form validation
 export const NO_MC_AS_PLAYER_TEXT = 'MC cannot also be player';

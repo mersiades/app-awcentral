@@ -54,6 +54,9 @@ export const ONM_PERFORM_SUFFER_HARM = 'PerformSufferHarmMove'
 export const ONM_PERFORM_SUFFER_V_HARM = 'PerformSufferVHarmMove'
 export const ONM_PERFORM_INFLICT_HARM = 'PerformInflictHarmMove'
 export const ONM_PERFORM_MAKE_WANT_KNOWN = 'PerformMakeWantKnownMove'
+export const ONM_CREATE_GAME = 'CreateGame'
+export const ONM_ADD_COMMS_APP = 'AddCommsApp'
+export const ONM_ADD_COMMS_URL = 'AddCommsUrl'
 
 export const generateAlias = (operationName: string): string =>  `gql${operationName}Query`;
 export const generateWaitAlias = (operationName: string) => `@${generateAlias(operationName)}`

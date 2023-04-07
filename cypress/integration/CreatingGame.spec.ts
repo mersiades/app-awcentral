@@ -3,8 +3,21 @@ import game5 from '../fixtures/games/game5';
 import {
   ADD_TEXT,
   FINISH_TEXT,
-  NO_MC_AS_PLAYER_TEXT,
+  NO_MC_AS_PLAYER_TEXT
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias,
+  ONM_ADD_COMMS_APP,
+  ONM_ADD_COMMS_URL,
+  ONM_ADD_INVITEE,
+  ONM_CREATE_GAME,
+  ONQ_ALL_MOVES,
+  ONQ_GAME,
+  setupQueryAliases,
+  visitHomePage,
+  waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Creating a Game as MC', () => {
   // Importing these objects are coming out as undefined for some reason,
@@ -15,7 +28,15 @@ describe('Creating a Game as MC', () => {
 
   beforeEach(() => {
     cy.login('dave@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_CREATE_GAME)
+      aliasMutation(req, ONM_ADD_INVITEE)
+      aliasMutation(req, ONM_ADD_COMMS_APP)
+      aliasMutation(req, ONM_ADD_COMMS_URL)
+    })
+
+    visitHomePage()
   });
 
   context('with 3 players, no comms app or url', () => {
@@ -27,6 +48,7 @@ describe('Creating a Game as MC', () => {
       cy.get('input').type(game4.name);
       cy.contains('button', 'SUBMIT').should('not.be.disabled');
       cy.contains('button', 'SUBMIT').click();
+      waitMutationWithGame(ONM_CREATE_GAME)
       cy.url().should('contain', 'create-game');
       cy.get('div[data-testid="name-box"]')
         .should('include.text', 'Name')
@@ -35,6 +57,7 @@ describe('Creating a Game as MC', () => {
       cy.contains('INVITE PLAYERS').should('exist');
       cy.get('input').type(emailJohn);
       cy.contains('ADD').click();
+      waitMutationWithGame(ONM_ADD_INVITEE)
       // Check the copiable invitation has correct text
       cy.get('textarea').then((textarea) => {
         expect(textarea[0].value).to.contain(
@@ -51,6 +74,7 @@ describe('Creating a Game as MC', () => {
       cy.contains('INVITE ANOTHER').click();
       cy.get('input').type(emailMaya);
       cy.contains('ADD').click();
+      waitMutationWithGame(ONM_ADD_INVITEE)
       // Check the copiable invitation has correct text
       cy.get('textarea').then((textarea) => {
         expect(textarea[0].value).to.contain(emailMaya);
@@ -63,6 +87,7 @@ describe('Creating a Game as MC', () => {
       cy.contains('INVITE ANOTHER').click();
       cy.get('input').type(emailAhmad);
       cy.contains('ADD').click();
+      waitMutationWithGame(ONM_ADD_INVITEE)
       // Check the copiable invitation has correct text
       cy.get('textarea').then((textarea) => {
         expect(textarea[0].value).to.contain(emailAhmad);
@@ -74,6 +99,8 @@ describe('Creating a Game as MC', () => {
         .should('include.text', emailAhmad);
 
       cy.contains('FINISH').click();
+      cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
+      cy.wait(generateWaitAlias(ONQ_GAME))
       cy.url().should('contain', 'mc-game');
       cy.contains(game4.name).should('exist');
       cy.contains('Players').should('exist');
@@ -90,14 +117,17 @@ describe('Creating a Game as MC', () => {
       cy.contains('CREATE GAME').click();
       cy.get('input').type(game5.name);
       cy.contains('SUBMIT').click();
+      waitMutationWithGame(ONM_CREATE_GAME)
       cy.get('input[aria-label="comms-app-input"]').click();
       cy.contains('Zoom').click();
       cy.get('button[data-testid="set-app-button"]').click();
+      waitMutationWithGame(ONM_ADD_COMMS_APP)
       cy.get('div[data-testid="channel-box"]')
         .should('contain', 'Channel')
         .should('contain', game5.commsApp);
       cy.get('textarea[aria-label="comms-url-input"]').type(game5.commsUrl);
       cy.get('button[data-testid="set-url-button"]').click();
+      waitMutationWithGame(ONM_ADD_COMMS_URL)
       cy.get('div[data-testid="channel-box"]').should('contain', 'Channel');
       cy.get('div[data-testid="channel-box"]').should(
         'contain',

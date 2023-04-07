@@ -20,9 +20,11 @@ const isCypress = !!window.Cypress;
 const auth0Options: Auth0ProviderOptions = {
   domain: process.env.REACT_APP_AUTH0_DOMAIN || '',
   clientId: process.env.REACT_APP_AUTH0_CLIENT_ID || '',
-  redirectUri: window.location.origin,
-  audience: 'https://graphql.aw-central.com',
-  cacheLocation: isCypress ? 'localstorage' : 'memory'
+  cacheLocation: isCypress ? 'localstorage' : 'memory',
+  authorizationParams: {
+    redirect_uri: window.location.origin,
+    audience: 'https://graphql.aw-central.com'
+  }
 };
 
 /**

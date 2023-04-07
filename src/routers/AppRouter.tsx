@@ -1,5 +1,6 @@
-// import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { useCallback } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { useBeforeunload } from 'react-beforeunload';
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -12,8 +13,21 @@ import MCPage from '../pages/MCPage';
 import CreateGamePage from '../pages/CreateGamePage';
 import PreGamePage from '../pages/PreGamePage';
 import ThreatMapPage from '../pages/ThreatMapPage';
+import { LS_PATHNAME } from '../config/constants';
+
+// @ts-ignore istanbul ignore else
+const isCypress = !!window.Cypress;
 
 const AppRouter = () => {
+
+  let location = useLocation();
+
+  const handleUnload = useCallback(() => {
+    localStorage.setItem(LS_PATHNAME, location.pathname)
+  }, [location])
+
+  useBeforeunload(() => !isCypress && handleUnload())
+  
   return (
     <Routes>
       <Route path="/" element={<PublicRoute/>}>
@@ -32,18 +46,6 @@ const AppRouter = () => {
           element={<CharacterCreationPage/>}
         />
       </Route>
-      {/*<PublicRoute exact path="/" component={LandingPage} />*/}
-      {/*<PrivateRoute path="/menu" component={MenuPage} />*/}
-      {/*<PrivateRoute path="/join-game" component={JoinGamePage} />*/}
-      {/*<PrivateRoute path="/create-game/:gameId" component={CreateGamePage} />*/}
-      {/*<PrivateRoute path="/pre-game/:gameId" component={PreGamePage} />*/}
-      {/*<PrivateRoute path="/player-game/:gameId" component={PlayerPage} />*/}
-      {/*<PrivateRoute path="/mc-game/:gameId" component={MCPage} />*/}
-      {/*<PrivateRoute path="/threat-map/:gameId" component={ThreatMapPage} />*/}
-      {/*<PrivateRoute*/}
-      {/*  path="/character-creation/:gameId"*/}
-      {/*  component={CharacterCreationPage}*/}
-      {/*/>*/}
     </Routes>
   );
 };

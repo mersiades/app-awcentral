@@ -7,7 +7,7 @@ import {
   NAME_TITLE,
   NEW_GAME_TEXT,
   PLAYBOOK_TITLE,
-  RETURN_TO_GAME_TEXT,
+  RETURN_TO_GAME_TEXT
 } from '../../src/config/constants';
 import {
   generateWaitAlias, ONM_PERFORM_PRINT,
