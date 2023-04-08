@@ -1,4 +1,4 @@
-import cypress from 'cypress';
+/// <reference types="cypress" />
 import { PlaybookType, StatType } from '../../src/@types/enums';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import {
