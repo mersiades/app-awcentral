@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { InMemoryCache } from '@apollo/client';
 import { screen } from '@testing-library/react';
 
-import { mockPlaybookCreator } from '../../../tests/mockQueries';
+import { mockMcContentQuery, mockPlaybookCreator } from '../../../tests/mockQueries';
 import {
   blankCharacter,
   mockCharacter2,
@@ -68,7 +68,7 @@ describe('Rendering PlaybookUniqueRouter', () => {
         {
           isAuthenticated: true,
           injectedGame: generateGame(mockPlaybookUniqueAngel),
-          apolloMocks: [mockPlaybookCreator],
+          apolloMocks: [mockPlaybookCreator, mockMcContentQuery],
           injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }

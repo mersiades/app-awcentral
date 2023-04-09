@@ -11,7 +11,7 @@ import {
   mockAuth0UserInfo1,
 } from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
-import { mockPlayBookCreatorQueryHocus } from '../../../../tests/mockQueries';
+import { mockMcContentQuery, mockPlayBookCreatorQueryHocus } from '../../../../tests/mockQueries';
 import { PlaybookUniques } from '../../../../@types/dataInterfaces';
 import { mockFollowersCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 import {
@@ -63,7 +63,7 @@ describe('Rendering FollowersForm', () => {
         `/character-creation/${mockGame5.id}`,
         {
           isAuthenticated: true,
-          apolloMocks: [mockPlayBookCreatorQueryHocus],
+          apolloMocks: [mockPlayBookCreatorQueryHocus, mockMcContentQuery],
           injectedGame: generateGame(mockPlaybookUniqueHocus),
           injectedUserId: mockAuth0UserInfo1.sub,
           cache,
@@ -73,7 +73,7 @@ describe('Rendering FollowersForm', () => {
       await waitOneTick();
     });
     test('should render FollowersForm in initial state', () => {
-      screen.getByTestId('followers-form');
+      screen.getByTestId('followers-form', {});
       screen.getByRole('heading', {
         name: `${mockCharacter2.name?.toUpperCase()}'S FOLLOWERS`,
       });
@@ -87,7 +87,7 @@ describe('Rendering FollowersForm', () => {
         screen.getByRole('checkbox', { name: opt.description })
       );
       mockFollowersCreator.characterizationOptions.forEach((opt) =>
-        screen.getByTestId(`${opt}-pill`)
+        screen.getByTestId(`${opt}-pill`, {})
       );
       const fortuneValue = screen.getByRole('heading', {
         name: 'fortune-value',
@@ -104,10 +104,11 @@ describe('Rendering FollowersForm', () => {
 
       // Select characterization
       const characterization = screen.getByTestId(
-        `${mockFollowersCreator.characterizationOptions[0]}-pill`
+        `${mockFollowersCreator.characterizationOptions[0]}-pill`,
+        {}
       );
       await userEvent.click(characterization);
-      const descriptionBox = screen.getByTestId('description-tags-box');
+      const descriptionBox = screen.getByTestId('description-tags-box', {});
       expect(descriptionBox.textContent?.toLowerCase()).toContain(
         mockFollowersCreator.characterizationOptions[0]
       );
@@ -128,8 +129,8 @@ describe('Rendering FollowersForm', () => {
       const strength2 = screen.getByRole('checkbox', {
         name: mockFollowersCreator.strengthOptions[1].description,
       });
-      const surplusBox = screen.getByTestId('surplus-tags-box');
-      const wantBox = screen.getByTestId('want-tags-box');
+      const surplusBox = screen.getByTestId('surplus-tags-box', {});
+      const wantBox = screen.getByTestId('want-tags-box', {});
       expect(wantBox.textContent).toContain('Want');
       expect(surplusBox.textContent).toContain('Surplus');
       await userEvent.click(strength1);
@@ -176,9 +177,9 @@ describe('Rendering FollowersForm', () => {
     });
 
     test('should render with increased strength count', () => {
-      expect(screen.getByText('Choose 3:')).toBeInTheDocument();
+      expect(screen.getByText('Choose 3:', {})).toBeInTheDocument();
       expect(
-        screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT)
+        screen.getByText(INCREASED_BY_IMPROVEMENT_TEXT, {})
       ).toBeInTheDocument();
     });
   });

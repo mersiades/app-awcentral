@@ -60,7 +60,6 @@ const MenuPage: FC = () => {
 
   useEffect(() => {
     const url = localStorage.getItem(LS_PATHNAME)
-    console.log('url', url);
     if (url && url !== '/') {
       localStorage.removeItem(LS_PATHNAME)
       navigate(url)

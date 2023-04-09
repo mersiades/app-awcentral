@@ -15,6 +15,7 @@ import ADD_COMMS_URL, {
   getAddCommsUrlOR,
 } from '../mutations/addCommsUrl';
 import { useGame } from '../contexts/gameContext';
+import { SET_URL_BUTTON_ID } from '../config/constants';
 
 interface CommsFormProps {
   setCreationStep: (step: number) => void;
@@ -184,7 +185,7 @@ const CommsForm: FC<CommsFormProps> = ({
                 {!!game ? (
                   <ButtonWS
                     aria-label="set-url"
-                    data-testid="set-url-button"
+                    data-testid={SET_URL_BUTTON_ID}
                     label={
                       loadingCommsUrl ? (
                         <Spinner fillColor="#FFF" width="36px" height="36px" />

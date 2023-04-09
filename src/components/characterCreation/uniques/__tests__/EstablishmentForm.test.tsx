@@ -11,7 +11,7 @@ import {
   mockAuth0UserInfo1,
 } from '../../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../../tests/test-utils';
-import { mockPlayBookCreatorQueryMaestroD } from '../../../../tests/mockQueries';
+import { mockMcContentQuery, mockPlayBookCreatorQueryMaestroD } from '../../../../tests/mockQueries';
 import { PlaybookUniques } from '../../../../@types/dataInterfaces';
 import { mockEstablishmentCreator } from '../../../../tests/fixtures/playbookUniqueCreatorsFixtures';
 import {
@@ -89,7 +89,7 @@ describe('Rendering EstablishmentForm', () => {
         `/character-creation/${mockGame5.id}`,
         {
           isAuthenticated: true,
-          apolloMocks: [mockPlayBookCreatorQueryMaestroD],
+          apolloMocks: [mockPlayBookCreatorQueryMaestroD, mockMcContentQuery],
           injectedGame: generateGame(mockPlaybookUniqueMaestroD, []),
           injectedUserId: mockAuth0UserInfo1.sub,
           cache,

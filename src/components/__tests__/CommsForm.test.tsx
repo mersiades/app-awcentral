@@ -8,6 +8,8 @@ import CommsForm from '../CommsForm';
 import { mockGame1 } from '../../tests/mocks';
 import { customRenderForComponent } from '../../tests/test-utils';
 import GAME, { GameData } from '../../queries/game';
+import { SET_URL_BUTTON_ID } from '../../config/constants';
+import { mockMcContentQuery } from '../../tests/mockQueries';
 
 const mockGameQuery: MockedResponse<GameData> = {
   request: {
@@ -32,7 +34,7 @@ describe('Rendering CommsForm', () => {
       />,
       {
         isAuthenticated: true,
-        apolloMocks: [mockGameQuery],
+        apolloMocks: [mockGameQuery, mockMcContentQuery],
         injectedGameId: mockGame1.id,
       }
     );
@@ -62,9 +64,9 @@ describe('Rendering CommsForm', () => {
 
     await userEvent.type(urlInput, mockUrl);
     expect(urlInput.value).toEqual(mockUrl);
-    const setButton = screen.getAllByRole('button', {
-      name: /SET/i,
-    })[1] as HTMLButtonElement;
+
+    const setButton = screen.getByTestId(SET_URL_BUTTON_ID, {}) as HTMLButtonElement
+
     expect(setButton.disabled).toEqual(false);
   });
 

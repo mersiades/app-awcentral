@@ -14,7 +14,7 @@ import {
   mockVehicleCreator,
 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
-import { mockVehicleCreatorQuery } from '../../../tests/mockQueries';
+import { mockMcContentQuery, mockVehicleCreatorQuery } from '../../../tests/mockQueries';
 import { VehicleFrameType } from '../../../@types/enums';
 import { DEFAULT_VEHICLE_NAME } from '../../../config/constants';
 
@@ -63,7 +63,7 @@ describe('Rendering BattleVehicleForm', () => {
       {
         isAuthenticated: true,
         injectedGame: mockGame,
-        apolloMocks: [mockVehicleCreatorQuery],
+        apolloMocks: [mockVehicleCreatorQuery, mockMcContentQuery],
         injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }

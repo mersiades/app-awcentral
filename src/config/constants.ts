@@ -278,7 +278,7 @@ export const GAME_PAGE_TOP_NAVBAR_HEIGHT = 30;
 export const GAME_PAGE_BOTTOM_NAVBAR_HEIGHT = 80;
 
 // Text
-// ----------------------------------------------- BUTTONS --------------------------------------------- //
+// -------------------- BUTTONS --------------------------------------------- //
 export const JOIN_TEXT = 'JOIN';
 export const NEXT_TEXT = 'NEXT';
 export const ADD_TEXT = 'ADD';
@@ -312,7 +312,7 @@ export const SUBMIT_TEXT = 'SUBMIT';
 export const LATER_TEXT = 'LATER';
 export const FINISH_TEXT = 'FINISH';
 
-// ----------------------------------------------- CHARACTER CREATION STEPPER --------------------------------------------- //
+// -------------------- CHARACTER CREATION STEPPER -------------------------- //
 
 export const PLAYBOOK_TITLE = 'Playbook';
 export const NAME_TITLE = 'Name';
@@ -381,7 +381,7 @@ export const PRE_GAME_INCOMPLETE_TITLE = 'Game not started';
 export const PRE_GAME_INCOMPLETE_TEXT_MC =
   'Pre-game stage is not complete. Go to pre-game page?';
 
-// ----------------------------------------------- SCRIPT CHANGE --------------------------------------------- //
+// -------------------- SCRIPT CHANGE --------------------------------------- //
 export const SCRIPT_CHANGE_TITLE = 'Script Change';
 export const SCRIPT_CHANGE_FAST_FORWARD_TITLE = 'Fast forward';
 export const SCRIPT_CHANGE_PAUSE_TITLE = 'Pause';
@@ -407,10 +407,10 @@ export const SCRIPT_CHANGE_ATTRIBUTION_TEXT_2 = 'Beau Jágr Sheldon ';
 export const SCRIPT_CHANGE_ATTRIBUTION_TEXT_3 = 'and you can ';
 export const SCRIPT_CHANGE_ATTRIBUTION_TEXT_4 = 'read more about it here';
 
-// ----------------------------------------------- CUSTOM WEAPONS FORM --------------------------------------------- //
+// -------------------- CUSTOM WEAPONS FORM --------------------------------- //
 export const MIX_AND_MATCH_TEXT = "Mix'n'match. Edit directly if necessary.";
 
-// ----------------------------------------------- PRE_GAME PAGE--------------------------------------------- //
+// -------------------- PRE_GAME PAGE---------------------------------------- //
 
 export const MC_INSTRUCTIONS_1 =
   'Use this time to build the world you will play in.';
@@ -438,7 +438,7 @@ export const PRE_GAME_SCRIPT_CHANGE_MC_INSTRUCTIONS =
 export const PRE_GAME_SCRIPT_CHANGE_PLAYER_INSTRUCTIONS =
   'Once all the characters are created, your MC will start the game.';
 
-// ----------------------------------------------- VEHICLE FORM --------------------------------------------- //
+// -------------------- VEHICLE FORM ---------------------------------------- //
 export const DEFAULT_VEHICLE_NAME = 'Unnamed vehicle';
 export const GIVE_VEHICLE_NAME_TEXT = 'Give your vehicle a name';
 export const GIVE_VEHICLE_NAME_EXAMPLES_TEXT =
@@ -449,20 +449,20 @@ export const LOOKS_TEXT = 'Looks';
 export const BATTLE_OPTIONS_TEXT = 'Battle options';
 export const CHOOSE_1_OR_2_TEXT = 'choose 1 or 2';
 
-// ----------------------------------------------- WEAPONS FORM --------------------------------------------- //
+// -------------------- WEAPONS FORM ---------------------------------------- //
 export const BIG_GUNS_TEXT = 'Fuck-off big guns';
 export const SERIOUS_GUNS_TEXT = 'Serious guns';
 export const BACKUP_WEAPONS_TEXT = 'Backup weapons';
 
-// ----------------------------------------------- ANGEL SPECIAL DIALOG --------------------------------------------- //
+// -------------------- ANGEL SPECIAL DIALOG -------------------------------- //
 export const WITH_WHO_QUESTION = 'Who did you have sex with?';
 
-// ----------------------------------------------- HARM BOX --------------------------------------------- //
+// -------------------- HARM BOX -------------------------------------------- //
 export const HARM_TITLE = 'Harm';
 export const STABILIZED_TEXT = 'Stabilized';
 export const LIFE_UNTENABLE_INSTRUCTIONS = 'When life becomes untenable:';
 
-// ----------------------------------------------- DEATH DIALOG --------------------------------------------- //
+// -------------------- DEATH DIALOG ---------------------------------------- //
 export const MAKE_CHANGE_TEXT = 'Make this change?';
 export const ADD_HARD_MINUS_1_TEXT = 'reduce your HARD stat by 1';
 export const REMOVE_HARD_MINUS_1_TEXT = 'increase your HARD stat by 1';
@@ -479,38 +479,38 @@ export const ADD_DIE_TEXT_2 = 'as dead';
 export const REMOVE_DIE_TEXT_1 = 'bring';
 export const REMOVE_DIE_TEXT_2 = 'back to life!';
 
-// ----------------------------------------------- HX BOX --------------------------------------------- //
+// -------------------- HX BOX ---------------------------------------------- //
 export const HX_RESET_TEXT = 'Hx reset, experience added';
 
-// ----------------------------------------------- BARTER BOX --------------------------------------------- //
+// -------------------- BARTER BOX ------------------------------------------ //
 export const BARTER_TEXT = 'Barter';
 
-// ----------------------------------------------- ANGEL KIT BOX --------------------------------------------- //
+// -------------------- ANGEL KIT BOX --------------------------------------- //
 export const ANGEL_KIT_TEXT = 'Angel kit';
 export const STOCK_TEXT = 'Stock';
 export const SUPPLIER_TEXT = 'Supplier';
 
-// ----------------------------------------------- GANG BOX --------------------------------------------- //
+// -------------------- GANG BOX -------------------------------------------- //
 export const SIZE_TEXT = 'Size';
 export const HARM_TEXT = 'Harm';
 export const ARMOR_TEXT = 'Armor';
 export const TAGS_TEXT = 'Tags';
 export const GANG_MOVES = 'Gang moves';
 
-// ----------------------------------------------- VEHICLES BOX --------------------------------------------- //
+// -------------------- VEHICLES BOX ---------------------------------------- //
 export const SPEED_TEXT = 'Speed';
 export const HANDLING_TEXT = 'Handling';
 export const MASSIVE_TEXT = 'Massive';
 
-// ----------------------------------------------- STABILIZE DIALOG --------------------------------------------- //
+// -------------------- STABILIZE DIALOG ------------------------------------ //
 export const HOW_MUCH_STOCK_TEXT = 'How much stock do you use?';
 export const CURRENT_STOCK_1_TEXT = 'You currently have';
 export const CURRENT_STOCK_2_TEXT = 'stock';
 
-// ----------------------------------------------- SPEED RECOVERY DIALOG ------------------------------------------- //
+// -------------------- SPEED RECOVERY DIALOG ------------------------------- //
 export const USE_STOCK_TEXT = 'Do they want you to use any stock?';
 
-// ----------------------------------------------- GAME PANEL --------------------------------------------- //
+// -------------------- GAME PANEL ------------------------------------------ //
 export const PLAYERS_TEXT = 'Players';
 export const INVITATIONS_TEXT = 'Invitations';
 export const DELETE_PLAYER_WARNING_TEXT =
@@ -521,36 +521,36 @@ export const NO_PENDING_INVITATIONS_TEXT = 'No pending invitations';
 export const ALSO_PLAY_AT_TEXT = 'Also play at';
 export const ALSO_PLAY_ON_TEXT = 'Also play on';
 
-// ----------------------------------------------- MC PANEL --------------------------------------------- //
+// -------------------- MC PANEL --------------------------------------------- //
 export const CORE_BOX_TITLE = 'The master of ceremonies';
 export const HARM_RULES_TITLE = 'Harm rules';
 export const SELECTED_MC_RULES_TEXT = 'Selected MC rules';
 export const FIRST_SESSION_TEXT = 'First session';
 
-// ----------------------------------------------- THREATS PANEL --------------------------------------------- //
+// -------------------- THREATS PANEL --------------------------------------- //
 export const THREATS_TEXT = 'Threats';
 
-// ----------------------------------------------- NPCS PANEL --------------------------------------------- //
+// -------------------- NPCS PANEL ------------------------------------------ //
 export const NPCS_TEXT = 'NPCs';
 export const ADD_NPC_TEXT = 'Add NPC';
 export const EDIT_TEXT = 'Edit';
 
-// ----------------------------------------------- CHARACTER PREVIEW --------------------------------------------- //
+// -------------------- CHARACTER PREVIEW ----------------------------------- //
 export const HIGHLIGHTED_STATS_TEXT = 'Highlighted stats';
 export const NO_STATS_HIGHLIGHTED_TEXT = 'No stats highlighted';
 
-// ----------------------------------------------- INVITATION FORM --------------------------------------------- //
+// -------------------- INVITATION FORM ------------------------------------- //
 export const INVITE_A_PLAYER_TO_TEXT = 'Invite a player to';
 export const ADD_EMAIL_ADDRESS_TEXT =
   "First, add the player's email address to the game";
 export const TELL_HOW_JOIN_GAME_TEXT =
   'Let your player know how to join your game. You can edit the instructions below (if you want) and then copy and paste into an email, Discord chat etc.';
 
-// ----------------------------------------------- FOLLOWERS FORM --------------------------------------------- //
+// -------------------- FOLLOWERS FORM -------------------------------------- //
 export const CHARACTERIZE_THEM_TEXT = 'Characterize them';
 export const IF_YOU_TRAVEL_TEXT = 'If you travel, they';
 
-// ----------------------------------------------- ESTABLISHMENT FORM --------------------------------------------- //
+// -------------------- ESTABLISHMENT FORM ---------------------------------- //
 export const ATTRACTIONS_INSTRUCTIONS =
   'Your establishment features one main attraction supported by 2 side attractions (like a bar features drinks, supported by music and easy food). Choose one to be your main act and 2 for lube:';
 
@@ -570,14 +570,18 @@ export const RESOLVED_INTEREST_TEXT = 'Interest resolved';
 
 export const SELECT_SIDE_ATTRACTIONS = 'Select side attractions';
 
-// ----------------------------------------------- WORKSPACE FORM --------------------------------------------- //
+// -------------------- WORKSPACE FORM -------------------------------------- //
 export const ITEMS_INSTRUCTIONS =
   'Choose which of the following your workspace includes.';
 export const PROJECTS_TITLE = 'Projects';
 
-// ----------------------------------------------- SKINNER GEAR FORM --------------------------------------------- //
+// -------------------- SKINNER GEAR FORM ----------------------------------- //
 export const GRACIOUS_WEAPONS = 'Gracious weapons';
 export const LUXE_GEAR = 'Luxe gear';
 
-// ----------------------------------------------- CREATE GAME FORM --------------------------------------------- //
+// -------------------- CREATE GAME FORM ------------------------------------ //
 export const CREATE_GAME_INSTRUCTIONS = 'Create a game with you as the MC';
+
+// -------------------- TEST IDS ------- ------------------------------------ //
+
+export const SET_URL_BUTTON_ID = 'set-url-button'

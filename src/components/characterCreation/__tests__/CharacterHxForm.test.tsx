@@ -10,9 +10,9 @@ import {
 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import {
-  mockAdjustCharacterHx,
+  mockAdjustCharacterHx, mockMcContentQuery,
   mockPlaybookCreator,
-  mockToggleStatHighlight,
+  mockToggleStatHighlight
 } from '../../../tests/mockQueries';
 import { Game } from '../../../@types/dataInterfaces';
 
@@ -52,7 +52,7 @@ describe('Rendering CharacterHxForm', () => {
       {
         isAuthenticated: true,
         injectedGame: mockGame,
-        apolloMocks: [mockPlaybookCreator],
+        apolloMocks: [mockPlaybookCreator, mockMcContentQuery],
         injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }

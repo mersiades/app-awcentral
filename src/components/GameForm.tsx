@@ -113,8 +113,6 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
   if (!game) {
     return <Spinner />;
   }
-  console.log('GameForm');
-  console.log('settingName', settingName);
 
   return (
     <Box

@@ -28,12 +28,10 @@ import {
   customRenderForComponent,
   waitOneTick,
 } from '../../../tests/test-utils';
+import { mockMcContentQuery } from '../../../tests/mockQueries';
 
 describe('Rendering ScriptChangeDialog', () => {
-  let screen: RenderResult<
-    typeof import('@testing-library/dom/types/queries'),
-    HTMLElement
-  >;
+  let screen: RenderResult
   const mockHandleClose = jest.fn();
 
   let cache: InMemoryCache;
@@ -44,7 +42,7 @@ describe('Rendering ScriptChangeDialog', () => {
       <ScriptChangeDialog handleClose={mockHandleClose} isPreview={false} />,
       {
         isAuthenticated: true,
-        apolloMocks: [],
+        apolloMocks: [mockMcContentQuery],
         injectedGameId: mockGame7.id,
         injectedUserId: mockGame7.gameRoles[1].userId,
         cache,

@@ -5,7 +5,7 @@ import { MockedResponse } from '@apollo/client/testing';
 import PlayerPage from '../PlayerPage';
 import { customRenderForComponent, waitOneTick } from '../../tests/test-utils';
 import { mockGame7, mockAuth0UserInfo1 } from '../../tests/mocks';
-import { mockAllMoves, mockPlaybook } from '../../tests/mockQueries';
+import { mockAllMoves, mockMcContentQuery, mockPlaybook } from '../../tests/mockQueries';
 import GAME, { GameData } from '../../queries/game';
 import { CANCEL_TEXT, SCRIPT_CHANGE_TITLE } from '../../config/constants';
 
@@ -35,7 +35,7 @@ describe('Rendering PlayerPage', () => {
   test('should render PlayerPage with PlaybookPanel and MovesPanel', async () => {
     customRenderForComponent(<PlayerPage />, {
       isAuthenticated: true,
-      apolloMocks: [mockAllMoves, mockPlaybook],
+      apolloMocks: [mockAllMoves, mockPlaybook, mockMcContentQuery],
       injectedGame: {
         ...mockGame7,
         hasFinishedPreGame: true,

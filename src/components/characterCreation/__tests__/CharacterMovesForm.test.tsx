@@ -12,7 +12,7 @@ import {
   mockPlaybookCreatorAngel,
 } from '../../../tests/mocks';
 import { renderWithRouter, waitOneTick } from '../../../tests/test-utils';
-import { mockPlaybookCreator } from '../../../tests/mockQueries';
+import { mockMcContentQuery, mockPlaybookCreator } from '../../../tests/mockQueries';
 import { Game } from '../../../@types/dataInterfaces';
 import { CharacterMove } from '../../../@types/staticDataInterfaces';
 import {
@@ -155,7 +155,7 @@ describe('Rendering CharacterMovesForm', () => {
             [{ ...mockAngelSpecialCM, isSelected: true }],
             []
           ),
-          apolloMocks: [mockPlaybookCreator],
+          apolloMocks: [mockPlaybookCreator, mockMcContentQuery],
           injectedUserId: mockAuth0UserInfo1.sub,
           cache,
         }
@@ -164,7 +164,7 @@ describe('Rendering CharacterMovesForm', () => {
       await waitOneTick();
     });
     test('should render CharacterMovesForm in initial state (Angel)', async () => {
-      screen.getByTestId('character-moves-form');
+      screen.getByTestId('character-moves-form', {});
       screen.getByRole('heading', {
         name: `WHAT ARE ${mockCharacter2.name?.toUpperCase()}'S MOVES?`,
       });
@@ -183,7 +183,7 @@ describe('Rendering CharacterMovesForm', () => {
         expect(checkbox.checked).toBeFalsy();
       });
       expect(
-        screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT)
+        screen.queryByText(INCREASED_BY_IMPROVEMENT_TEXT, {})
       ).not.toBeInTheDocument();
       expect(
         screen.queryByRole('tab', {

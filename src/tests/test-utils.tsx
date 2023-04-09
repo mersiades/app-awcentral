@@ -5,7 +5,6 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Grommet } from 'grommet';
 import wait from 'waait';
 
-import { Auth0User } from '../@types';
 import { FontsProvider } from '../contexts/fontContext';
 import { theme } from '../config/grommetConfig';
 import { GameProvider } from '../contexts/gameContext';
@@ -13,6 +12,7 @@ import { Character, Game } from '../@types/dataInterfaces';
 import { InMemoryCache } from '@apollo/client';
 import { McContent } from '../@types/staticDataInterfaces';
 import { McContentProvider } from '../contexts/mcContentContext';
+import { mockMcContentQuery } from './mockQueries';
 
 interface CustomRenderOptions {
   isAuthenticated?: boolean;
@@ -42,7 +42,7 @@ const ComponentProviders = ({
 }: any) => {
   return (
     <BrowserRouter>
-      <MockedProvider mocks={apolloMocks} addTypename={false} cache={cache}>
+      <MockedProvider mocks={[mockMcContentQuery, ...apolloMocks]} addTypename={false} cache={cache}>
         <FontsProvider isVtksReady={vtksReady} isCrustReady={crustReady}>
           <Grommet theme={theme(vtksReady)} full>
             <GameProvider
@@ -75,7 +75,7 @@ const AppProviders = ({
 }: any) => {
   return (
     <BrowserRouter>
-      <MockedProvider mocks={apolloMocks}>
+      <MockedProvider mocks={[mockMcContentQuery, ...apolloMocks]}>
         <FontsProvider isVtksReady={vtksReady} isCrustReady={crustReady}>
           <Grommet theme={theme(vtksReady)} full>
             <GameProvider
@@ -107,7 +107,7 @@ const customRenderForApp = (
   render(ui, {
     wrapper: (props: any) => <AppProviders {...props} {...options} />,
     ...options,
-  });
+  } as RenderOptions);
 
 // Re-export everything
 export * from '@testing-library/react';
@@ -127,7 +127,7 @@ export const customRenderForComponent = (
   render(ui, {
     wrapper: (props: any) => <ComponentProviders {...props} {...options} />,
     ...options,
-  });
+  } as RenderOptions);
 
 /**
  * Adds a route option to customRenderforApp
