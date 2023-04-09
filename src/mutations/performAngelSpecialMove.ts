@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformAngelSpecialMoveData {
@@ -40,6 +40,6 @@ const PERFORM_ANGEL_SPECIAL_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformAngelSpecialMoveData, PerformAngelSpecialMoveVars>;
 
 export default PERFORM_ANGEL_SPECIAL_MOVE;

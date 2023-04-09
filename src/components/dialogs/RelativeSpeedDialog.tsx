@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -11,10 +10,6 @@ import {
   ButtonWS,
   relativeSpeedDialogBackground,
 } from '../../config/grommetConfig';
-import PERFORM_SPEED_ROLL_MOVE, {
-  PerformSpeedRollMoveData,
-  PerformSpeedRollMoveVars,
-} from '../../mutations/performSpeedRollMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
@@ -28,6 +23,7 @@ import {
 } from '../../config/constants';
 import { VehicleType } from '../../@types/enums';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { useMoves } from '../../contexts/movesContext';
 
 interface RelativeSpeedDialogProps {
   move: Move | CharacterMove;
@@ -38,24 +34,19 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({
   move,
   handleClose,
 }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [mySpeed, setMySpeed] = useState('');
   const [theirSpeed, setTheirSpeed] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | undefined>();
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
+  const { makeSpeedRollMove, rollingMove} = useMoves()
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performSpeedRollMove, { loading: performingSpeedRollMove }] =
-    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(
-      PERFORM_SPEED_ROLL_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const otherVehicle: Vehicle = {
     id: 'other-vehicle-id',
     vehicleType: VehicleType.car,
@@ -73,16 +64,17 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({
 
   const handleSpeedRollMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingSpeedRollMove &&
+      !rollingMove &&
       !!mySpeed &&
       !!theirSpeed
     ) {
       const modifier = parseInt(mySpeed) - parseInt(theirSpeed);
       try {
-        await performSpeedRollMove({
+        makeSpeedRollMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -99,7 +91,7 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({
     }
   };
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   const renderVehicleChoice = () => {
     if (!!character && character.vehicles.length > 0) {
@@ -198,8 +190,8 @@ const RelativeSpeedDialog: FC<RelativeSpeedDialogProps> = ({
                 : OVERTAKE_TEXT
             }
             primary
-            onClick={() => !performingSpeedRollMove && handleSpeedRollMove()}
-            disabled={performingSpeedRollMove || !mySpeed || !theirSpeed}
+            onClick={() => !rollingMove && handleSpeedRollMove()}
+            disabled={rollingMove || !mySpeed || !theirSpeed}
           />
         </Box>
       </Box>

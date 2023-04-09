@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -14,11 +13,8 @@ import {
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
-import PERFORM_HOCUS_SPECIAL_MOVE, {
-  PerformHocusSpecialMoveData,
-  PerformHocusSpecialMoveVars,
-} from '../../mutations/performHocusSpecialMove';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { useMoves } from '../../contexts/movesContext';
 
 interface HocusSpecialDialogProps {
   move: Move | CharacterMove;
@@ -29,30 +25,26 @@ const HocusSpecialDialog: FC<HocusSpecialDialogProps> = ({
   move,
   handleClose,
 }) => {
-  // ----------------------------- Component state ------------------------------ //
-  const [otherCharacterId, setotherCharacterId] = useState('');
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- Component state -------------------------- //
+  const [otherCharacterId, setOtherCharacterId] = useState('');
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
+  const { makeHocusSpecialMove, rollingMove } = useMoves()
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performHocusSpecialMove, { loading: performingHocusSpecialMove }] =
-    useMutation<PerformHocusSpecialMoveData, PerformHocusSpecialMoveVars>(
-      PERFORM_HOCUS_SPECIAL_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const characters =
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleHocusSpecialMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingHocusSpecialMove &&
+      !rollingMove &&
       !!otherCharacterId
     ) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
@@ -66,7 +58,7 @@ const HocusSpecialDialog: FC<HocusSpecialDialogProps> = ({
       if (!otherGameroleId) return;
 
       try {
-        performHocusSpecialMove({
+        makeHocusSpecialMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -107,7 +99,7 @@ const HocusSpecialDialog: FC<HocusSpecialDialogProps> = ({
             options={characters}
             labelKey={'name'}
             valueKey={'id'}
-            onChange={(e) => setotherCharacterId(e.value.id)}
+            onChange={(e) => setOtherCharacterId(e.value.id)}
           />
         </Box>
         <Box fill="horizontal" direction="row" justify="end" gap="small">
@@ -124,11 +116,11 @@ const HocusSpecialDialog: FC<HocusSpecialDialogProps> = ({
             label="APPLY"
             primary
             onClick={() =>
-              !performingHocusSpecialMove &&
+              !rollingMove &&
               !!otherCharacterId &&
               handleHocusSpecialMove()
             }
-            disabled={performingHocusSpecialMove || !otherCharacterId}
+            disabled={rollingMove || !otherCharacterId}
           />
         </Box>
       </Box>

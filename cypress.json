@@ -11,6 +11,7 @@
     "runMode": 3,
     "openMode": 0
   },
+  "responseTimeout": 60000,
   "testFiles": [
     "Registering.spec.ts",
     "LoggingIn.spec.ts",

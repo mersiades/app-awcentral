@@ -6,20 +6,34 @@ import {
   SET_TEXT,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_SET_BRAINER_GEAR,
+  ONM_SET_CHARACTER_MOVES,
+  ONM_SET_GANG, ONQ_ALL_MOVES, ONQ_PLAYBOOK_CREATOR, ONQ_PLAYBOOKS,
+  setupQueryAliases,
+  visitHomePage, waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Creating a new Brainer Character', () => {
   beforeEach(() => {
     cy.login('maya@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_SET_BRAINER_GEAR)
+    })
+    visitHomePage()
     cy.returnToGame(game6.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.navToCharacterCreationViaPlaybookPanel('brainer gear-edit-link');
+    cy.wait(generateWaitAlias(ONQ_PLAYBOOK_CREATOR))
   });
 
   it('should set BrainerGear and stop at MovesForm', () => {
     const brainerName = 'Smith';
     const brainerNameUC = brainerName.toUpperCase();
 
-    // ------------------------------------------ BrainerGearForm ------------------------------------------ //
+    // -------------------- BrainerGearForm --------------------------------- //
     const option1Text = 'implant syringe (tag hi-tech)';
     const option2Text = 'brain relay (area close hi-tech)';
     const option3Text = 'receptivity drugs (tag hi-tech)';
@@ -50,34 +64,25 @@ describe('Creating a new Brainer Character', () => {
 
     // Check form functionality
     cy.contains(option1Text).click();
-    cy.get('@option1').within(() => {
-      cy.get('input').should('be.checked');
-    });
+    cy.get('@option1').should('be.checked');
 
     cy.contains(option2Text).click();
-    cy.get('@option2').within(() => {
-      cy.get('input').should('be.checked');
-    });
+    cy.get('@option2').should('be.checked');
 
     cy.contains(option3Text).click();
-    cy.get('@option3').within(() => {
-      cy.get('input').should('not.be.checked');
-    });
+    cy.get('@option3').should('not.be.checked');
 
     cy.contains(option2Text).click();
-    cy.get('@option2').within(() => {
-      cy.get('input').should('not.be.checked');
-    });
+    cy.get('@option2').should('not.be.checked');
 
     cy.contains(option3Text).click();
-    cy.get('@option3').within(() => {
-      cy.get('input').should('be.checked');
-    });
+    cy.get('@option3').should('be.checked');
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    waitMutationWithGame(ONM_SET_BRAINER_GEAR)
 
-    // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
+    // -------------------- CharacterMovesForm ------------------------------ //
     // Check form content
     cy.contains(`WHAT ARE ${brainerNameUC}'S MOVES`).should('exist');
     cy.get('input[type="checkbox"]').should('have.length', 7);

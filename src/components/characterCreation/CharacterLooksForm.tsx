@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useReducer, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { omit } from 'lodash';
 import { Box, FormField, TextInput, Text } from 'grommet';
 
@@ -54,24 +54,24 @@ const looksReducer = (state: LooksFormState, action: Action) => {
 };
 
 const CharacterLooksForm: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [{ gender, clothes, face, eyes, body }, dispatch] = useReducer(
     looksReducer,
     {}
   );
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [steps] = useState(Object.values(LookType));
   const [selectedStep, setSelectedStep] = useState(0);
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: pbCreatorData } = useQuery<
     PlaybookCreatorData,
     PlaybookCreatorVars
@@ -86,7 +86,7 @@ const CharacterLooksForm: FC = () => {
     SetCharacterLookVars
   >(SET_CHARACTER_LOOK);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const handleSubmitLook = async (look: Look) => {
     if (!!userGameRole && !!character && !character.isDead && !!game) {
       // Prepare LookInput
@@ -108,7 +108,7 @@ const CharacterLooksForm: FC = () => {
           !character.hasCompletedCharacterCreation
         ) {
           logAmpEvent('set looks');
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.selectStats}`
           );
         }
@@ -159,7 +159,7 @@ const CharacterLooksForm: FC = () => {
     handleSubmitLook(look);
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
 
   useEffect(() => {
     const existingGender: Look | undefined = character?.looks.find(
@@ -185,7 +185,7 @@ const CharacterLooksForm: FC = () => {
     );
     !!existingBody && dispatch({ type: 'SET_BODY', payload: existingBody });
   }, [character]);
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   const renderPill = (look: Look) => {
     let isSelected = false;

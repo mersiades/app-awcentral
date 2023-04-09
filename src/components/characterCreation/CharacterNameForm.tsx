@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, TextInput, Text, FormField } from 'grommet';
 
 import Spinner from '../Spinner';
@@ -26,7 +26,7 @@ const CharacterNameForm: FC = () => {
   const { crustReady } = useFonts();
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [selectedName, setSelectedName] = useState('');
 
@@ -68,7 +68,7 @@ const CharacterNameForm: FC = () => {
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set name');
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.selectLooks}`
           );
         }
@@ -89,7 +89,7 @@ const CharacterNameForm: FC = () => {
 
   // Force navigation back to playbook selection if somehow the character doesn't have a playbook at this stage
   if (!!character && !!game && !character.playbook) {
-    history.push(
+    navigate(
       `/character-creation/${game.id}?step=${CharacterCreationSteps.selectPlaybook}`
     );
     return <div />;

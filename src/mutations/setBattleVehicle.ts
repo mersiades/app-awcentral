@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { BattleVehicleInput } from '../@types';
 import { Character } from '../@types/dataInterfaces';
 
@@ -59,6 +59,6 @@ const SET_BATTLE_VEHICLE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetBattleVehicleData, SetBattleVehicleVars>;
 
 export default SET_BATTLE_VEHICLE;

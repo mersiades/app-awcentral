@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { HarmInput } from '../@types';
 import { Character, CharacterHarm } from '../@types/dataInterfaces';
 
@@ -52,6 +52,6 @@ const SET_CHARACTER_HARM = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetCharacterHarmData, SetCharacterHarmVars>;
 
 export default SET_CHARACTER_HARM;

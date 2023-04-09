@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { Box } from 'grommet';
 import { FormDown, FormUp } from 'grommet-icons';
@@ -9,17 +9,9 @@ import {
   RedBox,
   HeadingWS,
   brandColor,
-  TextWS,
+  TextWS
 } from '../../config/grommetConfig';
 import ALL_MOVES, { AllMovesData } from '../../queries/allMoves';
-import PERFORM_STAT_ROLL_MOVE, {
-  PerformStatRollMoveData,
-  PerformStatRollMoveVars,
-} from '../../mutations/performStatRollMove';
-import PERFORM_PRINT_MOVE, {
-  PerformPrintMoveData,
-  PerformPrintMoveVars,
-} from '../../mutations/performPrintMove';
 import { MoveActionType, MoveType, RollType } from '../../@types/enums';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
@@ -32,8 +24,9 @@ import {
   HARM_TEXT,
   SIZE_TEXT,
   SUCKER_SOMEONE_NAME,
-  TAGS_TEXT,
+  TAGS_TEXT
 } from '../../config/constants';
+import { useMoves } from '../../contexts/movesContext';
 
 interface GangBoxProps {
   navigateToCharacterCreation: (step: string) => void;
@@ -41,53 +34,51 @@ interface GangBoxProps {
 }
 
 const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [showMoves, setShowMoves] = useState(false);
   const [gangMoves, setGangMoves] = useState<Move[]>([]);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { character, userGameRole } = useGame();
+  const {
+    makePrintMove,
+    makeStatsRollMove,
+    rollingMove
+  } = useMoves();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
 
-  const [performPrintMove, { loading: performingPrintMove }] = useMutation<
-    PerformPrintMoveData,
-    PerformPrintMoveVars
-  >(PERFORM_PRINT_MOVE);
-  const [performStatRollMove, { loading: performingStatRollMove }] =
-    useMutation<PerformStatRollMoveData, PerformStatRollMoveVars>(
-      PERFORM_STAT_ROLL_MOVE
-    );
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const moveStyle = {
     cursor: 'pointer',
     '&:hover': {
-      color: brandColor,
-    },
+      color: brandColor
+    }
   };
 
   const handleStatRollMove = (move: Move | CharacterMove) => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
       userGameRole.characters.length === 1 &&
-      !performingStatRollMove
+      !rollingMove
     ) {
       try {
-        performStatRollMove({
+        makeStatsRollMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             characterId: character.id,
             moveId: move.id,
-            isGangMove: true,
-          },
+            isGangMove: true
+          }
         });
       } catch (error) {
         console.error(error);
@@ -106,20 +97,21 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
 
   const handlePrintMove = (move: Move | CharacterMove) => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingPrintMove
+      !rollingMove
     ) {
       try {
-        performPrintMove({
+        makePrintMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             characterId: character.id,
             moveId: move.id,
-            isGangMove: true,
-          },
+            isGangMove: true
+          }
         });
       } catch (error) {
         console.error(error);
@@ -161,33 +153,33 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
   return (
     <CollapsiblePanelBox
       open
-      title="Gang"
+      title='Gang'
       navigateToCharacterCreation={navigateToCharacterCreation}
-      targetCreationStep="6"
+      targetCreationStep='6'
     >
       <Box
-        fill="horizontal"
-        align="start"
+        fill='horizontal'
+        align='start'
         animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
       >
         <Box
-          fill="horizontal"
-          direction="row"
-          align="center"
-          justify="start"
+          fill='horizontal'
+          direction='row'
+          align='center'
+          justify='start'
           wrap
-          gap="12px"
-          pad="12px"
+          gap='12px'
+          pad='12px'
         >
           <Box
-            data-testid="gang-size-box"
-            align="center"
-            justify="between"
-            height="90px"
-            gap="6px"
+            data-testid='gang-size-box'
+            align='center'
+            justify='between'
+            height='90px'
+            gap='6px'
             margin={{ bottom: '6px' }}
           >
-            <RedBox pad="12px" align="center" fill justify="center">
+            <RedBox pad='12px' align='center' fill justify='center'>
               <HeadingWS
                 crustReady={crustReady}
                 level={3}
@@ -199,27 +191,27 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
             <TextWS style={{ fontWeight: 600 }}>{SIZE_TEXT}</TextWS>
           </Box>
           <Box
-            data-testid="gang-harm-box"
-            align="center"
-            justify="between"
-            height="90px"
-            gap="6px"
+            data-testid='gang-harm-box'
+            align='center'
+            justify='between'
+            height='90px'
+            gap='6px'
             margin={{ bottom: '6px' }}
           >
             <RedBox
-              align="center"
-              width="50px"
-              fill="vertical"
-              justify="center"
+              align='center'
+              width='50px'
+              fill='vertical'
+              justify='center'
             >
               <HeadingWS
                 crustReady={crustReady}
-                level="2"
+                level='2'
                 margin={{
                   left: '9px',
                   right: '9px',
                   bottom: '3px',
-                  top: '9px',
+                  top: '9px'
                 }}
               >
                 {character?.playbookUniques?.gang?.harm}
@@ -228,27 +220,27 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
             <TextWS style={{ fontWeight: 600 }}>{HARM_TEXT}</TextWS>
           </Box>
           <Box
-            data-testid="gang-armor-box"
-            align="center"
-            justify="between"
-            height="90px"
-            gap="6px"
+            data-testid='gang-armor-box'
+            align='center'
+            justify='between'
+            height='90px'
+            gap='6px'
             margin={{ bottom: '6px' }}
           >
             <RedBox
-              align="center"
-              width="50px"
-              fill="vertical"
-              justify="center"
+              align='center'
+              width='50px'
+              fill='vertical'
+              justify='center'
             >
               <HeadingWS
                 crustReady={crustReady}
-                level="2"
+                level='2'
                 margin={{
                   left: '9px',
                   right: '9px',
                   bottom: '3px',
-                  top: '9px',
+                  top: '9px'
                 }}
               >
                 {character?.playbookUniques?.gang?.armor}
@@ -257,14 +249,14 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
             <TextWS style={{ fontWeight: 600 }}>{ARMOR_TEXT}</TextWS>
           </Box>
           <Box
-            data-testid="gang-tags-box"
-            align="center"
-            justify="between"
-            height="90px"
-            gap="6px"
+            data-testid='gang-tags-box'
+            align='center'
+            justify='between'
+            height='90px'
+            gap='6px'
             margin={{ bottom: '6px' }}
           >
-            <RedBox pad="12px" fill justify="center">
+            <RedBox pad='12px' fill justify='center'>
               <TextWS>
                 {character?.playbookUniques?.gang?.tags.join(', ')}
               </TextWS>
@@ -273,14 +265,14 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
           </Box>
         </Box>
         <Box
-          direction="row"
-          justify="between"
-          fill="horizontal"
-          align="center"
-          pad="12px"
+          direction='row'
+          justify='between'
+          fill='horizontal'
+          align='center'
+          pad='12px'
         >
           <HeadingWS
-            level="4"
+            level='4'
             margin={{ vertical: '3px' }}
             onClick={() => setShowMoves(!showMoves)}
             style={{ cursor: 'pointer' }}
@@ -289,28 +281,28 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
           </HeadingWS>
           {showMoves ? (
             <FormUp
-              data-testid="hide-gang-moves-icon"
+              data-testid='hide-gang-moves-icon'
               onClick={() => setShowMoves(false)}
               style={{ cursor: 'pointer' }}
             />
           ) : (
             <FormDown
-              data-testid="show-gang-moves-icon"
+              data-testid='show-gang-moves-icon'
               onClick={() => setShowMoves(true)}
               style={{ cursor: 'pointer' }}
             />
           )}
         </Box>
         {showMoves && (
-          <Box pad="12px">
+          <Box pad='12px'>
             <Box
-              fill="horizontal"
-              align="start"
+              fill='horizontal'
+              align='start'
               animation={{
                 type: 'fadeIn',
                 delay: 0,
                 duration: 500,
-                size: 'xsmall',
+                size: 'xsmall'
               }}
             >
               {gangMoves.map((move) => {
@@ -318,7 +310,7 @@ const GangBox: FC<GangBoxProps> = ({ navigateToCharacterCreation }) => {
                   <HeadingWS
                     key={move.id}
                     crustReady={crustReady}
-                    level="3"
+                    level='3'
                     margin={{ top: '3px', bottom: '3px' }}
                     onClick={() => handleMoveClick(move)}
                     onMouseOver={(e: React.MouseEvent<HTMLHeadingElement>) =>

@@ -19,12 +19,34 @@ import {
   TREAT_TEXT,
   USE_STOCK_TEXT,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias,
+  ONM_PERFORM_ANGEL_SPECIAL,
+  ONM_PERFORM_STABILIZE,
+  ONM_PERFORM_STAT_ROLL,
+  ONM_SET_ANGEL_KIT,
+  ONM_STOCK_MOVE,
+  ONQ_ALL_MOVES, ONQ_GAME,
+  setupQueryAliases,
+  visitHomePage,
+  waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
   beforeEach(() => {
     cy.login('sara@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_PERFORM_ANGEL_SPECIAL)
+      aliasMutation(req, ONM_PERFORM_STAT_ROLL)
+      aliasMutation(req, ONM_PERFORM_STABILIZE)
+      aliasMutation(req, ONM_STOCK_MOVE)
+      aliasMutation(req, ONM_SET_ANGEL_KIT)
+    })
+    visitHomePage()
     cy.returnToGame(game1.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openPlaybookPanel();
   });
@@ -34,7 +56,8 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
       'Doc',
       HEALING_TOUCH_NAME,
       'when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.',
-      StatType.weird
+      StatType.weird,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -48,7 +71,7 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
     cy.contains(moveDescSnippet).should('be.visible');
     cy.contains('button', APPLY_TEXT).should('be.disabled');
     cy.get('input[aria-label="target-character-input"]').click();
-    cy.get('div[role="menubar"]').within(() => {
+    cy.get('div[role="listbox"]').within(() => {
       cy.contains('button', 'Dog').should('be.visible');
       cy.contains('button', 'Scarlet').should('be.visible');
       cy.contains('button', 'Smith').should('be.visible');
@@ -57,6 +80,7 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
     });
     cy.contains('button', APPLY_TEXT).should('not.be.disabled');
     cy.contains('button', APPLY_TEXT).click();
+    waitMutationWithGame(ONM_PERFORM_ANGEL_SPECIAL)
     cy.contains('button', APPLY_TEXT).should('not.exist');
     const messageTitle = `DOC: ${ANGEL_SPECIAL_NAME}`;
     cy.checkMoveMessage(
@@ -83,6 +107,8 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
     cy.get('input[type=number]').should('have.value', '1');
 
     cy.contains('button', STABILIZE_TEXT).click();
+    waitMutationWithGame(ONM_PERFORM_STABILIZE)
+    cy.wait(generateWaitAlias(ONQ_GAME))
     cy.contains('button', STABILIZE_TEXT).should('not.exist');
     const messageTitle = `DOC: ${STABILIZE_AND_HEAL_NAME}`;
     cy.checkMoveMessage(messageTitle, moveDescSnippet);
@@ -101,6 +127,8 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
     cy.get('label[for="No"]').click();
     cy.contains('button', SPEED_RECOVERY_TEXT).should('not.be.disabled');
     cy.contains('button', SPEED_RECOVERY_TEXT).click();
+    waitMutationWithGame(ONM_STOCK_MOVE)
+    cy.wait(generateWaitAlias(ONQ_GAME))
 
     const messageTitle = `DOC: ${SPEED_RECOVERY_NAME}`;
     cy.checkMoveMessage(messageTitle, moveDescSnippet);
@@ -115,6 +143,8 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
         cy.get('h2[aria-label="stock-value"]').then((elem) => {
           stockValue = parseInt(elem[0].innerText);
           cy.get('div[data-testid="increase-caret"]').click();
+          waitMutationWithGame(ONM_SET_ANGEL_KIT)
+          cy.wait(generateWaitAlias(ONQ_GAME))
           cy.get('h2[aria-label="stock-value"]').should(
             'contain.text',
             stockValue + 1
@@ -123,7 +153,7 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
       });
   });
 
-  // Note: This test relies on the stock levels set in the previous two tests
+  // Note: This test relies on the stock levels set in the previous three tests
   it(`should show message for the ${REVIVE_SOMEONE_NAME} AngelKit move`, () => {
     const moveDescSnippet = 'revive someone whose life has become untenable,';
     cy.contains(decapitalize(REVIVE_SOMEONE_NAME)).scrollIntoView().click();
@@ -136,6 +166,8 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
     );
     cy.contains('button', REVIVE_TEXT).should('not.be.disabled');
     cy.contains('button', REVIVE_TEXT).click();
+    waitMutationWithGame(ONM_STOCK_MOVE)
+    cy.wait(generateWaitAlias(ONQ_GAME))
 
     const messageTitle = `DOC: ${REVIVE_SOMEONE_NAME}`;
     cy.checkMoveMessage(messageTitle, moveDescSnippet);
@@ -163,6 +195,8 @@ describe('Using the PlaybookPanel to make Angel and AngelKit moves', () => {
     );
     cy.contains('button', TREAT_TEXT).should('not.be.disabled');
     cy.contains('button', TREAT_TEXT).click();
+    waitMutationWithGame(ONM_SET_ANGEL_KIT)
+    cy.wait(generateWaitAlias(ONQ_GAME))
 
     const messageTitle = `DOC: ${TREAT_NPC_NAME}`;
     cy.checkMoveMessage(messageTitle, moveDescSnippet);

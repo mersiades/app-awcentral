@@ -6,12 +6,24 @@ import {
   GUNLUGGER_SPECIAL_NAME,
   FUCK_THIS_SHIT_NAME,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_PERFORM_GUNLUGGER_SPECIAL, ONM_PERFORM_STAT_ROLL,
+  ONQ_ALL_MOVES,
+  setupQueryAliases,
+  visitHomePage, waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Using the PlaybookPanel as a Gunlugger', () => {
   beforeEach(() => {
     cy.login('marama@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req,ONM_PERFORM_GUNLUGGER_SPECIAL)
+    })
+    visitHomePage()
     cy.returnToGame(game1.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openPlaybookPanel();
   });
@@ -45,7 +57,7 @@ describe('Using the PlaybookPanel as a Gunlugger', () => {
     cy.contains(moveDescSnippet).should('be.visible');
     cy.get('input[aria-label="target-character-input"]').click();
     cy.contains('button', APPLY_TEXT).should('be.disabled');
-    cy.get('div[role="menubar"]').within(() => {
+    cy.get('div[role="listbox"]').within(() => {
       cy.contains('button', 'Doc').should('be.visible');
       cy.contains('button', 'Scarlet').should('be.visible');
       cy.contains('button', 'Smith').should('be.visible');
@@ -56,6 +68,7 @@ describe('Using the PlaybookPanel as a Gunlugger', () => {
     cy.get('label[for="Yes"]').click();
     cy.contains('button', APPLY_TEXT).should('not.be.disabled');
     cy.contains('button', APPLY_TEXT).click();
+    waitMutationWithGame(ONM_PERFORM_GUNLUGGER_SPECIAL)
     cy.contains('button', APPLY_TEXT).should('not.exist');
     const messageTitle = `BATTY: ${GUNLUGGER_SPECIAL_NAME}`;
     cy.checkMoveMessage(

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { WorkspaceInput } from '../@types';
 import {
   Character,
@@ -84,6 +84,6 @@ const SET_WORKSPACE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetWorkspaceData, SetWorkspaceVars>;
 
 export default SET_WORKSPACE;

@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, RadioButtonGroup, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -9,17 +8,14 @@ import {
   HeadingWS,
   ParagraphWS,
   ButtonWS,
-  gunluggerSpecialDialogBackground,
+  gunluggerSpecialDialogBackground
 } from '../../config/grommetConfig';
-import PERFORM_GUNLUGGER_SPECIAL_MOVE, {
-  PerformGunluggerSpecialMoveData,
-  PerformGunluggerSpecialMoveVars,
-} from '../../mutations/performGunluggerSpecialMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 import { APPLY_TEXT, CANCEL_TEXT } from '../../config/constants';
+import { useMoves } from '../../contexts/movesContext';
 
 interface GunluggerSpecialDialogProps {
   move: Move | CharacterMove;
@@ -27,37 +23,30 @@ interface GunluggerSpecialDialogProps {
 }
 
 const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({
-  move,
-  handleClose,
-}) => {
-  // ----------------------------- Component state ------------------------------ //
-  const [otherCharacterId, setotherCharacterId] = useState('');
+                                                                   move,
+                                                                   handleClose
+                                                                 }) => {
+  // ----------------------------- Component state -------------------------- //
+  const [otherCharacterId, setOtherCharacterId] = useState('');
   const [addPlus1Forward, setAddPlus1Forward] = useState<string | undefined>();
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
+  const { makeGunluggerSpecialMove, rollingMove } = useMoves();
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [
-    performGunluggerSpecialMove,
-    { loading: performingGunluggerSpecialMove },
-  ] = useMutation<
-    PerformGunluggerSpecialMoveData,
-    PerformGunluggerSpecialMoveVars
-  >(PERFORM_GUNLUGGER_SPECIAL_MOVE);
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const characters =
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleGunluggerSpecialMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingGunluggerSpecialMove &&
+      !rollingMove &&
       !!otherCharacterId &&
       !!addPlus1Forward
     ) {
@@ -72,15 +61,15 @@ const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({
       if (!otherGameroleId) return;
 
       try {
-        await performGunluggerSpecialMove({
+        makeGunluggerSpecialMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
             characterId: character.id,
             otherCharacterId,
-            addPlus1Forward: addPlus1Forward === 'Yes' ? true : false,
-          },
+            addPlus1Forward: addPlus1Forward === 'Yes'
+          }
         });
         logAmpEvent('make move', { move: move.name });
         handleClose();
@@ -90,55 +79,55 @@ const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({
     }
   };
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <DialogWrapper
       background={gunluggerSpecialDialogBackground}
       handleClose={handleClose}
     >
-      <Box gap="12px">
-        <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
+      <Box gap='12px'>
+        <HeadingWS crustReady={crustReady} level={4} alignSelf='start'>
           {move.name}
         </HeadingWS>
         <StyledMarkdown>{move.description}</StyledMarkdown>
-        <Box direction="row" gap="24px">
-          <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">
+        <Box direction='row' gap='24px'>
+          <Box fill align='start' justify='start'>
+            <ParagraphWS alignSelf='start'>
               Who did you have sex with?
             </ParagraphWS>
             <Select
-              id="target-character-input"
-              aria-label="target-character-input"
-              name="target-character"
-              placeholder="Who?"
+              id='target-character-input'
+              aria-label='target-character-input'
+              name='target-character'
+              placeholder='Who?'
               options={characters}
               labelKey={'name'}
               valueKey={'id'}
-              onChange={(e) => setotherCharacterId(e.value.id)}
+              onChange={(e) => setOtherCharacterId(e.value.id)}
             />
           </Box>
-          <Box fill align="start" justify="start">
-            <ParagraphWS alignSelf="start">
+          <Box fill align='start' justify='start'>
+            <ParagraphWS alignSelf='start'>
               Do you want them to get a +1forward?
             </ParagraphWS>
             <RadioButtonGroup
-              direction="row"
-              justify="around"
-              alignSelf="center"
-              name="hxChange"
+              direction='row'
+              justify='around'
+              alignSelf='center'
+              name='hxChange'
               value={addPlus1Forward}
               options={['Yes', 'No']}
               onChange={(e: any) => setAddPlus1Forward(e.target.value)}
             />
           </Box>
         </Box>
-        <Box fill="horizontal" direction="row" justify="end" gap="small">
+        <Box fill='horizontal' direction='row' justify='end' gap='small'>
           <ButtonWS
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow:
-                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000'
             }}
             onClick={handleClose}
           />
@@ -146,12 +135,12 @@ const GunluggerSpecialDialog: FC<GunluggerSpecialDialogProps> = ({
             label={APPLY_TEXT}
             primary
             onClick={() =>
-              !performingGunluggerSpecialMove &&
+              !rollingMove &&
               !!otherCharacterId &&
               handleGunluggerSpecialMove()
             }
             disabled={
-              performingGunluggerSpecialMove ||
+              rollingMove ||
               !otherCharacterId ||
               !addPlus1Forward
             }

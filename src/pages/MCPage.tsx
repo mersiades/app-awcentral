@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Tabs,
@@ -73,7 +73,7 @@ const MCPage: FC = () => {
   const maxSidePanel = 3;
   const sidePanelWidth = 33;
 
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   /**
    * Number that indicates what should be shown in the right panel
    * 0 - ThreatsPanel
@@ -97,18 +97,18 @@ const MCPage: FC = () => {
   const [showGoToPreGameDialog, setShowGoToPreGameDialog] = useState(false);
   let hasShownGotToPreGameDialog = useRef(false);
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
 
   const { gameId } = useParams<{ gameId: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const size = React.useContext(ResponsiveContext);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game, setGameContext } = useGame();
   const { userId } = useUser();
   const { tickerData } = useMcContent();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
   const allMoves = allMovesData?.allMoves;
   const [deleteGame] = useMutation<DeleteGameData, DeleteGameVars>(DELETE_GAME);
@@ -117,34 +117,36 @@ const MCPage: FC = () => {
     REMOVE_INVITEE
   );
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
 
   const handleDeleteGame = () => {
-    deleteGame({
-      variables: { gameId },
-      refetchQueries: [
-        { query: GAMEROLES_BY_USER_ID, variables: { id: userId } },
-      ],
-    });
-    history.push('/menu');
+    if (gameId) {
+      deleteGame({
+        variables: { gameId },
+        refetchQueries: [
+          { query: GAMEROLES_BY_USER_ID, variables: { id: userId } },
+        ],
+      });
+      navigate('/menu');
+    }
   };
 
   const handleRemoveInvitee = (email: string) => {
-    if (game?.invitees.includes(email)) {
+    if (gameId && game?.invitees.includes(email)) {
       removeInvitee({ variables: { gameId, email } });
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
 
   // Kick the User off the page if they are not a mc of the game
   useEffect(() => {
     if (!!game && !!userId) {
       if (game.mc?.id !== userId) {
-        history.push('/menu');
+        navigate('/menu');
       }
     }
-  }, [game, userId, history]);
+  }, [game, userId, navigate]);
 
   // Sets the GameContext
   useEffect(() => {
@@ -164,7 +166,7 @@ const MCPage: FC = () => {
     }
   }, [game, game?.hasFinishedPreGame]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   const renderLeftPanel = () => {
     switch (leftPanel.type) {

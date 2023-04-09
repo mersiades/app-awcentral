@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { MessageType, ScriptChangeType } from '../@types/enums';
 
 export interface ChangeScriptData {
@@ -45,6 +45,6 @@ const CHANGE_SCRIPT = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<ChangeScriptData, ChangeScriptVars>;
 
 export default CHANGE_SCRIPT;

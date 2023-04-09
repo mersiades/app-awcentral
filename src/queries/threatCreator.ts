@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { ThreatCreator } from '../@types/staticDataInterfaces';
 
 export interface ThreatCreatorData {
@@ -22,6 +22,6 @@ const THREAT_CREATOR = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<ThreatCreatorData, ThreatCreatorVars>;
 
 export default THREAT_CREATOR;

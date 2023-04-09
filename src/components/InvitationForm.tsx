@@ -86,7 +86,7 @@ const InvitationForm: FC<InvitationFormProps> = ({
       return;
     }
 
-    if (!!game) {
+    if (!!game && gameId) {
       await addInvitee({
         variables: { gameId, email: lowercaseEmail },
         optimisticResponse: getAddInviteeOR(game, lowercaseEmail),

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useReducer, useState } from 'react';
 import { omit } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, CheckBox } from 'grommet';
 
 import Spinner from '../../Spinner';
@@ -117,7 +117,7 @@ const HoldingForm: FC = () => {
     selectedStrengths: [],
     selectedWeaknesses: [],
   };
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [
     {
       strengthsCount,
@@ -139,14 +139,14 @@ const HoldingForm: FC = () => {
   const [vehicleCount, setVehicleCount] = useState(4);
   const [battleVehicleCount, setBattleVehicleCount] = useState(4);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game, character, userGameRole } = useGame();
   const { crustReady } = useFonts();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: pbCreatorData } = useQuery<
     PlaybookCreatorData,
     PlaybookCreatorVars
@@ -161,7 +161,7 @@ const HoldingForm: FC = () => {
     SetHoldingVars
   >(SET_HOLDING);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const handleSubmitHolding = async () => {
     if (!!userGameRole && !!character && !!game) {
       // @ts-ignore
@@ -208,7 +208,7 @@ const HoldingForm: FC = () => {
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
           );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

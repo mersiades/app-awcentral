@@ -14,14 +14,42 @@ import {
   AUGURY_NAME,
   CHANGE_HIGHLIGHTED_STAT_NAME,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias,
+  ONQ_ALL_MOVES,
+  ONM_PERFORM_HEAL_HARM,
+  setupQueryAliases,
+  visitHomePage,
+  ONM_PERFORM_PRINT,
+  ONM_PERFORM_SUFFER_HARM,
+  waitMutationWithGame,
+  ONM_PERFORM_SUFFER_V_HARM,
+  ONM_PERFORM_INFLICT_HARM,
+  ONM_SET_CHARACTER_BARTER,
+  ONM_PERFORM_STAT_ROLL,
+  ONM_PERFORM_MAKE_WANT_KNOWN
+} from '../utils/graphql-test-utils';
 
 describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
   const characterName = johnAsPlayer_1.characters[0].name as string;
 
   beforeEach(() => {
     cy.login('john@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_PERFORM_HEAL_HARM)
+      aliasMutation(req, ONM_PERFORM_PRINT)
+      aliasMutation(req, ONM_PERFORM_SUFFER_HARM)
+      aliasMutation(req, ONM_PERFORM_SUFFER_V_HARM)
+      aliasMutation(req, ONM_PERFORM_INFLICT_HARM)
+      aliasMutation(req, ONM_SET_CHARACTER_BARTER)
+      aliasMutation(req, ONM_PERFORM_STAT_ROLL)
+      aliasMutation(req, ONM_PERFORM_MAKE_WANT_KNOWN)
+    })
+    visitHomePage()
     cy.returnToGame(game7.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.openMovesPanelBox('Peripheral moves');
   });
 
@@ -31,6 +59,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     cy.contains(decapitalize(SUFFER_HARM_NAME)).click();
     cy.get('input[type="number"]').type('{selectall}{backspace}').type('2');
     cy.contains('ROLL').click();
+    waitMutationWithGame(ONM_PERFORM_SUFFER_HARM)
     cy.checkMoveMessage(messageTitle, moveDescSnippet);
   });
 
@@ -40,6 +69,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     cy.contains(decapitalize(SUFFER_V_HARM)).click();
     cy.get('input[type="number"]').type('{selectall}{backspace}').type('2');
     cy.contains('ROLL').click();
+    waitMutationWithGame(ONM_PERFORM_SUFFER_V_HARM)
     cy.checkMoveMessage(messageTitle, moveDescSnippet);
   });
 
@@ -54,11 +84,12 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     cy.contains(decapitalize(INFLICT_HARM_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
     cy.get('input[aria-label="target-character-input"]').click();
-    cy.get('div[role="menubar"]').within(() => cy.contains(targetName).click());
+    cy.get('div[role="listbox"]').within(() => cy.contains(targetName).click());
     cy.get('input[type="number"]')
       .type('{selectall}{backspace}')
       .type(harmInflicted);
     cy.contains('OKAY').click();
+    waitMutationWithGame(ONM_PERFORM_INFLICT_HARM)
     cy.checkMoveMessage(messageTitle, hxChangeDesc1);
     cy.contains(hxChangeDesc2).should('be.visible');
   });
@@ -73,11 +104,12 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     cy.contains(decapitalize(HEAL_HARM_NAME)).click();
     cy.contains(moveDescSnippet).should('be.visible');
     cy.get('input[aria-label="target-character-input"]').click();
-    cy.get('div[role="menubar"]').within(() => cy.contains(targetName).click());
+    cy.get('div[role="listbox"]').within(() => cy.contains(targetName).click());
     cy.get('input[type="number"]')
       .type('{selectall}{backspace}')
       .type(harmInflicted);
     cy.contains('APPLY').click();
+    cy.wait(generateWaitAlias(ONM_PERFORM_HEAL_HARM))
     cy.checkMoveMessage(messageTitle, hxChangeDesc1);
     cy.contains(hxChangeDesc2).should('be.visible');
     cy.openPlaybookPanel();
@@ -97,6 +129,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
       'When you give 1-barter to someone, but with strings attached';
     const messageTitle = `${characterName?.toUpperCase()}: ${GIVE_BARTER_NAME}`;
     cy.contains(decapitalize(GIVE_BARTER_NAME)).click();
+    waitMutationWithGame(ONM_SET_CHARACTER_BARTER)
 
     cy.get('button[data-testid="give-button"]').click();
     cy.checkMoveMessage(messageTitle, moveDescSnippet);
@@ -107,6 +140,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     const moveDescSnippet = 'When you go into a holding’s bustling market';
     const messageTitle = `${characterName?.toUpperCase()}: ${GO_MARKET_NAME}`;
     cy.contains(decapitalize(GO_MARKET_NAME)).click();
+    waitMutationWithGame(ONM_PERFORM_STAT_ROLL)
     cy.checkMoveMessage(messageTitle, moveDescSnippet, StatType.sharp);
   });
 
@@ -122,8 +156,10 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     cy.contains(decapitalize(MAKE_WANT_KNOWN_NAME)).click();
     cy.get('input[type="number"]').type('{selectall}{backspace}').type('1');
     cy.get('button[data-testid="drop-button"]').click();
+    waitMutationWithGame(ONM_SET_CHARACTER_BARTER)
+    waitMutationWithGame(ONM_PERFORM_MAKE_WANT_KNOWN)
     cy.checkMoveMessage(messageTitle, moveDescSnippet);
-    cy.contains('Barter spent: 1').should('be.visible');
+    cy.contains('Barter spent: 1').scrollIntoView().should('be.visible');
   });
 
   it(`should show a ${INSIGHT_NAME} move message`, () => {
@@ -138,6 +174,7 @@ describe('Making peripheral moves from the MovesPanel as Battlebabe', () => {
     const moveDescSnippet = 'When you are able to use something for augury';
     const messageTitle = `${characterName?.toUpperCase()}: ${AUGURY_NAME}`;
     cy.contains(decapitalize(AUGURY_NAME)).click();
+    waitMutationWithGame(ONM_PERFORM_STAT_ROLL)
     cy.checkMoveMessage(messageTitle, moveDescSnippet, StatType.weird);
   });
 

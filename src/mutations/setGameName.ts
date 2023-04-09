@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface SetGameNameData {
@@ -11,7 +11,7 @@ export interface SetGameNameVars {
 }
 
 const SET_GAME_NAME = gql`
-  mutation setGameName($gameId: String!, $name: String!) {
+  mutation SetGameName($gameId: String!, $name: String!) {
     setGameName(gameId: $gameId, name: $name) {
       id
       name
@@ -34,6 +34,6 @@ const SET_GAME_NAME = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetGameNameData, SetGameNameVars>;
 
 export default SET_GAME_NAME;

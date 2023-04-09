@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 
 export interface CreateCharacterData {
@@ -15,6 +15,6 @@ const CREATE_CHARACTER = gql`
       id
     }
   }
-`;
+` as TypedDocumentNode<CreateCharacterData, CreateCharacterVars>;
 
 export default CREATE_CHARACTER;

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { BrainerGear, Character } from '../@types/dataInterfaces';
 import { PlaybookType, UniqueTypes } from '../@types/enums';
 
@@ -72,6 +72,6 @@ const SET_BRAINER_GEAR = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetBrainerGearData, SetBrainerGearVars>;
 
 export default SET_BRAINER_GEAR;

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Tab, Tabs, Tip } from 'grommet';
 import { AddCircle } from 'grommet-icons';
 
@@ -32,7 +32,7 @@ const BattleVehiclesFormContainer: FC = () => {
   const { crustReady } = useFonts();
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const [setBattleVehicleCount, { loading: settingBattleVehicleCount }] =
@@ -72,7 +72,7 @@ const BattleVehiclesFormContainer: FC = () => {
   const navigateOnSet = (numVehicles: number) => {
     if (!character?.hasCompletedCharacterCreation && !!game) {
       if (character?.battleVehicleCount === numVehicles) {
-        history.push(
+        navigate(
           `/character-creation/${game.id}?step=${CharacterCreationSteps.setHx}`
         );
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -121,7 +121,7 @@ const BattleVehiclesFormContainer: FC = () => {
               label={PASS_TEXT}
               onClick={() =>
                 !!game &&
-                history.push(
+                navigate(
                   `/character-creation/${game.id}?step=${CharacterCreationSteps.setHx}`
                 )
               }

@@ -15,7 +15,7 @@ import PLAYBOOK_CREATOR, {
 } from '../../../queries/playbookCreator';
 import { useFonts } from '../../../contexts/fontContext';
 import { useGame } from '../../../contexts/gameContext';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   CharacterCreationSteps,
   GangSize,
@@ -211,7 +211,7 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
   const allowedStrengths = character?.playbookUniques?.gang?.allowedStrengths;
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const { data: pbCreatorData } = useQuery<
@@ -262,7 +262,7 @@ const GangForm: FC<GangFormProps> = ({ existingGang }) => {
 
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
           );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

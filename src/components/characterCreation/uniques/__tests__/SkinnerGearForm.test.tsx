@@ -83,7 +83,7 @@ describe('Rendering SkinnerGearForm', () => {
     );
 
     await screen.findByTestId('skinner-gear-form');
-    screen.getByRole('heading', {
+    await screen.findByRole('heading', {
       name: `WHAT SKINNER GEAR DOES ${mockCharacter2.name?.toUpperCase()} HAVE?`,
     });
     const weapon1 = screen.getByRole('checkbox', {
@@ -103,21 +103,21 @@ describe('Rendering SkinnerGearForm', () => {
     });
 
     // Select gracious weapon
-    userEvent.click(weapon1);
+    await userEvent.click(weapon1);
     let setButton = screen.getByRole('button', {
       name: 'SET',
     }) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(true);
 
     // Select first luxe item
-    userEvent.click(luxeItem1);
+    await userEvent.click(luxeItem1);
     setButton = screen.getByRole('button', {
       name: 'SET',
     }) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(true);
 
     // Select second luxe item
-    userEvent.click(luxeItem2);
+    await userEvent.click(luxeItem2);
 
     // Check SET button is enabled
     setButton = screen.getByRole('button', {

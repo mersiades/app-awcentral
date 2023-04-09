@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 
 export interface SetHoldingBarterData {
@@ -33,6 +33,6 @@ const SET_HOLDING_BARTER = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetHoldingBarterData, SetHoldingBarterVars>;
 
 export default SET_HOLDING_BARTER;

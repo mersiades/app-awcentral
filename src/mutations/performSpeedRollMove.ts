@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformSpeedRollMoveData {
@@ -47,6 +47,6 @@ const PERFORM_SPEED_ROLL_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>;
 
 export default PERFORM_SPEED_ROLL_MOVE;

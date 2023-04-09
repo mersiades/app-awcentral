@@ -87,8 +87,8 @@ describe('Rendering CharacterStatsForm', () => {
       name: 'SET',
     })) as HTMLButtonElement;
     expect(setButton.disabled).toEqual(true);
-    const statsOption1 = screen.getByTestId(`stats-option-box-0`);
-    userEvent.click(statsOption1);
+    const statsOption1 = await screen.findByTestId(`stats-option-box-0`);
+    await userEvent.click(statsOption1);
     expect(setButton.disabled).toEqual(false);
     userEvent.click(setButton);
   });

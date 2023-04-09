@@ -12,20 +12,33 @@ import StabilizeMessage from './StabilizeMessage';
 import StockMessage from './StockMessage';
 import SufferVHarmMessage from './SufferVHarmMessage';
 import ScriptChangeMessage from './ScriptChangeMessage';
-import { accentColors } from '../../config/grommetConfig';
+import { accentColors, HeadingWS, TextWS } from '../../config/grommetConfig';
 import { MessageType } from '../../@types/enums';
 import { GameMessage } from '../../@types/dataInterfaces';
 import { useGame } from '../../contexts/gameContext';
+import { useMoves } from '../../contexts/movesContext';
+
+export interface MessageProps {
+  message: GameMessage;
+  messagesLength: number;
+  index: number;
+  ticker: number;
+  closeForRoll: boolean;
+}
 
 const MessagesPanel: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // -------------------------- Component state ----------------------------- //
   const [ticker, setTicker] = useState(0);
+  const [showRolling, setShowRolling] = useState(false);
   const { game, userGameRole } = useGame();
 
-  // -------------------------------------------------- Component refs ---------------------------------------------------- //
+  // -------------------------- Component refs ------------------------------ //
   const messageEndRef = useRef<HTMLDivElement>(null);
 
-  // ----------------------------- Component functions ------------------------- //
+  // -------------------------- Hooks --------------------------------------- //
+  const { rollingMove } = useMoves();
+
+  // -------------------------- Component functions ------------------------- //
   const scrollToBottom = () => {
     !!messageEndRef.current &&
       messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -43,7 +56,7 @@ const MessagesPanel: FC = () => {
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // -------------------------- Effects ------------------------------------- //
   // Adds a ticker so that "sentOn" will update every minute
   useEffect(() => {
     const interval = window.setInterval(() => setTicker(ticker + 1), 60000);
@@ -55,8 +68,19 @@ const MessagesPanel: FC = () => {
     scrollToBottom();
   }, [game?.gameMessages]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  useEffect(() => {
+    rollingMove && scrollToBottom();
+  }, [rollingMove]);
 
+  useEffect(() => {
+    rollingMove && setShowRolling(true)
+  }, [rollingMove]);
+
+  useEffect(() => {
+    setShowRolling(false)
+  }, [game?.gameMessages?.length]);
+
+  // -------------------------- Render -------------------------------------- //
   // Renders message based on messageType
   const renderMoveMessage = (
     message: GameMessage,
@@ -71,6 +95,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.rollHxMove:
@@ -80,6 +105,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.printMove:
@@ -89,6 +115,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.barterMove:
@@ -98,6 +125,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.rollBarterMove:
@@ -107,6 +135,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.sufferHarmMove:
@@ -116,6 +145,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.sufferVHarmMove:
@@ -125,6 +155,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.adjustHxMove:
@@ -134,6 +165,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.rollStockMove:
@@ -143,6 +175,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.stockMove:
@@ -152,6 +185,7 @@ const MessagesPanel: FC = () => {
             index={index}
             message={message}
             ticker={ticker}
+            closeForRoll={showRolling}
           />
         );
       case MessageType.sciptChange:
@@ -160,12 +194,26 @@ const MessagesPanel: FC = () => {
             messagesLength={limitMessages().length}
             index={index}
             message={message}
+            closeForRoll={showRolling}
           />
         );
       default:
         return;
     }
   };
+
+  const renderRollingMessage = () => {
+    return <div data-testid={`rolling-message`}>
+      <Box direction="row" justify="between" align="center">
+        <Box direction="row" align="center" justify="between">
+          <HeadingWS level={4} margin={{ vertical: '6px' }}>
+            MAKING MOVE...
+          </HeadingWS>
+        </Box>
+        <TextWS color="neutral-1">Now</TextWS>
+      </Box>
+    </div>
+  }
 
   return (
     <Box
@@ -186,9 +234,19 @@ const MessagesPanel: FC = () => {
             style={{ minHeight: 'min-content' }}
           >
             {renderMoveMessage(message, index, ticker)}
+
           </Box>
         );
       })}
+      {showRolling && <Box
+        key={'rolling'}
+        pad="12px"
+        border={{ color: '#FFF' }}
+        style={{ minHeight: 'min-content' }}
+      >
+        {renderRollingMessage()}
+
+      </Box>}
       <div ref={messageEndRef} />
     </Box>
   );

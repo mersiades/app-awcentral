@@ -25,7 +25,7 @@ describe('Rendering McHarmBox', () => {
       `${boxTitle.toLowerCase()}-down-chevron`
     );
     await screen.findByRole('heading', { name: boxTitle });
-    userEvent.click(openButton);
+    await userEvent.click(openButton);
     screen.getByRole('heading', { name: mockMcContent.harm[0].title });
     screen.getByRole('heading', { name: mockMcContent.harm[1].title });
     screen.getByTestId(`${boxTitle.toLowerCase()}-up-chevron`);

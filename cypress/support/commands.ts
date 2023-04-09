@@ -1,4 +1,4 @@
-import cypress from 'cypress';
+/// <reference types="cypress" />
 import { PlaybookType, StatType } from '../../src/@types/enums';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import {
@@ -7,8 +7,17 @@ import {
   NAME_TITLE,
   NEW_GAME_TEXT,
   PLAYBOOK_TITLE,
-  RETURN_TO_GAME_TEXT,
+  RETURN_TO_GAME_TEXT
 } from '../../src/config/constants';
+import {
+  generateWaitAlias, ONM_PERFORM_PRINT,
+  ONM_SET_PLAYBOOK,
+  ONQ_DEATH_MOVES,
+  ONQ_GAME,
+  ONQ_PLAYBOOK,
+  ONQ_PLAYBOOKS,
+  waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 const query = `
 mutation ResetDb {
@@ -117,6 +126,7 @@ Cypress.Commands.add('resetDb', () => {
 Cypress.Commands.add('returnToGame', (gameName: string) => {
   cy.contains(RETURN_TO_GAME_TEXT).click();
   cy.contains(gameName).click();
+  cy.wait(generateWaitAlias(ONQ_GAME))
 });
 
 Cypress.Commands.add(
@@ -127,7 +137,10 @@ Cypress.Commands.add(
 
     // Open PlaybookPanel
     cy.contains('Playbook').click();
+    cy.wait(generateWaitAlias(ONQ_PLAYBOOK))
+    cy.wait(generateWaitAlias(ONQ_DEATH_MOVES))
     cy.get(`[data-testid="${editButtonId}"]`).scrollIntoView().click();
+    cy.wait(generateWaitAlias(ONQ_PLAYBOOKS))
   }
 );
 
@@ -149,6 +162,7 @@ Cypress.Commands.add('selectPlaybook', (playbookType: PlaybookType) => {
   // Check form content
   cy.get(`button[name="${playbookType}"]`, { timeout: 20000 }).click();
   cy.contains(`SELECT ${decapitalize(playbookType)}`).click();
+  waitMutationWithGame(ONM_SET_PLAYBOOK)
 });
 
 Cypress.Commands.add('setCharacterName', (name: string) => {
@@ -297,6 +311,8 @@ Cypress.Commands.add('openPlaybookPanel', () => {
   cy.get('div[role="tablist"]').within(() => {
     cy.contains('Playbook', { timeout: 8000 }).click();
   });
+  cy.wait(generateWaitAlias(ONQ_DEATH_MOVES))
+  cy.wait(generateWaitAlias(ONQ_PLAYBOOK))
 });
 
 Cypress.Commands.add(
@@ -317,6 +333,7 @@ Cypress.Commands.add(
   (characterName: string, moveName: string, moveSnippet: string) => {
     const messageTitle = `${characterName?.toUpperCase()}: ${moveName}`;
     cy.contains(decapitalize(moveName)).click();
+    waitMutationWithGame(ONM_PERFORM_PRINT)
     cy.checkMoveMessage(messageTitle, moveSnippet);
   }
 );
@@ -327,10 +344,12 @@ Cypress.Commands.add(
     characterName: string,
     moveName: string,
     moveSnippet: string,
-    rollStat: StatType
+    rollStat: StatType,
+    operationName?: string
   ) => {
     const messageTitle = `${characterName?.toUpperCase()}: ${moveName}`;
     cy.contains(decapitalize(moveName)).click();
+    operationName && waitMutationWithGame(operationName)
     cy.checkMoveMessage(messageTitle, moveSnippet, rollStat);
   }
 );

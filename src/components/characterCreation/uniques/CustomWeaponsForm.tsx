@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { startsWith } from 'lodash';
 import styled from 'styled-components';
@@ -67,7 +67,7 @@ const CustomWeaponsForm: FC = () => {
   );
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const { data: pbCreatorData } = useQuery<
@@ -246,7 +246,7 @@ const CustomWeaponsForm: FC = () => {
           optimisticResponse: getSetCustomWeaponsOR(character, weapons),
         });
         !character.hasCompletedCharacterCreation && logAmpEvent('set unique');
-        history.push(
+        navigate(
           `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
         );
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

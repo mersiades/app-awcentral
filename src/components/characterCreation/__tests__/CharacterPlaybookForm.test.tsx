@@ -38,7 +38,7 @@ describe('Rendering CharacterPlaybookForm', () => {
     screen.getByText(NEW_PLAYER_INTRO_TEXT);
 
     // Should show Angel details and button on tab click
-    userEvent.click(screen.getByRole('tab', { name: 'Angel' }));
+    await userEvent.click(screen.getByRole('tab', { name: 'Angel' }));
 
     // FAILING: I don't know why this isn't being found inthe Jest dom
     // screen.getByText(ANGEL_SNIPPET);
@@ -99,12 +99,12 @@ describe('Rendering CharacterPlaybookForm', () => {
     screen.getByRole('tab', { name: 'Angel' });
     screen.getByRole('button', { name: 'RESET' });
     const battleBabeButton = screen.getByRole('tab', { name: 'Battlebabe' });
-    userEvent.click(battleBabeButton);
+    await userEvent.click(battleBabeButton);
 
     const selectBattleBabe = screen.getByRole('button', {
       name: 'SELECT Battlebabe',
     });
-    userEvent.click(selectBattleBabe);
+    await userEvent.click(selectBattleBabe);
 
     screen.getByTestId(`${'Switch playbook?'.toLowerCase()}-warning-dialog`);
   });

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformPrintMoveData {
@@ -40,6 +40,6 @@ const PERFORM_PRINT_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformPrintMoveData, PerformPrintMoveVars>;
 
 export default PERFORM_PRINT_MOVE;

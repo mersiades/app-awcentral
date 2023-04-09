@@ -7,7 +7,7 @@ import CustomWeaponsForm from './uniques/CustomWeaponsForm';
 import BrainerGearForm from './uniques/BrainerGearForm';
 import { CharacterCreationSteps, UniqueTypes } from '../../@types/enums';
 import { useGame } from '../../contexts/gameContext';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import GangForm from './uniques/GangForm';
 import WeaponsForm from './uniques/WeaponsForm';
 import HoldingForm from './uniques/HoldingForm';
@@ -64,17 +64,17 @@ const UniqueFormSelector: FC<UniqueFormSelectorProps> = ({ unique }) => {
  * renders tabs so the user can select the different forms.
  */
 const PlaybookUniqueRouter: FC = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [activeTab, setActiveTab] = useState(0);
   const [uniques, setUniques] = useState<PlaybookUniqueTypes[]>([]);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game, character } = useGame();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
   useEffect(() => {
     if (!!character?.playbookUniques) {
       setUniques(
@@ -88,13 +88,13 @@ const PlaybookUniqueRouter: FC = () => {
   useEffect(() => {
     if (!!character && !character.playbookUniques) {
       !!game &&
-        history.push(
+        navigate(
           `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
         );
     }
-  }, [game, character, history]);
+  }, [game, character, navigate]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   if (uniques.length === 0) {
     return <Spinner />;

@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -9,24 +8,21 @@ import {
   ParagraphWS,
   ButtonWS,
   RedBox,
-  stabilizeBackground,
+  stabilizeBackground
 } from '../../config/grommetConfig';
-import PERFORM_STABILIZE_AND_HEAL_MOVE, {
-  PerformStabilizeAndHealMoveData,
-  PerformStabilizeAndHealMoveVars,
-} from '../../mutations/performStabilizeAndHealMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { useMoves } from '../../contexts/movesContext';
 import { StyledMarkdown } from '../styledComponents';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 import {
   CANCEL_TEXT,
   CURRENT_STOCK_1_TEXT,
   CURRENT_STOCK_2_TEXT,
   HOW_MUCH_STOCK_TEXT,
-  STABILIZE_TEXT,
+  STABILIZE_TEXT
 } from '../../config/constants';
-import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface StabilizeDialogProps {
   move: Move | CharacterMove;
@@ -34,46 +30,39 @@ interface StabilizeDialogProps {
 }
 
 const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [stockSpent, setStockSpent] = useState(0);
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
+  const { makeStabilizeAndHealMove, rollingMove } = useMoves();
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [
-    performStabilizeAndHealMove,
-    { loading: performingStabilizeAndHealMove },
-  ] = useMutation<
-    PerformStabilizeAndHealMoveData,
-    PerformStabilizeAndHealMoveVars
-  >(PERFORM_STABILIZE_AND_HEAL_MOVE);
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const currentStock = character?.playbookUniques?.angelKit?.stock || 0;
 
   const handleStabilizeAndHealMove = async () => {
     if (currentStock - stockSpent < 0) {
-      console.warn("You don't have enough stock");
+      console.warn('You don\'t have enough stock');
       return;
     }
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingStabilizeAndHealMove
+      !rollingMove
     ) {
       try {
-        await performStabilizeAndHealMove({
+        makeStabilizeAndHealMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             characterId: character.id,
-            stockSpent,
-          },
+            stockSpent
+          }
         });
         logAmpEvent('make move', { move: move.name });
         handleClose();
@@ -83,36 +72,34 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
     }
   };
 
-  // ----------------------------- Render ---------------------------------------- //
-
-  console.log(`stockSpent`, stockSpent);
+  // ----------------------------- Render ----------------------------------- //
   return (
     <DialogWrapper background={stabilizeBackground} handleClose={handleClose}>
-      <Box gap="12px" overflow="auto">
-        <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
+      <Box gap='12px' overflow='auto'>
+        <HeadingWS crustReady={crustReady} level={4} alignSelf='start'>
           {move.name}
         </HeadingWS>
         <StyledMarkdown>{move.description}</StyledMarkdown>
         <Box
-          direction="row"
-          align="start"
-          justify="start"
-          gap="12px"
-          flex="grow"
+          direction='row'
+          align='start'
+          justify='start'
+          gap='12px'
+          flex='grow'
         >
           <RedBox
-            alignSelf="center"
-            width="150px"
-            align="center"
-            justify="between"
-            pad="24px"
+            alignSelf='center'
+            width='150px'
+            align='center'
+            justify='between'
+            pad='24px'
           >
             <FormField>
               <TextInput
-                type="number"
+                type='number'
                 value={stockSpent}
-                size="xlarge"
-                textAlign="center"
+                size='xlarge'
+                textAlign='center'
                 onChange={(e) =>
                   [0, 1, 2, 3].includes(parseInt(e.target.value)) &&
                   setStockSpent(parseInt(e.target.value))
@@ -121,38 +108,42 @@ const StabilizeDialog: FC<StabilizeDialogProps> = ({ move, handleClose }) => {
             </FormField>
           </RedBox>
           <Box>
-            <ParagraphWS alignSelf="start">{HOW_MUCH_STOCK_TEXT}</ParagraphWS>
-            <ParagraphWS alignSelf="start">{`${CURRENT_STOCK_1_TEXT} ${currentStock} ${CURRENT_STOCK_2_TEXT}`}</ParagraphWS>
+            <ParagraphWS alignSelf='start'>
+              {HOW_MUCH_STOCK_TEXT}
+            </ParagraphWS>
+            <ParagraphWS alignSelf='start'>
+              {`${CURRENT_STOCK_1_TEXT} ${currentStock} ${CURRENT_STOCK_2_TEXT}`}
+            </ParagraphWS>
           </Box>
         </Box>
         <Box
-          fill="horizontal"
-          direction="row"
-          justify="end"
-          gap="small"
-          flex="grow"
+          fill='horizontal'
+          direction='row'
+          justify='end'
+          gap='small'
+          flex='grow'
         >
           <ButtonWS
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow:
-                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000'
             }}
             onClick={handleClose}
           />
           <ButtonWS
             label={STABILIZE_TEXT}
-            name="stabilize-button"
+            name='stabilize-button'
             primary
             onClick={() =>
               [0, 1, 2, 3].includes(stockSpent) &&
-              !performingStabilizeAndHealMove &&
+              !rollingMove &&
               handleStabilizeAndHealMove()
             }
             disabled={
               ![0, 1, 2, 3].includes(stockSpent) ||
-              performingStabilizeAndHealMove
+              rollingMove
             }
           />
         </Box>

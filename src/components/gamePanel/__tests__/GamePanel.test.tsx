@@ -8,7 +8,7 @@ import { mockGame7 } from '../../../tests/mocks';
 import GamePanel from '../GamePanel';
 
 describe('Rendering GamePanel', () => {
-  test('should render GameBox with complete comms info', () => {
+  test('should render GameBox with complete comms info', async () => {
     const mockHandleShowGameForm = jest.fn();
     const mockSetShowDeleteGameDialog = jest.fn();
     customRenderForComponent(
@@ -34,12 +34,12 @@ describe('Rendering GamePanel', () => {
     );
 
     // Check edit link
-    userEvent.click(editIcon);
+    await userEvent.click(editIcon);
     expect(mockHandleShowGameForm).toHaveBeenCalledWith({ type: 'GAME_FORM' });
     mockHandleShowGameForm.mockClear();
 
     // Check can open GameBox
-    userEvent.click(downChevron);
+    await userEvent.click(downChevron);
     expect(screen.getByTestId('game-box').textContent).toContain(
       mockGame7.commsApp
     );
@@ -48,16 +48,16 @@ describe('Rendering GamePanel', () => {
     );
 
     // Check DELETE GAME button
-    userEvent.click(screen.getByRole('button', { name: /DELETE GAME/ }));
+    await userEvent.click(screen.getByRole('button', { name: /DELETE GAME/ }));
     expect(mockSetShowDeleteGameDialog).toHaveBeenCalledWith(true);
 
     // Check can close GameBox
-    userEvent.click(
+    await userEvent.click(
       screen.getByTestId(`${mockGame7.name.toLowerCase()}-up-chevron`)
     );
   });
 
-  test('should render GameBox with comms url only', () => {
+  test('should render GameBox with comms url only', async () => {
     customRenderForComponent(
       <GamePanel
         setShowDeleteGameDialog={jest.fn()}
@@ -73,7 +73,7 @@ describe('Rendering GamePanel', () => {
     );
 
     // Check comms Url only
-    userEvent.click(
+    await userEvent.click(
       screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`)
     );
     expect(screen.getByTestId('game-box').textContent).not.toContain(
@@ -84,7 +84,7 @@ describe('Rendering GamePanel', () => {
     );
   });
 
-  test('should render GameBox with comms app only', () => {
+  test('should render GameBox with comms app only', async () => {
     customRenderForComponent(
       <GamePanel
         setShowDeleteGameDialog={jest.fn()}
@@ -99,7 +99,7 @@ describe('Rendering GamePanel', () => {
       }
     );
     // Check comms app only
-    userEvent.click(
+    await userEvent.click(
       screen.getByTestId(`${mockGame7.name.toLowerCase()}-down-chevron`)
     );
     expect(screen.getByTestId('game-box').textContent).toContain(
@@ -110,7 +110,7 @@ describe('Rendering GamePanel', () => {
     );
   });
 
-  test('should render InvitationsBox with no invitations', () => {
+  test('should render InvitationsBox with no invitations', async () => {
     const mockhandleShowInvitationForm = jest.fn();
     customRenderForComponent(
       <GamePanel
@@ -133,7 +133,7 @@ describe('Rendering GamePanel', () => {
     );
 
     // Check INVITE PLAYER button
-    userEvent.click(screen.getByRole('button', { name: /INVITE PLAYER/ }));
+    await userEvent.click(screen.getByRole('button', { name: /INVITE PLAYER/ }));
     expect(mockhandleShowInvitationForm).toHaveBeenCalledWith({
       type: 'INVITATION_FORM',
       existingEmail: '',
@@ -142,7 +142,7 @@ describe('Rendering GamePanel', () => {
     mockhandleShowInvitationForm.mockClear();
   });
 
-  test('should render InvitationsBox with 2 invitations', () => {
+  test('should render InvitationsBox with 2 invitations', async () => {
     const mockhandleShowInvitationForm = jest.fn();
     const mockHandleRemoveInvitee = jest.fn();
     customRenderForComponent(
@@ -172,7 +172,7 @@ describe('Rendering GamePanel', () => {
     );
 
     // Check show invitation when click on invitee
-    userEvent.click(screen.getByTestId('john@email.com-list-item'));
+    await userEvent.click(screen.getByTestId('john@email.com-list-item'));
     expect(mockhandleShowInvitationForm).toHaveBeenCalledWith({
       type: 'INVITATION_FORM',
       existingEmail: 'john@email.com',
@@ -180,7 +180,7 @@ describe('Rendering GamePanel', () => {
     });
 
     // Check delete invitation
-    userEvent.click(screen.getByTestId('john@email.com-trash-icon'));
+    await userEvent.click(screen.getByTestId('john@email.com-trash-icon'));
     expect(mockHandleRemoveInvitee).toHaveBeenCalledWith('john@email.com');
   });
 });

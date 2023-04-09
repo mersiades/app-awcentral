@@ -6,12 +6,25 @@ import {
   JUST_GIVE_MOTIVE_NAME,
   ROLL_TEXT,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_PERFORM_GIVE_MOTIVE, ONM_PERFORM_PRINT,
+  ONQ_ALL_MOVES,
+  setupQueryAliases,
+  visitHomePage, waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Using the PlaybookPanel as a Maestro D', () => {
   beforeEach(() => {
     cy.login('ivette@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_PERFORM_GIVE_MOTIVE)
+      aliasMutation(req, ONM_PERFORM_PRINT)
+    })
+    visitHomePage()
     cy.returnToGame(game1.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openPlaybookPanel();
   });
@@ -99,7 +112,7 @@ describe('Using the PlaybookPanel as a Maestro D', () => {
     cy.get('input[aria-label="target-character-input"]').should('be.visible');
     cy.get('input[aria-label="target-character-input"]').click();
 
-    cy.get('div[role="menubar"]').within(() => {
+    cy.get('div[role="listbox"]').within(() => {
       cy.contains('button', 'Doc').should('be.visible');
       cy.contains('button', 'Scarlet').should('be.visible');
       cy.contains('button', 'Smith').should('be.visible');
@@ -109,6 +122,7 @@ describe('Using the PlaybookPanel as a Maestro D', () => {
     });
     cy.contains('button', ROLL_TEXT).should('not.be.disabled');
     cy.contains('button', ROLL_TEXT).click();
+    waitMutationWithGame(ONM_PERFORM_GIVE_MOTIVE)
     cy.contains('button', ROLL_TEXT).should('not.exist');
     const messageTitle = `EMMY: ${JUST_GIVE_MOTIVE_NAME}`;
     cy.checkMoveMessage(messageTitle, moveDescSnippet, StatType.hx);

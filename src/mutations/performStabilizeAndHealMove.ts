@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformStabilizeAndHealMoveData {
@@ -42,6 +42,6 @@ const PERFORM_STABILIZE_AND_HEAL_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformStabilizeAndHealMoveData, PerformStabilizeAndHealMoveVars>;
 
 export default PERFORM_STABILIZE_AND_HEAL_MOVE;

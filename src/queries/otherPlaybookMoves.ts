@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { PlaybookType } from '../@types/enums';
 import { Move } from '../@types/staticDataInterfaces';
 
@@ -20,6 +20,6 @@ const OTHER_PLAYBOOK_MOVES = gql`
       kind
     }
   }
-`;
+` as TypedDocumentNode<OtherPlaybookMovesData, OtherPlaybookMovesVars>;
 
 export default OTHER_PLAYBOOK_MOVES;

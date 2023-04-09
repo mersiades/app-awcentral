@@ -17,14 +17,27 @@ import {
   BE_THE_MOUSE_NAME,
   CAT_OR_MOUSE_NAME,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias,
+  ONM_PERFORM_PRINT, ONM_PERFORM_STAT_ROLL, ONQ_ALL_MOVES,
+  setupQueryAliases,
+  visitHomePage
+} from '../utils/graphql-test-utils';
 
 describe('Making battle moves from the MovesPanel as Battlebabe', () => {
   const characterName = johnAsPlayer_1.characters[0].name as string;
 
   beforeEach(() => {
     cy.login('john@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_PERFORM_PRINT)
+      aliasMutation(req, ONM_PERFORM_STAT_ROLL)
+    })
+    visitHomePage()
     cy.returnToGame(game7.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.openMovesPanelBox('Battle moves');
   });
 
@@ -41,7 +54,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       SEIZE_BY_FORCE_NAME,
       'To seize something by force, exchange harm',
-      StatType.hard
+      StatType.hard,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -50,7 +64,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       ASSAULT_POSITION_NAME,
       'To assault a secure position, exchange harm',
-      StatType.hard
+      StatType.hard,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -59,7 +74,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       KEEP_HOLD_OF_SOMETHING_NAME,
       'To keep hold of something you have, exchange harm,',
-      StatType.hard
+      StatType.hard,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -68,7 +84,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       FIGHT_FREE_NAME,
       'To fight your way free, exchange harm,',
-      StatType.hard
+      StatType.hard,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -77,7 +94,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       DEFEND_SOMEONE_NAME,
       'To defend someone else from attack, exchange harm,',
-      StatType.hard
+      StatType.hard,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -86,7 +104,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       DO_SINGLE_COMBAT_NAME,
       'When you do single combat with someone, no quarters,',
-      StatType.hard
+      StatType.hard,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -95,7 +114,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       LAY_DOWN_FIRE_NAME,
       'When you lay down fire, roll+hard.',
-      StatType.hard
+      StatType.hard,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -104,7 +124,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       STAND_OVERWATCH_NAME,
       'When you stand overwatch for an ally, roll+cool.',
-      StatType.cool
+      StatType.cool,
+      ONM_PERFORM_STAT_ROLL
     );
   });
   it(`should show a ${KEEP_EYE_OUT_NAME} move message`, () => {
@@ -112,7 +133,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       KEEP_EYE_OUT_NAME,
       'When you keep an eye out for what’s coming, roll+sharp.',
-      StatType.sharp
+      StatType.sharp,
+      ONM_PERFORM_STAT_ROLL
     );
   });
   it(`should show a ${BE_THE_BAIT_NAME} move message`, () => {
@@ -120,7 +142,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       BE_THE_BAIT_NAME,
       'When you’re the bait, roll+cool.',
-      StatType.cool
+      StatType.cool,
+      ONM_PERFORM_STAT_ROLL
     );
   });
   it(`should show a ${BE_THE_CAT_NAME} move message`, () => {
@@ -128,7 +151,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       BE_THE_CAT_NAME,
       'When you’re the cat, roll+cool.',
-      StatType.cool
+      StatType.cool,
+      ONM_PERFORM_STAT_ROLL
     );
   });
   it(`should show a ${BE_THE_MOUSE_NAME} move message`, () => {
@@ -136,7 +160,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       BE_THE_MOUSE_NAME,
       'When you’re the mouse, roll+cool.',
-      StatType.cool
+      StatType.cool,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 
@@ -145,7 +170,8 @@ describe('Making battle moves from the MovesPanel as Battlebabe', () => {
       characterName,
       CAT_OR_MOUSE_NAME,
       'When it’s not certain whether you’re the cat or the mouse, roll+sharp.',
-      StatType.sharp
+      StatType.sharp,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 });

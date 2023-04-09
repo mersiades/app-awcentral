@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface GameData {
@@ -931,6 +931,6 @@ const GAME = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<GameData, GameVars>;
 
 export default GAME;

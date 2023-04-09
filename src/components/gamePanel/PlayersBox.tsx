@@ -33,7 +33,6 @@ const PlayersBox: FC = () => {
   >(REMOVE_PLAYER);
 
   // ----------------------------- Component functions ------------------------- //
-
   const handleRemovePlayer = async (playerId: string) => {
     if (!!game) {
       try {

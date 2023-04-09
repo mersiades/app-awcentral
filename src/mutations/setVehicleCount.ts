@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 
 export interface SetVehicleCountData {
@@ -27,6 +27,6 @@ const SET_VEHICLE_COUNT = gql`
       vehicleCount
     }
   }
-`;
+` as TypedDocumentNode<SetVehicleCountData, SetVehicleCountVars>;
 
 export default SET_VEHICLE_COUNT;

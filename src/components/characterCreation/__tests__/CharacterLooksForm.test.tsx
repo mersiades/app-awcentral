@@ -87,7 +87,7 @@ describe('Rendering CharacterLooksForm', () => {
       await waitOneTick();
     });
 
-    test('should render CharacterLooksForm in initial state', () => {
+    test('should render CharacterLooksForm in initial state', async () => {
       screen.getByTestId('character-looks-form');
       screen.getByRole('heading', {
         name: `WHAT DOES ${mockCharacter2.name?.toUpperCase()} LOOK LIKE?`,
@@ -100,33 +100,33 @@ describe('Rendering CharacterLooksForm', () => {
       screen.getByRole('textbox', { name: 'gender-input' });
       screen.getByTestId(`${mockLookAngel1.look}-pill`);
     });
-    test('should set all Looks by clicking on pills', () => {
+    test('should set all Looks by clicking on pills', async () => {
       screen.getByTestId('character-looks-form');
       let lookPill = screen.getByTestId(`${mockLookAngel1.look}-pill`);
-      userEvent.click(lookPill);
+      await userEvent.click(lookPill);
       screen.getByRole('textbox', { name: 'clothes-input' });
       lookPill = screen.getByTestId(`${mockLookAngel3.look}-pill`);
-      userEvent.click(lookPill);
+      await userEvent.click(lookPill);
       screen.getByRole('textbox', { name: 'face-input' });
       lookPill = screen.getByTestId(`${mockLookAngel5.look}-pill`);
-      userEvent.click(lookPill);
+      await userEvent.click(lookPill);
       screen.getByRole('textbox', { name: 'eyes-input' });
       lookPill = screen.getByTestId(`${mockLookAngel7.look}-pill`);
-      userEvent.click(lookPill);
+      await userEvent.click(lookPill);
       screen.getByRole('textbox', { name: 'body-input' });
       lookPill = screen.getByTestId(`${mockLookAngel9.look}-pill`);
-      userEvent.click(lookPill);
+      await userEvent.click(lookPill);
     });
 
-    test('should set Look using text input', () => {
+    test('should set Look using text input', async () => {
       screen.getByTestId('character-looks-form');
       const genderInput = screen.getByRole('textbox', {
         name: 'gender-input',
       }) as HTMLInputElement;
-      userEvent.type(genderInput, mockLookAngel1.look);
+      await userEvent.type(genderInput, mockLookAngel1.look);
       expect(genderInput.value).toEqual(mockLookAngel1.look);
       const setButton = screen.getByRole('button', { name: 'SET' });
-      userEvent.click(setButton);
+      await userEvent.click(setButton);
       screen.getByRole('textbox', { name: 'clothes-input' });
     });
   });
@@ -148,13 +148,13 @@ describe('Rendering CharacterLooksForm', () => {
       await waitOneTick();
     });
 
-    test('should be able to type a Look', () => {
+    test('should be able to type a Look', async () => {
       const customFaceLook = 'custom-face-look';
-      userEvent.click(screen.getByRole('heading', { name: 'FACE' }));
+      await userEvent.click(screen.getByRole('heading', { name: 'FACE' }));
       const faceInput = screen.getByRole('textbox', {
         name: 'face-input',
       }) as HTMLInputElement;
-      userEvent.type(faceInput, customFaceLook);
+      await userEvent.type(faceInput, customFaceLook);
       expect(faceInput.value).toEqual(customFaceLook);
     });
   });

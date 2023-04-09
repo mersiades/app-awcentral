@@ -114,7 +114,7 @@ describe('Rendering GangForm', () => {
       const tagsBox = screen.getByTestId('tags-tags-box');
 
       // Select first strength
-      userEvent.click(strength1);
+      await await userEvent.click(strength1);
       expect(harmValue.textContent).toEqual('3');
       await waitOneTick();
       setButton = screen.getByRole('button', {
@@ -123,7 +123,7 @@ describe('Rendering GangForm', () => {
       expect(setButton.disabled).toEqual(true);
 
       // Select second strength
-      userEvent.click(strength2);
+      await await userEvent.click(strength2);
       expect(tagsBox.textContent).not.toContain('savage');
       await waitOneTick();
       setButton = screen.getByRole('button', {
@@ -132,7 +132,7 @@ describe('Rendering GangForm', () => {
       expect(setButton.disabled).toEqual(true);
 
       // Select weakness
-      userEvent.click(weakness);
+      await await userEvent.click(weakness);
       expect('+' + tagsBox.textContent).toContain(
         mockGangCreator.weaknesses[0].tag
       );

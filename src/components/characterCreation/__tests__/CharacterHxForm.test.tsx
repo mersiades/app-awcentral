@@ -10,9 +10,9 @@ import {
 } from '../../../tests/mocks';
 import { renderWithRouter } from '../../../tests/test-utils';
 import {
-  mockAdjustCharacterHx,
+  mockAdjustCharacterHx, mockMcContentQuery,
   mockPlaybookCreator,
-  mockToggleStatHighlight,
+  mockToggleStatHighlight
 } from '../../../tests/mockQueries';
 import { Game } from '../../../@types/dataInterfaces';
 
@@ -52,7 +52,7 @@ describe('Rendering CharacterHxForm', () => {
       {
         isAuthenticated: true,
         injectedGame: mockGame,
-        apolloMocks: [mockPlaybookCreator],
+        apolloMocks: [mockPlaybookCreator, mockMcContentQuery],
         injectedUserId: mockAuth0UserInfo1.sub,
         cache,
       }
@@ -133,10 +133,10 @@ describe('Rendering CharacterHxForm', () => {
 
     // // Highlight two stats
     // const coolBox = screen.getByTestId('COOL-stat-box');
-    // userEvent.click(coolBox);
+    // await userEvent.click(coolBox);
     // // Mutation result is not updating graphql cache
     // const hardBox = await screen.findByTestId('HARD-stat-box');
-    // userEvent.click(hardBox);
+    // await userEvent.click(hardBox);
 
     // Check SET button is enabled
 

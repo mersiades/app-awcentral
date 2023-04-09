@@ -14,23 +14,23 @@ describe('Rendering TickerListBox', () => {
     screen.getByTestId(`${mockTickerList1.title}-down-icon`);
   });
 
-  test('should reveal and hide content when clicking on chevron', () => {
-    userEvent.click(screen.getByTestId(`${mockTickerList1.title}-down-icon`));
+  test('should reveal and hide content when clicking on chevron', async () => {
+    await userEvent.click(screen.getByTestId(`${mockTickerList1.title}-down-icon`));
     screen.getByTestId(`${mockTickerList1.title}-up-icon`);
     screen.getByText(mockTickerList1.items[0]);
     screen.getByText(mockTickerList1.items[1]);
-    userEvent.click(screen.getByTestId(`${mockTickerList1.title}-up-icon`));
+    await userEvent.click(screen.getByTestId(`${mockTickerList1.title}-up-icon`));
     screen.getByTestId(`${mockTickerList1.title}-down-icon`);
   });
 
-  test('should reveal and hide content when clicking on title', () => {
-    userEvent.click(
+  test('should reveal and hide content when clicking on title', async () => {
+    await userEvent.click(
       screen.getByRole('heading', { name: mockTickerList1.title })
     );
     screen.getByTestId(`${mockTickerList1.title}-up-icon`);
     screen.getByText(mockTickerList1.items[0]);
     screen.getByText(mockTickerList1.items[1]);
-    userEvent.click(
+    await userEvent.click(
       screen.getByRole('heading', { name: mockTickerList1.title })
     );
     screen.getByTestId(`${mockTickerList1.title}-down-icon`);

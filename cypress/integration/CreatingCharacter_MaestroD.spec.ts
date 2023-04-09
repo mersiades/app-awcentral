@@ -9,13 +9,27 @@ import {
   SET_TEXT,
   VEHICLES_TITLE,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_SET_ESTABLISHMENT,
+  ONQ_ALL_MOVES,
+  ONQ_PLAYBOOK_CREATOR,
+  setupQueryAliases,
+  visitHomePage, waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe("Creating a new Maestro D' Character", () => {
   beforeEach(() => {
     cy.login('ivette@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_SET_ESTABLISHMENT)
+    })
+    visitHomePage()
     cy.returnToGame(game6.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.navToCharacterCreationViaPlaybookPanel('establishment-edit-link');
+    cy.wait(generateWaitAlias(ONQ_PLAYBOOK_CREATOR))
   });
 
   it('should set an Establishment and stop at MovesForm', () => {
@@ -23,7 +37,7 @@ describe("Creating a new Maestro D' Character", () => {
     const maestroDNameUC = maestroDName.toUpperCase();
     const maestroDGearItem = 'rusty iron mic';
 
-    // ------------------------------------------ EstablishmentForm ------------------------------------------ //
+    // -------------------- EstablishmentForm ------------------------------- //
     const attraction1 = 'fashion';
     const attraction2 = 'luxury food';
     const attraction3 = 'spectacle';
@@ -82,7 +96,7 @@ describe("Creating a new Maestro D' Character", () => {
     // Check form functionality
     // Attractions
     cy.get('input[aria-label="main-attraction-input"]').click();
-    cy.get('div[role="menubar"]').within(() =>
+    cy.get('div[role="listbox"]').within(() =>
       cy.contains(attraction1).click()
     );
     cy.get('div[data-testid="attractions-box"]').should('contain', attraction1);
@@ -136,13 +150,13 @@ describe("Creating a new Maestro D' Character", () => {
     cy.get('button[id="add-additional-regular-button"]').click();
     cy.get('div[data-testid="regulars-box"]').should('contain', regular6);
     cy.get('input[aria-label="best-regular-input"]').click();
-    cy.get('div[role="menubar"]').within(() => cy.contains(regular1).click());
+    cy.get('div[role="listbox"]').within(() => cy.contains(regular1).click());
     cy.get('div[data-testid="regulars-box"]').should(
       'contain',
       `${regular1} is your best regular`
     );
     cy.get('input[aria-label="worst-regular-input"]').click();
-    cy.get('div[role="menubar"]').within(() => cy.contains(regular2).click());
+    cy.get('div[role="listbox"]').within(() => cy.contains(regular2).click());
     cy.get('div[data-testid="regulars-box"]').should(
       'contain',
       `${regular2} is your worst regular`
@@ -163,7 +177,7 @@ describe("Creating a new Maestro D' Character", () => {
     );
 
     cy.get('input[aria-label="wants-in-on-it-input"]').click();
-    cy.get('div[role="menubar"]').within(() =>
+    cy.get('div[role="listbox"]').within(() =>
       cy.contains(interestedNPC1).click()
     );
     cy.get('div[data-testid="interested npcs-box"]').should(
@@ -172,7 +186,7 @@ describe("Creating a new Maestro D' Character", () => {
     );
 
     cy.get('input[aria-label="owes-for-it-input"]').click();
-    cy.get('div[role="menubar"]').within(() =>
+    cy.get('div[role="listbox"]').within(() =>
       cy.contains(interestedNPC2).click()
     );
     cy.get('div[data-testid="interested npcs-box"]').should(
@@ -181,7 +195,7 @@ describe("Creating a new Maestro D' Character", () => {
     );
 
     cy.get('input[aria-label="wants-it-gone-input"]').click();
-    cy.get('div[role="menubar"]').within(() =>
+    cy.get('div[role="listbox"]').within(() =>
       cy.contains(interestedNPC4).click()
     );
     cy.get('div[data-testid="interested npcs-box"]').should(
@@ -231,8 +245,9 @@ describe("Creating a new Maestro D' Character", () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    waitMutationWithGame(ONM_SET_ESTABLISHMENT)
 
-    // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
+    // -------------------- CharacterMovesForm ------------------------------ //
 
     // Check form content
     cy.contains(`WHAT ARE ${maestroDNameUC}'S MOVES`).should('exist');

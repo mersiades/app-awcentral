@@ -3,45 +3,44 @@ import { Box } from 'grommet';
 
 import MoveMessage from './MoveMessage';
 import { StyledMarkdown } from '../styledComponents';
-import { GameMessage } from '../../@types/dataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { HeadingWS, TextWS } from '../../config/grommetConfig';
 import { getDiceImage } from '../../helpers/getDiceImage';
 import HarmClock from '../HarmClock';
 import { Next } from 'grommet-icons';
+import { MessageProps } from './MessagesPanel';
 
-export interface SufferHarmMessageProps {
-  message: GameMessage;
-  messagesLength: number;
-  index: number;
-  ticker: number;
+export interface SufferHarmMessageProps  extends MessageProps{
 }
 
 const SufferHarmMessage: FC<SufferHarmMessageProps> = ({
-  message,
-  messagesLength,
-  index,
-  ticker,
-}) => {
-  // ----------------------------- Hooks ---------------------------------------- //
+                                                         message,
+                                                         messagesLength,
+                                                         index,
+                                                         ticker,
+                                                         closeForRoll
+                                                       }) => {
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady, vtksReady } = useFonts();
 
+  // ----------------------------- Render ----------------------------------- //
   return (
     <MoveMessage
       message={message}
       messagesLength={messagesLength}
       index={index}
       ticker={ticker}
+      closeForRoll={closeForRoll}
     >
       <Box fill>
-        <Box fill="horizontal" align="center" justify="center" pad="12px">
-          <Box direction="row" align="center" justify="around" width="67%">
+        <Box fill='horizontal' align='center' justify='center' pad='12px'>
+          <Box direction='row' align='center' justify='around' width='67%'>
             {getDiceImage(message.roll1)}
             <HeadingWS
               crustReady={crustReady}
               level={2}
-              color="brand"
-              margin="3px"
+              color='brand'
+              margin='3px'
             >
               +
             </HeadingWS>
@@ -49,16 +48,16 @@ const SufferHarmMessage: FC<SufferHarmMessageProps> = ({
             <HeadingWS
               crustReady={crustReady}
               level={2}
-              color="brand"
-              margin="3px"
+              color='brand'
+              margin='3px'
             >
               +
             </HeadingWS>
-            <Box align="center" justify="between" pad="12px">
+            <Box align='center' justify='between' pad='12px'>
               <HeadingWS
                 crustReady={crustReady}
                 level={2}
-                color="brand"
+                color='brand'
                 margin={{ top: '32px', bottom: '0px', horizontal: '3px' }}
               >
                 {message.harmSuffered}
@@ -68,21 +67,21 @@ const SufferHarmMessage: FC<SufferHarmMessageProps> = ({
             <HeadingWS
               crustReady={crustReady}
               level={2}
-              color="brand"
-              margin="3px"
+              color='brand'
+              margin='3px'
             >
               =
             </HeadingWS>
             <Box
-              align="center"
-              justify="between"
+              align='center'
+              justify='between'
               pad={{ vertical: '12px', horizontal: '24px' }}
             >
               <HeadingWS
                 vtksReady={vtksReady}
                 level={1}
-                color="brand"
-                margin="3px"
+                color='brand'
+                margin='3px'
                 style={{ fontSize: '80px' }}
               >
                 {message.rollResult}
@@ -90,18 +89,18 @@ const SufferHarmMessage: FC<SufferHarmMessageProps> = ({
             </Box>
           </Box>
           <Box
-            direction="row"
-            justify="around"
-            align="center"
-            pad="12px"
-            width="67%"
+            direction='row'
+            justify='around'
+            align='center'
+            pad='12px'
+            width='67%'
           >
             <HarmClock
               harmValue={message.currentHarm - message.harmSuffered}
               isStabilized={false}
               diameter={100}
             />
-            <Next color="#FFF" />
+            <Next color='#FFF' />
             <HarmClock
               harmValue={message.currentHarm}
               isStabilized={false}

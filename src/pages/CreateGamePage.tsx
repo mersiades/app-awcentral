@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box } from 'grommet';
 
 import CommsForm from '../components/CommsForm';
@@ -18,19 +18,19 @@ export const background = {
 };
 
 const CreateGamePage = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [creationStep, setCreationStep] = useState<number>(0);
   const [hasSkippedComms, setHasSkippedComms] = useState(false);
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { userId } = useUser();
   const { game, fetchingGame, setGameContext } = useGame();
 
-  // ---------------------------------------------------- UseEffects  ------------------------------------------------------ //
+  // ----------------------------- Effects  --------------------------------- //
   useEffect(() => {
     if (!!game) {
       if ((!game.commsApp || !game.commsUrl) && !hasSkippedComms) {
@@ -48,7 +48,7 @@ const CreateGamePage = () => {
     }
   }, [fetchingGame, gameId, userId, setGameContext]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   return (
     <Box
@@ -58,7 +58,7 @@ const CreateGamePage = () => {
       pad="6px"
       overflow={{ vertical: 'auto' }}
     >
-      <CloseButton handleClose={() => history.push('/menu')} />
+      <CloseButton handleClose={() => navigate('/menu')} />
       <Box fill direction="column" justify="start">
         <GameCreationStepper
           setCreationStep={setCreationStep}

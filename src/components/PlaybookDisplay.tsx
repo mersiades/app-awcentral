@@ -1,5 +1,5 @@
 import React, { FC, useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { Box, ResponsiveContext } from 'grommet';
 
@@ -9,11 +9,11 @@ import { StyledMarkdown } from './styledComponents';
 import CHANGE_PLAYBOOK, {
   ChangePlaybookData,
   ChangePlaybookVars,
-  getChangePlaybookOR,
+  getChangePlaybookOR
 } from '../mutations/changePlaybook';
 import SET_CHARACTER_PLAYBOOK, {
   SetCharacterPlaybookData,
-  SetCharacterPlaybookVars,
+  SetCharacterPlaybookVars
 } from '../mutations/setCharacterPlaybook';
 import { useGame } from '../contexts/gameContext';
 import { CharacterCreationSteps, PlaybookType } from '../@types/enums';
@@ -28,10 +28,10 @@ interface PlaybookDisplayProps {
 }
 
 const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
-  playbook,
-  startFadeOut,
-}) => {
-  // ----------------------------- Component state ------------------------------ //
+                                                     playbook,
+                                                     startFadeOut
+                                                   }) => {
+  // ----------------------------- Component state -------------------------- //
   const [showSwitchWarning, setShowSwitchWarning] = useState<
     PlaybookType | undefined
   >();
@@ -39,14 +39,14 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
     PlaybookType | undefined
   >();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { game, character, userGameRole } = useGame();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
   const size = useContext(ResponsiveContext);
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const [setCharacterPlaybook, { loading: settingPlaybook }] = useMutation<
     SetCharacterPlaybookData,
     SetCharacterPlaybookVars
@@ -57,7 +57,7 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
     ChangePlaybookVars
   >(CHANGE_PLAYBOOK);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const checkPlaybookReset = (playbookType: PlaybookType) => {
     if (
       !!userGameRole &&
@@ -80,11 +80,11 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
             variables: {
               gameRoleId: userGameRole.id,
               characterId: character.id,
-              playbookType,
+              playbookType
             },
-            optimisticResponse: getChangePlaybookOR(character, playbookType),
+            optimisticResponse: getChangePlaybookOR(character, playbookType)
           });
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.selectStats}`
           );
         } catch (error) {
@@ -96,13 +96,13 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
             variables: {
               gameRoleId: userGameRole.id,
               characterId: character.id,
-              playbookType,
-            },
+              playbookType
+            }
           });
           !character.hasCompletedCharacterCreation &&
-            logAmpEvent('choose playbook');
+          logAmpEvent('choose playbook');
           setShowSwitchWarning(undefined);
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.selectName}`
           );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -113,20 +113,20 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
     }
   };
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <Box
-      direction="row"
-      fill="horizontal"
+      direction='row'
+      fill='horizontal'
       margin={{ bottom: '125px' }}
-      justify="center"
-      align="start"
+      justify='center'
+      align='start'
     >
       {!!showSwitchWarning && (
         <WarningDialog
-          title="Switch playbook?"
-          buttonTitle="SWITCH"
-          text="Changing the playbook will reset the character."
+          title='Switch playbook?'
+          buttonTitle='SWITCH'
+          text='Changing the playbook will reset the character.'
           handleClose={() => setShowSwitchWarning(undefined)}
           handleConfirm={() => handlePlaybookSelect(showSwitchWarning)}
         />
@@ -134,7 +134,7 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
       {!!showResetWarning && (
         <WarningDialog
           title={`Reset ${decapitalize(showResetWarning)}?`}
-          buttonTitle="RESET"
+          buttonTitle='RESET'
           text={`You'll remain as the ${decapitalize(
             showResetWarning
           )} but all other character info will be lost.`}
@@ -143,7 +143,7 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
         />
       )}
       {size !== 'small' && (
-        <Box animation="fadeIn" justify="center">
+        <Box animation='fadeIn' justify='center'>
           <img
             src={playbook.playbookImageUrl}
             alt={decapitalize(playbook.playbookType)}
@@ -151,9 +151,9 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
           />
         </Box>
       )}
-      <Box pad="12px" animation="fadeIn" justify="around" align="center">
+      <Box pad='12px' animation='fadeIn' justify='around' align='center'>
         <Box
-          overflow="auto"
+          overflow='auto'
           style={{ maxWidth: '856px', maxHeight: '400px' }}
           flex
         >
@@ -164,23 +164,23 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
         </Box>
         <Box
           border
-          direction="row"
-          fill="horizontal"
-          justify="center"
-          align="center"
+          direction='row'
+          fill='horizontal'
+          justify='center'
+          align='center'
           margin={{ top: '12px' }}
         >
           {playbook.playbookType !== character?.playbook ? (
             <ButtonWS
               label={
                 settingPlaybook || changingPlaybook ? (
-                  <Spinner fillColor="#FFF" width="230px" height="36px" />
+                  <Spinner fillColor='#FFF' width='230px' height='36px' />
                 ) : (
                   `SELECT ${decapitalize(playbook.playbookType)}`
                 )
               }
               primary
-              size="large"
+              size='large'
               onClick={() => {
                 if (!settingPlaybook && !changingPlaybook) {
                   startFadeOut();
@@ -193,13 +193,13 @@ const PlaybookDisplay: FC<PlaybookDisplayProps> = ({
             <ButtonWS
               label={
                 settingPlaybook || changingPlaybook ? (
-                  <Spinner fillColor="#FFF" width="230px" height="36px" />
+                  <Spinner fillColor='#FFF' width='230px' height='36px' />
                 ) : (
                   'RESET'
                 )
               }
               secondary
-              size="large"
+              size='large'
               onClick={() => {
                 if (!settingPlaybook && !changingPlaybook) {
                   startFadeOut();

@@ -89,8 +89,8 @@ describe('Rendering CharacterGearForm', () => {
     );
 
     await screen.findByTestId('character-gear-form');
-    const item = screen.getByRole('listitem', { name: 'you-get-item-0' });
-    userEvent.click(item);
+    const item = await screen.findByRole('listitem', { name: 'you-get-item-0' });
+    await userEvent.click(item);
 
     // Check the item has been put into the textarea
     const itemInput = screen.getByRole('textbox', {
@@ -102,11 +102,12 @@ describe('Rendering CharacterGearForm', () => {
     itemInput.setSelectionRange(0, itemInput.value.length);
 
     // Manually type a better fashion option
-    userEvent.type(itemInput, mockCharacter2.gear[0]);
+    await userEvent.clear(itemInput)
+    await userEvent.type(itemInput, mockCharacter2.gear[0]);
     expect(itemInput.value).toEqual(mockCharacter2.gear[0]);
 
     // Click ADD to add the item to the interim list
-    userEvent.click(screen.getByRole('button', { name: /ADD/i }));
+    await userEvent.click(screen.getByRole('button', { name: /ADD/i }));
     expect(
       screen.getByRole('list', { name: 'interim-gear-list' }).textContent
     ).toContain(mockCharacter2.gear[0]);
@@ -124,12 +125,12 @@ describe('Rendering CharacterGearForm', () => {
       name: 'REMOVE',
     }) as HTMLButtonElement;
     expect(removeButton.disabled).toEqual(true);
-    userEvent.click(interimItem);
+    await userEvent.click(interimItem);
     expect(itemInput.value).toEqual(mockCharacter2.gear[0]);
     expect(removeButton.disabled).toEqual(false);
 
     // Click the REMOVE button
-    userEvent.click(removeButton);
+    await userEvent.click(removeButton);
     expect(
       screen.getByRole('list', { name: 'interim-gear-list' }).textContent
     ).toEqual('');
@@ -151,7 +152,7 @@ describe('Rendering CharacterGearForm', () => {
     );
 
     await screen.findByTestId('character-gear-form');
-    const item = screen.getByRole('listitem', {
+    const item = await screen.findByRole('listitem', {
       name: 'chooseable-listitem-0',
     });
     const addButton = screen.getByRole('button', {
@@ -160,7 +161,7 @@ describe('Rendering CharacterGearForm', () => {
     expect(addButton.disabled).toEqual(true);
 
     // Click on chooseable item
-    userEvent.click(item);
+    await userEvent.click(item);
 
     // Check the item has been put into the textarea
     const itemInput = screen.getByRole('textbox', {
@@ -170,7 +171,7 @@ describe('Rendering CharacterGearForm', () => {
     expect(addButton.disabled).toEqual(false);
 
     // Add the item to interim list
-    userEvent.click(addButton);
+    await userEvent.click(addButton);
     expect(
       screen.getByRole('list', { name: 'interim-gear-list' }).textContent
     ).toContain(item.textContent);

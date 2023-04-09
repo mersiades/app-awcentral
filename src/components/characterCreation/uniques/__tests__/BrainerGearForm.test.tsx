@@ -141,9 +141,9 @@ describe('Rendering BrainerGearForm', () => {
     }) as HTMLInputElement;
     expect(item1.checked).toEqual(false);
 
-    userEvent.click(item1);
+    await userEvent.click(item1);
     expect(item1.checked).toEqual(true);
-    userEvent.click(item2);
+    await userEvent.click(item2);
     expect(item2.checked).toEqual(true);
     expect(setButton.disabled).toEqual(false);
   });

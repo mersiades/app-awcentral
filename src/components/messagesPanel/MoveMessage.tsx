@@ -5,19 +5,15 @@ import { Box } from 'grommet';
 import { FormUp, FormDown } from 'grommet-icons';
 
 import { HeadingWS, TextWS } from '../../config/grommetConfig';
-import { GameMessage } from '../../@types/dataInterfaces';
+import { MessageProps } from './MessagesPanel';
 
 dayjs.extend(relativeTime);
 
-export interface MoveMessageProps {
+export interface MoveMessageProps extends MessageProps {
   children: JSX.Element;
-  message: GameMessage;
-  messagesLength: number;
-  index: number;
-  ticker: number;
 }
 
-// This components wraps around specific move message type components,
+// This component wraps around specific move message type components,
 // providing standardised layout, styling and functionality for all move message components
 const MoveMessage: FC<MoveMessageProps> = ({
   children,
@@ -25,12 +21,13 @@ const MoveMessage: FC<MoveMessageProps> = ({
   messagesLength,
   index,
   ticker,
+  closeForRoll,
 }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [showDetails, setShowDetails] = useState(messagesLength - 1 === index);
   const [date, setDate] = useState(dayjs(message.sentOn).fromNow());
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
   // Updates the date displayed whenever the ticker ticks over (every minute)
   useEffect(() => {
     setDate(dayjs(message.sentOn).fromNow());
@@ -38,10 +35,14 @@ const MoveMessage: FC<MoveMessageProps> = ({
 
   // Opens/closes the message details whenever a new message comes in
   useEffect(() => {
-    setShowDetails(messagesLength - 1 === index);
-  }, [messagesLength, index]);
+    if (closeForRoll) {
+      setShowDetails(false)
+    } else {
+      setShowDetails(messagesLength - 1 === index);
+    }
+  }, [messagesLength, index, closeForRoll]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <div data-testid={`${message.title}-message`}>
       <Box direction="row" justify="between" align="center">

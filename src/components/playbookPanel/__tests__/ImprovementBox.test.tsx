@@ -18,6 +18,7 @@ import {
   waitOneTick,
 } from '../../../tests/test-utils';
 import ImprovementBox from '../ImprovementBox';
+import { mockMcContentQuery } from '../../../tests/mockQueries';
 
 // With experience = 0 (on gameRole[1]'s character)
 const mockGameQuery: MockedResponse<GameData> = {
@@ -161,15 +162,12 @@ const mockPlaybookCreatorQuery: MockedResponse<PlaybookCreatorData> = {
 };
 
 describe('Rendering ImprovementBox', () => {
-  let screen: RenderResult<
-    typeof import('@testing-library/dom/types/queries'),
-    HTMLElement
-  >;
+  let screen: RenderResult
   describe('when experience is 0', () => {
     beforeEach(async () => {
       screen = customRenderForComponent(<ImprovementBox />, {
         isAuthenticated: true,
-        apolloMocks: [mockGameQuery],
+        apolloMocks: [mockGameQuery, mockMcContentQuery],
         injectedGameId: mockGame7.id,
         injectedUserId: mockGame7.gameRoles[1].userId,
       });
@@ -260,7 +258,7 @@ describe('Rendering ImprovementBox', () => {
       const improveButton = screen.getByRole('button', {
         name: 'IMPROVE',
       }) as HTMLButtonElement;
-      userEvent.click(improveButton);
+      await userEvent.click(improveButton);
       await waitOneTick(); // wait for spendExperience mutation
       // Check button still enabled because there is now an unspent improvement point
       expect(improveButton.disabled).toBeFalsy();

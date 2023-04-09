@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'Vtks good luck for you';
-  src: url('../fonts/Vtks\ good\ luck\ for\ you.woff') format('woff'),
-    url('../fonts/Vtks\ good\ luck\ for\ you.ttf') format('truetype');
+  src: url('../fonts/Vtks good luck for you.woff') format('woff'),
+    url('../fonts/Vtks good luck for you.ttf') format('truetype');
 }
 
 @font-face {
@@ -12,16 +12,30 @@
     url('../fonts/crustype_clean.ttf') format('truetype');
 }
 
-/* html.vtks-ready {
-  font-family: 'Vtks good luck for you';
-  /* font-size: 18px; */
-/* }
-html.crust-ready {
-  font-family: 'crust_clean';
-  /* font-size: 18px; */
-/* } */
+@font-face {
+  font-family: 'chaparral pro';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/ChaparralPro-Regular.otf') format('opentype')
+}
 
-/* html.fonts-loading {
-  font-family: serif;
-  font-size: 18px;
-/* } */
+@font-face {
+  font-family: 'chaparral pro';
+  font-style: normal;
+  font-weight: bold;
+  src: url('../fonts/ChaparralPro-Bold.otf') format('opentype')
+}
+
+@font-face {
+  font-family: 'chaparral pro';
+  font-style: italic;
+  font-weight: normal;
+  src: url('../fonts/ChaparralPro-Italic.otf') format('opentype')
+}
+
+@font-face {
+  font-family: 'chaparral pro';
+  font-style: italic;
+  font-weight: bold;
+  src: url('../fonts/ChaparralPro-BoldIt.otf') format('opentype')
+}

@@ -30,6 +30,19 @@ import {
   SUPPLIER_TEXT,
   WEIRD_TEXT,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias,
+  ONM_ADJUST_HX, ONM_SET_ANGEL_KIT,
+  ONM_SET_CHARACTER_BARTER,
+  ONM_SET_DEATH_MOVES,
+  ONM_SET_HARM,
+  ONM_TOGGLE_STAT_HIGHLIGHT,
+  ONQ_ALL_MOVES, ONQ_GAME,
+  setupQueryAliases,
+  visitHomePage,
+  waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Using the PlaybookPanel as an Angel', () => {
   const whiteBackground = 'background-color: rgb(255, 255, 255)';
@@ -38,8 +51,18 @@ describe('Using the PlaybookPanel as an Angel', () => {
 
   beforeEach(() => {
     cy.login('sara@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_TOGGLE_STAT_HIGHLIGHT)
+      aliasMutation(req, ONM_ADJUST_HX)
+      aliasMutation(req, ONM_SET_HARM)
+      aliasMutation(req, ONM_SET_CHARACTER_BARTER)
+      aliasMutation(req, ONM_SET_DEATH_MOVES)
+      aliasMutation(req, ONM_SET_ANGEL_KIT)
+    })
+    visitHomePage();
     cy.returnToGame(game7.name);
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
     cy.openPlaybookPanel();
   });
 
@@ -110,7 +133,8 @@ describe('Using the PlaybookPanel as an Angel', () => {
           );
         })
         .click();
-      cy.wait(500);
+      waitMutationWithGame(ONM_TOGGLE_STAT_HIGHLIGHT)
+      cy.wait(generateWaitAlias(ONQ_GAME), { timeout: 3000})
       cy.get('div[data-testid="WEIRD-stat-box"]')
         .then((element) => {
           expect(element[0].getAttribute('style')).to.include(
@@ -118,7 +142,8 @@ describe('Using the PlaybookPanel as an Angel', () => {
           );
         })
         .click();
-      cy.wait(500);
+      waitMutationWithGame(ONM_TOGGLE_STAT_HIGHLIGHT)
+      cy.wait(generateWaitAlias(ONQ_GAME), { timeout: 3000})
       cy.get('div[data-testid="WEIRD-stat-box"]').then((element) => {
         expect(element[0].getAttribute('style')).not.to.include(
           'background-color: rgb(214, 102, 103)'
@@ -191,7 +216,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
   });
 
   // This test relies on the previous test being complete
-  // This test is too flakey, not worth the effort
+  // Flakey
   it.skip('should reduce harm to zero', () => {
     cy.get('div[data-testid="Harm-box"]').within(() => {
       // Check initial harm box content
@@ -203,14 +228,14 @@ describe('Using the PlaybookPanel as an Angel', () => {
       }
 
       // Check stabilize
-      // Flakey, not worth the worry
-      // for (let i = 0; i < 3; i++) {
-      //   checkHarmSectorAndClick(i, whiteBackground);
-      // }
-      // cy.contains(STABILIZED_TEXT).click();
-      // for (let i = 2; i > -1; i--) {
-      //   checkHarmSector(i, greenBackground);
-      // }
+      for (let i = 0; i < 3; i++) {
+        checkHarmSectorAndClick(i, whiteBackground);
+      }
+      cy.contains(STABILIZED_TEXT).click();
+      waitMutationWithGame(ONM_SET_HARM)
+      for (let i = 2; i > -1; i--) {
+        checkHarmSector(i, greenBackground);
+      }
     });
   });
 
@@ -225,7 +250,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
     cy.contains(CANCEL_TEXT).should('be.visible');
     cy.contains(DO_IT_TEXT).should('be.visible');
 
-    // Check DiathDialog CANCEL
+    // Check DeathDialog CANCEL
     cy.contains(CANCEL_TEXT).click();
     cy.contains(MAKE_CHANGE_TEXT).should('not.exist');
 
@@ -233,26 +258,24 @@ describe('Using the PlaybookPanel as an Angel', () => {
     cy.contains('come back with -1hard').click();
     cy.contains(DO_IT_TEXT).should('not.be.disabled');
     cy.contains(DO_IT_TEXT).click();
+    cy.wait(generateWaitAlias(ONM_SET_DEATH_MOVES))
     cy.contains(MAKE_CHANGE_TEXT).should('not.exist');
 
     // Check HARD decreased
     cy.get('h2[aria-label="hard-value"]').should('include.text', '-1');
-    cy.get('[aria-label="come back with -1hard checkbox"]').within(() =>
-      cy.get('input').should('be.checked')
-    );
+    cy.get('[aria-label="come back with -1hard checkbox"]').should('be.checked')
 
     // Uncheck -1hard option and check
     cy.contains('come back with -1hard').click();
     cy.contains(REMOVE_HARD_MINUS_1_TEXT, { timeout: 8000 }).should('exist');
     cy.contains(DO_IT_TEXT).click();
+    cy.wait(generateWaitAlias(ONM_SET_DEATH_MOVES))
     cy.contains(MAKE_CHANGE_TEXT).should('not.exist');
     cy.get('h2[aria-label="hard-value"]', { timeout: 8000 }).should(
       'include.text',
       '0'
     );
-    cy.get('[aria-label="come back with -1hard checkbox"]').within(() =>
-      cy.get('input').should('not.be.checked')
-    );
+    cy.get('[aria-label="come back with -1hard checkbox"]').should('not.be.checked')
   });
 
   it('should increase WEIRD when life untenable, then restore WEIRD', () => {
@@ -265,22 +288,20 @@ describe('Using the PlaybookPanel as an Angel', () => {
 
     // Check WEIRD increases
     cy.contains(DO_IT_TEXT).click();
+    cy.wait(generateWaitAlias(ONM_SET_DEATH_MOVES))
     cy.contains(ADD_WEIRD_1_TEXT).should('not.exist');
     cy.get('h2[aria-label="weird-value"]').should('include.text', '0');
-    cy.get('[aria-label="come back with +1weird (max+3) checkbox"]').within(
-      () => cy.get('input').should('be.checked')
-    );
+    cy.get('[aria-label="come back with +1weird (max+3) checkbox"]').should('be.checked')
 
     // Uncheck +1weird option and check
     cy.contains('come back with +1weird').should('be.visible');
     cy.contains('come back with +1weird').click();
     cy.contains(REMOVE_WEIRD_1_TEXT).should('exist');
     cy.contains(DO_IT_TEXT).click();
+    cy.wait(generateWaitAlias(ONM_SET_DEATH_MOVES))
     cy.contains(REMOVE_WEIRD_1_TEXT).should('not.exist');
     cy.get('h2[aria-label="weird-value"]').should('include.text', '-1');
-    cy.get('[aria-label="come back with +1weird (max+3) checkbox"]').within(
-      () => cy.get('input').should('not.be.checked')
-    );
+    cy.get('[aria-label="come back with +1weird (max+3) checkbox"]').should('not.be.checked')
   });
 
   it('should mark character as dead when life untenable, then unmark', () => {
@@ -294,6 +315,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
       `${ADD_DIE_TEXT_1} ${angel_sara_1_complete.name} ${ADD_DIE_TEXT_2}`
     ).should('exist');
     cy.contains(DO_IT_TEXT).click();
+    waitMutationWithGame(ONM_SET_DEATH_MOVES)
     cy.contains('RIP', { timeout: 8000 }).should('exist');
     cy.get('div[data-testid="name-looks-box"]').should('contain', 'RIP');
 
@@ -303,6 +325,7 @@ describe('Using the PlaybookPanel as an Angel', () => {
       `${REMOVE_DIE_TEXT_1} ${angel_sara_1_complete.name} ${REMOVE_DIE_TEXT_2}`
     ).should('exist');
     cy.contains(DO_IT_TEXT).click();
+    waitMutationWithGame(ONM_SET_DEATH_MOVES)
     cy.contains('RIP', { timeout: 8000 }).should('not.exist');
     cy.get('div[data-testid="name-looks-box"]').should('not.contain', 'RIP');
   });
@@ -345,13 +368,15 @@ describe('Using the PlaybookPanel as an Angel', () => {
   it('should reset Hx (both + & -) and earn experience', () => {
     cy.get('div[data-testid="Hx-box"]').within(() => {
       // Check initial content
-      // cy.get('div[aria-label="Phoenix-hx"]').as('phoenixBox');
-      // cy.get('div[aria-label="Dog-hx"]').as('dogBox');
+      cy.get('div[aria-label="Phoenix-hx"]').as('phoenixBox');
+      cy.get('div[aria-label="Dog-hx"]').as('dogBox');
 
       // Increase Hx to reset point
       cy.get('div[aria-label="Phoenix-hx"]').within(() => {
         cy.get('h2[aria-label="phoenix-value"]').should('include.text', '3');
         cy.get('div[data-testid="increase-caret"]').click();
+        waitMutationWithGame(ONM_ADJUST_HX)
+        cy.wait(generateWaitAlias(ONQ_GAME))
         cy.get('h2[aria-label="phoenix-value"]', { timeout: 8000 }).should(
           'include.text',
           '1'
@@ -364,12 +389,20 @@ describe('Using the PlaybookPanel as an Angel', () => {
       cy.get('div[aria-label="Dog-hx"]').within(() => {
         cy.get('h2[aria-label="dog-value"]').should('include.text', '1');
         cy.get('div[data-testid="decrease-caret"]').click();
+        waitMutationWithGame(ONM_ADJUST_HX)
+        cy.wait(generateWaitAlias(ONQ_GAME))
         cy.get('h2[aria-label="dog-value"]').should('include.text', '0');
         cy.get('div[data-testid="decrease-caret"]').click();
+        waitMutationWithGame(ONM_ADJUST_HX)
+        cy.wait(generateWaitAlias(ONQ_GAME))
         cy.get('h2[aria-label="dog-value"]').should('include.text', '-1');
         cy.get('div[data-testid="decrease-caret"]').click();
+        waitMutationWithGame(ONM_ADJUST_HX)
+        cy.wait(generateWaitAlias(ONQ_GAME))
         cy.get('h2[aria-label="dog-value"]').should('include.text', '-2');
         cy.get('div[data-testid="decrease-caret"]').click();
+        waitMutationWithGame(ONM_ADJUST_HX)
+        cy.wait(generateWaitAlias(ONQ_GAME))
         cy.get('h2[aria-label="dog-value"]').should('include.text', '0');
       });
 
@@ -420,10 +453,14 @@ describe('Using the PlaybookPanel as an Angel', () => {
 
       // Increase barter
       cy.get('div[data-testid="increase-caret"]').click();
+      waitMutationWithGame(ONM_SET_CHARACTER_BARTER)
+      cy.wait(generateWaitAlias(ONQ_GAME))
       cy.get('@barterValue').should('include.text', '3');
 
       // Decrease barter
       cy.get('div[data-testid="decrease-caret"]').click();
+      waitMutationWithGame(ONM_SET_CHARACTER_BARTER)
+      cy.wait(generateWaitAlias(ONQ_GAME))
       cy.get('@barterValue').should('include.text', '2');
     });
   });
@@ -438,12 +475,16 @@ describe('Using the PlaybookPanel as an Angel', () => {
       cy.get('h2[aria-label="stock-value"]').then((elem) => {
         stockValue = parseInt(elem[0].innerText);
         cy.get('div[data-testid="increase-caret"]').click();
+        waitMutationWithGame(ONM_SET_ANGEL_KIT)
+        cy.wait(generateWaitAlias(ONQ_GAME))
         cy.get('h2[aria-label="stock-value"]').should(
           'contain.text',
           stockValue + 1
         );
         cy.get('div[data-testid="decrease-caret"]').click();
-        cy.get('h2[aria-label="stock-value"]', { timeout: 8000 }).should(
+        waitMutationWithGame(ONM_SET_ANGEL_KIT)
+        cy.wait(generateWaitAlias(ONQ_GAME))
+        cy.get('h2[aria-label="stock-value"]').should(
           'contain.text',
           stockValue
         );
@@ -462,9 +503,11 @@ const checkHarmSectorAndClick = (sector: number, color: string) => {
   cy.get(`div[data-testid="harm-sector-${sector}"]`).then((element) => {
     expect(element[0].getAttribute('style')).to.include(color);
   });
-  cy.wait(500);
+
   cy.get(`div[data-testid="harm-sector-${sector}"]`).click({ force: true });
-  cy.wait(500);
+  waitMutationWithGame(ONM_SET_HARM)
+  cy.wait(generateWaitAlias(ONQ_GAME), { timeout: 3000})
+
   cy.get(`div[data-testid="harm-sector-${sector}"]`, { timeout: 8000 }).then(
     (element) => {
       expect(element[0].getAttribute('style')).not.to.include(color);

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface RemovePlayerData {
@@ -47,6 +47,6 @@ const REMOVE_PLAYER = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<RemovePlayerData, RemovePlayerVars>;
 
 export default REMOVE_PLAYER;

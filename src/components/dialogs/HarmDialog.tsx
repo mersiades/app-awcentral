@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, FormField, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -14,12 +13,9 @@ import {
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
-import PERFORM_SUFFER_HARM_MOVE, {
-  PerformSufferHarmMoveData,
-  PerformSufferHarmMoveVars,
-} from '../../mutations/performSufferHarmMove';
 import HarmClock from '../HarmClock';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { useMoves } from '../../contexts/movesContext';
 
 interface HarmDialogProps {
   move: Move | CharacterMove;
@@ -27,22 +23,17 @@ interface HarmDialogProps {
 }
 
 const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [harm, setHarm] = useState(0);
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
+  const { makeSufferHarmMove, rollingMove} = useMoves()
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performSufferHarmMove, { loading: performingSufferHarmMove }] =
-    useMutation<PerformSufferHarmMoveData, PerformSufferHarmMoveVars>(
-      PERFORM_SUFFER_HARM_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const currentHarm = character?.harm;
 
   const handleSufferHarmMove = async (move: Move | CharacterMove) => {
@@ -51,13 +42,14 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
       return;
     }
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingSufferHarmMove
+      !rollingMove
     ) {
       try {
-        await performSufferHarmMove({
+        makeSufferHarmMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -137,9 +129,9 @@ const HarmDialog: FC<HarmDialogProps> = ({ move, handleClose }) => {
             label="ROLL"
             primary
             onClick={() =>
-              !!harm && !performingSufferHarmMove && handleSufferHarmMove(move)
+              !!harm && !rollingMove && handleSufferHarmMove(move)
             }
-            disabled={!harm || performingSufferHarmMove}
+            disabled={!harm || rollingMove}
           />
         </Box>
       </Box>

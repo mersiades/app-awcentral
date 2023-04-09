@@ -5,57 +5,65 @@ import { FormUp, FormDown } from 'grommet-icons';
 import ScriptChangeAttribution from '../ScriptChangeAttribution';
 import { StyledMarkdown } from '../styledComponents';
 import { accentColors } from '../../config/grommetConfig';
-import { GameMessage } from '../../@types/dataInterfaces';
+import { MessageProps } from './MessagesPanel';
 
-export interface ScriptChangeMessageProps {
-  message: GameMessage;
-  messagesLength: number;
-  index: number;
+export interface ScriptChangeMessageProps extends Pick<
+  MessageProps,
+  'message' |
+  'messagesLength' |
+  'index' |
+  'closeForRoll'
+> {
 }
 
 const ScriptChangeMessage: FC<ScriptChangeMessageProps> = ({
-  message,
-  messagesLength,
-  index,
-}) => {
-  // ----------------------------- Component state ------------------------------ //
+                                                             message,
+                                                             messagesLength,
+                                                             index,
+                                                             closeForRoll
+                                                           }) => {
+  // ----------------------------- Component state -------------------------- //
   const [showDetails, setShowDetails] = useState(messagesLength - 1 === index);
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
   // Opens/closes the message details whenever a new message comes in
   useEffect(() => {
-    setShowDetails(messagesLength - 1 === index);
-  }, [messagesLength, index]);
+    if (closeForRoll) {
+      setShowDetails(false);
+    } else {
+      setShowDetails(messagesLength - 1 === index);
+    }
+  }, [messagesLength, index, closeForRoll]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <div data-testid={`${message.title}-message`}>
       <Box
-        direction="row"
-        justify="between"
-        align="center"
+        direction='row'
+        justify='between'
+        align='center'
         background={{ color: accentColors[0] }}
       >
-        <Box direction="row" align="center" justify="between">
+        <Box direction='row' align='center' justify='between'>
           {showDetails ? (
             <FormUp
-              data-testid="hide-move-details-icon"
+              data-testid='hide-move-details-icon'
               onClick={() => setShowDetails(false)}
               style={{ cursor: 'pointer' }}
-              color="#fff"
+              color='#fff'
             />
           ) : (
             <FormDown
-              data-testid="show-move-details-icon"
+              data-testid='show-move-details-icon'
               onClick={() => setShowDetails(true)}
               style={{ cursor: 'pointer' }}
-              color="#fff"
+              color='#fff'
             />
           )}
           <Heading
             level={4}
             margin={{ vertical: '6px', bottom: '3px' }}
-            color="white"
+            color='white'
           >
             {message.title}
           </Heading>
@@ -67,7 +75,7 @@ const ScriptChangeMessage: FC<ScriptChangeMessageProps> = ({
             type: 'fadeIn',
             delay: 0,
             duration: 500,
-            size: 'xsmall',
+            size: 'xsmall'
           }}
           pad={{ top: '12px' }}
         >

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 import { PlaybookType } from '../@types/enums';
 
@@ -47,6 +47,6 @@ const SPEND_EXPERIENCE = gql`
       allowedOtherPlaybookMoves
     }
   }
-`;
+` as TypedDocumentNode<SpendExperienceData, SpendExperienceVars>;
 
 export default SPEND_EXPERIENCE;

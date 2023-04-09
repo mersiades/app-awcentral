@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Box, Button } from 'grommet';
 import { Checkbox, Checkmark } from 'grommet-icons';
@@ -61,26 +61,26 @@ const StyledLi = styled.li`
 `;
 
 const PreGamePage = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [havePlayersFinished, setHavePlayersFinished] = useState(false);
   const [showScrollable, setShowScrollable] = useState(false);
 
-  // ------------------------------------------------------- Refs -------------------------------------------------------- //
+  // ------------------------------ Refs ------------------------------------ //
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [finishPreGame, { loading: finishingPreGame }] = useMutation<
     FinishPreGameData,
     FinishPreGameVars
   >(FINISH_PRE_GAME);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { userId } = useUser();
   const { game, userGameRole, allPlayerGameRoles, setGameContext } = useGame();
 
-  // ----------------------------------------- Component functions and variables ------------------------------------------- //
+  // ----------------------------- Component functions and variables -------- //
 
   const pathToGame =
     userGameRole?.role === RoleType.mc
@@ -143,31 +143,31 @@ const PreGamePage = () => {
           optimisticResponse: getFinishPreGameOR(game.id) as FinishPreGameData,
         });
         logAmpEvent('start game');
-        history.push(pathToGame);
+        navigate(pathToGame);
       } catch (error) {
         console.error(error);
       }
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
 
   // Send User to MenuPage if not a member of this game
   useEffect(() => {
     if (!!game && !!userId) {
       const memberIds = game.gameRoles.map((gameRole) => gameRole.userId);
       if (!memberIds.includes(userId)) {
-        history.push('/menu');
+        navigate('/menu');
       }
     }
-  }, [game, userId, history]);
+  }, [game, userId, navigate]);
 
   // Send User to MCPage or PlayerPage if pre-game is already complete
   useEffect(() => {
     if (!!userGameRole && !!game && game?.hasFinishedPreGame) {
-      history.push(pathToGame);
+      navigate(pathToGame);
     }
-  }, [game, userGameRole, pathToGame, history]);
+  }, [game, userGameRole, pathToGame, navigate]);
 
   // Set the GameContext
   useEffect(() => {
@@ -332,7 +332,7 @@ const PreGamePage = () => {
       pad="24px"
       overflow="auto"
     >
-      <CloseButton handleClose={() => history.push(pathToGame)} />
+      <CloseButton handleClose={() => navigate(pathToGame)} />
       <ScrollableIndicator show={showScrollable} />
       <HeadingWS level="2">PRE-GAME</HeadingWS>
       {userGameRole?.role === RoleType.mc ? (

@@ -2,8 +2,6 @@
 // load type definitions that come with Cypress module
 /// <reference types="cypress" />
 
-// import { PlaybookType } from '../../src/@types/enums';
-
 declare namespace Cypress {
   interface Chainable {
     /**
@@ -52,7 +50,8 @@ declare namespace Cypress {
       characterName: string,
       moveName: string,
       moveSnippet: string,
-      rollStat: StatType
+      rollStat: StatType,
+      operationName?: string
     ): void;
   }
 }

@@ -8,10 +8,14 @@ import {
   VEHICLES_TITLE,
   WEALTH_NAME,
 } from '../../src/config/constants';
+import { setupQueryAliases } from '../utils/graphql-test-utils';
 
 describe('Creating a new Hardholder Character', () => {
   beforeEach(() => {
     cy.login('olayinka@email.com');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+    })
     cy.visit('/');
     cy.returnToGame(game6.name);
     cy.navToCharacterCreationViaPlaybookPanel('holding & gang-edit-link');

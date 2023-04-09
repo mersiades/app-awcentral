@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import ReactMarkdown from 'react-markdown';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Box, CheckBox, Tab, Tabs, Text } from 'grommet';
 
@@ -75,7 +75,7 @@ const CharacterMovesForm: FC = () => {
   const allowedOtherPlaybookMoves = character?.allowedOtherPlaybookMoves;
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const { data: pbCreatorData } = useQuery<
@@ -165,7 +165,7 @@ const CharacterMovesForm: FC = () => {
         });
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set moves');
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.setVehicle}`
           );
         }

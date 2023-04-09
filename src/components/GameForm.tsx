@@ -43,20 +43,20 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
     AddCommsAppData,
     AddCommsAppVars
   >(ADD_COMMS_APP, {
-    variables: { gameId, app },
+    variables: { gameId: gameId!, app },
   });
   const [addCommsUrl, { loading: settingUrl }] = useMutation<
     AddCommsUrlData,
     AddCommsUrlVars
   >(ADD_COMMS_URL, {
-    variables: { gameId, url },
+    variables: { gameId: gameId!, url },
   });
 
   const [setGameName, { loading: settingName }] = useMutation<
     SetGameNameData,
     SetGameNameVars
   >(SET_GAME_NAME, {
-    variables: { gameId, name },
+    variables: { gameId: gameId!, name },
   });
 
   // ----------------------------- Component functions ------------------------- //
@@ -73,7 +73,7 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
   ];
 
   const handleSetApp = async () => {
-    if (!!app && !!game) {
+    if (!!app && !!game && gameId) {
       try {
         // TODO: Figure out why optomistic response isn't working here
         await addCommsApp({
@@ -87,7 +87,7 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
   };
 
   const handleSetUrl = async () => {
-    if (!!url && !!game) {
+    if (!!url && !!game && gameId) {
       try {
         await addCommsUrl({
           variables: { gameId, url },
@@ -100,7 +100,7 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
   };
 
   const handleSetName = () => {
-    if (!!name && !!game) {
+    if (!!name && !!game && gameId) {
       try {
         setGameName({ variables: { gameId, name } });
       } catch (e) {
@@ -109,8 +109,7 @@ const GameForm: FC<GameFormProps> = ({ handleClose }) => {
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   if (!game) {
     return <Spinner />;
   }

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformMakeWantKnownMoveData {
@@ -47,6 +47,6 @@ const PERFORM_MAKE_WANT_KNOWN_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformMakeWantKnownMoveData, PerformMakeWantKnownMoveVars>;
 
 export default PERFORM_MAKE_WANT_KNOWN_MOVE;

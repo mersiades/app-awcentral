@@ -28,12 +28,10 @@ import {
   customRenderForComponent,
   waitOneTick,
 } from '../../../tests/test-utils';
+import { mockMcContentQuery } from '../../../tests/mockQueries';
 
 describe('Rendering ScriptChangeDialog', () => {
-  let screen: RenderResult<
-    typeof import('@testing-library/dom/types/queries'),
-    HTMLElement
-  >;
+  let screen: RenderResult
   const mockHandleClose = jest.fn();
 
   let cache: InMemoryCache;
@@ -44,7 +42,7 @@ describe('Rendering ScriptChangeDialog', () => {
       <ScriptChangeDialog handleClose={mockHandleClose} isPreview={false} />,
       {
         isAuthenticated: true,
-        apolloMocks: [],
+        apolloMocks: [mockMcContentQuery],
         injectedGameId: mockGame7.id,
         injectedUserId: mockGame7.gameRoles[1].userId,
         cache,
@@ -54,7 +52,7 @@ describe('Rendering ScriptChangeDialog', () => {
     await waitOneTick();
   });
 
-  test('should type a comment, click an option, and close the dialog', () => {
+  test('should type a comment, click an option, and close the dialog', async () => {
     expect(
       screen.getByRole('heading', { name: SCRIPT_CHANGE_TITLE })
     ).toBeInTheDocument();
@@ -98,10 +96,10 @@ describe('Rendering ScriptChangeDialog', () => {
     const commentInput = screen.getAllByRole('textbox', {
       name: SCRIPT_CHANGE_COMMENT_INPUT_ID,
     })[0] as HTMLInputElement;
-    userEvent.type(commentInput, mockComment);
+    await userEvent.type(commentInput, mockComment);
     expect(commentInput.value).toEqual(mockComment);
 
-    userEvent.click(screen.getByTestId(`${ScriptChangeType.pause}-tile`));
+    await userEvent.click(screen.getByTestId(`${ScriptChangeType.pause}-tile`));
 
     expect(mockHandleClose).toHaveBeenCalled();
   });

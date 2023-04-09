@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { ThreatInput } from '../@types';
 import { Game } from '../@types/dataInterfaces';
 
@@ -25,6 +25,6 @@ const ADD_THREAT = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<AddThreatData, AddThreatVars>;
 
 export default ADD_THREAT;

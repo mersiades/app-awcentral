@@ -2,31 +2,26 @@ import React, { FC } from 'react';
 
 import MoveMessage from './MoveMessage';
 import { StyledMarkdown } from '../styledComponents';
-import { GameMessage } from '../../@types/dataInterfaces';
+import { MessageProps } from './MessagesPanel';
 
-export interface PrintMessageProps {
-  message: GameMessage;
-  messagesLength: number;
-  index: number;
-  ticker: number;
+export interface PrintMessageProps extends MessageProps {
 }
 
 const PrintMessage: FC<PrintMessageProps> = ({
-  message,
-  messagesLength,
-  index,
-  ticker,
-}) => {
-  return (
-    <MoveMessage
-      message={message}
-      messagesLength={messagesLength}
-      index={index}
-      ticker={ticker}
-    >
-      <StyledMarkdown>{message.content}</StyledMarkdown>
-    </MoveMessage>
-  );
-};
+                                               message,
+                                               messagesLength,
+                                               index,
+                                               ticker,
+                                               closeForRoll
+                                             }) =>
+  <MoveMessage
+    message={message}
+    messagesLength={messagesLength}
+    index={index}
+    ticker={ticker}
+    closeForRoll={closeForRoll}
+  >
+    <StyledMarkdown>{message.content}</StyledMarkdown>
+  </MoveMessage>;
 
 export default PrintMessage;

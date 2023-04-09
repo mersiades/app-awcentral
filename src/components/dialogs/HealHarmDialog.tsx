@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, FormField, Select, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -10,15 +9,12 @@ import {
   ParagraphWS,
   ButtonWS,
   RedBox,
-  healHarmBackground,
+  healHarmBackground
 } from '../../config/grommetConfig';
-import PERFORM_HEAL_HARM_MOVE, {
-  PerformHealHarmMoveData,
-  PerformHealHarmMoveVars,
-} from '../../mutations/performHealHarmMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { useMoves } from '../../contexts/movesContext';
 import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface HealHarmDialogProps {
@@ -27,31 +23,27 @@ interface HealHarmDialogProps {
 }
 
 const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
-  // ----------------------------- Component state ------------------------------ //
-  const [otherCharacterId, setotherCharacterId] = useState('');
+  // ----------------------------- Component state -------------------------- //
+  const [otherCharacterId, setOtherCharacterId] = useState('');
   const [harm, setHarm] = useState(0);
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
+  const { makeHealHarmMove, rollingMove } = useMoves();
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performHealHarmMove, { loading: performingHealHarmMove }] =
-    useMutation<PerformHealHarmMoveData, PerformHealHarmMoveVars>(
-      PERFORM_HEAL_HARM_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const characters =
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleHealHarmMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingHealHarmMove &&
+      !rollingMove &&
       harm > 0 &&
       !!otherCharacterId
     ) {
@@ -66,15 +58,15 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
       if (!otherGameroleId) return;
 
       try {
-        await performHealHarmMove({
+        makeHealHarmMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
             characterId: character.id,
             otherCharacterId,
-            harm,
-          },
+            harm
+          }
         });
         logAmpEvent('make move', { move: move.name });
         handleClose();
@@ -84,79 +76,79 @@ const HealHarmDialog: FC<HealHarmDialogProps> = ({ move, handleClose }) => {
     }
   };
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   return (
     <DialogWrapper background={healHarmBackground} handleClose={handleClose}>
-      <Box gap="24px">
-        <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
+      <Box gap='24px'>
+        <HeadingWS crustReady={crustReady} level={4} alignSelf='start'>
           {move.name}
         </HeadingWS>
         <StyledMarkdown>{move.description}</StyledMarkdown>
         <Box
           fill
-          direction="row"
-          align="start"
-          justify="between"
-          pad="12px"
-          gap="12px"
+          direction='row'
+          align='start'
+          justify='between'
+          pad='12px'
+          gap='12px'
         >
           <Box fill>
-            <ParagraphWS alignSelf="start">Who did you heal?</ParagraphWS>
+            <ParagraphWS alignSelf='start'>Who did you heal?</ParagraphWS>
             <Select
-              id="target-character-input"
-              aria-label="target-character-input"
-              name="target-character"
-              placeholder="Who?"
+              id='target-character-input'
+              aria-label='target-character-input'
+              name='target-character'
+              placeholder='Who?'
               options={characters}
               labelKey={'name'}
               valueKey={'id'}
-              onChange={(e) => setotherCharacterId(e.value.id)}
+              onChange={(e) => setOtherCharacterId(e.value.id)}
             />
           </Box>
           <Box fill>
-            <ParagraphWS alignSelf="center">
+            <ParagraphWS alignSelf='center'>
               ...and how much did you heal?
             </ParagraphWS>
             <RedBox
-              alignSelf="center"
-              width="150px"
-              align="center"
-              justify="between"
-              pad="24px"
+              alignSelf='center'
+              width='150px'
+              align='center'
+              justify='between'
+              pad='24px'
             >
               <FormField>
                 <TextInput
-                  type="number"
+                  type='number'
                   value={harm}
-                  size="xlarge"
-                  textAlign="center"
+                  size='xlarge'
+                  textAlign='center'
                   onChange={(e) => setHarm(parseInt(e.target.value))}
                 />
               </FormField>
             </RedBox>
           </Box>
         </Box>
-        <Box fill="horizontal" direction="row" justify="end" gap="small">
+        <Box fill='horizontal' direction='row' justify='end' gap='small'>
           <ButtonWS
-            label="CANCEL"
+            label='CANCEL'
             style={{
               background: 'transparent',
               textShadow:
-                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000'
             }}
             onClick={handleClose}
           />
           <ButtonWS
-            label="APPLY"
+            label='APPLY'
             primary
             onClick={() =>
-              !performingHealHarmMove &&
+              !rollingMove &&
               harm > 0 &&
               !!otherCharacterId &&
               handleHealHarmMove()
             }
-            disabled={performingHealHarmMove || harm === 0 || !otherCharacterId}
+            disabled={rollingMove || harm === 0 || !otherCharacterId}
           />
         </Box>
       </Box>

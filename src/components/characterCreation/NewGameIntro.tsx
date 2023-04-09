@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useMutation } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Anchor, Box } from 'grommet';
 
 import Spinner from '../Spinner';
@@ -24,20 +24,19 @@ const NewGameIntro: FC = () => {
   const { crustReady } = useFonts();
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const [createCharacter, { loading: creatingCharacter }] = useMutation<
     CreateCharacterData,
     CreateCharacterVars
   >(CREATE_CHARACTER);
-
   // ----------------------------- Component functions ------------------------- //
-  const handleInitilializeCharacter = async () => {
+  const handleInitializeCharacter = async () => {
     if (!!userGameRole && !!game && userGameRole.characters?.length === 0) {
       try {
         await createCharacter({ variables: { gameRoleId: userGameRole?.id } });
-        history.push(`/character-creation/${game.id}?step=${1}`);
+        navigate(`/character-creation/${game.id}?step=${1}`);
       } catch (error) {
         console.error(error);
       }
@@ -118,7 +117,7 @@ const NewGameIntro: FC = () => {
             primary
             size="large"
             disabled={creatingCharacter}
-            onClick={() => handleInitilializeCharacter()}
+            onClick={() => handleInitializeCharacter()}
           />
         </Box>
         <ParagraphWS textAlign="center" size="large">

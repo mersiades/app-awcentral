@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { difference, pullAll } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, CheckBox } from 'grommet';
 
 import Spinner from '../Spinner';
@@ -21,19 +21,19 @@ import {
 } from '../../config/constants';
 
 const DeathMovesBox = () => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [selectedMoves, setSelectedMoves] = useState<string[]>([]);
   const [addedMoves, setAddedMoves] = useState<string[]>([]);
   const [removedMoves, setRemovedMoves] = useState<string[]>([]);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { userGameRole, character } = useGame();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const { data: deathMovesData } = useQuery<DeathMovesData>(DEATH_MOVES);
   const deathMoves = deathMovesData?.deathMoves;
 
@@ -42,7 +42,7 @@ const DeathMovesBox = () => {
     SetDeathMovesVars
   >(SET_DEATH_MOVES);
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
 
   const handleSelectMove = (move: Move) => {
     if (selectedMoves.some((moveName) => moveName === move.name)) {
@@ -61,7 +61,7 @@ const DeathMovesBox = () => {
 
   const redirectAfterSet = () => {
     if (addedMoves.includes(DEATH_CHANGE_PLAYBOOK_NAME)) {
-      history.push(`/character-creation/${gameId}?step=1`);
+      navigate(`/character-creation/${gameId}?step=1`);
     } else {
       setAddedMoves([]);
       setRemovedMoves([]);
@@ -91,7 +91,7 @@ const DeathMovesBox = () => {
     }
   };
 
-  // ----------------------------- Effects ---------------------------------------- //
+  // ----------------------------- Effects ---------------------------------- //
 
   // Whenever selectedMoves changes, finds which moves are different
   useEffect(() => {
@@ -115,7 +115,7 @@ const DeathMovesBox = () => {
     !!character && setSelectedMoves(character.deathMoves.map((mv) => mv.name));
   }, [character]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   return (
     <Box fill gap="6px">

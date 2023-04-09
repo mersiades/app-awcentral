@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformJustGiveMotivationMoveData {
@@ -42,6 +42,6 @@ const PERFORM_JUST_GIVE_MOTIVATION_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformJustGiveMotivationMoveData, PerformJustGiveMotivationMoveVars>;
 
 export default PERFORM_JUST_GIVE_MOTIVATION_MOVE;

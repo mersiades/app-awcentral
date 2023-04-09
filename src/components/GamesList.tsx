@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { List } from 'grommet';
 
 import { RoleType } from '../@types/enums';
@@ -17,10 +17,10 @@ interface GameInList {
 }
 
 const GamesList: FC<GamesListProps> = ({ gameRoles }) => {
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
 
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   // Transforms gameRoles to fit nicely with Grommet's List requirements
   const transformGames = () => {
     const games: GameInList[] = [];
@@ -41,7 +41,7 @@ const GamesList: FC<GamesListProps> = ({ gameRoles }) => {
     return games;
   };
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <List
       primaryKey="name"
@@ -52,11 +52,11 @@ const GamesList: FC<GamesListProps> = ({ gameRoles }) => {
           e.item.role === RoleType.player &&
           e.item.numberOfCharacters === 0
         ) {
-          history.push(`/character-creation/${e.item.gameId}?step=0`);
+          navigate(`/character-creation/${e.item.gameId}?step=0`);
         } else if (e.item.role === RoleType.player) {
-          history.push(`/player-game/${e.item.gameId}`);
+          navigate(`/player-game/${e.item.gameId}`);
         } else {
-          history.push(`/mc-game/${e.item.gameId}`);
+          navigate(`/mc-game/${e.item.gameId}`);
         }
       }}
     />

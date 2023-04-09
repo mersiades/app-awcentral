@@ -5,7 +5,7 @@ import { MockedResponse } from '@apollo/client/testing';
 import PlayerPage from '../PlayerPage';
 import { customRenderForComponent, waitOneTick } from '../../tests/test-utils';
 import { mockGame7, mockAuth0UserInfo1 } from '../../tests/mocks';
-import { mockAllMoves, mockPlaybook } from '../../tests/mockQueries';
+import { mockAllMoves, mockMcContentQuery, mockPlaybook } from '../../tests/mockQueries';
 import GAME, { GameData } from '../../queries/game';
 import { CANCEL_TEXT, SCRIPT_CHANGE_TITLE } from '../../config/constants';
 
@@ -35,7 +35,7 @@ describe('Rendering PlayerPage', () => {
   test('should render PlayerPage with PlaybookPanel and MovesPanel', async () => {
     customRenderForComponent(<PlayerPage />, {
       isAuthenticated: true,
-      apolloMocks: [mockAllMoves, mockPlaybook],
+      apolloMocks: [mockAllMoves, mockPlaybook, mockMcContentQuery],
       injectedGame: {
         ...mockGame7,
         hasFinishedPreGame: true,
@@ -55,12 +55,12 @@ describe('Rendering PlayerPage', () => {
     const movesTab = screen.getByRole('tab', { name: 'Moves' });
 
     // Check that PlaybookPanel opens
-    userEvent.click(playbookTab);
+    await userEvent.click(playbookTab);
     screen.getByTestId('character-sheet');
     screen.getByRole('tabpanel', { name: 'Playbook Tab Contents' });
 
     // Check that MovesPanel opens
-    userEvent.click(movesTab);
+    await userEvent.click(movesTab);
     screen.getByTestId('moves-panel');
     screen.getByRole('tabpanel', { name: 'Moves Tab Contents' });
   });
@@ -76,12 +76,12 @@ describe('Rendering PlayerPage', () => {
     const scriptChangeIcon = screen.getByRole('img', {
       name: 'script-change-button',
     });
-    userEvent.click(scriptChangeIcon);
+    await userEvent.click(scriptChangeIcon);
     expect(
       screen.getByRole('heading', { name: SCRIPT_CHANGE_TITLE })
     ).toBeInTheDocument();
 
-    userEvent.click(screen.getByRole('button', { name: CANCEL_TEXT }));
+    await userEvent.click(screen.getByRole('button', { name: CANCEL_TEXT }));
     // jest.runAllTimers(); // To allow Layer exit animation
     // expect(
     //   screen.queryByRole('heading', { name: SCRIPT_CHANGE_TITLE })

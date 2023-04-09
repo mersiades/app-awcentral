@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { McContent } from '../@types/staticDataInterfaces';
 
 export interface McContentData {
@@ -57,6 +57,6 @@ const MC_CONTENT = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<McContentData, McContentVars>;
 
 export default MC_CONTENT;

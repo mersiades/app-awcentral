@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { PlaybookType } from '../@types/enums';
 import { Playbook } from '../@types/staticDataInterfaces';
 
@@ -21,6 +21,6 @@ const PLAYBOOK = gql`
       playbookImageUrl
     }
   }
-`;
+` as TypedDocumentNode<PlaybookData, PlaybookVars>;
 
 export default PLAYBOOK;

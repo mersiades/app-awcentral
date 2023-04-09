@@ -10,14 +10,6 @@ import RedTagsBox from '../RedTagsBox';
 import CollapsiblePanelBox from '../CollapsiblePanelBox';
 import { HeadingWS, brandColor } from '../../config/grommetConfig';
 import ALL_MOVES, { AllMovesData } from '../../queries/allMoves';
-import PERFORM_PRINT_MOVE, {
-  PerformPrintMoveData,
-  PerformPrintMoveVars,
-} from '../../mutations/performPrintMove';
-import PERFORM_STAT_ROLL_MOVE, {
-  PerformStatRollMoveData,
-  PerformStatRollMoveVars,
-} from '../../mutations/performStatRollMove';
 import { MoveActionType, MoveType, RollType } from '../../@types/enums';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
@@ -27,26 +19,32 @@ import { GO_AGGRO_NAME, SUCKER_SOMEONE_NAME } from '../../config/constants';
 
 import SET_HOLDING_BARTER, {
   SetHoldingBarterData,
-  SetHoldingBarterVars,
+  SetHoldingBarterVars
 } from '../../mutations/setHoldingBarter';
+import { useMoves } from '../../contexts/movesContext';
 
 interface HoldingBoxProps {
   navigateToCharacterCreation: (step: string) => void;
 }
 
 const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // -------------------------- Component state ----------------------------- //
   const [showMoves, setShowMoves] = useState(false);
   const [gangMoves, setGangMoves] = useState<Move[]>([]);
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // -------------------------- Hooks --------------------------------------- //
   const { crustReady } = useFonts();
   const { character, userGameRole } = useGame();
+  const {
+    makePrintMove,
+    makeStatsRollMove,
+    rollingMove
+  } = useMoves();
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // -------------------------- 3rd party hooks ----------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // -------------------------- GraphQL ------------------------------------- //
   const { data: allMovesData } = useQuery<AllMovesData>(ALL_MOVES);
 
   const [setHoldingBarter, { loading: settingHoldingBarter }] = useMutation<
@@ -54,20 +52,12 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
     SetHoldingBarterVars
   >(SET_HOLDING_BARTER);
 
-  const [performPrintMove, { loading: performingPrintMove }] = useMutation<
-    PerformPrintMoveData,
-    PerformPrintMoveVars
-  >(PERFORM_PRINT_MOVE);
-  const [performStatRollMove, { loading: performingStatRollMove }] =
-    useMutation<PerformStatRollMoveData, PerformStatRollMoveVars>(
-      PERFORM_STAT_ROLL_MOVE
-    );
-  // ----------------------------- Component functions ------------------------- //
+  // -------------------------- Component functions ------------------------- //
   const moveStyle = {
     cursor: 'pointer',
     '&:hover': {
-      color: brandColor,
-    },
+      color: brandColor
+    }
   };
   const holding = character?.playbookUniques?.holding;
 
@@ -86,7 +76,7 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
           variables: {
             gameRoleId: userGameRole?.id,
             characterId: character.id,
-            amount,
+            amount
           },
           optimisticResponse: {
             __typename: 'Mutation',
@@ -97,11 +87,11 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
                 ...character.playbookUniques,
                 holding: {
                   ...holding,
-                  barter: amount,
-                },
-              },
-            },
-          },
+                  barter: amount
+                }
+              }
+            }
+          }
         });
       } catch (error) {
         console.error(error);
@@ -111,20 +101,21 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
 
   const handleStatRollMove = (move: Move | CharacterMove) => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingStatRollMove
+      !rollingMove
     ) {
       try {
-        performStatRollMove({
+        makeStatsRollMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             characterId: character.id,
             moveId: move.id,
-            isGangMove: true,
-          },
+            isGangMove: true
+          }
         });
       } catch (error) {
         console.error(error);
@@ -143,20 +134,21 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
 
   const handlePrintMove = (move: Move | CharacterMove) => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingPrintMove
+      !rollingMove
     ) {
       try {
-        performPrintMove({
+        makePrintMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             characterId: character.id,
             moveId: move.id,
-            isGangMove: true,
-          },
+            isGangMove: true
+          }
         });
       } catch (error) {
         console.error(error);
@@ -195,18 +187,18 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
     }
   }, [allMovesData]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // -------------------------- Render -------------------------------------- //
 
   return (
     <CollapsiblePanelBox
       open
-      title="Holding & Gang"
+      title='Holding & Gang'
       navigateToCharacterCreation={navigateToCharacterCreation}
-      targetCreationStep="6"
+      targetCreationStep='6'
     >
       <Box
-        fill="horizontal"
-        align="start"
+        fill='horizontal'
+        align='start'
         animation={{ type: 'fadeIn', delay: 0, duration: 500, size: 'xsmall' }}
       >
         <HeadingWS level={4} margin={{ vertical: '3px' }}>
@@ -214,29 +206,29 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
         </HeadingWS>
         {!!holding && (
           <Box
-            fill="horizontal"
-            direction="row"
-            align="center"
-            justify="start"
+            fill='horizontal'
+            direction='row'
+            align='center'
+            justify='start'
             wrap
-            gap="12px"
-            pad="12px"
+            gap='12px'
+            pad='12px'
           >
             <SingleRedBox
               value={holding.barter.toString()}
-              label="Barter"
+              label='Barter'
               loading={settingHoldingBarter}
               onIncrease={() => adjustBarter('increase')}
               onDecrease={() => adjustBarter('decrease')}
             />
-            <DoubleRedBox value={holding.holdingSize} label="Size" />
-            <DoubleRedBox value={holding.souls} label="Population" />
-            <RedTagsBox tags={holding.wants} label="Wants" height="90px" />
-            <DoubleRedBox value={`+${holding.surplus}barter`} label="Surplus" />
-            <RedTagsBox tags={holding.gigs} label="Gigs" height="90px" />
+            <DoubleRedBox value={holding.holdingSize} label='Size' />
+            <DoubleRedBox value={holding.souls} label='Population' />
+            <RedTagsBox tags={holding.wants} label='Wants' height='90px' />
+            <DoubleRedBox value={`+${holding.surplus}barter`} label='Surplus' />
+            <RedTagsBox tags={holding.gigs} label='Gigs' height='90px' />
             <DoubleRedBox
               value={`+${holding.gangDefenseArmorBonus}armor`}
-              label="Defense bonus"
+              label='Defense bonus'
             />
           </Box>
         )}
@@ -245,54 +237,54 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
         </HeadingWS>
         {!!holding && (
           <Box
-            fill="horizontal"
-            direction="row"
-            align="center"
-            justify="start"
+            fill='horizontal'
+            direction='row'
+            align='center'
+            justify='start'
             wrap
-            gap="12px"
-            pad="12px"
+            gap='12px'
+            pad='12px'
           >
-            <DoubleRedBox value={holding.gangSize} label="Size" />
-            <SingleRedBox value={holding.gangHarm.toString()} label="Harm" />
-            <SingleRedBox value={holding.gangArmor.toString()} label="Armor" />
-            <RedTagsBox tags={holding.gangTags} label="Tags" height="90px" />
+            <DoubleRedBox value={holding.gangSize} label='Size' />
+            <SingleRedBox value={holding.gangHarm.toString()} label='Harm' />
+            <SingleRedBox value={holding.gangArmor.toString()} label='Armor' />
+            <RedTagsBox tags={holding.gangTags} label='Tags' height='90px' />
           </Box>
         )}
         <Box
-          direction="row"
-          justify="between"
-          fill="horizontal"
-          align="center"
-          pad="12px"
+          direction='row'
+          justify='between'
+          fill='horizontal'
+          align='center'
+          pad='12px'
         >
-          <HeadingWS level="4" margin={{ vertical: '3px' }}>
+          <HeadingWS level='4' margin={{ vertical: '3px' }}>
             Gang moves
           </HeadingWS>
           {showMoves ? (
             <FormUp
-              data-testid="hide-gang-moves-icon"
+              data-testid='hide-gang-moves-icon'
               onClick={() => setShowMoves(false)}
               style={{ cursor: 'pointer' }}
             />
           ) : (
             <FormDown
-              data-testid="show-gang-moves-icon"
+              data-testid='show-gang-moves-icon'
               onClick={() => setShowMoves(true)}
               style={{ cursor: 'pointer' }}
             />
           )}
         </Box>
         {showMoves && (
-          <Box pad="12px">
+          <Box pad='12px'>
             <Box
-              fill="horizontal"
-              align="start"
+              fill='horizontal'
+              align='start'
               animation={{
                 type: 'fadeIn',
                 delay: 0,
                 duration: 500,
-                size: 'xsmall',
+                size: 'xsmall'
               }}
             >
               {gangMoves.map((move) => {
@@ -300,7 +292,7 @@ const HoldingBox: FC<HoldingBoxProps> = ({ navigateToCharacterCreation }) => {
                   <HeadingWS
                     key={move.id}
                     crustReady={crustReady}
-                    level="3"
+                    level='3'
                     margin={{ top: '3px', bottom: '3px' }}
                     onClick={() => handleMoveClick(move)}
                     onMouseOver={(e: React.MouseEvent<HTMLHeadingElement>) =>

@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -11,13 +10,10 @@ import {
   ButtonWS,
   dealTerrainDialogBackground,
 } from '../../config/grommetConfig';
-import PERFORM_SPEED_ROLL_MOVE, {
-  PerformSpeedRollMoveData,
-  PerformSpeedRollMoveVars,
-} from '../../mutations/performSpeedRollMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { useMoves } from '../../contexts/movesContext';
 import { Vehicle } from '../../@types/dataInterfaces';
 import { dummyVehicleFrame } from '../../tests/fixtures/dummyData';
 import { VehicleType } from '../../@types/enums';
@@ -33,23 +29,18 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({
   move,
   handleClose,
 }) => {
-  // ----------------------------- Component state ------------------------------ //
+  // ----------------------------- Component state -------------------------- //
   const [myHandling, setMyHandling] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | undefined>();
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, character } = useGame();
+  const { makeSpeedRollMove, rollingMove} = useMoves()
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performSpeedRollMove, { loading: performingSpeedRollMove }] =
-    useMutation<PerformSpeedRollMoveData, PerformSpeedRollMoveVars>(
-      PERFORM_SPEED_ROLL_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const otherVehicle: Vehicle = {
     id: 'other-vehicle-id',
     vehicleType: VehicleType.car,
@@ -67,15 +58,16 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({
 
   const handleSpeedRollMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingSpeedRollMove &&
+      !rollingMove &&
       !!myHandling
     ) {
       const modifier = parseInt(myHandling);
       try {
-        await performSpeedRollMove({
+        makeSpeedRollMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -175,8 +167,8 @@ const DealTerrainDialog: FC<DealTerrainDialogProps> = ({
           <ButtonWS
             label={DRIVE_TEXT}
             primary
-            onClick={() => !performingSpeedRollMove && handleSpeedRollMove()}
-            disabled={performingSpeedRollMove || !myHandling}
+            onClick={() => !rollingMove && handleSpeedRollMove()}
+            disabled={rollingMove || !myHandling}
           />
         </Box>
       </Box>

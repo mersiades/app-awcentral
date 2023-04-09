@@ -1,27 +1,10 @@
 import React, { FC, useState } from 'react';
-import { useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { Box } from 'grommet';
 import { FormUp, FormDown, Edit } from 'grommet-icons';
 
 import { StyledMarkdown } from '../styledComponents';
 import { brandColor, HeadingWS } from '../../config/grommetConfig';
-import PERFORM_PRINT_MOVE, {
-  PerformPrintMoveData,
-  PerformPrintMoveVars,
-} from '../../mutations/performPrintMove';
-import PERFORM_STAT_ROLL_MOVE, {
-  PerformStatRollMoveData,
-  PerformStatRollMoveVars,
-} from '../../mutations/performStatRollMove';
-import PERFORM_WEALTH_MOVE, {
-  PerformWealthMoveData,
-  PerformWealthMoveVars,
-} from '../../mutations/performWealthMove';
-import PERFORM_FORTUNES_MOVE, {
-  PerformFortunesMoveData,
-  PerformFortunesMoveVars,
-} from '../../mutations/performFortunesMove';
 import { MoveActionType, RoleType, RollType } from '../../@types/enums';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useGame } from '../../contexts/gameContext';
@@ -29,6 +12,7 @@ import { useFonts } from '../../contexts/fontContext';
 import { decapitalize } from '../../helpers/decapitalize';
 import { FORTUNES_NAME, WEALTH_NAME } from '../../config/constants';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { useMoves } from '../../contexts/movesContext';
 
 interface MovesBoxProps {
   moves: Array<CharacterMove | Move>;
@@ -39,56 +23,42 @@ interface MovesBoxProps {
 }
 
 const MovesBox: FC<MovesBoxProps> = ({
-  moves,
-  moveCategory,
-  open,
-  navigateToCharacterCreation,
-  openDialog,
-}) => {
-  // ----------------------------- Component state ------------------------------ //
+                                       moves,
+                                       moveCategory,
+                                       open,
+                                       navigateToCharacterCreation,
+                                       openDialog
+                                     }) => {
+  // -------------------------- Component state ----------------------------- //
   const [showMoves, setShowMoves] = useState(open);
   const [showMoveDetails, setShowMoveDetails] = useState<string[]>([]);
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // -------------------------- 3rd party hooks ----------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // -------------------------- Hooks --------------------------------------- //
   const { userGameRole, character } = useGame();
+  const {
+    makePrintMove,
+    makeStatsRollMove,
+    makeWealthMove,
+    makeFortunesMove,
+    rollingMove
+  } = useMoves();
   const { crustReady } = useFonts();
 
-  // ----------------------------- GraphQL -------------------------------------- //
-
-  const [performPrintMove, { loading: performingPrintMove }] = useMutation<
-    PerformPrintMoveData,
-    PerformPrintMoveVars
-  >(PERFORM_PRINT_MOVE);
-  const [performWealthMove, { loading: performingWealthMove }] = useMutation<
-    PerformWealthMoveData,
-    PerformWealthMoveVars
-  >(PERFORM_WEALTH_MOVE);
-
-  const [performFortunesMove, { loading: performingFortunesMove }] =
-    useMutation<PerformFortunesMoveData, PerformFortunesMoveVars>(
-      PERFORM_FORTUNES_MOVE
-    );
-
-  const [performStatRollMove, { loading: performingStatRollMove }] =
-    useMutation<PerformStatRollMoveData, PerformStatRollMoveVars>(
-      PERFORM_STAT_ROLL_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // -------------------------- Component functions ------------------------- //
   const toggleShowMoves = () => setShowMoves(!showMoves);
 
   const clickableStyle = {
     cursor: 'pointer',
     '&:hover': {
-      color: brandColor,
-    },
+      color: brandColor
+    }
   };
 
   const unClickableStyle = {
-    cursor: 'default',
+    cursor: 'default'
   };
 
   const toggleShowMoveDetails = (moveId: string) => {
@@ -101,20 +71,21 @@ const MovesBox: FC<MovesBoxProps> = ({
 
   const handlePrintMove = async (move: Move | CharacterMove) => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingPrintMove
+      !rollingMove
     ) {
       try {
-        await performPrintMove({
+        await makePrintMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             characterId: character.id,
             moveId: move.id,
-            isGangMove: false,
-          },
+            isGangMove: false
+          }
         });
         logAmpEvent('make move', { move: move.name });
       } catch (error) {
@@ -124,57 +95,52 @@ const MovesBox: FC<MovesBoxProps> = ({
   };
 
   const handleStatRollMove = async (move: Move | CharacterMove) => {
-    if (!!userGameRole && !!character && !character.isDead) {
+    if (gameId && !!userGameRole && !!character && !character.isDead && !rollingMove) {
       const commonVariables = {
         gameId,
         gameRoleId: userGameRole.id,
-        characterId: character.id,
+        characterId: character.id
       };
       if (move.name === WEALTH_NAME) {
-        if (!performingWealthMove) {
-          try {
-            await performWealthMove({
-              variables: commonVariables,
-            });
-            logAmpEvent('make move', { move: move.name });
-          } catch (error) {
-            console.error(error);
-          }
+        try {
+          await makeWealthMove!({
+            variables: commonVariables
+          });
+          logAmpEvent('make move', { move: move.name });
+        } catch (error) {
+          console.error(error);
         }
+
       } else {
-        if (!performingStatRollMove) {
-          try {
-            await performStatRollMove({
-              variables: {
-                ...commonVariables,
-                moveId: move.id,
-                isGangMove: false,
-              },
-            });
-            logAmpEvent('make move', { move: move.name });
-          } catch (error) {
-            console.error(error);
-          }
+        try {
+          await makeStatsRollMove!({
+            variables: {
+              ...commonVariables,
+              moveId: move.id,
+              isGangMove: false
+            }
+          });
+          logAmpEvent('make move', { move: move.name });
+        } catch (error) {
+          console.error(error);
         }
       }
     }
   };
 
   const handleFortuneRollMove = async () => {
-    if (!!userGameRole && !!character && !character.isDead) {
-      if (!performingFortunesMove) {
-        try {
-          performFortunesMove({
-            variables: {
-              gameId,
-              gameRoleId: userGameRole.id,
-              characterId: character.id,
-            },
-          });
-          logAmpEvent('make move', { move: FORTUNES_NAME });
-        } catch (error) {
-          console.error(error);
-        }
+    if (gameId && !!userGameRole && !!character && !character.isDead && !rollingMove) {
+      try {
+        makeFortunesMove!({
+          variables: {
+            gameId,
+            gameRoleId: userGameRole.id,
+            characterId: character.id
+          }
+        });
+        logAmpEvent('make move', { move: FORTUNES_NAME });
+      } catch (error) {
+        console.error(error);
       }
     }
   };
@@ -231,47 +197,47 @@ const MovesBox: FC<MovesBoxProps> = ({
 
   return (
     <Box
-      data-testid="moves-box"
-      fill="horizontal"
-      align="center"
-      justify="start"
+      data-testid='moves-box'
+      fill='horizontal'
+      align='center'
+      justify='start'
       pad={{ vertical: '12px' }}
       style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.25)' }}
     >
       <Box
-        fill="horizontal"
-        direction="row"
-        align="center"
-        justify="between"
+        fill='horizontal'
+        direction='row'
+        align='center'
+        justify='between'
         pad={{ vertical: '12px' }}
       >
         <HeadingWS
           crustReady={crustReady}
-          level="3"
-          margin="0px"
-          alignSelf="start"
+          level='3'
+          margin='0px'
+          alignSelf='start'
           onClick={toggleShowMoves}
           style={{ cursor: 'pointer' }}
         >
           {`${decapitalize(moveCategory)} moves`}
         </HeadingWS>
-        <Box direction="row" align="center" gap="12px">
+        <Box direction='row' align='center' gap='12px'>
           {showMoves ? (
             <FormUp
-              data-testid="hide-moves-icon"
+              data-testid='hide-moves-icon'
               onClick={toggleShowMoves}
               style={{ cursor: 'pointer' }}
             />
           ) : (
             <FormDown
-              data-testid="show-moves-icon"
+              data-testid='show-moves-icon'
               onClick={toggleShowMoves}
               style={{ cursor: 'pointer' }}
             />
           )}
           {!!navigateToCharacterCreation && (
             <Edit
-              color="accent-1"
+              color='accent-1'
               onClick={() => navigateToCharacterCreation('7')}
               style={{ cursor: 'pointer' }}
             />
@@ -285,43 +251,43 @@ const MovesBox: FC<MovesBoxProps> = ({
           return (
             <Box
               key={move.id}
-              fill="horizontal"
+              fill='horizontal'
               animation={{
                 type: 'fadeIn',
                 delay: 0,
                 duration: 500,
-                size: 'xsmall',
+                size: 'xsmall'
               }}
             >
               <Box
-                fill="horizontal"
-                direction="row"
-                justify="between"
-                align="center"
+                fill='horizontal'
+                direction='row'
+                justify='between'
+                align='center'
               >
                 <Box
-                  direction="row"
-                  justify="start"
-                  align="center"
-                  pad="12px"
-                  gap="12px"
+                  direction='row'
+                  justify='start'
+                  align='center'
+                  pad='12px'
+                  gap='12px'
                 >
                   {showMoveDetails.includes(move.id) ? (
                     <FormUp
-                      data-testid="hide-move-details-icon"
+                      data-testid='hide-move-details-icon'
                       onClick={() => toggleShowMoveDetails(move.id)}
                       style={{ cursor: 'pointer' }}
                     />
                   ) : (
                     <FormDown
-                      data-testid="show-move-details-icon"
+                      data-testid='show-move-details-icon'
                       onClick={() => toggleShowMoveDetails(move.id)}
                       style={{ cursor: 'pointer' }}
                     />
                   )}
                   <HeadingWS
                     crustReady={crustReady}
-                    level="3"
+                    level='3'
                     margin={{ top: '3px', bottom: '3px' }}
                     onClick={() => canPerformMove && handleMoveClick(move)}
                     onMouseOver={(e: React.MouseEvent<HTMLHeadingElement>) =>
@@ -343,12 +309,12 @@ const MovesBox: FC<MovesBoxProps> = ({
 
               {showMoveDetails.includes(move.id) && (
                 <Box
-                  pad="12px"
+                  pad='12px'
                   animation={{
                     type: 'fadeIn',
                     delay: 0,
                     duration: 500,
-                    size: 'xsmall',
+                    size: 'xsmall'
                   }}
                 >
                   <StyledMarkdown>{move.description}</StyledMarkdown>

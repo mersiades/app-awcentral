@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Text } from 'grommet';
 
 import { StyledMarkdown } from '../../styledComponents';
@@ -45,7 +45,7 @@ const WorkspaceForm: FC = () => {
   const workspace = character?.playbookUniques?.workspace;
 
   // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // ----------------------------- GraphQL -------------------------------------- //
   const { data: pbCreatorData } = useQuery<
@@ -88,7 +88,7 @@ const WorkspaceForm: FC = () => {
         });
         if (!character.hasCompletedCharacterCreation) {
           logAmpEvent('set unique');
-          history.push(
+          navigate(
             `/character-creation/${game.id}?step=${CharacterCreationSteps.selectMoves}`
           );
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

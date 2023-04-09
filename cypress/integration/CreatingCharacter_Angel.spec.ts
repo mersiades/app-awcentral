@@ -40,6 +40,29 @@ import {
 import game6 from '../fixtures/games/game6';
 import { decapitalize } from '../../src/helpers/decapitalize';
 import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_ADJUST_HX,
+  ONM_CREATE_CHARACTER,
+  ONM_SET_ANGEL_KIT, ONM_SET_BATTLE_VEHICLE,
+  ONM_SET_BATTLE_VEHICLE_COUNT,
+  ONM_SET_CHARACTER_BARTER,
+  ONM_SET_CHARACTER_GEAR,
+  ONM_SET_CHARACTER_LOOK,
+  ONM_SET_CHARACTER_MOVES,
+  ONM_SET_CHARACTER_NAME,
+  ONM_SET_CHARACTER_STATS,
+  ONM_SET_CHARACTER_VEHICLE,
+  ONM_SET_PLAYBOOK,
+  ONM_SET_VEHICLE_COUNT, ONM_TOGGLE_STAT_HIGHLIGHT,
+  ONQ_GAME,
+  ONQ_PLAYBOOK_CREATOR,
+  ONQ_PLAYBOOKS,
+  ONQ_VEHICLE_CREATOR,
+  setupQueryAliases,
+  visitHomePage,
+  waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 /**
  * This test is the first of the character creation tests.
@@ -50,12 +73,31 @@ import { PlaybookType, UniqueTypes } from '../../src/@types/enums';
 describe('Creating a new Angel Character', () => {
   beforeEach(() => {
     cy.login('cristi@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_CREATE_CHARACTER)
+      aliasMutation(req, ONM_SET_PLAYBOOK)
+      aliasMutation(req, ONM_SET_CHARACTER_NAME)
+      aliasMutation(req, ONM_SET_CHARACTER_LOOK)
+      aliasMutation(req, ONM_SET_CHARACTER_STATS)
+      aliasMutation(req, ONM_SET_CHARACTER_GEAR)
+      aliasMutation(req, ONM_SET_CHARACTER_BARTER)
+      aliasMutation(req, ONM_SET_ANGEL_KIT)
+      aliasMutation(req, ONM_SET_CHARACTER_MOVES)
+      aliasMutation(req, ONM_SET_CHARACTER_VEHICLE)
+      aliasMutation(req, ONM_SET_VEHICLE_COUNT)
+      aliasMutation(req, ONM_SET_BATTLE_VEHICLE_COUNT)
+      aliasMutation(req, ONM_SET_BATTLE_VEHICLE)
+      aliasMutation(req, ONM_ADJUST_HX)
+      aliasMutation(req, ONM_TOGGLE_STAT_HIGHLIGHT)
+    })
+    visitHomePage();
     cy.returnToGame(game6.name);
+    cy.wait(generateWaitAlias(ONQ_PLAYBOOKS))
   });
 
   it('should create an Angel and stop at CharacterHxPage', () => {
-    // ------------------------------------------ NewGameIntro ------------------------------------------ //
+    // --------------------------- NewGameIntro ----------------------------- //
     // Check form content
     cy.contains(NEW_GAME_TEXT).should('exist');
     cy.contains(WELCOME_JUNGLE_TEXT).should('exist');
@@ -80,8 +122,9 @@ describe('Creating a new Angel Character', () => {
 
     // Go to next
     cy.contains(NEXT_TEXT).click();
+    waitMutationWithGame(ONM_CREATE_CHARACTER)
 
-    // ------------------------------------------ CharacterPlaybookForm ------------------------------------------ //
+    // // ------------------------- CharacterPlaybookForm ---------------------- //
     // Check form content
     cy.contains(CHOOSE_YOUR_PLAYBOOK_TEXT, { timeout: 8000 }).should('exist');
     cy.contains(NEW_PLAYER_INTRO_TEXT).should('exist');
@@ -91,8 +134,9 @@ describe('Creating a new Angel Character', () => {
 
     // Check form functionality
     cy.selectPlaybook(PlaybookType.angel);
+    cy.wait(generateWaitAlias(ONQ_PLAYBOOK_CREATOR))
 
-    // ------------------------------------------ CharacterNameForm ------------------------------------------ //
+    // --------------------------- CharacterNameForm ------------------------ //
     const angelName = 'Diana';
     const angelNameUC = angelName.toUpperCase();
 
@@ -127,8 +171,9 @@ describe('Creating a new Angel Character', () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    waitMutationWithGame(ONM_SET_CHARACTER_NAME)
 
-    // ------------------------------------------ CharacterLooksForm ------------------------------------------ //
+    // ---------------------- CharacterLooksForm ---------------------------- //
     const customEyes = 'tired eyes';
     // Check form content
     cy.contains('WHAT DOES DIANA LOOK LIKE?', { timeout: 8000 }).should(
@@ -146,6 +191,7 @@ describe('Creating a new Angel Character', () => {
 
     // Check form functionality
     cy.contains('man').click();
+    waitMutationWithGame(ONM_SET_CHARACTER_LOOK)
     cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
     cy.get('div[data-testid="looks-box"]', { timeout: 8000 }).should(
       'contain',
@@ -153,6 +199,7 @@ describe('Creating a new Angel Character', () => {
     );
 
     cy.contains('utility wear').click();
+    waitMutationWithGame(ONM_SET_CHARACTER_LOOK)
     cy.get('div[data-testid="looks-box"]');
     cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
     cy.get('div[data-testid="looks-box"]').should('contain', 'man');
@@ -162,6 +209,7 @@ describe('Creating a new Angel Character', () => {
     );
 
     cy.contains('haggard face').click();
+    waitMutationWithGame(ONM_SET_CHARACTER_LOOK)
     cy.get('div[data-testid="looks-box"]');
     cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
     cy.get('div[data-testid="looks-box"]').should('contain', 'man');
@@ -173,6 +221,7 @@ describe('Creating a new Angel Character', () => {
 
     cy.get('input[aria-label="eyes-input"]').type(customEyes); // Check that looks can also be typed
     cy.contains('SET').click();
+    waitMutationWithGame(ONM_SET_CHARACTER_LOOK)
     cy.get('div[data-testid="looks-box"]');
     cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
     cy.get('div[data-testid="looks-box"]').should('contain', 'man');
@@ -184,6 +233,7 @@ describe('Creating a new Angel Character', () => {
     );
 
     cy.contains('big body').click();
+    waitMutationWithGame(ONM_SET_CHARACTER_LOOK)
     cy.get('div[data-testid="looks-box"]');
     cy.get('div[data-testid="looks-box"]').should('contain', LOOKS_TITLE);
     cy.get('div[data-testid="looks-box"]').should('contain', 'man');
@@ -195,11 +245,12 @@ describe('Creating a new Angel Character', () => {
     );
 
     // Should automatically progress
-    // ------------------------------------------ CharacterStatsForm ------------------------------------------ //
+    // ------------------------- CharacterStatsForm ------------------------- //
     cy.contains(CHOOSE_STAT_SET_TEXT).should('exist');
     cy.setCharacterStat(angelNameUC);
+    waitMutationWithGame(ONM_SET_CHARACTER_STATS)
 
-    // ------------------------------------------ CharacterGearForm ------------------------------------------ //
+    // ------------------------- CharacterGearForm -------------------------- //
     const angelClothes = 'disheveled paramedic uniform';
     const angelWeapon1 = '.38 revolver (2-harm close reload loud)';
     const angelWeapon2 = '9mm (2-harm close loud)';
@@ -291,8 +342,11 @@ describe('Creating a new Angel Character', () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    cy.wait(generateWaitAlias(ONM_SET_CHARACTER_GEAR))
+    cy.wait(generateWaitAlias(ONM_SET_CHARACTER_BARTER))
+    cy.wait(generateWaitAlias(ONQ_GAME))
 
-    // ------------------------------------------ AngelKitForm ------------------------------------------ //
+    // ---------------------------- AngelKitForm ---------------------------- //
     // Check form content
     cy.contains("DIANA'S ANGEL KIT").should('exist');
     cy.get('h2[aria-label="stock-value"]').should('include.text', '6');
@@ -322,8 +376,9 @@ describe('Creating a new Angel Character', () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    waitMutationWithGame(ONM_SET_ANGEL_KIT)
 
-    // ------------------------------------------ CharacterMovesForm ------------------------------------------ //
+    // ---------------------------- CharacterMovesForm ---------------------- //
     const sixthSenseMoveName = decapitalize(SIXTH_SENSE_NAME);
     const infirmaryMoveName = decapitalize(INFIRMARY_NAME);
     // Check form content
@@ -344,12 +399,15 @@ describe('Creating a new Angel Character', () => {
 
     // Check form functionality
     cy.contains(sixthSenseMoveName).click();
+    cy.wait(generateWaitAlias(ONQ_GAME))
     cy.contains(infirmaryMoveName).click();
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    waitMutationWithGame(ONM_SET_CHARACTER_MOVES)
 
-    // ------------------------------------------ VehiclesForm ------------------------------------------ //
+
+    // ---------------------------- VehiclesForm ---------------------------- //
     const vehicleName = "Diana's Dodge";
     // Check form content
     cy.contains('VEHICLES').should('exist');
@@ -376,6 +434,8 @@ describe('Creating a new Angel Character', () => {
 
     // Check form functionality
     cy.contains(ADD_VEHICLE_TEXT).click();
+    waitMutationWithGame(ONM_SET_VEHICLE_COUNT)
+    cy.wait(generateWaitAlias(ONQ_VEHICLE_CREATOR))
     cy.contains('Vehicle 1').should('exist');
     cy.contains(GIVE_VEHICLE_NAME_TEXT).should('exist');
     cy.contains(GIVE_VEHICLE_NAME_EXAMPLES_TEXT).should('exist');
@@ -450,8 +510,9 @@ describe('Creating a new Angel Character', () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    waitMutationWithGame(ONM_SET_CHARACTER_VEHICLE)
 
-    // ------------------------------------------ BattleVehiclesForm ------------------------------------------ //
+    // -------------------------- BattleVehiclesForm ------------------------ //
     const battleVehicleName = 'Death-bringer';
     const battleVehicleWeapon1 =
       'Mounted machine guns (3-harm close/far area messy)';
@@ -475,6 +536,7 @@ describe('Creating a new Angel Character', () => {
 
     // Check form functionality
     cy.contains(ADD_VEHICLE_TEXT).click();
+    waitMutationWithGame(ONM_SET_BATTLE_VEHICLE_COUNT)
     cy.contains('Battle Vehicle 1').should('exist');
     cy.contains(GIVE_VEHICLE_NAME_TEXT).should('exist');
     cy.contains(GIVE_VEHICLE_NAME_EXAMPLES_TEXT).should('exist');
@@ -558,8 +620,9 @@ describe('Creating a new Angel Character', () => {
 
     // Submit form
     cy.contains(SET_TEXT).click();
+    waitMutationWithGame(ONM_SET_BATTLE_VEHICLE)
 
-    // ------------------------------------------ CharacterHxForm ------------------------------------------ //
+    // --------------------------- CharacterHxForm -------------------------- //
     // Check form content
     cy.contains('WHAT HISTORY DOES DIANA HAVE?').should('exist');
     cy.get('div[data-testid="Doc-hx-box"]').should('exist');
@@ -594,6 +657,7 @@ describe('Creating a new Angel Character', () => {
 
     cy.get('input[aria-label="Doc-hx-input"]').type('{backspace}2');
     cy.contains(HX_VALIDATION_TEXT).should('not.exist');
+    waitMutationWithGame(ONM_ADJUST_HX)
     cy.get('div[data-testid="hx-box"]', { timeout: 10000 });
     cy.get('div[data-testid="hx-box"]').should('contain', HX_TITLE);
     cy.get('div[data-testid="hx-box"]').should('contain', 'Doc');
@@ -601,6 +665,7 @@ describe('Creating a new Angel Character', () => {
 
     cy.get('div[data-testid="HARD-stat-box"]').click();
     cy.get('div[data-testid="HOT-stat-box"]').click();
+    waitMutationWithGame(ONM_TOGGLE_STAT_HIGHLIGHT)
 
     // Submit form
     // Should not allow progress to PreGamePage because need Hx with all characters

@@ -88,7 +88,7 @@ describe('Rendering BattleVehicleFormContainer', () => {
 
     await screen.findByTestId('no-default-battle-vehicle-message');
     const addButton = screen.getByRole('button', { name: 'ADD VEHICLE' });
-    userEvent.click(addButton);
+    await userEvent.click(addButton);
     // FAILING: mutation returns correct value, but it does not update the graphql cache
     // await screen.findByTestId('battle-vehicle-form');
   });

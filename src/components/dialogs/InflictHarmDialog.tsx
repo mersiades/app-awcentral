@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, FormField, Select, TextInput } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -15,11 +14,8 @@ import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
 import { StyledMarkdown } from '../styledComponents';
-import PERFORM_INFLICT_HARM_MOVE, {
-  PerformInflictHarmMoveData,
-  PerformInflictHarmMoveVars,
-} from '../../mutations/performInflictHarmMove';
 import { logAmpEvent } from '../../config/amplitudeConfig';
+import { useMoves } from '../../contexts/movesContext';
 
 interface InflictHarmDialogProps {
   move: Move | CharacterMove;
@@ -30,31 +26,27 @@ const InflictHarmDialog: FC<InflictHarmDialogProps> = ({
   move,
   handleClose,
 }) => {
-  // ----------------------------- Component state ------------------------------ //
-  const [otherCharacterId, setotherCharacterId] = useState('');
+  // ----------------------------- Component state -------------------------- //
+  const [otherCharacterId, setOtherCharacterId] = useState('');
   const [harm, setHarm] = useState(0);
-  // ----------------------------- 3rd party hooks ------------------------------- //
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
+  const { makeInflictHarmMove, rollingMove} = useMoves()
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performInflictHarmMove, { loading: performingInflictHarmMove }] =
-    useMutation<PerformInflictHarmMoveData, PerformInflictHarmMoveVars>(
-      PERFORM_INFLICT_HARM_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const characters =
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleInflictHarmMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingInflictHarmMove &&
+      !rollingMove &&
       harm > 0 &&
       !!otherCharacterId
     ) {
@@ -69,7 +61,7 @@ const InflictHarmDialog: FC<InflictHarmDialogProps> = ({
       if (!otherGameroleId) return;
 
       try {
-        await performInflictHarmMove({
+        makeInflictHarmMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
@@ -87,7 +79,7 @@ const InflictHarmDialog: FC<InflictHarmDialogProps> = ({
     }
   };
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   return (
     <DialogWrapper background={inflictHarmBackground} handleClose={handleClose}>
@@ -114,7 +106,7 @@ const InflictHarmDialog: FC<InflictHarmDialogProps> = ({
               options={characters}
               labelKey={'name'}
               valueKey={'id'}
-              onChange={(e) => setotherCharacterId(e.value.id)}
+              onChange={(e) => setOtherCharacterId(e.value.id)}
             />
           </Box>
           <Box fill>
@@ -152,13 +144,13 @@ const InflictHarmDialog: FC<InflictHarmDialogProps> = ({
             label="OKAY"
             primary
             onClick={() =>
-              !performingInflictHarmMove &&
+              !rollingMove &&
               harm > 0 &&
               !!otherCharacterId &&
               handleInflictHarmMove()
             }
             disabled={
-              performingInflictHarmMove || harm === 0 || !otherCharacterId
+              rollingMove || harm === 0 || !otherCharacterId
             }
           />
         </Box>

@@ -1,4 +1,3 @@
-import { MockedResponse } from '@apollo/client/testing';
 import { PlaybookType, StatType } from '../@types/enums';
 import ADJUST_CHARACTER_HX, {
   getAdjustCharacterHxOR,
@@ -58,6 +57,7 @@ import {
   mockVehicleCreator,
   mockMcContent,
 } from './mocks';
+import { MockedResponse } from '@apollo/client/testing';
 
 export const mockGameRolesByUserId: MockedResponse<GameRolesByUserIdData> = {
   request: {
@@ -622,7 +622,7 @@ export const mockSetBattleVehicleCount: MockedResponse = {
     return {
       data: {
         __typename: 'Mutation',
-        setVehicleCount: {
+        setBattleVehicleCount: {
           id: mockCharacter2.id,
           battleVehicleCount: 1,
           __typename: 'Character',

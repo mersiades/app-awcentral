@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface AddCommsAppData {
@@ -52,6 +52,6 @@ const ADD_COMMS_APP = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<AddCommsAppData, AddCommsAppVars>;
 
 export default ADD_COMMS_APP;

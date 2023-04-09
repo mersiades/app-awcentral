@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Game } from '../@types/dataInterfaces';
 
 export interface PerformSkinnerSpecialMoveData {
@@ -46,6 +46,6 @@ const PERFORM_SKINNER_SPECIAL_MOVE = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<PerformSkinnerSpecialMoveData, PerformSkinnerSpecialMoveVars>;
 
 export default PERFORM_SKINNER_SPECIAL_MOVE;

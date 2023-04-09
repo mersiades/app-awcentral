@@ -12,6 +12,13 @@ import {
   DRIVE_TEXT,
   SHOULDER_ANOTHER_VEHICLE_NAME,
 } from '../../src/config/constants';
+import {
+  aliasMutation,
+  generateWaitAlias, ONM_PERFORM_SPEED_ROLL, ONM_PERFORM_STAT_ROLL,
+  ONQ_ALL_MOVES,
+  setupQueryAliases,
+  visitHomePage, waitMutationWithGame
+} from '../utils/graphql-test-utils';
 
 describe('Making road war moves from the MovesPanel as Driver', () => {
   const characterName = 'Phoenix';
@@ -20,10 +27,16 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
 
   beforeEach(() => {
     cy.login('ahmad@email.com');
-    cy.visit('/');
+    cy.intercept('POST', `${Cypress.env('GRAPHQL_HOST')}/graphql`, (req)=> {
+      setupQueryAliases(req)
+      aliasMutation(req, ONM_PERFORM_SPEED_ROLL)
+      aliasMutation(req, ONM_PERFORM_STAT_ROLL)
+    })
+    visitHomePage()
     cy.returnToGame(game1.name);
     cy.get('button[data-testid="cancel-button"]').click();
     cy.openMovesPanelBox('Road war moves');
+    cy.wait(generateWaitAlias(ONQ_ALL_MOVES))
   });
 
   it(`should show a ${BOARD_VEHICLE_NAME} move message`, () => {
@@ -44,6 +57,7 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
 
     cy.contains('button', BOARD_TEXT).should('not.be.disabled');
     cy.contains('button', BOARD_TEXT).click();
+    waitMutationWithGame(ONM_PERFORM_SPEED_ROLL)
 
     cy.checkMoveMessage(messageTitle, moveDescSnippet, StatType.cool);
     cy.contains('SPEED DIFF.').should('be.visible');
@@ -67,6 +81,7 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
 
     cy.contains('button', OUTDISTANCE_TEXT).should('not.be.disabled');
     cy.contains('button', OUTDISTANCE_TEXT).click();
+    waitMutationWithGame(ONM_PERFORM_SPEED_ROLL)
 
     cy.checkMoveMessage(messageTitle, moveDescSnippet, StatType.cool);
     cy.contains('REL. SPEED').should('be.visible');
@@ -90,6 +105,7 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
 
     cy.contains('button', OVERTAKE_TEXT).should('not.be.disabled');
     cy.contains('button', OVERTAKE_TEXT).click();
+    waitMutationWithGame(ONM_PERFORM_SPEED_ROLL)
 
     cy.checkMoveMessage(messageTitle, moveDescSnippet, StatType.cool);
     cy.contains('REL. SPEED').should('be.visible');
@@ -108,6 +124,7 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
 
     cy.contains('button', DRIVE_TEXT).should('not.be.disabled');
     cy.contains('button', DRIVE_TEXT).click();
+    waitMutationWithGame(ONM_PERFORM_SPEED_ROLL)
 
     cy.checkMoveMessage(messageTitle, moveDescSnippet, StatType.cool);
     cy.contains('HANDLING').should('be.visible');
@@ -118,7 +135,8 @@ describe('Making road war moves from the MovesPanel as Driver', () => {
       characterName,
       SHOULDER_ANOTHER_VEHICLE_NAME,
       'To shoulder another vehicle, roll+cool.',
-      StatType.cool
+      StatType.cool,
+      ONM_PERFORM_STAT_ROLL
     );
   });
 });

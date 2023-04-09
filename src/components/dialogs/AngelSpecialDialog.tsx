@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
 import { Box, Select } from 'grommet';
 
 import DialogWrapper from '../DialogWrapper';
@@ -9,21 +8,18 @@ import {
   HeadingWS,
   ParagraphWS,
   ButtonWS,
-  angelSpecialBackground,
+  angelSpecialBackground
 } from '../../config/grommetConfig';
-import PERFORM_ANGEL_SPECIAL_MOVE, {
-  PerformAngelSpecialMoveData,
-  PerformAngelSpecialMoveVars,
-} from '../../mutations/performAngelSpecialMove';
 import { CharacterMove, Move } from '../../@types/staticDataInterfaces';
 import { useFonts } from '../../contexts/fontContext';
 import { useGame } from '../../contexts/gameContext';
+import { useMoves } from '../../contexts/movesContext';
+import { logAmpEvent } from '../../config/amplitudeConfig';
 import {
   APPLY_TEXT,
   CANCEL_TEXT,
-  WITH_WHO_QUESTION,
+  WITH_WHO_QUESTION
 } from '../../config/constants';
-import { logAmpEvent } from '../../config/amplitudeConfig';
 
 interface AngelSpecialDialogProps {
   move: Move | CharacterMove;
@@ -31,33 +27,29 @@ interface AngelSpecialDialogProps {
 }
 
 const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({
-  move,
-  handleClose,
-}) => {
-  // ----------------------------- Component state ------------------------------ //
-  const [otherCharacterId, setotherCharacterId] = useState('');
-  // ----------------------------- 3rd party hooks ------------------------------- //
+                                                           move,
+                                                           handleClose
+                                                         }) => {
+  // ----------------------------- Component state -------------------------- //
+  const [otherCharacterId, setOtherCharacterId] = useState('');
+  // ----------------------------- 3rd party hooks -------------------------- //
   const { gameId } = useParams<{ gameId: string }>();
 
-  // ----------------------------- Hooks ---------------------------------------- //
+  // ----------------------------- Hooks ------------------------------------ //
   const { crustReady } = useFonts();
   const { userGameRole, otherPlayerGameRoles, character } = useGame();
+  const { makeAngelSpecialMove, rollingMove } = useMoves();
 
-  // ----------------------------- GraphQL -------------------------------------- //
-  const [performAngelSpecialMove, { loading: performingAngelSpecialMove }] =
-    useMutation<PerformAngelSpecialMoveData, PerformAngelSpecialMoveVars>(
-      PERFORM_ANGEL_SPECIAL_MOVE
-    );
-
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
   const characters =
     otherPlayerGameRoles?.map((gameRole) => gameRole.characters[0]) || [];
   const handleAngelSpecialMove = async () => {
     if (
+      gameId &&
       !!userGameRole &&
       !!character &&
       !character.isDead &&
-      !performingAngelSpecialMove &&
+      !rollingMove &&
       !!otherCharacterId
     ) {
       const otherGameroleId = otherPlayerGameRoles?.find((gameRole) => {
@@ -71,14 +63,14 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({
       if (!otherGameroleId) return;
 
       try {
-        await performAngelSpecialMove({
+        makeAngelSpecialMove!({
           variables: {
             gameId,
             gameRoleId: userGameRole.id,
             otherGameroleId,
             characterId: character.id,
-            otherCharacterId,
-          },
+            otherCharacterId
+          }
         });
         logAmpEvent('make move', { move: move.name });
         handleClose();
@@ -88,38 +80,38 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({
     }
   };
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
 
   return (
     <DialogWrapper
       background={angelSpecialBackground}
       handleClose={handleClose}
     >
-      <Box data-testid="angel-special-dialog" gap="12px">
-        <HeadingWS crustReady={crustReady} level={4} alignSelf="start">
+      <Box data-testid='angel-special-dialog' gap='12px'>
+        <HeadingWS crustReady={crustReady} level={4} alignSelf='start'>
           {move.name}
         </HeadingWS>
         <StyledMarkdown>{move.description}</StyledMarkdown>
-        <Box fill align="start" justify="start">
-          <ParagraphWS alignSelf="start">{WITH_WHO_QUESTION}</ParagraphWS>
+        <Box fill align='start' justify='start'>
+          <ParagraphWS alignSelf='start'>{WITH_WHO_QUESTION}</ParagraphWS>
           <Select
-            id="target-character-input"
-            aria-label="target-character-input"
-            name="target-character"
-            placeholder="Who?"
+            id='target-character-input'
+            aria-label='target-character-input'
+            name='target-character'
+            placeholder='Select'
             options={characters}
             labelKey={'name'}
             valueKey={'id'}
-            onChange={(e) => setotherCharacterId(e.value.id)}
+            onChange={(e) => setOtherCharacterId(e.value.id)}
           />
         </Box>
-        <Box fill="horizontal" direction="row" justify="end" gap="small">
+        <Box fill='horizontal' direction='row' justify='end' gap='small'>
           <ButtonWS
             label={CANCEL_TEXT}
             style={{
               background: 'transparent',
               textShadow:
-                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000',
+                '0 0 1px #000, 0 0 3px #000, 0 0 5px #000, 0 0 10px #000'
             }}
             onClick={handleClose}
           />
@@ -127,11 +119,11 @@ const AngelSpecialDialog: FC<AngelSpecialDialogProps> = ({
             label={APPLY_TEXT}
             primary
             onClick={() =>
-              !performingAngelSpecialMove &&
+              !rollingMove &&
               !!otherCharacterId &&
               handleAngelSpecialMove()
             }
-            disabled={performingAngelSpecialMove || !otherCharacterId}
+            disabled={rollingMove || !otherCharacterId}
           />
         </Box>
       </Box>

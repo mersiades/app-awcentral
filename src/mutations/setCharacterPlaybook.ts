@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 import { Character } from '../@types/dataInterfaces';
 import { PlaybookType } from '../@types/enums';
 
@@ -36,6 +36,6 @@ const SET_CHARACTER_PLAYBOOK = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<SetCharacterPlaybookData, SetCharacterPlaybookVars>;
 
 export default SET_CHARACTER_PLAYBOOK;

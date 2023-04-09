@@ -25,7 +25,7 @@ describe('Rendering FirstSessionBox', () => {
       `${boxTitle.toLowerCase()}-down-chevron`
     );
     await screen.findByRole('heading', { name: boxTitle });
-    userEvent.click(openButton);
+    await userEvent.click(openButton);
     screen.getByText(mockMcContent.firstSessionContent.intro);
     screen.getByRole('heading', {
       name: mockMcContent.firstSessionContent.duringCharacterCreation.title,

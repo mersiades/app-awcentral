@@ -4,13 +4,14 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useState
 } from 'react';
 import { useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Character, Game, GameRole } from '../@types/dataInterfaces';
 import { RoleType } from '../@types/enums';
 import GAME, { GameData, GameVars } from '../queries/game';
+import { GAME_POLL_DURATION } from '../config/constants';
 
 /**
  * This context keeps track of the current Game. In particular,
@@ -48,13 +49,13 @@ export const useGame = () => useContext(GameContext);
 export const GameConsumer = GameContext.Consumer;
 
 export const GameProvider: FC<GameProviderProps> = ({
-  children,
-  injectedGame,
-  injectedGameId,
-  injectedUserId,
-  injectedCharacter,
-}) => {
-  // ----------------------------- Component state ------------------------------ //
+                                                      children,
+                                                      injectedGame,
+                                                      injectedGameId,
+                                                      injectedUserId,
+                                                      injectedCharacter
+                                                    }) => {
+  // ----------------------------- Component state -------------------------- //
   const [gameId, setGameId] = useState<string | undefined>(injectedGameId);
   const [userId, setUserId] = useState<string | undefined>(injectedUserId);
   const [game, setGame] = useState<Game | undefined>(injectedGame);
@@ -72,22 +73,22 @@ export const GameProvider: FC<GameProviderProps> = ({
     injectedCharacter
   );
 
-  // ----------------------------- 3rd party hooks ------------------------------- //
-  const history = useHistory();
+  // ----------------------------- 3rd party hooks -------------------------- //
+  const navigate = useNavigate();
 
-  // ----------------------------- GraphQL -------------------------------------- //
+  // ----------------------------- GraphQL ---------------------------------- //
   const {
     data,
     loading: fetchingGame,
     error,
-    stopPolling,
+    stopPolling
   } = useQuery<GameData, GameVars>(GAME, {
     // @ts-ignore
     variables: { gameId },
-    pollInterval: 2500,
-    skip: !gameId,
+    pollInterval: GAME_POLL_DURATION,
+    skip: !gameId
   });
-  // ----------------------------- Component functions ------------------------- //
+  // ----------------------------- Component functions ---------------------- //
 
   const setGameContext = (gameId: string, userId: string) => {
     setUserId(userId);
@@ -105,7 +106,7 @@ export const GameProvider: FC<GameProviderProps> = ({
     setCharacter(undefined);
   }, [stopPolling]);
 
-  // --------------------------------------------------- Effects ----------------------------------------------------- //
+  // ------------------------------- Effects -------------------------------- //
 
   useEffect(() => {
     if (!!game) {
@@ -138,7 +139,7 @@ export const GameProvider: FC<GameProviderProps> = ({
     setUserGameRole,
     setMcGameRole,
     setAllPlayerGameRoles,
-    setOtherPlayerGameRoles,
+    setOtherPlayerGameRoles
   ]);
 
   useEffect(() => {
@@ -146,23 +147,23 @@ export const GameProvider: FC<GameProviderProps> = ({
       if (!!data) {
         if (!data.game) {
           // If the game query returned without a game because bad game id
-          history.push(`/menu`);
+          navigate(`/menu`);
           clearGameContext();
         } else {
           setGame(data.game);
         }
       }
     }
-  }, [data, fetchingGame, gameId, history, clearGameContext]);
+  }, [data, fetchingGame, gameId, navigate, clearGameContext]);
 
   useEffect(() => {
     if (!fetchingGame && !!error) {
       clearGameContext();
-      history.push(`/menu`);
+      navigate(`/menu`);
     }
-  }, [error, fetchingGame, clearGameContext, history]);
+  }, [error, fetchingGame, clearGameContext, navigate]);
 
-  // ----------------------------- Render ---------------------------------------- //
+  // ----------------------------- Render ----------------------------------- //
   return (
     <GameContext.Provider
       value={{
@@ -174,7 +175,7 @@ export const GameProvider: FC<GameProviderProps> = ({
         otherPlayerGameRoles,
         character,
         setGameContext,
-        clearGameContext,
+        clearGameContext
       }}
     >
       {children}
